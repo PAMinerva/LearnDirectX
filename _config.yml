@@ -31,3 +31,7 @@ html:
   announcement: 🚧 This documentation is a work in progress! 🚧
   use_issues_button: true
   use_repository_button: true
+
+sphinx:
+  config:
+    html_theme: sphinx_book_theme
