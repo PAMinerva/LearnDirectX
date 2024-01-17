@@ -3,8 +3,19 @@
 This is some sample text.
 
 (section-label)=
-## Here's my first section
+## 1 - Here's my first section
 
 Here is a [reference to the intro](intro.md). Here is a reference to [](section-label).
 
 Change1 (🚧WIP)
+
+(my-label)=
+### 1.1 - Subsection of 1 
+
+Here's some text and [here's my label](my-label).
+
+Here's some text and {ref}`my-label`.
+
+````{note}
+Some text in the note block.
+````
