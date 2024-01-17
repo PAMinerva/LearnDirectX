@@ -34,4 +34,4 @@ html:
 
 sphinx:
   config:
-    html_theme: yummy_sphinx_theme
+    html_theme: sphinx_book_theme
