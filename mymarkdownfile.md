@@ -16,6 +16,12 @@ Here's some text and [here's my label](my-label).
 
 Here's some text and {ref}`my-label`.
 
-````{note}
+```{note}
 Some text in the note block.
-````
+```
+
+::::{important}
+:::{note}
+This text is **standard** _Markdown_
+:::
+::::
