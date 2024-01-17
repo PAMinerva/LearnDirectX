@@ -381,7 +381,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#here-s-my-first-section">Here’s my first section</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#here-s-my-first-section">1 - Here’s my first section</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subsection-of-1">1.1 - Subsection of 1</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -397,9 +400,18 @@ document.write(`
 <h1>Here’s my sample title<a class="headerlink" href="#here-s-my-sample-title" title="Permalink to this heading">#</a></h1>
 <p>This is some sample text.</p>
 <section id="here-s-my-first-section">
-<span id="section-label"></span><h2>Here’s my first section<a class="headerlink" href="#here-s-my-first-section" title="Permalink to this heading">#</a></h2>
-<p>Here is a <a class="reference internal" href="intro.html"><span class="doc std std-doc">reference to the intro</span></a>. Here is a reference to <a class="reference internal" href="#section-label"><span class="std std-ref">Here’s my first section</span></a>.</p>
+<span id="section-label"></span><h2>1 - Here’s my first section<a class="headerlink" href="#here-s-my-first-section" title="Permalink to this heading">#</a></h2>
+<p>Here is a <a class="reference internal" href="intro.html"><span class="doc std std-doc">reference to the intro</span></a>. Here is a reference to <a class="reference internal" href="#section-label"><span class="std std-ref">1 - Here’s my first section</span></a>.</p>
 <p>Change1 (🚧WIP)</p>
+<section id="subsection-of-1">
+<span id="my-label"></span><h3>1.1 - Subsection of 1<a class="headerlink" href="#subsection-of-1" title="Permalink to this heading">#</a></h3>
+<p>Here’s some text and <a class="reference internal" href="#my-label"><span class="std std-ref">here’s my label</span></a>.</p>
+<p>Here’s some text and <a class="reference internal" href="#my-label"><span class="std std-ref">1.1 - Subsection of 1</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some text in the note block.</p>
+</div>
+</section>
 </section>
 </section>
 
@@ -458,7 +470,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#here-s-my-first-section">Here’s my first section</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#here-s-my-first-section">1 - Here’s my first section</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subsection-of-1">1.1 - Subsection of 1</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
