@@ -25,3 +25,7 @@ Some text in the note block.
 This text is **standard** _Markdown_
 :::
 ::::
+
+```{seealso}
+See also
+```
