@@ -1,0 +1,648 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction and Prerequisites &#8212; Learn DirectX</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/00-Intro/intro-and-prerequisites';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Content with notebooks" href="../../notebooks.html" />
+    <link rel="prev" title="Welcome to Learn DirectX" href="../../presentation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 This documentation is a work in progress! 🚧</div>
+  </div>
+
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../presentation.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Learn DirectX - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Learn DirectX - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../presentation.html">
+                    Welcome to Learn DirectX
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction and Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Content with notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mymarkdownfile.html">Here’s my sample title</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX-Book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX-Book/issues/new?title=Issue%20on%20page%20%2FTutorials/00-Intro/intro-and-prerequisites.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Tutorials/00-Intro/intro-and-prerequisites.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction and Prerequisites</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-knowledge">Background knowledge</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">Hardware</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">Software</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-and-prerequisites">
+<h1>Introduction and Prerequisites<a class="headerlink" href="#introduction-and-prerequisites" title="Permalink to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>New graphics APIs, like DirectX 12 and Vulkan, have a reputation for being difficult to learn for beginners. The main reason is that modern APIs hide less to the programmer than the old ones (DirectX 11 and OpenGL) so you just end up studying low-level details even to draw a single triangle. However, learning DirectX 12 also has some advantages as it designed to make full use of multi-threading, and to get a finer control on resource management and CPU/GPU synchronization. Thanks to a better support for multi-threading, the CPU workload is more evenly distributed across all cores. Also, if you understand the use and re-use of resources, then you can take advantage of that by minimizing uploading and copying. That way you can free up CPU time to increase the number of draw calls (and consequently the GPU workload) to enhance performance of your graphics applications.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The graphical capabilities provided by a specific GPU at the hardware level remain the same, regardless of the API used to develop graphics applications that can leverage those capabilities. In particular, using DirectX 12 instead of DirectX 11/10 to implement the same rendering techniques might not necessarily result in a performance boost simply because you’re using the latest version of the graphics API. However, as mentioned earlier, using DirectX 12 offers greater control over many aspects that, if properly used, can lead to performance improvements.</p>
+</div>
+<p>Currently, you have three ways to learn DirectX 12 from scratch, each with its pros and cons:</p>
+<p><strong>Frank Luna’s book: Introduction to 3D Game Programming with DirectX 12</strong> <br>
+<span class="math notranslate nohighlight">\(\color{#44FFAA}\text{The Good}\)</span>: It provides a comprehensive explanation of both theory and practice. It can also serve as both an API reference and a computer graphics textbook, especially for beginners. <br>
+<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: Being a book, it omits some crucial low-level details to reduce cost and size. Additionally, it may be considered somewhat dated</p>
+<p><strong>Online tutorials (included YouTube videos)</strong> <br>
+<span class="math notranslate nohighlight">\(\color{#44FFAA}\text{The Good}\)</span>: Free and easy to follow. <br>
+<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: Often, these tutorials focus mainly on the API, neglecting mathematical and theoretical aspects or providing equations without sufficient explanation. <br></p>
+<p><strong>Official repositories and documentation</strong> <br>
+<span class="math notranslate nohighlight">\(\color{#44FFAA}\text{The Good}\)</span>: All the source code and level of detail you need, for free.<br>
+<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: The documentation is written as a reference for graphics programmers. That is, it assumes you have basic knowledge of computer graphics, GPU architectures, and system programming.</p>
+<br>
+<p>Actually, nothing prevents you from learning DirectX 12 by only taking the good parts of each resource, as long as you’re motivated enough to jump from one math textbook to another and read through dozens of documentation pages and tutorials to gather all the information you need on each topic.</p>
+<p>My goal is to write a new, updated series of tutorials delves deeply into both theory (mathematics, computer graphics, rendering techniques) and practice (API and source code). The key to accomplishing this effectively is to prevent readers from becoming bored, intimidated, or discouraged by the extensive amount of information required to master graphics application development. Typically, when people start studying computer graphics, they want to see something on their screen as a gratifying reward. For this reason, in every tutorial, I will review a different sample and only explain the theory needed to implement it. This way, the reader feels like they’re studying to understand the implementation of a specific sample. This allows for a gradual and progressive acquisition of new information, building knowledge like a puzzle — each tutorial adds another piece.</p>
+<p>I’m not suggesting that this will be the ultimate resource for learning DirectX. In fact, the official Microsoft documentation (see <span id="id1">[<a class="reference internal" href="#id19" title="Microsoft. Directx graphics and gaming. https://docs.microsoft.com/en-us/windows/win32/directx.">Mica</a>]</span> and <span id="id2">[<a class="reference internal" href="#id20" title="Microsoft. Directx-specs. https://microsoft.github.io/DirectX-Specs/.">Micb</a>]</span> in the reference list at the end of this tutorial) will always be the most important and fundamental resource to refer to during your studies. Here, I will simply try to provide as many details as possible to minimize the number of resources you need to consult.</p>
+<p>Regarding the code samples, instead of reinventing the wheel, we can use the source code already available and maintained by Microsoft in their repositories. However, when necessary, I will also write custom samples based on the same framework and coding style.</p>
+<p>The additional samples provided for this tutorial series are hosted on the following Github repository:</p>
+<p><a class="reference external" href="https://github.com/PAMinerva/LearnDirectX">PAMinerva/LearnDirectX</a></p>
+<br>
+<p>Below, are the Github repositories used as a reference:</p>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">microsoft/DirectX-Graphics-Samples</a> <br>
+<a class="reference external" href="https://github.com/microsoft/Xbox-ATG-Samples">microsoft/Xbox-ATG-Samples</a> <br>
+<a class="reference external" href="https://github.com/microsoft/Xbox-GDK-Samples">microsoft/Xbox-GDK-Samples</a> <br>
+<a class="reference external" href="https://github.com/walbourn">walbourn (Chuck Walbourn)</a> <br></p>
+<br>
+<p>In conclusion, if you are looking for a comprehensive, updated resource to learn how to program with DirectX 12 from scratch, then give this tutorial series a chance.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
+<section id="background-knowledge">
+<h3>Background knowledge<a class="headerlink" href="#background-knowledge" title="Permalink to this heading">#</a></h3>
+<p>Of course, I can’t explain everything, so having basic math skills is essential to completely understand the content of the tutorials and the techniques used in the related samples. Fortunately, knowledge of college-level math, including algebra, trigonometry, and calculus, covers about 90% of the math used throughout this tutorial series. For the remaining 10%, I will provide dedicated math appendices.</p>
+<p>If your math skills are a bit rusty, don’t worry! You can consider <span id="id3">[<a class="reference internal" href="#id11" title="K. A. Stroud and Dexter J. Booth. Engineering Mathematics. Bloomsbury Academic, 8th edition, 2020.">SB20b</a>]</span> as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend <span id="id4">[<a class="reference internal" href="#id12" title="K. A. Stroud and Dexter J. Booth. Advanced Engineering Mathematics. Bloomsbury Academic, 6th edition, 2020.">SB20a</a>]</span> (for self-study) or <span id="id5">[<a class="reference internal" href="#id13" title="Erwin Kreyszig. Advanced Engineering Mathematics. Wiley, 10th edition, 2011.">Kre11</a>]</span> (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.</p>
+<p>If you need an introductory textbook on C++ you can take a look at <span id="id6">[<a class="reference internal" href="#id14" title="Mark Dawson. Beginning C++ Through Game Programming. Cengage Learning, 2015.">Daw15</a>]</span> and <span id="id7">[<a class="reference internal" href="#id15" title="Bjarne Stroustrup. A Tour of C++. Addison-Wesley Professional, 6th edition, 2022.">Str22</a>]</span>, then use <span id="id8">[<a class="reference internal" href="#id16" title="Bjarne Stroustrup. The C++ Programming Language. Addison-Wesley Professional, 4th edition, 2014.">Str14</a>]</span> as a reference, and <span id="id9">[<a class="reference internal" href="#id17" title="Randall Hyde. Write Great Code, Volume 1, 2nd Edition: Understanding the Machine. No Starch Press, 2nd edition, 2020.">Hyd20a</a>, <a class="reference internal" href="#id18" title="Randall Hyde. Write Great Code, Volume 2, 2nd Edition: Thinking Low-Level, Writing High-Level. No Starch Press, 2nd edition, 2020.">Hyd20b</a>]</span> to really understand the low-level details.</p>
+</section>
+<section id="hardware">
+<h3>Hardware<a class="headerlink" href="#hardware" title="Permalink to this heading">#</a></h3>
+<p>Obviously, you need a DirectX 12-capable graphics card if you want to run the samples examined in this tutorial series. In particular, a GPU that fully supports DirectX 12 Ultimate is required to execute some of the demos and compile the related source code. To check if your system meets these requirements, press <kbd>Win</kbd> + <kbd>G</kbd> to open the Xbox Game Bar and select Gaming features from Settings.</p>
+<br>
+<p><img alt="Image" src="../../_images/XboxGameBar.png" /></p>
+<br>
+<p>If your graphics card supports DirectX 12 Ultimate, then you should see something like the above image. Otherwise, it’s time to upgrade your PC with a new graphics card.</p>
+</section>
+<section id="software">
+<h3>Software<a class="headerlink" href="#software" title="Permalink to this heading">#</a></h3>
+<p>The complete set of DirectX 12 Ultimate features is available starting from Windows 10, version 2004, so you need to upgrade your OS to at least this version if necessary.<br>
+Visual Studio is required to open the projects and compile the samples presented in this tutorial series. Additionally, you might require Visual Studio to create your own DirectX applications, unless you prefer to use your IDE of choice. However, ensure that you have installed the latest Windows 10 SDK (version 10.0.19041.0 or higher) and have updated your graphics card drivers to the latest version.</p>
+<br>
+<p><img alt="Image" src="../../_images/win10-sdk.PNG" /></p>
+<br>
+<p>You will also need a graphics debugger: I recommend to install <a href="https://devblogs.microsoft.com/pix/download/" target="_blank">PIX on Windows</a> and\or <a href="https://renderdoc.org/" target="_blank">RenderDoc</a>.</p>
+<br>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-center head"><p>RenderDoc</p></th>
+<th class="text-center head"><p>Pix on Windows</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><img alt="" src="../../_images/renderDoc.jpg" /></p></td>
+<td class="text-center"><p><img alt="" src="../../_images/pix.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<br>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<div class="docutils container" id="id10">
+<dl class="citation">
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id6">Daw15</a></span></dt>
+<dd><p>Mark Dawson. <em>Beginning C++ Through Game Programming</em>. Cengage Learning, 2015.</p>
+</dd>
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id9">Hyd20a</a></span></dt>
+<dd><p>Randall Hyde. <em>Write Great Code, Volume 1, 2nd Edition: Understanding the Machine</em>. No Starch Press, 2nd edition, 2020.</p>
+</dd>
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id9">Hyd20b</a></span></dt>
+<dd><p>Randall Hyde. <em>Write Great Code, Volume 2, 2nd Edition: Thinking Low-Level, Writing High-Level</em>. No Starch Press, 2nd edition, 2020.</p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id5">Kre11</a></span></dt>
+<dd><p>Erwin Kreyszig. <em>Advanced Engineering Mathematics</em>. Wiley, 10th edition, 2011.</p>
+</dd>
+<dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id1">Mica</a></span></dt>
+<dd><p>Microsoft. Directx graphics and gaming. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/directx">https://docs.microsoft.com/en-us/windows/win32/directx</a>.</p>
+</dd>
+<dt class="label" id="id20"><span class="brackets"><a class="fn-backref" href="#id2">Micb</a></span></dt>
+<dd><p>Microsoft. Directx-specs. <a class="reference external" href="https://microsoft.github.io/DirectX-Specs/">https://microsoft.github.io/DirectX-Specs/</a>.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id4">SB20a</a></span></dt>
+<dd><p>K. A. Stroud and Dexter J. Booth. <em>Advanced Engineering Mathematics</em>. Bloomsbury Academic, 6th edition, 2020.</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id3">SB20b</a></span></dt>
+<dd><p>K. A. Stroud and Dexter J. Booth. <em>Engineering Mathematics</em>. Bloomsbury Academic, 8th edition, 2020.</p>
+</dd>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id8">Str14</a></span></dt>
+<dd><p>Bjarne Stroustrup. <em>The C++ Programming Language</em>. Addison-Wesley Professional, 4th edition, 2014.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id7">Str22</a></span></dt>
+<dd><p>Bjarne Stroustrup. <em>A Tour of C++</em>. Addison-Wesley Professional, 6th edition, 2022.</p>
+</dd>
+</dl>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Tutorials\00-Intro"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../presentation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to Learn DirectX</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../notebooks.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Content with notebooks</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-knowledge">Background knowledge</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">Hardware</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software">Software</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By P. A. Minerva
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
