@@ -68,7 +68,7 @@ If you need an introductory textbook on C++ you can take a look at {cite}`Dawson
 
 <br>
 
-## Hardware
+### Hardware
 
 Obviously, you need a DirectX 12-capable graphics card if you want to run the samples examined in this tutorial series. In particular, a GPU that fully supports DirectX 12 Ultimate is required to execute some of the demos and compile the related source code. To check if your system meets these requirements, press <kbd>Win</kbd> + <kbd>G</kbd> to open the Xbox Game Bar and select Gaming features from Settings.
 
@@ -82,7 +82,7 @@ If your graphics card supports DirectX 12 Ultimate, then you should see somethin
 
 <br>
 
-## Software
+### Software
 
 The complete set of DirectX 12 Ultimate features is available starting from Windows 10, version 2004, so you need to upgrade your OS to at least this version if necessary.<br>
 Visual Studio is required to open the projects and compile the samples presented in this tutorial series. Additionally, you might require Visual Studio to create your own DirectX applications, unless you prefer to use your IDE of choice. However, ensure that you have installed the latest Windows 10 SDK (version 10.0.19041.0 or higher) and have updated your graphics card drivers to the latest version.
