@@ -1,6 +1,4 @@
- <center><img src="logo.png" alt="logo" class="center" width="500px"></center>
-
-<br>
+<p style="text-align:center;"><img src="logo.png" alt="logo" class="centerImage" width="500px"></p>
 
 <br>
 
