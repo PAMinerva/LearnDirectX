@@ -20,6 +20,9 @@ Here's some text and {ref}`my-label`.
 Some text in the note block.
 ```
 
+[enable numbered sections in your Table of Contents](markdown/learnmore).
+See Markdown ([](markdown/learnmore)).
+
 ::::{important}
 :::{note}
 This text is **standard** _Markdown_

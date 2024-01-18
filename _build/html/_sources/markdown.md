@@ -46,7 +46,7 @@ render properly.
 For example, if the references for your book are stored in `references.bib`,
 then the bibliography is inserted with:
 
-
+(markdown/learnmore)=
 ## Learn more
 
 This is just a simple starter to get you started.
