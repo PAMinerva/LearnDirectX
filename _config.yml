@@ -32,6 +32,8 @@ html:
   use_issues_button: true
   use_repository_button: true
 
+exclude_patterns: [README.md]
+
 sphinx:
   config:
     html_theme: sphinx_book_theme
