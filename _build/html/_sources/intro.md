@@ -1,11 +1,12 @@
-# Welcome to your Jupyter Book
+# Welcome to Learn DirectX from code samples
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+This tutorial series walks you through the use of the last DirectX graphics API to create 3D graphics applications in C++ from scratch, for Windows and Linux. Each tutorial will include a small demo or code sample to illustrate the theoretical concepts and practical implementation.
 
-Check out the content pages bundled with this sample book to see more.
+The tutorials are designed for beginners with no prior knowledge of computer graphics or advanced mathematics. They use basic C++ and only require a basic understanding of high school math, such as algebra, trigonometry, and geometry.
+
+The code for all the tutorials is hosted on GitHub: <a href="https://github.com/PAMinerva/LearnDirectX: https://github.com/PAMinerva/LearnDirectX" target="_blank">LearnDirectX</a>
+
+Below you can find the table of contents.
 
 ```{tableofcontents}
 ```
