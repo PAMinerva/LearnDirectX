@@ -3,14 +3,9 @@
 
 format: jb-book
 root: presentation
-parts:
-- caption:
-  chapters:
-    - file: Tutorials/00-Intro/IntroAndPrerequisites
-
-- caption: Hello World
-  chapters:
-    - file: notebooks
-    - file: markdown
-    - file: markdown-notebooks
-    - file: mymarkdownfile
+chapters:
+- file: Tutorials/00-Intro/intro-and-prerequisites
+- file: notebooks
+- file: markdown
+- file: markdown-notebooks
+- file: mymarkdownfile
