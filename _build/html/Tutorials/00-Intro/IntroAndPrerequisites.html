@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/00-Intro/IntroAndPrerequisites';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -184,6 +186,9 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction and Prerequisites</a></li>
+
+
+
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Content with notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mymarkdownfile.html">Here’s my sample title</a></li>
@@ -359,7 +364,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -375,6 +382,23 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Introduction and Prerequisites</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1 - Introduction</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">2 - Prerequisites</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-knowledge">2.1 - Background knowledge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">2.2 - Hardware</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">2.3 - Software</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -386,7 +410,74 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction-and-prerequisites">
 <h1>Introduction and Prerequisites<a class="headerlink" href="#introduction-and-prerequisites" title="Permalink to this heading">#</a></h1>
-<p>asdasd</p>
+<br>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="introduction">
+<h1>1 - Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
+<p>New graphics APIs, like DirectX 12 and Vulkan, have a reputation for being difficult to learn for beginners. The main reason is that modern APIs hide less to the programmer than the old ones (DirectX 11 and OpenGL) so you just end up studying low-level details even to draw a single triangle. However, learning DirectX 12 also has some advantages as it designed to make full use of multi-threading, and to get a finer control on resource management and CPU/GPU synchronization. Thanks to a better support for multi-threading, the CPU workload is more evenly distributed across all cores. Also, if you understand the use and re-use of resources, then you can take advantage of that by minimizing uploading and copying. That way you can free up CPU time to increase the number of draw calls (and consequently the GPU workload) to enhance performance of your graphics applications.</p>
+<br>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<blockquote>
+<div><p>The graphical capabilities provided by a specific GPU at the hardware level remain the same, regardless of the API used to develop graphics applications that can leverage those capabilities. In particular, using DirectX 12 instead of DirectX 11/10 to implement the same rendering techniques might not necessarily result in a performance boost simply because you’re using the latest version of the graphics API. However, as mentioned earlier, using DirectX 12 offers greater control over many aspects that, if properly used, can lead to performance improvements.</p>
+</div></blockquote>
+</div>
+<br>
+<p>Currently, you have three ways to learn DirectX 12 from scratch, each with its pros and cons:</p>
+<p><strong>Frank Luna’s book: Introduction to 3D Game Programming with DirectX 12</strong> <br>
+<span class="math notranslate nohighlight">\(\color{#44FFAA}\text{The Good}\)</span>: It provides a comprehensive explanation of both theory and practice. It can also serve as both an API reference and a computer graphics textbook, especially for beginners. <br>
+<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: Being a book, it omits some crucial low-level details to reduce cost and size. Additionally, it may be considered somewhat dated</p>
+<p><strong>Online tutorials (included YouTube videos)</strong> <br>
+<span class="math notranslate nohighlight">\(\color{#44FFAA}\text{The Good}\)</span>: Free and easy to follow. <br>
+<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: Often, these tutorials focus mainly on the API, neglecting mathematical and theoretical aspects or providing equations without sufficient explanation. <br></p>
+<p><strong>Official repositories and documentation</strong> <br>
+<span class="math notranslate nohighlight">\(\color{#44FFAA}\text{The Good}\)</span>: All the source code and level of detail you need, for free.<br>
+<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: The documentation is written as a reference for graphics programmers. That is, it assumes you have basic knowledge of computer graphics, GPU architectures, and system programming.<br></p>
+<br>
+<p>Actually, nothing prevents you from learning DirectX 12 by only taking the good parts of each resource, as long as you’re motivated enough to jump from one math textbook to another and read through dozens of documentation pages and tutorials to gather all the information you need on each topic.</p>
+<p>My goal is to write a new, updated series of tutorials delves deeply into both theory (mathematics, computer graphics, rendering techniques) and practice (API and source code). The key to accomplishing this effectively is to prevent readers from becoming bored, intimidated, or discouraged by the extensive amount of information required to master graphics application development. Typically, when people start studying computer graphics, they want to see something on their screen as a gratifying reward. For this reason, in every tutorial, I will review a different sample and only explain the theory needed to implement it. This way, the reader feels like they’re studying to understand the implementation of a specific sample. This allows for a gradual and progressive acquisition of new information, building knowledge like a puzzle — each tutorial adds another piece.</p>
+<p>I’m not suggesting that this will be the ultimate resource for learning DirectX. In fact, the official Microsoft documentation (see <a href="#DXMS">[1]</a> and <a href="#DXSpec">[2]</a> in the reference list at the end of this tutorial) will always be the most important and fundamental resource to refer to during your studies. Here, I will simply try to provide as many details as possible to minimize the number of resources you need to consult.</p>
+<p>Regarding the code samples, instead of reinventing the wheel, we can use the source code already available and maintained by Microsoft in their repositories. However, when necessary, I will also write custom samples based on the same framework and coding style.</p>
+<br>
+<p>The additional samples provided for this tutorial series are hosted on the following Github repository:</p>
+<p><a class="reference external" href="https://github.com/PAMinerva/LearnDirectX">PAMinerva/LearnDirectX</a> <br></p>
+<br>
+<p>Below, are the Github repositories used as a reference:</p>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">microsoft/DirectX-Graphics-Samples</a> <br>
+<a class="reference external" href="https://github.com/microsoft/Xbox-ATG-Samples">microsoft/Xbox-ATG-Samples</a> <br>
+<a class="reference external" href="https://github.com/microsoft/Xbox-GDK-Samples">microsoft/Xbox-GDK-Samples</a> <br>
+<a class="reference external" href="https://github.com/walbourn">walbourn (Chuck Walbourn)</a> <br></p>
+<br>
+<p>In conclusion, if you are looking for a comprehensive, updated resource to learn how to program with DirectX 12 from scratch, then give this tutorial series a chance.</p>
+<br>
+<br>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="prerequisites">
+<h1>2 - Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h1>
+<section id="background-knowledge">
+<h2>2.1 - Background knowledge<a class="headerlink" href="#background-knowledge" title="Permalink to this heading">#</a></h2>
+<p>Of course, I can’t explain everything, so having basic math skills is essential to completely understand the content of the tutorials and the techniques used in the related samples. Fortunately, knowledge of college-level math, including algebra, trigonometry, and calculus, covers about 90% of the math used throughout this tutorial series. For the remaining 10%, I will provide dedicated math appendices.</p>
+<p>If your math skills are a bit rusty, don’t worry! You can consider <a href="#Stroud1">[3]</a> as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend <a href="#Stroud2">[4]</a> (for self-study) or <a href="#Kreyszig">[5]</a> (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.</p>
+<p>If you need an introductory textbook on C++ you can take a look at <a href="#Dawson">[6]</a> and <a href="#Stroustrup1">[7]</a>, then use <a href="#Stroustrup2">[8]</a> as a reference, and <a href="#Hyde">[9]</a> to really understand the low-level details.</p>
+<br>
+</section>
+<section id="hardware">
+<h2>2.2 - Hardware<a class="headerlink" href="#hardware" title="Permalink to this heading">#</a></h2>
+<p>Obviously, you need a DirectX 12-capable graphics card if you want to run the samples examined in this tutorial series. In particular, a GPU that fully supports DirectX 12 Ultimate is required to execute some of the demos and compile the related source code. To check if your system meets these requirements, press <kbd>Win</kbd> + <kbd>G</kbd> to open the Xbox Game Bar and select Gaming features from Settings.</p>
+<br>
+<p><img alt="Image" src="../../_images/XboxGameBar.png" /></p>
+<br>
+<p>If your graphics card supports DirectX 12 Ultimate, then you should see something like the above image. Otherwise, it’s time to upgrade your PC with a new graphics card.</p>
+<br>
+</section>
+<section id="software">
+<h2>2.3 - Software<a class="headerlink" href="#software" title="Permalink to this heading">#</a></h2>
+<p>The complete set of DirectX 12 Ultimate features is available starting from Windows 10, version 2004, so you need to upgrade your OS to at least this version if necessary.<br>
+Visual Studio is required to open the projects and compile the samples presented in this tutorial series. Additionally, you might require Visual Studio to create your own DirectX applications, unless you prefer to use your IDE of choice. However, ensure that you have installed the latest Windows 10 SDK (version 10.0.19041.0 or higher) and have updated your graphics card drivers to the latest version.</p>
+<br>
+<p><img alt="Image" src="../../_images/win10-sdk.PNG" /></p>
+<br>
+<p>You will also need a graphics debugger: I recommend to install <a href="https://devblogs.microsoft.com/pix/download/" target="_blank">PIX on Windows</a> and\or <a href="https://renderdoc.org/" target="_blank">RenderDoc</a>.</p>
 <br>
 <table class="colwidths-auto table">
 <thead>
@@ -400,6 +491,30 @@ document.write(`
 </tr>
 </tbody>
 </table>
+<br>
+<br>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h1>
+<p><a id="DXMS"></a>
+[1] <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/directx">DirectX graphics and gaming (microsoft.com)</a> <br>
+<a id="DXSpec"></a>
+[2] <a class="reference external" href="https://microsoft.github.io/DirectX-Specs/">DirectX-Specs (microsoft.github.io)</a> <br>
+<a id="Stroud1"></a>
+[3] Engineering Mathematics (Stroud, Booth) <br>
+<a id="Stroud2"></a>
+[4] Advanced Engineering Mathematics (Stroud, Booth) <br>
+<a id="Kreyszig"></a>
+[5] Advanced Engineering Mathematics (Kreyszig) <br>
+<a id="Dawson"></a>
+[6] Beginning C++ Through Game Programming (Dawson) <br>
+<a id="Stroustrup1"></a>
+[7] A Tour of C++ (Stroustrup) <br>
+<a id="Stroustrup2"></a>
+[8] The C++ Programming Language (Stroustrup) <br>
+<a id="Hyde"></a>
+[9] Write Great Code - Vol. 1 and 2 (Randall Hyde)</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -457,7 +572,29 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Introduction and Prerequisites</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1 - Introduction</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">2 - Prerequisites</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-knowledge">2.1 - Background knowledge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">2.2 - Hardware</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">2.3 - Software</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
