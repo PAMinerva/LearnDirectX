@@ -4,7 +4,7 @@
 format: jb-book
 root: presentation
 chapters:
-- file: markdown
+- file: Tutorials/00-Intro/IntroAndPrerequisites
 - file: notebooks
 - file: markdown-notebooks
 - file: mymarkdownfile
