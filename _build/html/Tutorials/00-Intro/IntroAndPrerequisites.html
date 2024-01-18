@@ -409,7 +409,6 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction-and-prerequisites">
 <h1>Introduction and Prerequisites<a class="headerlink" href="#introduction-and-prerequisites" title="Permalink to this heading">#</a></h1>
-<br>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>New graphics APIs, like DirectX 12 and Vulkan, have a reputation for being difficult to learn for beginners. The main reason is that modern APIs hide less to the programmer than the old ones (DirectX 11 and OpenGL) so you just end up studying low-level details even to draw a single triangle. However, learning DirectX 12 also has some advantages as it designed to make full use of multi-threading, and to get a finer control on resource management and CPU/GPU synchronization. Thanks to a better support for multi-threading, the CPU workload is more evenly distributed across all cores. Also, if you understand the use and re-use of resources, then you can take advantage of that by minimizing uploading and copying. That way you can free up CPU time to increase the number of draw calls (and consequently the GPU workload) to enhance performance of your graphics applications.</p>
@@ -426,15 +425,14 @@ document.write(`
 <span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: Often, these tutorials focus mainly on the API, neglecting mathematical and theoretical aspects or providing equations without sufficient explanation. <br></p>
 <p><strong>Official repositories and documentation</strong> <br>
 <span class="math notranslate nohighlight">\(\color{#44FFAA}\text{The Good}\)</span>: All the source code and level of detail you need, for free.<br>
-<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: The documentation is written as a reference for graphics programmers. That is, it assumes you have basic knowledge of computer graphics, GPU architectures, and system programming.<br></p>
+<span class="math notranslate nohighlight">\(\color{#FF6666}\text{The Bad}\)</span>: The documentation is written as a reference for graphics programmers. That is, it assumes you have basic knowledge of computer graphics, GPU architectures, and system programming.</p>
 <br>
 <p>Actually, nothing prevents you from learning DirectX 12 by only taking the good parts of each resource, as long as you’re motivated enough to jump from one math textbook to another and read through dozens of documentation pages and tutorials to gather all the information you need on each topic.</p>
 <p>My goal is to write a new, updated series of tutorials delves deeply into both theory (mathematics, computer graphics, rendering techniques) and practice (API and source code). The key to accomplishing this effectively is to prevent readers from becoming bored, intimidated, or discouraged by the extensive amount of information required to master graphics application development. Typically, when people start studying computer graphics, they want to see something on their screen as a gratifying reward. For this reason, in every tutorial, I will review a different sample and only explain the theory needed to implement it. This way, the reader feels like they’re studying to understand the implementation of a specific sample. This allows for a gradual and progressive acquisition of new information, building knowledge like a puzzle — each tutorial adds another piece.</p>
 <p>I’m not suggesting that this will be the ultimate resource for learning DirectX. In fact, the official Microsoft documentation (see <span id="id1">[<a class="reference internal" href="#id19" title="Microsoft. Directx graphics and gaming. https://docs.microsoft.com/en-us/windows/win32/directx.">Mica</a>]</span> and <span id="id2">[<a class="reference internal" href="#id20" title="Microsoft. Directx-specs. https://microsoft.github.io/DirectX-Specs/.">Micb</a>]</span> in the reference list at the end of this tutorial) will always be the most important and fundamental resource to refer to during your studies. Here, I will simply try to provide as many details as possible to minimize the number of resources you need to consult.</p>
 <p>Regarding the code samples, instead of reinventing the wheel, we can use the source code already available and maintained by Microsoft in their repositories. However, when necessary, I will also write custom samples based on the same framework and coding style.</p>
-<br>
 <p>The additional samples provided for this tutorial series are hosted on the following Github repository:</p>
-<p><a class="reference external" href="https://github.com/PAMinerva/LearnDirectX">PAMinerva/LearnDirectX</a> <br></p>
+<p><a class="reference external" href="https://github.com/PAMinerva/LearnDirectX">PAMinerva/LearnDirectX</a></p>
 <br>
 <p>Below, are the Github repositories used as a reference:</p>
 <p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">microsoft/DirectX-Graphics-Samples</a> <br>
@@ -443,8 +441,6 @@ document.write(`
 <a class="reference external" href="https://github.com/walbourn">walbourn (Chuck Walbourn)</a> <br></p>
 <br>
 <p>In conclusion, if you are looking for a comprehensive, updated resource to learn how to program with DirectX 12 from scratch, then give this tutorial series a chance.</p>
-<br>
-<br>
 </section>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
@@ -453,7 +449,6 @@ document.write(`
 <p>Of course, I can’t explain everything, so having basic math skills is essential to completely understand the content of the tutorials and the techniques used in the related samples. Fortunately, knowledge of college-level math, including algebra, trigonometry, and calculus, covers about 90% of the math used throughout this tutorial series. For the remaining 10%, I will provide dedicated math appendices.</p>
 <p>If your math skills are a bit rusty, don’t worry! You can consider <span id="id3">[<a class="reference internal" href="#id11" title="K. A. Stroud and Dexter J. Booth. Engineering Mathematics. Bloomsbury Academic, 8th edition, 2020.">SB20b</a>]</span> as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend <span id="id4">[<a class="reference internal" href="#id12" title="K. A. Stroud and Dexter J. Booth. Advanced Engineering Mathematics. Bloomsbury Academic, 6th edition, 2020.">SB20a</a>]</span> (for self-study) or <span id="id5">[<a class="reference internal" href="#id13" title="Erwin Kreyszig. Advanced Engineering Mathematics. Wiley, 10th edition, 2011.">Kre11</a>]</span> (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.</p>
 <p>If you need an introductory textbook on C++ you can take a look at <span id="id6">[<a class="reference internal" href="#id14" title="Mark Dawson. Beginning C++ Through Game Programming. Cengage Learning, 2015.">Daw15</a>]</span> and <span id="id7">[<a class="reference internal" href="#id15" title="Bjarne Stroustrup. A Tour of C++. Addison-Wesley Professional, 6th edition, 2022.">Str22</a>]</span>, then use <span id="id8">[<a class="reference internal" href="#id16" title="Bjarne Stroustrup. The C++ Programming Language. Addison-Wesley Professional, 4th edition, 2014.">Str14</a>]</span> as a reference, and <span id="id9">[<a class="reference internal" href="#id17" title="Randall Hyde. Write Great Code, Volume 1, 2nd Edition: Understanding the Machine. No Starch Press, 2nd edition, 2020.">Hyd20a</a>, <a class="reference internal" href="#id18" title="Randall Hyde. Write Great Code, Volume 2, 2nd Edition: Thinking Low-Level, Writing High-Level. No Starch Press, 2nd edition, 2020.">Hyd20b</a>]</span> to really understand the low-level details.</p>
-<br>
 </section>
 <section id="hardware">
 <h3>Hardware<a class="headerlink" href="#hardware" title="Permalink to this heading">#</a></h3>
@@ -462,7 +457,6 @@ document.write(`
 <p><img alt="Image" src="../../_images/XboxGameBar.png" /></p>
 <br>
 <p>If your graphics card supports DirectX 12 Ultimate, then you should see something like the above image. Otherwise, it’s time to upgrade your PC with a new graphics card.</p>
-<br>
 </section>
 <section id="software">
 <h3>Software<a class="headerlink" href="#software" title="Permalink to this heading">#</a></h3>

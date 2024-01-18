@@ -1,7 +1,5 @@
 # Introduction and Prerequisites
 
-<br>
-
 ## Introduction
 
 New graphics APIs, like DirectX 12 and Vulkan, have a reputation for being difficult to learn for beginners. The main reason is that modern APIs hide less to the programmer than the old ones (DirectX 11 and OpenGL) so you just end up studying low-level details even to draw a single triangle. However, learning DirectX 12 also has some advantages as it designed to make full use of multi-threading, and to get a finer control on resource management and CPU/GPU synchronization. Thanks to a better support for multi-threading, the CPU workload is more evenly distributed across all cores. Also, if you understand the use and re-use of resources, then you can take advantage of that by minimizing uploading and copying. That way you can free up CPU time to increase the number of draw calls (and consequently the GPU workload) to enhance performance of your graphics applications.
@@ -22,7 +20,7 @@ $\color{#FF6666}\text{The Bad}$: Often, these tutorials focus mainly on the API,
 
 **Official repositories and documentation** <br>
 $\color{#44FFAA}\text{The Good}$: All the source code and level of detail you need, for free.<br>
-$\color{#FF6666}\text{The Bad}$: The documentation is written as a reference for graphics programmers. That is, it assumes you have basic knowledge of computer graphics, GPU architectures, and system programming.<br>
+$\color{#FF6666}\text{The Bad}$: The documentation is written as a reference for graphics programmers. That is, it assumes you have basic knowledge of computer graphics, GPU architectures, and system programming.
 
 <br>
 
@@ -34,11 +32,9 @@ I’m not suggesting that this will be the ultimate resource for learning Direct
 
 Regarding the code samples, instead of reinventing the wheel, we can use the source code already available and maintained by Microsoft in their repositories. However, when necessary, I will also write custom samples based on the same framework and coding style.
 
-<br>
-
 The additional samples provided for this tutorial series are hosted on the following Github repository: 
 
-[PAMinerva/LearnDirectX](https://github.com/PAMinerva/LearnDirectX) <br>
+[PAMinerva/LearnDirectX](https://github.com/PAMinerva/LearnDirectX)
 
 <br>
 
@@ -53,10 +49,6 @@ Below, are the Github repositories used as a reference:
 
 In conclusion, if you are looking for a comprehensive, updated resource to learn how to program with DirectX 12 from scratch, then give this tutorial series a chance.
 
-<br>
-
-<br>
-
 ## Prerequisites
 ### Background knowledge
 
@@ -65,8 +57,6 @@ Of course, I can’t explain everything, so having basic math skills is essentia
 If your math skills are a bit rusty, don’t worry! You can consider {cite}`StroudBoothEngineeringMathematics2020` as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend {cite}`StroudBoothAdvancedEngineeringMathematics2020` (for self-study) or {cite}`KreyszigAdvancedEngineeringMathematics2011` (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.
 
 If you need an introductory textbook on C++ you can take a look at {cite}`DawsonBeginningCPlusPlusThroughGameProgramming2015` and {cite}`StroustrupTourOfCPlusPlus2022`, then use {cite}`StroustrupCPlusPlus2014` as a reference, and {cite}`HydeWriteGreatCodeVolume12020,HydeWriteGreatCodeVolume22020` to really understand the low-level details.
-
-<br>
 
 ### Hardware
 
@@ -79,8 +69,6 @@ Obviously, you need a DirectX 12-capable graphics card if you want to run the sa
 <br>
 
 If your graphics card supports DirectX 12 Ultimate, then you should see something like the above image. Otherwise, it's time to upgrade your PC with a new graphics card.
-
-<br>
 
 ### Software
 
