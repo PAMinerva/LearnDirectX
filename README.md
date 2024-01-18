@@ -1,9 +1,4 @@
-```{image} logo.png
-:alt: logo
-:class: bg-primary mb-1
-:width: 500px
-:align: center
-```
+ <center><img src="logo.png" alt="logo" class="center" width="500px"></center>
 
 <br>
 
