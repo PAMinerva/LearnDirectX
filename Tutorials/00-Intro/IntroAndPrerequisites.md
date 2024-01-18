@@ -62,9 +62,9 @@ In conclusion, if you are looking for a comprehensive, updated resource to learn
 
 Of course, I can’t explain everything, so having basic math skills is essential to completely understand the content of the tutorials and the techniques used in the related samples. Fortunately, knowledge of college-level math, including algebra, trigonometry, and calculus, covers about 90% of the math used throughout this tutorial series. For the remaining 10%, I will provide dedicated math appendices.
 
-If your math skills are a bit rusty, don’t worry! You can consider {cite}`StroudBoothEngineeringMathematics2023` as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend {cite}`StroudBoothAdvancedEngineeringMathematics2023` (for self-study) or {cite}`KreyszigAdvancedEngineeringMathematics2022` (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.
+If your math skills are a bit rusty, don’t worry! You can consider {cite}`StroudBoothEngineeringMathematics2020` as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend {cite}`StroudBoothAdvancedEngineeringMathematics2020` (for self-study) or {cite}`KreyszigAdvancedEngineeringMathematics2011` (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.
 
-If you need an introductory textbook on C++ you can take a look at {cite}`DawsonBeginningCPlusPlusThroughGameProgramming2023` and {cite}`StroustrupTourOfCPlusPlus2023`, then use {cite}`StroustrupCPlusPlus2022` as a reference, and {cite}`HydeWriteGreatCodeVolume12023,HydeWriteGreatCodeVolume22023` to really understand the low-level details.
+If you need an introductory textbook on C++ you can take a look at {cite}`DawsonBeginningCPlusPlusThroughGameProgramming2015` and {cite}`StroustrupTourOfCPlusPlus2022`, then use {cite}`StroustrupCPlusPlus2014` as a reference, and {cite}`HydeWriteGreatCodeVolume12020,HydeWriteGreatCodeVolume22020` to really understand the low-level details.
 
 <br>
 
