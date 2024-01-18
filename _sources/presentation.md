@@ -4,7 +4,7 @@ This tutorial series will guides you through the use of the last DirectX graphic
 
 This series is designed for beginners with no prior knowledge of computer graphics or advanced mathematics. They use basic C++ and only require a basic understanding of high school math, such as algebra, trigonometry, and geometry.
 
-The entire code base is available on GitHub at the following link: <a href="https://github.com/PAMinerva/LearnDirectX: https://github.com/PAMinerva/LearnDirectX" target="_blank">LearnDirectX</a>
+The entire code base is available on GitHub at the following link: <a href="https://github.com/PAMinerva/LearnDirectX" target="_blank">LearnDirectX</a>
 
 <br>
 
