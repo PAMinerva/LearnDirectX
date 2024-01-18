@@ -5,7 +5,7 @@ This is some sample text.
 (section-label)=
 ## 1 - Here's my first section
 
-Here is a [reference to the intro](intro.md). Here is a reference to [](section-label).
+Here is a [reference to the intro](presentation.md). Here is a reference to [](section-label).
 
 Change1 (🚧WIP)
 
