@@ -6,7 +6,7 @@ This series is designed for beginners with no prior knowledge of computer graphi
 
 The entire code base is available on GitHub <a href="https://github.com/PAMinerva/LearnDirectX" target="_blank">here</a>.
 
-````{important}
+````{admonition} Support this project
 Many tutorials in this series are almost comparable to book chapters. It takes a fair amount of time and effort to write such detailed tutorials. So, if you like this project, or if you find it somewhat helpful, please consider supporting further development by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, it's all welcome! Thank you!
 
 ```{figure} sponsor.png
