@@ -31,7 +31,7 @@ Before starting to review the source code of the [D3D12HelloWindow](https://gith
 <br>
 
 ````{admonition} Support this project
-If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, it's all welcome! Thank you!
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
 
 ```{figure} ../../sponsor.png
 :align: center
