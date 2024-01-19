@@ -49,6 +49,8 @@ Below, are the Github repositories used as a reference:
 
 In conclusion, if you are looking for a comprehensive, updated resource to learn how to program with DirectX 12 from scratch, then give this tutorial series a chance.
 
+<br>
+
 ## Prerequisites
 ### Background knowledge
 
@@ -90,6 +92,16 @@ You will also need a graphics debugger: I recommend to install <a href="https://
 | ![](images/renderDoc.jpg) | ![](images/pix.png) |
 
 <br>
+
+````{admonition} Support this project
+Many tutorials in this series are almost comparable to book chapters. It takes a fair amount of time and effort to write such detailed tutorials. So, if you like this project, or if you find it somewhat helpful, please consider supporting further development by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, it's all welcome! Thank you!
+
+```{figure} images/sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
 
 <br>
 
