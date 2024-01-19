@@ -184,7 +184,6 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../00-Intro/intro-and-prerequisites.html">Introduction and Prerequisites</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="hello-directx.html">Hello DirectX</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Window</a></li>
-
 <li class="toctree-l2"><a class="reference internal" href="hello-triangle.html">Hello Triangle</a></li>
 </ul>
 </li>
@@ -383,21 +382,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Hello Window</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messages">Messages</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">3 - Component Object Model (COM)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -502,9 +495,8 @@ document.write(`
 <br>
 </section>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="component-object-model-com">
-<h1>3 - Component Object Model (COM)<a class="headerlink" href="#component-object-model-com" title="Permalink to this heading">#</a></h1>
+<section id="component-object-model-com">
+<h2>Component Object Model (COM)<a class="headerlink" href="#component-object-model-com" title="Permalink to this heading">#</a></h2>
 <p>Microsoft used the Component Object Model (COM) to design the internals of DirectX. Therefore, whenever you program with DirectX, you are also implicitly using COM. This is an object-oriented programming model created by Microsoft to break dependencies of the code at the binary level. This implies that if an API, a framework, or a generic technology is built upon COM, then it will be language-independent and backward-compatible, to a certain extent.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -518,7 +510,6 @@ document.write(`
 <p>In other words, using a C++ class exported from a DLL is feasible as long as you are operating on the same OS and with the same compiler. Conversely, other languages or different implementations of C++ might struggle to communicate with the DLL if they lack knowledge about the binary layout of the exported class in memory. Specifically, when a compiler attempts to resolve a call to a virtual function, it requires knowledge of the class’s memory layout to access the function in the virtual table.</p>
 <p>Even if you were able to use a C++ class exported from a DLL, one problem still remains. Typically, the DLL developer provides an include file with the class declaration. Now, consider using this include file to compile an application that creates an instance of the exported class as a local variable on the stack. Additionally, assume you place the DLL in the executable directory of your application. Also, suppose that you put the DLL in the executable directory of your application. After a while, the developer releases an updated version of their DLL, and you choose to overwrite the old one in the executable directory without recompiling your app as the notes of the developer indicate they only added a private member in the exported class. Indeed, C++ rules state that everything should be fine as the public part has not changed. The problem is that this statement is only valid at the source level, not at the binary level. If you now execute your app, the new DLL is loaded in memory and the new constructor of the exported class is invoked to initialize the new private member. However, you haven’t recompiled your app, so the space reserved for the local variable on the stack is the one specified by the definition of the class in the old include file you used to compile the first time. You can easily imagine how this can lead to incorrect results, or even worse, crashes.</p>
 <p>These problems arise from the fact that the binary representation of the DLL is exposed to the app. COM try to resolve this inconvenience with few fundamental principles:</p>
-<br>
 <ul class="simple">
 <li><p>Clients (apps) communicate with servers (DLLs) using abstract interfaces instead of concrete classes. If a server exports a class (called COM class) that implements an interface, a client can reference an instance of the COM class (called COM object) through an interface pointer and use it to call the member methods exported by the COM class.</p></li>
 <li><p>Clients create COM objects using methods implemented in the servers. That way, the implementation of the COM class is hidden from the clients entirely. Only the server knows how to create a COM object, so if the private part of the COM class changes, the client is not affected because the interface is still the same — interfaces don’t contain data members.</p></li>
@@ -532,7 +523,6 @@ document.write(`
 <p>At this point we can better define the meaning of backward compatibility mentioned at the beginning of this section. In short, a DirectX application can run on a system provided that the servers with the COM classes used by the client can be loaded. So, as long as new versions of a DLL don’t change the COM classes to include new disruptive functionalities that modify the related COM interfaces, the application can still load the new DLL and use the new COM classes without problems.</p>
 <p>before creating any COM object, you should initialize the COM library by calling <strong>CoInitializeEx</strong>. However, when you create COM objects indirectly, the creation methods will handle this task for you. We will see many examples of such methods in the upcoming tutorials.</p>
 <p>COM defines a base interface that all other interfaces must extend: <strong>IUnknown</strong>. This interface defines some basic operations:</p>
-<br>
 <ul class="simple">
 <li><p><strong>AddRef</strong> increments the reference count for an interface pointer to a COM object. You should call this method whenever you make a copy of an interface pointer.</p></li>
 <li><p><strong>Release</strong> decrements the reference count for an interface on a COM object. When the reference count on an object reaches zero, this method must cause the interface pointer to free itself.</p></li>
@@ -548,6 +538,7 @@ document.write(`
 <li><p><strong>Detach</strong> returns the underlying interface pointer to a COM object and then set it to <strong>nullptr</strong>. It can be useful if you need to return the underlying interface pointer to a caller and, at the same time, you don’t need the local <strong>ComPtr</strong> object anymore.</p></li>
 <li><p><strong>As</strong> is just a wrapper around <strong>QueryInterface</strong>. It takes another <strong>ComPtr</strong> as input parameter to get a pointer to one of the interfaces implemented by a COM object.</p></li>
 </ul>
+<br>
 <p>Also, the dereference operator -&gt; is overloaded and returns the underlying interface pointer to a COM object, so that you don’t need to call <strong>Get</strong> if you only want to invoke a function through the interface pointer.</p>
 <br>
 <p>[WIP]</p>
@@ -560,6 +551,7 @@ document.write(`
 </figure>
 </div>
 <br>
+</section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <div class="docutils container" id="id2">
@@ -642,21 +634,15 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Hello Window</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messages">Messages</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">3 - Component Object Model (COM)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>

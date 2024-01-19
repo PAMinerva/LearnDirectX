@@ -94,7 +94,7 @@ The only criticism to the above explanation is that, unlike typical window appli
 
 <br>
 
-# 3 - Component Object Model (COM)
+## Component Object Model (COM)
 
 Microsoft used the Component Object Model (COM) to design the internals of DirectX. Therefore, whenever you program with DirectX, you are also implicitly using COM. This is an object-oriented programming model created by Microsoft to break dependencies of the code at the binary level. This implies that if an API, a framework, or a generic technology is built upon COM, then it will be language-independent and backward-compatible, to a certain extent.
 
@@ -118,8 +118,6 @@ Even if you were able to use a C++ class exported from a DLL, one problem still 
 
 These problems arise from the fact that the binary representation of the DLL is exposed to the app. COM try to resolve this inconvenience with few fundamental principles:
 
-<br>
-
 * Clients (apps) communicate with servers (DLLs) using abstract interfaces instead of concrete classes. If a server exports a class (called COM class) that implements an interface, a client can reference an instance of the COM class (called COM object) through an interface pointer and use it to call the member methods exported by the COM class.
 
 * Clients create COM objects using methods implemented in the servers. That way, the implementation of the COM class is hidden from the clients entirely. Only the server knows how to create a COM object, so if the private part of the COM class changes, the client is not affected because the interface is still the same — interfaces don’t contain data members.
@@ -141,8 +139,6 @@ At this point we can better define the meaning of backward compatibility mention
 before creating any COM object, you should initialize the COM library by calling **CoInitializeEx**. However, when you create COM objects indirectly, the creation methods will handle this task for you. We will see many examples of such methods in the upcoming tutorials.
 
 COM defines a base interface that all other interfaces must extend: **IUnknown**. This interface defines some basic operations:
-
-<br>
 
 * **AddRef** increments the reference count for an interface pointer to a COM object. You should call this method whenever you make a copy of an interface pointer.
 
@@ -166,6 +162,7 @@ Directly managing interface pointers to COM objects can be a challenging task, a
 
 * **As** is just a wrapper around **QueryInterface**. It takes another **ComPtr** as input parameter to get a pointer to one of the interfaces implemented by a COM object.
 
+<br>
 
 Also, the dereference operator -> is overloaded and returns the underlying interface pointer to a COM object, so that you don't need to call **Get** if you only want to invoke a function through the interface pointer.
 
