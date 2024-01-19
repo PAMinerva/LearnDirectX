@@ -8,3 +8,4 @@ chapters:
 - file: Tutorials/01-HelloDirectX/hello-directx
   sections:
   - file: Tutorials/01-HelloDirectX/hello-window
+  - file: Tutorials/01-HelloDirectX/hello-triangle

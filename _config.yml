@@ -18,7 +18,9 @@ latex:
 
 # Add a bibtex file so that we can create citations
 bibtex_bibfiles:
-  - Tutorials/00-Intro/biblio.bib
+  - references.bib
+  #- Tutorials/00-Intro/biblio.bib
+  #- Tutorials/01-HelloDirectX/biblio.bib
 
 # Information about where the book exists on the web
 repository:
