@@ -106,6 +106,6 @@ Many tutorials in this series are almost comparable to book chapters. It takes a
 <br>
 
 ## References
-```{bibliography} ./biblio.bib
+```{bibliography}  ../../references.bib
 :filter: docname in docnames
 ```
