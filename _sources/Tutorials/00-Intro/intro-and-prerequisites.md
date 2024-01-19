@@ -58,7 +58,7 @@ Of course, I can’t explain everything, so having basic math skills is essentia
 
 If your math skills are a bit rusty, don’t worry! You can consider {cite}`StroudBoothEngineeringMathematics2020` as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend {cite}`StroudBoothAdvancedEngineeringMathematics2020` (for self-study) or {cite}`KreyszigAdvancedEngineeringMathematics2011` (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.
 
-If you need an introductory textbook on C++ you can take a look at {cite}`DawsonBeginningCPlusPlusThroughGameProgramming2015` and {cite}`StroustrupTourOfCPlusPlus2022`, then use {cite}`StroustrupCPlusPlus2014` as a reference, and {cite}`HydeWriteGreatCodeVolume12020,HydeWriteGreatCodeVolume22020` to really understand the low-level details.
+If you're looking for an introductory textbook on C++, you may find {cite}`DawsonBeginningCPlusPlusThroughGameProgramming2015` and {cite}`StroustrupTourOfCPlusPlus2022` helpful. Then, you can use {cite}`StroustrupCPlusPlus2014` as a reference, and {cite}`HydeWriteGreatCodeVolume12020,HydeWriteGreatCodeVolume22020` for a deeper understanding of the low-level details.
 
 ### Hardware
 
