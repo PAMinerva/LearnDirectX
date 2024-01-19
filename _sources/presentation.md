@@ -1,6 +1,6 @@
 # Welcome to Learn DirectX
 
-This tutorial series will guides you through the use of the latest DirectX graphics API to create 3D graphics applications in C++ from scratch, for Windows and Linux. Each tutorial will present a small sample to illustrate the theoretical concepts and practical implementation.
+This tutorial series will guides you through the use of the latest DirectX graphics API to create graphics applications in C++ from scratch, for Windows and Linux. Each tutorial will present a small sample to illustrate the theoretical concepts and practical implementation.
 
 This series is designed for beginners with no prior knowledge of computer graphics or advanced mathematics. It use basic C++ and only require a basic understanding of high school math, such as algebra, trigonometry, and geometry.
 
