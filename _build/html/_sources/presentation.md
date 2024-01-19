@@ -11,11 +11,13 @@ The entire code base is available on GitHub <a href="https://github.com/PAMinerv
 ````{important}
 Many tutorials in this series are almost comparable to book chapters. It takes a fair amount of time and effort to write such detailed tutorials. So, if you like this project, or if you find it somewhat helpful, please consider supporting further development by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, it's all welcome! Thank you!
 
-<p style="text-align:center;">
-    <a href="https://github.com/sponsors/PAMinerva">
-        <img src="sponsor.png" alt="sponsor" class="bg-primary mb-1">
-    </a>
-</p>
+[![](sponsor.png 'Sponsor')](https://github.com/sponsors/PAMinerva)
+
+```{figure} sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
 ````
 
 <br>
