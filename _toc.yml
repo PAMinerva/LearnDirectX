@@ -5,7 +5,6 @@ format: jb-book
 root: presentation
 chapters:
 - file: Tutorials/00-Intro/intro-and-prerequisites
-- file: notebooks
-- file: markdown
-- file: markdown-notebooks
-- file: mymarkdownfile
+- file: Tutorials/01-HelloDirectX/hello-directx
+  sections:
+  - file: Tutorials/01-HelloDirectX/hello-window

@@ -49,6 +49,8 @@ Below, are the Github repositories used as a reference:
 
 In conclusion, if you are looking for a comprehensive, updated resource to learn how to program with DirectX 12 from scratch, then give this tutorial series a chance.
 
+<br>
+
 ## Prerequisites
 ### Background knowledge
 
