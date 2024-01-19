@@ -13,7 +13,7 @@ Many tutorials in this series are almost comparable to book chapters. It takes a
 
 <p style="text-align:center;">
     <a href="https://github.com/sponsors/PAMinerva">
-        <img src="./sponsor.png" alt="fishy" class="bg-primary mb-1">
+        <img src="sponsor.png" alt="sponsor" class="bg-primary mb-1">
     </a>
 </p>
 ````
