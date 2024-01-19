@@ -383,6 +383,11 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messages">Messages</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -411,6 +416,79 @@ document.write(`
 <br>
 <p>To create graphics applications, you first need a window to draw on. Therefore, the aim of this tutorial is to create and display a simple window on your screen. For this purpose, we will examine the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, which is part of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">DirectX-Graphics-Samples</a> repository maintained by Microsoft. The only significant graphics operation performed by this sample is the setting of the window background color. You might be surprised to discover that you need to write a substantial amount of code to execute this simple operation. The good news is that the code we will review in this first tutorial primarily consists of boilerplate code. This means that, by the end of this tutorial, you will have a basic understanding of the common framework used by almost all samples we will examine in the upcoming tutorials, so we can solely focus on new additions.</p>
 <p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id13" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id15" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id14" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micc</a>]</span> for further information.</p>
+<br>
+</section>
+<section id="windows-applications">
+<h2>Windows applications<a class="headerlink" href="#windows-applications" title="Permalink to this heading">#</a></h2>
+<p>This section is heavily inspired by the first chapter of the book “Programming Microsoft Visual C++, Fifth Edition” by David J. Kruglinski, George Shepherd and Scott Wingo.</p>
+<p>Windows applications use an event-driven programming model, as illustrated in the following below. In this model, programs respond to events by processing messages sent by the operating system. An event could be a keystroke, a mouse click, or a command for a window to repaint itself. The entry point of a Windows application is a function called <strong>WinMain</strong>, but most of the action occurs in a function known as the window procedure. The window procedure processes messages sent by the OS to the application that a window belongs to. <strong>WinMain</strong> creates that window and then enters a message loop, retrieving messages and dispatching them to the window procedure. Messages wait in a message queue until they are retrieved. The primary task of a Windows application is to respond to the messages it receives. In between messages, it does little except wait for the next message to arrive. An application can exit the message loop when a <strong>WM_QUIT</strong> message is retrieved from the message queue, signaling that the application is about to end. This message is sent by the OS when the user closes the window. When the message loop ends, <strong>WinMain</strong> returns, and the application terminates.</p>
+<br>
+<p><img alt="Image" src="../../_images/rect31572.png" /></p>
+<br>
+<p>Note that window messages can also be sent directly to a window procedure, bypassing the message queue. If the sending thread is dispatching a message to a window created by the same thread, the window procedure of the specified window is invoked. However, if a thread is dispatching a message to a window created by a different thread, the process becomes more complex. Fortunately, we don’t need to delve into the low-level details in this tutorial series.</p>
+<section id="window-procedure">
+<h3>Window Procedure<a class="headerlink" href="#window-procedure" title="Permalink to this heading">#</a></h3>
+<p>As previously mentioned, a window procedure is a function that receives and processes messages sent by the operating system to the application that a window belongs to. A window class defines key characteristics of a window, such as its window procedure address, its default background color, and its icon. Every window created with a specific class will use the same window procedure to respond to messages.</p>
+<p>When the application dispatches a message to a window procedure, it also passes additional information about the message as arguments in its input parameters. This allows the window procedure to perform an appropriate action for a message by consuming the related message data. If a window procedure does not process a message, it must return the message to the system for default processing by calling the <strong>DefWindowProc</strong> function, which performs a default action and returns a message result. The window procedure must then return this value as its own message result.</p>
+<p>Since a window procedure is shared by all windows belonging to the same class, it can process messages for different windows. To identify the specific window a message is addressed to, a window procedure can examine the window handle passed as an input parameter. The code provided in the window procedure to process a particular message is known as a message handler.</p>
+</section>
+<section id="messages">
+<h3>Messages<a class="headerlink" href="#messages" title="Permalink to this heading">#</a></h3>
+<p>Windows defines many different message types. Usually, messages have names that begin with the letters “WM_”, as in <strong>WM_CREATE</strong> and <strong>WM_PAINT</strong>. The following table shows ten of the most common messages.</p>
+<br>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Message</p></th>
+<th class="head"><p>Sent when</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WM_CHAR</p></td>
+<td><p>A character is input from the keyboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_COMMAND</p></td>
+<td><p>The user selects a menu item, or a control sends a notification to its parent.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_CREATE</p></td>
+<td><p>A window is created.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_DESTROY</p></td>
+<td><p>A window is destroyed.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_LBUTTONDOWN</p></td>
+<td><p>The left mouse button is pressed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_LBUTTONUP</p></td>
+<td><p>The left mouse button is released.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_MOUSEMOVE</p></td>
+<td><p>The mouse pointer is moved.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_PAINT</p></td>
+<td><p>A window needs repainting.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_QUIT</p></td>
+<td><p>The application is about to terminate.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_SIZE</p></td>
+<td><p>A window is resized.</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<p>For example, a window receives a <strong>WM_PAINT</strong> message when its interior needs repainting. You can think of a Windows program as a collection of message handlers.</p>
+<p>When the message loop dispatches a message, the window procedure is called, and you can retrieve the information on the message from its four input parameters:</p>
+<ul class="simple">
+<li><p>The handle of the window to which the message is directed,</p></li>
+<li><p>A message ID, and</p></li>
+<li><p>Two 32-bit parameters known as <strong>wParam</strong> and <strong>lParam</strong>.</p></li>
+</ul>
+<br>
+<p>The window handle is a 32-bit value that uniquely identifies a window. Internally, the value references a data structure in which the OS stores relevant information about the window such as its size, style, and location on the screen.</p>
+<p>The message ID is a numeric value that identifies the message type: <strong>WM_CREATE</strong>, <strong>WM_PAINT</strong>, and so on.</p>
+<p><strong>wParam</strong> and <strong>lParam</strong> contain information specific to the message type. For example, when a <strong>WM_LBUTTONDOWN</strong> message arrives, <strong>wParam</strong> holds a series of bit flags identifying the state of the <kbd>Ctrl</kbd> and <kbd>Shift</kbd> keys and of the mouse buttons. <strong>lParam</strong> holds two 16-bit values identifying the location of the mouse pointer (in screen coordinates) when the click occurred. At that point, you have all you need to know to process the <strong>WM_LBUTTONDOWN</strong> message in the window procedure. Conventionally, <strong>WinMain</strong> should return the value stored in the <strong>wParam</strong> of the <strong>WM_QUIT</strong> message.</p>
+<p>The only criticism to the above explanation is that, unlike typical window applications, graphics applications perform the majority of their processing in between messages. However, <strong>D3D12HelloWindow</strong> is an exception as its sole purpose is to display a window on the screen (i.e., no significant graphics operations are involved).</p>
+<br>
 <p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -421,6 +499,7 @@ document.write(`
 </figure>
 </div>
 <br>
+</section>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
@@ -505,6 +584,11 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messages">Messages</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
