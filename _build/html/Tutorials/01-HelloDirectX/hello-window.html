@@ -382,6 +382,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -396,10 +397,43 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="hello-window">
 <h1>Hello Window<a class="headerlink" href="#hello-window" title="Permalink to this heading">#</a></h1>
+<p><img alt="Hello Window" src="../../_images/HelloWindow.png" /></p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>DirectX provides a set of APIs that can be used to create games and graphics applications. Specifically, it includes support for high-performance 2-D and 3-D graphics, audio, arithmetic, and linear algebra operations. Below is a list of the main APIs included in DirectX. However, our primary focus is on Direct3D 12 and DirectXMath, the only ones we will be using for a while.</p>
+<br>
+<p><strong>Direct3D</strong> provides functionality for performing 3-D graphics rendering tasks. It is used to draw primitives (i.e., points, lines, and triangles) within the rendering pipeline or to start parallel operations on the GPU. When we refer to Direct3D 12, we are specifically talking about the API that enables apps to leverage the graphics and computing capabilities of PCs equipped with a DirectX 12-compatible GPU.</p>
+<p><strong>Direct2D</strong> offers functionality for rendering 2-D geometries, bitmaps, and text. It is designed to interoperate with existing code that uses Direct3D to create 2D menus, user interface (UI) elements, and Heads-up Displays (HUDs).</p>
+<p><strong>DirectWrite</strong> provides support for high-quality text rendering, resolution-independent outline fonts, and full Unicode text and layouts. It is designed to interoperate with Direct2D to render text by taking advantage of hardware acceleration. Text can also be filled with an arbitrary Direct2D brush, such as radial gradients, linear gradients, and bitmaps.</p>
+<p><strong>DirectXMath</strong> provides types and helper functions for common linear algebra and graphics math operations that are frequently used in DirectX applications.</p>
+<p><strong>XAudio2</strong> allows the addition of sound effects and background music, or the development of high-performance audio engines.</p>
+<p><strong>XInput</strong> enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.</p>
+<br>
+<p>To create graphics applications, you first need a window to draw on. Therefore, the aim of this tutorial is to create and display a simple window on your screen. For this purpose, we will examine the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, provided by Microsoft on GitHub (download the full <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">DirectX-Graphics-Samples</a> repository). The only significant graphics operation performed by this sample is the setting of the window background color. You might be surprised to discover that you need to write a substantial amount of code to execute this simple operation. The good news is that the code we will review in this first tutorial primarily consists of boilerplate code. This means that, by the end of this tutorial, you will have a basic understanding of the common framework used by almost all samples we will examine in the upcoming tutorials, so we can solely focus on new additions.</p>
+<p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id14" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id16" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id15" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micd</a>]</span> for further information and <span id="id2">[<a class="reference internal" href="#id12" title="Microsoft. Directx graphics and gaming. https://docs.microsoft.com/en-us/windows/win32/directx.">Micc</a>]</span>.</p>
+<br>
+<br>
 <p>asdasd</p>
+</section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
-<span class="target" id="id1"></span></section>
+<div class="docutils container" id="id3">
+<dl class="citation">
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id1">Mica</a></span></dt>
+<dd><p>Microsoft. About windows. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows">https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows</a>.</p>
+</dd>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id1">Micb</a></span></dt>
+<dd><p>Microsoft. Dxgi overview. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi">https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi</a>.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id2">Micc</a></span></dt>
+<dd><p>Microsoft. Directx graphics and gaming. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/directx">https://docs.microsoft.com/en-us/windows/win32/directx</a>.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id1">Micd</a></span></dt>
+<dd><p>Microsoft. Programming directx with com. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com">https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com</a>.</p>
+</dd>
+</dl>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -466,6 +500,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
