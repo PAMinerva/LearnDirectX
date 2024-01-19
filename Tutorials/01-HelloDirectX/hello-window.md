@@ -26,11 +26,9 @@ To create graphics applications, you first need a window to draw on. Therefore, 
 
 Before starting to review the source code of the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to {cite}`AboutWindows,ProgrammingDirectXWithCOM,DXGIOverview` for further information.
 
-<br>
+WIP
 
 <br>
-
-asdasd
 
 ## References
 ```{bibliography}
