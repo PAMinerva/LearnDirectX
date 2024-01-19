@@ -1,6 +1,6 @@
 # Hello Triangle
 
-asdasd
+[WIP]
 
 ## References
 ```{bibliography}
