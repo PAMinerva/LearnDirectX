@@ -389,6 +389,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -541,6 +542,26 @@ document.write(`
 <br>
 <p>Also, the dereference operator -&gt; is overloaded and returns the underlying interface pointer to a COM object, so that you don’t need to call <strong>Get</strong> if you only want to invoke a function through the interface pointer.</p>
 <br>
+</section>
+<section id="directx-graphics-infrastructure-dxgi">
+<h2>DirectX Graphics Infrastructure (DXGI)<a class="headerlink" href="#directx-graphics-infrastructure-dxgi" title="Permalink to this heading">#</a></h2>
+<p>Microsoft DirectX Graphics Infrastructure (DXGI) is an API that collects functionality and tasks that don’t change regardless of the version of graphics API you are actually using (Direct3D 10, 11, or 12). Specifically, DXGI manages low-level tasks such as enumerating hardware graphics devices (GPUs) and outputs (monitors), creating rendering buffers, presenting rendered frames to an output, controlling gamma, and managing full-screen transitions. This allows a graphics API to focus on drawing 3D content into buffers without worrying about the origin of these buffers or how they will be displayed. <br>
+DXGI’s purpose is to communicate with the kernel mode driver and the system hardware, as shown in the following diagram.</p>
+<br>
+<p><img alt="Image" src="../../_images/rect92360.png" /></p>
+<br>
+<p>A graphics application can either access DXGI directly or use the Direct3D API, which manages communications with DXGI. You might prefer to interact with DXGI directly if your application needs to enumerate devices or control how data is presented to an output.</p>
+<p>An adapter is an abstraction of a hardware or software device. Typically, there are multiple adapters on a machine. Some devices are implemented in hardware, such as a video card, while others are implemented in software, like the Direct3D rasterizer provided by Microsoft. The following diagram illustrates a system with a single computer, two adapters (video cards), and three output monitors.</p>
+<br>
+<p><img alt="Image" src="../../_images/dxgi-adapter-output.png" /></p>
+<br>
+<p>The primary task of your graphics applications is to draw on buffers and ask DXGI to present those buffers as frames to the output. If the application has two buffers available, it can render on one buffer (the render target) while presenting another one. Depending on the time it takes to render a frame, or the desired frame rate for presentation, the application may need more than two buffers. The collection of buffers created is referred to as a swap chain, as depicted in the following illustration.</p>
+<br>
+<p><img alt="Image" src="../../_images/dxgi-swap-chain.png" /></p>
+<br>
+<p>A swap chain consists of one front (or present) buffer and one or more back buffers, which are used as render targets. Each application creates its own swap chain. To maximize the speed of data presentation to an output, a swap chain is almost always created in GPU memory. DXGI, with the assistance of the kernel driver, is responsible for scanning rendered content in the front buffer from video memory and presenting it on outputs.</p>
+<p>A swap chain can be configured for drawing in either full-screen or windowed mode, eliminating the need to determine whether an output is windowed or full screen. A full-screen mode swap chain can optimize performance by switching the display resolution. An output can support one or more display modes, which include resolution, refresh rate, format, etc. DXGI might change the display mode of an output when making a full-screen transition. However, resizing swap chain buffers will not trigger a display mode switch. The swap chain makes an implicit promise that if you choose a back buffer that exactly matches a display mode supported by the target output, then it will switch to that display mode when entering full-screen mode on that output. Consequently, you actually select a display mode by choosing your back buffer size and format.</p>
+<br>
 <p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -641,6 +662,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
