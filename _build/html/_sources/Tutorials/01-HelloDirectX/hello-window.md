@@ -203,7 +203,7 @@ A swap chain can be configured for drawing in either full-screen or windowed mod
 
 <br>
 
-# 5 - Framework overview
+## Framework overview
 
 As stated at the beginning of this tutorial, the framework used to implement the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample is common to almost all the other samples we will review in the upcoming tutorials. This means that by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.
 
