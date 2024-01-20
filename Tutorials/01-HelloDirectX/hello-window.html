@@ -184,6 +184,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../00-Intro/intro-and-prerequisites.html">Introduction and Prerequisites</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="hello-directx.html">Hello DirectX</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Window</a></li>
+
 <li class="toctree-l2"><a class="reference internal" href="hello-triangle.html">Hello Triangle</a></li>
 </ul>
 </li>
@@ -382,6 +383,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Hello Window</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
@@ -390,8 +392,14 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">5 - Framework overview</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -492,7 +500,7 @@ document.write(`
 <p>The window handle is a 32-bit value that uniquely identifies a window. Internally, the value references a data structure in which the OS stores relevant information about the window such as its size, style, and location on the screen.</p>
 <p>The message ID is a numeric value that identifies the message type: <strong>WM_CREATE</strong>, <strong>WM_PAINT</strong>, and so on.</p>
 <p><strong>wParam</strong> and <strong>lParam</strong> contain information specific to the message type. For example, when a <strong>WM_LBUTTONDOWN</strong> message arrives, <strong>wParam</strong> holds a series of bit flags identifying the state of the <kbd>Ctrl</kbd> and <kbd>Shift</kbd> keys and of the mouse buttons. <strong>lParam</strong> holds two 16-bit values identifying the location of the mouse pointer (in screen coordinates) when the click occurred. At that point, you have all you need to know to process the <strong>WM_LBUTTONDOWN</strong> message in the window procedure. Conventionally, <strong>WinMain</strong> should return the value stored in the <strong>wParam</strong> of the <strong>WM_QUIT</strong> message.</p>
-<p>The only criticism to the above explanation is that, unlike typical window applications, graphics applications perform the majority of their processing in between messages. However, <strong>D3D12HelloWindow</strong> is an exception as its sole purpose is to display a window on the screen (i.e., no significant graphics operations are involved).</p>
+<p>The only criticism to the above explanation is that, unlike typical window applications, graphics applications perform the majority of their processing in between messages. However, the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample is an exception as its sole purpose is to display a window on the screen (i.e., no significant graphics operations are involved).</p>
 <br>
 </section>
 </section>
@@ -562,6 +570,29 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <p>A swap chain consists of one front (or present) buffer and one or more back buffers, which are used as render targets. Each application creates its own swap chain. To maximize the speed of data presentation to an output, a swap chain is almost always created in GPU memory. DXGI, with the assistance of the kernel driver, is responsible for scanning rendered content in the front buffer from video memory and presenting it on outputs.</p>
 <p>A swap chain can be configured for drawing in either full-screen or windowed mode, eliminating the need to determine whether an output is windowed or full screen. A full-screen mode swap chain can optimize performance by switching the display resolution. An output can support one or more display modes, which include resolution, refresh rate, format, etc. DXGI might change the display mode of an output when making a full-screen transition. However, resizing swap chain buffers will not trigger a display mode switch. The swap chain makes an implicit promise that if you choose a back buffer that exactly matches a display mode supported by the target output, then it will switch to that display mode when entering full-screen mode on that output. Consequently, you actually select a display mode by choosing your back buffer size and format.</p>
 <br>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="framework-overview">
+<h1>5 - Framework overview<a class="headerlink" href="#framework-overview" title="Permalink to this heading">#</a></h1>
+<p>As stated at the beginning of this tutorial, the framework used to implement the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample is common to almost all the other samples we will review in the upcoming tutorials. This means that by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.</p>
+<p>Firstly, as you can see in the image below, the import libraries (LIB files) of Direct3D 12 and DXGI are listed in the additional dependencies of the project. This allows the linker to use the related information to resolve external references to exported functions in the corresponding DLLs. Additionally, the DLL associated with Direct3D 12 will not be loaded at the same time as the application, but only the first time we call an exported function.</p>
+<br>
+<p><img alt="Image" src="../../_images/project-properties.PNG" /></p>
+<br>
+<p>DirectX applications are normal Windows programs, so the entry point is <strong>WinMain</strong> as usual.</p>
+<br>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stdafx.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;D3D12HelloWindow.h&quot;</span>
+<span class="w"> </span>
+<span class="n">_Use_decl_annotations_</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">WINAPI</span><span class="w"> </span><span class="n">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="p">,</span><span class="w"> </span><span class="n">LPSTR</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">D3D12HelloWindow</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="mi">720</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;D3D12 Hello Window&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Win32Application</span><span class="o">::</span><span class="n">Run</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sample</span><span class="p">,</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<br>
 <p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -572,7 +603,6 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 </figure>
 </div>
 <br>
-</section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <div class="docutils container" id="id2">
@@ -655,6 +685,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Hello Window</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
@@ -663,8 +694,14 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">5 - Framework overview</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>

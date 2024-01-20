@@ -90,7 +90,7 @@ The message ID is a numeric value that identifies the message type: **WM_CREATE*
 
 **wParam** and **lParam** contain information specific to the message type. For example, when a **WM_LBUTTONDOWN** message arrives, **wParam** holds a series of bit flags identifying the state of the <kbd>Ctrl</kbd> and <kbd>Shift</kbd> keys and of the mouse buttons. **lParam** holds two 16-bit values identifying the location of the mouse pointer (in screen coordinates) when the click occurred. At that point, you have all you need to know to process the **WM_LBUTTONDOWN** message in the window procedure. Conventionally, **WinMain** should return the value stored in the **wParam** of the **WM_QUIT** message.
 
-The only criticism to the above explanation is that, unlike typical window applications, graphics applications perform the majority of their processing in between messages. However, **D3D12HelloWindow** is an exception as its sole purpose is to display a window on the screen (i.e., no significant graphics operations are involved).
+The only criticism to the above explanation is that, unlike typical window applications, graphics applications perform the majority of their processing in between messages. However, the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample is an exception as its sole purpose is to display a window on the screen (i.e., no significant graphics operations are involved).
 
 <br>
 
@@ -201,6 +201,35 @@ A swap chain consists of one front (or present) buffer and one or more back buff
 
 A swap chain can be configured for drawing in either full-screen or windowed mode, eliminating the need to determine whether an output is windowed or full screen. A full-screen mode swap chain can optimize performance by switching the display resolution. An output can support one or more display modes, which include resolution, refresh rate, format, etc. DXGI might change the display mode of an output when making a full-screen transition. However, resizing swap chain buffers will not trigger a display mode switch. The swap chain makes an implicit promise that if you choose a back buffer that exactly matches a display mode supported by the target output, then it will switch to that display mode when entering full-screen mode on that output. Consequently, you actually select a display mode by choosing your back buffer size and format.
 
+<br>
+
+# 5 - Framework overview
+
+As stated at the beginning of this tutorial, the framework used to implement the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample is common to almost all the other samples we will review in the upcoming tutorials. This means that by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.
+
+Firstly, as you can see in the image below, the import libraries (LIB files) of Direct3D 12 and DXGI are listed in the additional dependencies of the project. This allows the linker to use the related information to resolve external references to exported functions in the corresponding DLLs. Additionally, the DLL associated with Direct3D 12 will not be loaded at the same time as the application, but only the first time we call an exported function.
+
+<br>
+
+![Image](images/A/project-properties.PNG)
+
+<br>
+
+DirectX applications are normal Windows programs, so the entry point is **WinMain** as usual.
+
+<br>
+
+```cpp
+#include "stdafx.h"
+#include "D3D12HelloWindow.h"
+ 
+_Use_decl_annotations_
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
+{
+    D3D12HelloWindow sample(1280, 720, L"D3D12 Hello Window");
+    return Win32Application::Run(&sample, hInstance, nCmdShow);
+}
+```
 <br>
 
 [WIP]
