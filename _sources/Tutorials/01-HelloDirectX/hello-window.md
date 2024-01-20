@@ -205,9 +205,9 @@ A swap chain can be configured for drawing in either full-screen or windowed mod
 
 ## Framework overview
 
-As stated at the beginning of this tutorial, the framework used to implement the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample is common to almost all the other samples we will review in the upcoming tutorials. This means that by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.
+As mentioned earlier in this tutorial, the framework used for building the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample is common to nearly all the other samples we'll explore in the upcoming tutorials. This means that, by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.
 
-Firstly, as you can see in the image below, the import libraries (LIB files) of Direct3D 12 and DXGI are listed in the additional dependencies of the project. This allows the linker to use the related information to resolve external references to exported functions in the corresponding DLLs. Additionally, the DLL associated with Direct3D 12 will not be loaded at the same time as the application, but only the first time we call an exported function.
+As you can see in the image below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they're needed, which can reduce startup time and improve memory usage.
 
 <br>
 
