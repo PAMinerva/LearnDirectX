@@ -217,8 +217,6 @@ Firstly, as you can see in the image below, the import libraries (LIB files) of 
 
 DirectX applications are normal Windows programs, so the entry point is **WinMain** as usual.
 
-<br>
-
 ```cpp
 #include "stdafx.h"
 #include "D3D12HelloWindow.h"
