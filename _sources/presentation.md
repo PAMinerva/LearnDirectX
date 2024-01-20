@@ -9,6 +9,8 @@ To compile and run the samples, you must first download the corresponding code, 
 - <a href="https://github.com/microsoft/DirectX-Graphics-Samples" target="_blank">DirectX-Graphics-Samples</a> 
 - <a href="https://github.com/PAMinerva/LearnDirectX" target="_blank">LearnDirectX</a>
 
+<br>
+
 ````{admonition} Support this project
 Many tutorials in this series are almost comparable to book chapters. It takes a fair amount of time and effort to write such detailed tutorials. So, if you like this project, or if you find it somewhat helpful, please consider supporting further development by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
 
