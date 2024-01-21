@@ -215,7 +215,7 @@ As you can see in {numref}`project-props` below, the Direct3D 12 and DXGI import
 ---
 name: project-props
 ---
-asdasd
+Project property pages in Visual Studio
 ```
 <br>
 
