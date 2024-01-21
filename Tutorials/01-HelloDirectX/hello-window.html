@@ -567,9 +567,14 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <section id="framework-overview">
 <h2>Framework overview<a class="headerlink" href="#framework-overview" title="Permalink to this heading">#</a></h2>
 <p>As mentioned earlier in this tutorial, the framework used for building the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample is common to nearly all the other samples we’ll explore in the upcoming tutorials. This means that, by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.</p>
-<p>As you can see in the image below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they’re needed, which can reduce startup time and improve memory usage.</p>
+<p>As you can see in <a class="reference internal" href="#project-props"><span class="std std-numref">Fig. 1</span></a> below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they’re needed, which can reduce startup time and improve memory usage.</p>
 <br>
-<p><img alt="Image" src="../../_images/project-properties.PNG" /></p>
+<figure class="align-default" id="project-props">
+<img alt="../../_images/project-properties.PNG" src="../../_images/project-properties.PNG" />
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">asdasd</span><a class="headerlink" href="#project-props" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <br>
 <p>DirectX applications are normal Windows programs, so the entry point is <strong>WinMain</strong> as usual.</p>
 <div class="literal-block-wrapper docutils container" id="winmain-code">
