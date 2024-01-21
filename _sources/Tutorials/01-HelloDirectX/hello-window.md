@@ -399,7 +399,7 @@ D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name) :
 ```
 <br>
 
-This constructor initializes some of the class's data members to default values and invokes the constructor of its base class (**DXSample**).
+The constructor of the **D3D12HelloWindow** class initializes some of the class's data members to default values and invokes the constructor of its base class (**DXSample**).
 
 ```{code-block} cpp
 :caption: DXSample constructor
