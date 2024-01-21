@@ -418,7 +418,7 @@ document.write(`
 <p><strong>XInput</strong> enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.</p>
 <br>
 <p>To create graphics applications, you first need a window to draw on. Therefore, the aim of this tutorial is to create and display a simple window on your screen. For this purpose, we will examine the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, which is part of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">DirectX-Graphics-Samples</a> repository maintained by Microsoft. The only significant graphics operation performed by this sample is the setting of the window background color. You might be surprised to discover that you need to write a substantial amount of code to execute this simple operation. The good news is that the code we will review in this first tutorial primarily consists of boilerplate code. This means that, by the end of this tutorial, you will have a basic understanding of the common framework used by almost all samples we will examine in the upcoming tutorials, so we can solely focus on new additions.</p>
-<p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id13" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id15" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id14" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micc</a>]</span> for further information.</p>
+<p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id14" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id16" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id15" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micc</a>]</span> for further information.</p>
 <br>
 </section>
 <section id="windows-applications">
@@ -584,6 +584,12 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 </pre></div>
 </div>
 <br>
+<p><em>stdafx.h</em> includes other header files associated with various DirectX libraries, such as Direct3D 12, DirectXMath, and DXGI. We need to include <em>wrl.h</em> to use the smart pointers provided by the Windows Template Library. <em>d3dx12.h</em> defines helpful structures that act as C++ wrappers around Direct3D 12 native structures, simplifying their initialization. Additionally, this header provides helper functions that make handling subresources more straightforward. <em>D3DCompiler.h</em> is the header associated with a library we will use to compile shader code. The concepts of subresources and shader code will be covered in upcoming tutorials.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><strong><em>Use_decl_annotations</em></strong> is a macro that simplifies SAL annotations. We won’t go into detail about this concept, as it’s not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see <span id="id2">[<a class="reference internal" href="#id17" title="Microsoft. Using sal annotations. https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170.">Micd</a>]</span>.</p>
+</div>
+<p>asdasd</p>
 <p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -597,16 +603,19 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
-<div class="docutils container" id="id2">
+<div class="docutils container" id="id3">
 <dl class="citation">
-<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id1">Mica</a></span></dt>
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id1">Mica</a></span></dt>
 <dd><p>Microsoft. About windows. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows">https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows</a>.</p>
 </dd>
-<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id1">Micb</a></span></dt>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id1">Micb</a></span></dt>
 <dd><p>Microsoft. Dxgi overview. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi">https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi</a>.</p>
 </dd>
-<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id1">Micc</a></span></dt>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id1">Micc</a></span></dt>
 <dd><p>Microsoft. Programming directx with com. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com">https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com</a>.</p>
+</dd>
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id2">Micd</a></span></dt>
+<dd><p>Microsoft. Using sal annotations. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170">https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170</a>.</p>
 </dd>
 </dl>
 </div>

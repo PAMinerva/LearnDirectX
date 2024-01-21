@@ -230,6 +230,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 ```
 <br>
 
+*stdafx.h* includes other header files associated with various DirectX libraries, such as Direct3D 12, DirectXMath, and DXGI. We need to include *wrl.h* to use the smart pointers provided by the Windows Template Library. *d3dx12.h* defines helpful structures that act as C++ wrappers around Direct3D 12 native structures, simplifying their initialization. Additionally, this header provides helper functions that make handling subresources more straightforward. *D3DCompiler.h* is the header associated with a library we will use to compile shader code. The concepts of subresources and shader code will be covered in upcoming tutorials.
+
+```{seealso}
+**_Use_decl_annotations_** is a macro that simplifies SAL annotations. We won't go into detail about this concept, as it's not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see {cite}`UsingSALAnnotations`.
+```
+
+asdasd
+
 [WIP]
 
 <br>
