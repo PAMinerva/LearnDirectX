@@ -615,6 +615,8 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <strong>nCmdShow</strong> is a flag that indicates whether the main application window is minimized, maximized, or shown normally. We’ll pass this flag to a Windows function that’s responsible for showing windows (we’ll discuss this in more detail in the next section).</p>
 <br>
 <p>The <strong>D3D12HelloWindow</strong> class is the application class, which defines data and methods specific to the sample.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellowindow-code">
+<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">D3D12HelloWindow class</span><a class="headerlink" href="#d3d12hellowindow-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloWindow</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -651,6 +653,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">WaitForPreviousFrame</span><span class="p">();</span>
 <span class="p">};</span>
 </pre></div>
+</div>
 </div>
 <br>
 <p>The <strong>DXSample</strong> base class defines data and methods used by all graphics samples.</p>
