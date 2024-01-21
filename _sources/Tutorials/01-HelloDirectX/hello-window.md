@@ -264,7 +264,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 
 The **D3D12HelloWindow** class is the application class, which defines data and methods specific to the sample.
 
-```cpp
+```{code-block} cpp
+:caption: D3D12HelloWindow class
+:name: D3D12HelloWindow-code
 class D3D12HelloWindow : public DXSample
 {
 public:
