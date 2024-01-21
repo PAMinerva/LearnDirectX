@@ -710,6 +710,62 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 </div>
 </div>
 <br>
+<p>The <strong>Win32Application</strong> class defines data and methods used by all Windows applications.</p>
+<div class="literal-block-wrapper docutils container" id="win32application-code">
+<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">Win32Application class</span><a class="headerlink" href="#win32application-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Win32Application</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Run</span><span class="p">(</span><span class="n">DXSample</span><span class="o">*</span><span class="w"> </span><span class="n">pSample</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">);</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HWND</span><span class="w"> </span><span class="nf">GetHwnd</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_hwnd</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">LRESULT</span><span class="w"> </span><span class="n">CALLBACK</span><span class="w"> </span><span class="n">WindowProc</span><span class="p">(</span><span class="n">HWND</span><span class="w"> </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">WPARAM</span><span class="w"> </span><span class="n">wParam</span><span class="p">,</span><span class="w"> </span><span class="n">LPARAM</span><span class="w"> </span><span class="n">lParam</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HWND</span><span class="w"> </span><span class="n">m_hwnd</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<br>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s perfectly fine if you don’t understand the meaning of every single class member at this point. The important thing is to focus on comprehending the overall structure and purpose of the classes. In the next section and in later tutorials, I will provide more detailed explanations for each of the class members.</p>
+</div>
+<br>
+<p>As you might have noticed in <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, the entry point (<strong>WinMain</strong>) creates an instance of the <strong>D3D12HelloWindow</strong> class by calling its constructor.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellowindow-ctor-code">
+<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">D3D12HelloWindow constructor</span><a class="headerlink" href="#d3d12hellowindow-ctor-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">D3D12HelloWindow</span><span class="o">::</span><span class="n">D3D12HelloWindow</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">DXSample</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_frameIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_rtvDescriptorSize</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<br>
+<p>This constructor initializes some of the class’s data members to default values and invokes the constructor of its base class (<strong>DXSample</strong>).</p>
+<div class="literal-block-wrapper docutils container" id="dxsample-ctor-code">
+<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">DXSample constructor</span><a class="headerlink" href="#dxsample-ctor-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">DXSample</span><span class="o">::</span><span class="n">DXSample</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">m_width</span><span class="p">(</span><span class="n">width</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_height</span><span class="p">(</span><span class="n">height</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_title</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_useWarpDevice</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">WCHAR</span><span class="w"> </span><span class="n">assetsPath</span><span class="p">[</span><span class="mi">512</span><span class="p">];</span>
+<span class="w">    </span><span class="n">GetAssetsPath</span><span class="p">(</span><span class="n">assetsPath</span><span class="p">,</span><span class="w"> </span><span class="n">_countof</span><span class="p">(</span><span class="n">assetsPath</span><span class="p">));</span>
+<span class="w">    </span><span class="n">m_assetsPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">assetsPath</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">m_aspectRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">width</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">height</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<br>
 <p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">

@@ -360,6 +360,65 @@ private:
 ```
 <br>
 
+The **Win32Application** class defines data and methods used by all Windows applications.
+
+```{code-block} cpp
+:caption: Win32Application class
+:name: Win32Application-code
+class Win32Application
+{
+public:
+    static int Run(DXSample* pSample, HINSTANCE hInstance, int nCmdShow);
+    static HWND GetHwnd() { return m_hwnd; }
+ 
+protected:
+    static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+ 
+private:
+    static HWND m_hwnd;
+};
+```
+<br>
+
+```{note}
+It's perfectly fine if you don't understand the meaning of every single class member at this point. The important thing is to focus on comprehending the overall structure and purpose of the classes. In the next section and in later tutorials, I will provide more detailed explanations for each of the class members.
+```
+<br>
+
+As you might have noticed in {numref}`winmain-code`, the entry point (**WinMain**) creates an instance of the **D3D12HelloWindow** class by calling its constructor.
+
+```{code-block} cpp
+:caption: D3D12HelloWindow constructor
+:name: D3D12HelloWindow-ctor-code
+D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name) :
+    DXSample(width, height, name),
+    m_frameIndex(0),
+    m_rtvDescriptorSize(0)
+{
+}
+```
+<br>
+
+This constructor initializes some of the class's data members to default values and invokes the constructor of its base class (**DXSample**).
+
+```{code-block} cpp
+:caption: DXSample constructor
+:name: DXSample-ctor-code
+DXSample::DXSample(UINT width, UINT height, std::wstring name) :
+    m_width(width),
+    m_height(height),
+    m_title(name),
+    m_useWarpDevice(false)
+{
+    WCHAR assetsPath[512];
+    GetAssetsPath(assetsPath, _countof(assetsPath));
+    m_assetsPath = assetsPath;
+ 
+    m_aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+}
+```
+<br>
+
 [WIP]
 
 <br>
