@@ -777,7 +777,71 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p><img alt="Image" src="../../_images/win-client-area.png" /></p>
 <br>
-<p>The client area is the region of a window where drawing is permitted. Technically speaking, it’s the area where the render target will be mapped once the GPU finishes drawing a frame on it. Conceptually, you can consider a render target as a texture that the GPU utilizes for rendering\drawing operations.</p>
+<p>The client area is the region of a window where drawing is allowed. Technically speaking, it’s the area where the render target is mapped (once the GPU finishes drawing a frame on it). Conceptually, you can consider a render target as a texture that the GPU utilizes for rendering\drawing operations.</p>
+<br>
+<p>In <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, <strong>Win32Application::Run</strong> is called, passing the instance of the <strong>D3D12HelloWindow</strong> class, along with the values passed as named parameters of <strong>WinMain</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="run-code">
+<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">Run method</span><a class="headerlink" href="#run-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">Win32Application::Run</span><span class="p">(</span><span class="n">DXSample</span><span class="o">*</span><span class="w"> </span><span class="n">pSample</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Parse the command line parameters</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">;</span>
+<span class="w">    </span><span class="n">LPWSTR</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CommandLineToArgvW</span><span class="p">(</span><span class="n">GetCommandLineW</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">argc</span><span class="p">);</span>
+<span class="w">    </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">ParseCommandLineArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span><span class="w"> </span><span class="n">argc</span><span class="p">);</span>
+<span class="w">    </span><span class="n">LocalFree</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Initialize the window class.</span>
+<span class="w">    </span><span class="n">WNDCLASSEX</span><span class="w"> </span><span class="n">windowClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">cbSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">WNDCLASSEX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CS_HREDRAW</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">CS_VREDRAW</span><span class="p">;</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">lpfnWndProc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WindowProc</span><span class="p">;</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">hInstance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hInstance</span><span class="p">;</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">hCursor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadCursor</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IDC_ARROW</span><span class="p">);</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">lpszClassName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;DXSampleClass&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">RegisterClassEx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">windowClass</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">RECT</span><span class="w"> </span><span class="n">windowRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">GetWidth</span><span class="p">()),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">GetHeight</span><span class="p">())</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">AdjustWindowRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">windowRect</span><span class="p">,</span><span class="w"> </span><span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the window and store a handle to it.</span>
+<span class="w">    </span><span class="n">m_hwnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateWindow</span><span class="p">(</span>
+<span class="w">        </span><span class="n">windowClass</span><span class="p">.</span><span class="n">lpszClassName</span><span class="p">,</span>
+<span class="w">        </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">GetTitle</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CW_USEDEFAULT</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CW_USEDEFAULT</span><span class="p">,</span>
+<span class="w">        </span><span class="n">windowRect</span><span class="p">.</span><span class="n">right</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">windowRect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span>
+<span class="w">        </span><span class="n">windowRect</span><span class="p">.</span><span class="n">bottom</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">windowRect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span><span class="w">        </span><span class="c1">// We have no parent window.</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span><span class="w">        </span><span class="c1">// We aren&#39;t using menus.</span>
+<span class="w">        </span><span class="n">hInstance</span><span class="p">,</span>
+<span class="w">        </span><span class="n">pSample</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Initialize the sample. OnInit is defined in each child-implementation of DXSample.</span>
+<span class="w">    </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnInit</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ShowWindow</span><span class="p">(</span><span class="n">m_hwnd</span><span class="p">,</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Main sample loop.</span>
+<span class="w">    </span><span class="n">MSG</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">message</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WM_QUIT</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Process any messages in the queue.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PeekMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">PM_REMOVE</span><span class="p">))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">TranslateMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">            </span><span class="n">DispatchMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Return this part of the WM_QUIT message to Windows.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">wParam</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <br>
 <p>[WIP]</p>
 <br>
