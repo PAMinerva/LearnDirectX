@@ -423,6 +423,22 @@ DXSample::DXSample(UINT width, UINT height, std::wstring name) :
 ```
 <br>
 
+The constructor of the DXSample cass initializes the sample's name and the dimensions of the window's client area, where the rendering will take place.
+
+The **GetAssetsPath** function returns the absolute path of the executable. This is where the application will search for resource files (shaders, textures, etc.) required to run the sample. However, for this initial sample, we don't need such resources, so you won't find anything in the executable directory, except for the executable itself, of course.
+
+The aspect ratio refers to the proportional relationship between the width and height of the window's client area.
+
+<br>
+
+![Image](images/A/win-client-area.png)
+
+<br>
+
+The client area is the region of a window where drawing is permitted. Technically speaking, it's the area where the render target will be mapped once the GPU finishes drawing a frame on it. Conceptually, you can consider a render target as a texture that the GPU utilizes for rendering\drawing operations.
+
+<br>
+
 [WIP]
 
 <br>
