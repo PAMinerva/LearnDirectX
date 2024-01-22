@@ -34,7 +34,7 @@ Regarding the code samples, instead of reinventing the wheel, we can use the sou
 
 The additional samples provided for this tutorial series are hosted on the following Github repository: 
 
-[PAMinerva/LearnDirectX](https://github.com/PAMinerva/LearnDirectX)
+[PAMinerva/LearnDirectX-samples](https://github.com/PAMinerva/LearnDirectX-samples)
 
 <br>
 
