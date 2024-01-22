@@ -523,9 +523,30 @@ Creating a window requires an instance of a window class (represented by the **W
 **CreateWindow** creates a window and returns its handle, which is used to identify and manipulate the window. It takes the name of the window class and additional parameters that define the window's characteristics. For more details, refer to the Microsoft documentation for **CreateWindow**
 
 ```{note}
-The instance of the application class, which is passed as an argument to the first parameter of **Run**, stores the width and height of the window’s client area. However, **CreateWindow** requires the size of the entire window, so we must calculate it. **AdjustWindowRect** provides this information if you pass the size of the client area and the style of the window you’re going to create with **CreateWindow**. **WS_OVERLAPPEDWINDOW** specifies a window with a title bar and no menu.
+The application class instance, passed as an argument to **Run**, holds the client area dimensions. However, **CreateWindow** needs the entire window's size, so we must derive it. **AdjustWindowRect** calculates the window's dimensions based on the client area size and the window style. **WS_OVERLAPPEDWINDOW** defines a window with a title bar and no menu.
 ```
 
+```{note}
+The last parameter of **CreateWindow** allows us to provide a pointer that the operating system (OS) will return in response to a **WM_CREATE** message. This message is sent by the OS to an application immediately after creating a window, which is when **CreateWindow** returns. This allows us to store the instance of **DXSample** for later use (more on this shortly).
+```
+
+Observe that the **OnInit** method is invoked through the **pSample** pointer before showing the window on the screen to the user.
+
+<br>
+
+## D3D12HelloWindow: code review
+
+The **DXSample::OnInit** method is a virtual function that must be overridden in derived classes. We have done this in the **D3D12HelloWindow** class. The implementation is shown in {numref}`oninit-method`.
+
+```{code-block} cpp
+:caption: OnInit method
+:name: oninit-code
+void D3D12HelloWindow::OnInit()
+{
+    LoadPipeline();
+    LoadAssets();
+}
+```
 <br>
 
 [WIP]

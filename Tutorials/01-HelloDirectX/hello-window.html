@@ -391,6 +391,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">Framework overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellowindow-code-review">D3D12HelloWindow: code review</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -854,7 +855,27 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <p><strong>CreateWindow</strong> creates a window and returns its handle, which is used to identify and manipulate the window. It takes the name of the window class and additional parameters that define the window’s characteristics. For more details, refer to the Microsoft documentation for <strong>CreateWindow</strong></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The instance of the application class, which is passed as an argument to the first parameter of <strong>Run</strong>, stores the width and height of the window’s client area. However, <strong>CreateWindow</strong> requires the size of the entire window, so we must calculate it. <strong>AdjustWindowRect</strong> provides this information if you pass the size of the client area and the style of the window you’re going to create with <strong>CreateWindow</strong>. <strong>WS_OVERLAPPEDWINDOW</strong> specifies a window with a title bar and no menu.</p>
+<p>The application class instance, passed as an argument to <strong>Run</strong>, holds the client area dimensions. However, <strong>CreateWindow</strong> needs the entire window’s size, so we must derive it. <strong>AdjustWindowRect</strong> calculates the window’s dimensions based on the client area size and the window style. <strong>WS_OVERLAPPEDWINDOW</strong> defines a window with a title bar and no menu.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The last parameter of <strong>CreateWindow</strong> allows us to provide a pointer that the operating system (OS) will return in response to a <strong>WM_CREATE</strong> message. This message is sent by the OS to an application immediately after creating a window, which is when <strong>CreateWindow</strong> returns. This allows us to store the instance of <strong>DXSample</strong> for later use (more on this shortly).</p>
+</div>
+<p>Observe that the <strong>OnInit</strong> method is invoked through the <strong>pSample</strong> pointer before showing the window on the screen to the user.</p>
+<br>
+</section>
+<section id="d3d12hellowindow-code-review">
+<h2>D3D12HelloWindow: code review<a class="headerlink" href="#d3d12hellowindow-code-review" title="Permalink to this heading">#</a></h2>
+<p>The <strong>DXSample::OnInit</strong> method is a virtual function that must be overridden in derived classes. We have done this in the <strong>D3D12HelloWindow</strong> class. The implementation is shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">oninit-method</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="oninit-code">
+<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">OnInit method</span><a class="headerlink" href="#oninit-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnInit</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="n">LoadAssets</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 <br>
 <p>[WIP]</p>
@@ -962,6 +983,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">Framework overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellowindow-code-review">D3D12HelloWindow: code review</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
