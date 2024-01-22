@@ -850,6 +850,13 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <p><strong>lpszClassName</strong> specifies the name we want to give to the window class.</p>
 <p><strong>lpfnWndProc</strong> specifies the address of the window procedure.</p>
 <br>
+<p><strong>RegisterClassEx</strong> registers a window class, allowing us to create multiple windows with the same style, window procedure, and other attributes.</p>
+<p><strong>CreateWindow</strong> creates a window and returns its handle, which is used to identify and manipulate the window. It takes the name of the window class and additional parameters that define the window’s characteristics. For more details, refer to the Microsoft documentation for <strong>CreateWindow</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The instance of the application class, which is passed as an argument to the first parameter of <strong>Run</strong>, stores the width and height of the window’s client area. However, <strong>CreateWindow</strong> requires the size of the entire window, so we must calculate it. <strong>AdjustWindowRect</strong> provides this information if you pass the size of the client area and the style of the window you’re going to create with <strong>CreateWindow</strong>. <strong>WS_OVERLAPPEDWINDOW</strong> specifies a window with a title bar and no menu.</p>
+</div>
+<br>
 <p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">

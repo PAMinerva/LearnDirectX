@@ -518,6 +518,16 @@ Creating a window requires an instance of a window class (represented by the **W
 
 <br>
 
+**RegisterClassEx** registers a window class, allowing us to create multiple windows with the same style, window procedure, and other attributes.
+
+**CreateWindow** creates a window and returns its handle, which is used to identify and manipulate the window. It takes the name of the window class and additional parameters that define the window's characteristics. For more details, refer to the Microsoft documentation for **CreateWindow**
+
+```{note}
+The instance of the application class, which is passed as an argument to the first parameter of **Run**, stores the width and height of the window’s client area. However, **CreateWindow** requires the size of the entire window, so we must calculate it. **AdjustWindowRect** provides this information if you pass the size of the client area and the style of the window you’re going to create with **CreateWindow**. **WS_OVERLAPPEDWINDOW** specifies a window with a title bar and no menu.
+```
+
+<br>
+
 [WIP]
 
 <br>
