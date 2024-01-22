@@ -536,7 +536,7 @@ Observe that the **OnInit** method is invoked through the **pSample** pointer be
 
 ## D3D12HelloWindow: code review
 
-The **DXSample::OnInit** method is a virtual function that must be overridden in derived classes. We have done this in the **D3D12HelloWindow** class. The implementation is shown in {numref}`oninit-method`.
+The **DXSample::OnInit** method is a virtual function that must be overridden in derived classes. We have done this in the **D3D12HelloWindow** class. The implementation is shown in {numref}`oninit-code`.
 
 ```{code-block} cpp
 :caption: OnInit method
