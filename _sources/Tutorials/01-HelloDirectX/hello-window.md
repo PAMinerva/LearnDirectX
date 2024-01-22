@@ -439,7 +439,7 @@ The client area is the region of a window where drawing is allowed. Technically 
 
 <br>
 
-In {numref}`winmain-code`, **Win32Application::Run** is called, passing the instance of the **D3D12HelloWindow** class, along with the values passed as named parameters of **WinMain**.
+In {numref}`winmain-code`, **Win32Application::Run** is called passing the instance of the **D3D12HelloWindow** class, along with the named parameters of **WinMain**.
 
 ```{code-block} cpp
 :caption: Run method
@@ -502,6 +502,20 @@ int Win32Application::Run(DXSample* pSample, HINSTANCE hInstance, int nCmdShow)
     return static_cast<char>(msg.wParam);
 }
 ```
+<br>
+
+Creating a window requires an instance of a window class (represented by the **WNDCLASSEX** structure), which defines essential attributes for all windows derived from that class. Here's a summary of the most important **WNDCLASSEX** fields.
+
+**style** specifies additional informations about the window's appearance and behavior. For example, `CS_HREDRAW | CS_VREDRAW` instructs the OS to redraw the entire window if a resize operation affects the client area's dimensions.
+
+**hCursor** indicates the cursor displayed when the mouse hovers over the window's client area.
+
+**hInstance** specifies the application to which the window belongs. This information is passed to **WinMain** as the first argument.
+
+**lpszClassName** specifies the name we want to give to the window class.
+
+**lpfnWndProc** specifies the address of the window procedure.
+
 <br>
 
 [WIP]
