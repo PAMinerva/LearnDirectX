@@ -7,7 +7,7 @@ Designed for beginners with no prior knowledge of computer graphics or advanced 
 To compile and run the samples, you must first download the corresponding code, available on GitHub in two repositories: 
 
 - <a href="https://github.com/microsoft/DirectX-Graphics-Samples" target="_blank">DirectX-Graphics-Samples</a> 
-- <a href="https://github.com/PAMinerva/LearnDirectX" target="_blank">LearnDirectX</a>
+- <a href="https://github.com/PAMinerva/LearnDirectX-samples" target="_blank">LearnDirectX</a>
 
 <br>
 
