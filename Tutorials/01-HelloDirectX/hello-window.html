@@ -1254,6 +1254,30 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 </div>
 </div>
 <br>
+<p>Observe that we pass a pointer to the instance of the application class as the last parameter to <strong>CreateWindow</strong>. The operating system returns this pointer to us in response to a <strong>WM_CREATE</strong> message, giving us the opportunity to save it for later access. Inside the <strong>WM_CREATE</strong> message handler, <strong>lParam</strong> holds a pointer to <strong>CREATESTRUCT</strong>. The <strong>lpCreateParams</strong> field of this structure contains the last parameter passed to <strong>CreateWindow</strong>. We call <strong>SetWindowLongPtr</strong> to store this information in the user data associated with the window (an additional memory space reserved for the user) and we will retrieve it later using <strong>GetWindowLongPtr</strong>.</p>
+<p>After the user closes the window, a <strong>WM_DESTROY</strong> message is sent to the window procedure of the destroyed window. The <strong>WM_DESTROY</strong> message handler invokes <strong>PostQuitMessage</strong>, which queues a <strong>WM_QUIT</strong> message. This enables us to exit the message loop in <strong>Win32Application::Run</strong> and execute <strong>DXSample::OnDestroy</strong>. This is a pure virtual function overridden by <strong>D3D12HelloWindow::OnDestroy</strong>. This function simply calls <strong>WaitForPreviousFrame</strong>, which waits for the GPU to complete rendering the previous frame (more on this shortly).</p>
+<p>Typically, <strong>WM_PAINT</strong> messages are both sent to the window procedure and posted to the message queue throughout the application’s lifetime. This allows us to consistently call <strong>OnUpdate</strong> and <strong>OnRender</strong> within the <strong>WM_PAINT</strong> message handler. These are pure virtual functions overridden by the <strong>D3D12HelloWindow</strong> class. Since <strong>OnUpdate</strong> doesn’t perform any actions in this sample, let’s proceed directly to examining <strong>OnRender</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="onrender-code">
+<div class="code-block-caption"><span class="caption-number">Listing 16 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#onrender-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Render the scene.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnRender</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Record all the commands we need to render the scene into the command list.</span>
+<span class="w">    </span><span class="n">PopulateCommandList</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Execute the command list.</span>
+<span class="w">    </span><span class="n">ID3D12CommandList</span><span class="o">*</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandQueue</span><span class="o">-&gt;</span><span class="n">ExecuteCommandLists</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppCommandLists</span><span class="p">),</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Present the frame.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">Present</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<br>
 <p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">

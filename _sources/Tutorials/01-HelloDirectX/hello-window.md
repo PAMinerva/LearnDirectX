@@ -963,6 +963,33 @@ LRESULT CALLBACK Win32Application::WindowProc(HWND hWnd, UINT message, WPARAM wP
 ```
 <br>
 
+Observe that we pass a pointer to the instance of the application class as the last parameter to **CreateWindow**. The operating system returns this pointer to us in response to a **WM_CREATE** message, giving us the opportunity to save it for later access. Inside the **WM_CREATE** message handler, **lParam** holds a pointer to **CREATESTRUCT**. The **lpCreateParams** field of this structure contains the last parameter passed to **CreateWindow**. We call **SetWindowLongPtr** to store this information in the user data associated with the window (an additional memory space reserved for the user) and we will retrieve it later using **GetWindowLongPtr**.
+
+After the user closes the window, a **WM_DESTROY** message is sent to the window procedure of the destroyed window. The **WM_DESTROY** message handler invokes **PostQuitMessage**, which queues a **WM_QUIT** message. This enables us to exit the message loop in **Win32Application::Run** and execute **DXSample::OnDestroy**. This is a pure virtual function overridden by **D3D12HelloWindow::OnDestroy**. This function simply calls **WaitForPreviousFrame**, which waits for the GPU to complete rendering the previous frame (more on this shortly).
+
+Typically, **WM_PAINT** messages are both sent to the window procedure and posted to the message queue throughout the application's lifetime. This allows us to consistently call **OnUpdate** and **OnRender** within the **WM_PAINT** message handler. These are pure virtual functions overridden by the **D3D12HelloWindow** class. Since **OnUpdate** doesn't perform any actions in this sample, let's proceed directly to examining **OnRender**.
+
+```{code-block} cpp
+:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.cpp
+:name: OnRender-code
+// Render the scene.
+void D3D12HelloWindow::OnRender()
+{
+    // Record all the commands we need to render the scene into the command list.
+    PopulateCommandList();
+ 
+    // Execute the command list.
+    ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
+    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+ 
+    // Present the frame.
+    ThrowIfFailed(m_swapChain->Present(1, 0));
+ 
+    WaitForPreviousFrame();
+}
+```
+<br>
+
 [WIP]
 
 <br>
