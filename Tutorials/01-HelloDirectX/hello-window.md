@@ -687,7 +687,7 @@ The **__uuidof** operator allows to get IDs of COM interfaces and classes. Usual
 
 After getting a pointer to the **ID3D12Debug** interface, we use it to enable the Direct3D debug layer. This layer helps during debugging by showing error and warning messages in the output window of the debugger if any obscure rendering error, validation control or memory leak occurs.
 
-```{attention}
+```{warning}
 **D3D12GetDebugInterface** must be called before the D3D12 device is created. Calling it after creating the D3D12 device will cause the D3D12 runtime to remove the device. The D3D12 runtime refers to a set of functionalities provided by the Direct3D 12 library on which all Direct3D 12 applications depend at run time in order to run as intended. For example, during some critical calls to the DirectX API, the runtime is assumed to handle parameter validation before handing control to user-mode driver, which can assume the parameters are correct.
 ```
 
@@ -872,7 +872,7 @@ With the pointers to the **ID3D12Resource** interfaces that describe the buffers
 We'll be recording commands in command lists from our C++ application, so the memory space managed by the allocators must be CPU visible. And indeed, the allocation occurs in memory accessible to both CPU and GPU. This implies that either of them can access the command list, although one of the two must do it through the PCI-e bus (unless you have an integrated GPU, of course; further details will be covered in the next tutorial).
 ```
 
-```{attention}
+```{warning}
 Be careful when reusing a command list because the CPU memory space holding the related commands might still be in use, accessed by the GPU. That is, we don't know when the GPU finishes executing the commands of a command list, at least without a synchronization mechanism between CPU and GPU. We will see how to implement such a mechanism shortly.
 ```
 
