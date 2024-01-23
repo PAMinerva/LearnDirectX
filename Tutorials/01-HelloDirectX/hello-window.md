@@ -838,8 +838,11 @@ If you are wondering how GPUs can access descriptors in system memory, the answe
 Differently from render targets, descriptors for texture and other type of resources need to be accessed by the GPU wherever they are in memory. That is, the driver doesn't copy the descriptors in the binding command (more on this in the next tutorial).
 ```
 
-Then, we set the fields of a **D3D12_DESCRIPTOR_HEAP_DESC** structure to specify we want a descriptor heap that will hold two descriptors of type RTV (render target view; descriptor and view are pretty much the same thing in DirectX). That way, **ID3D12Device::CreateDescriptorHeap** creates a descriptor heap that has enough space to contain two RTVs, and returns an interface pointer to such descriptor heap in the last parameter (or more precisely, an interface pointer to the COM object that implements the interface we will use to reference the descriptor heap; I won't stress on this point anymore). <br>
-Observe that a descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.
+Then, we set the fields of a **D3D12_DESCRIPTOR_HEAP_DESC** structure to specify we want a descriptor heap that will hold two descriptors of type RTV (render target view; descriptor and view are pretty much the same thing in DirectX). That way, **ID3D12Device::CreateDescriptorHeap** creates a descriptor heap that has enough space to contain two RTVs, and returns an interface pointer to such descriptor heap in the last parameter (or more precisely, an interface pointer to the COM object that implements the interface we will use to reference the descriptor heap; I won't stress on this point anymore).
+
+```{important}
+A descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.
+```
 
 **ID3D12Device::GetDescriptorHandleIncrementSize** returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.
 
