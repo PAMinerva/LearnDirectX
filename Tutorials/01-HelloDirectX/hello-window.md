@@ -222,7 +222,7 @@ Project property pages in Visual Studio
 DirectX applications are normal Windows programs, so the entry point is **WinMain** as usual.
 
 ```{code-block} cpp
-:caption: WinMain
+:caption: D3D12HelloWorld/src/HelloWindow/Main.cpp
 :name: winmain-code
 #include "stdafx.h"
 #include "D3D12HelloWindow.h"
@@ -244,7 +244,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 <br>
 
 ```{code-block} cpp
-:caption: stdafx.h
+:caption: D3D12HelloWorld/src/HelloWindow/stdafx.h
 :name: stdafx-code
 #include <windows.h>
  
@@ -269,7 +269,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 The **D3D12HelloWindow** class is the application class, which defines data and methods specific to the sample.
 
 ```{code-block} cpp
-:caption: D3D12HelloWindow class
+:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.h
 :name: D3D12HelloWindow-code
 class D3D12HelloWindow : public DXSample
 {
@@ -312,7 +312,7 @@ private:
 The **DXSample** base class defines data and methods used by all graphics samples.
 
 ```{code-block} cpp
-:caption: DXSample class
+:caption: D3D12HelloWorld/src/HelloWindow/DXSample.h
 :name: DXSample-code
 class DXSample
 {
@@ -367,7 +367,7 @@ private:
 The **Win32Application** class defines data and methods used by all Windows applications.
 
 ```{code-block} cpp
-:caption: Win32Application class
+:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.h
 :name: Win32Application-code
 class Win32Application
 {
@@ -392,7 +392,7 @@ It's perfectly fine if you don't understand the meaning of every single class me
 As you might have noticed in {numref}`winmain-code`, the entry point (**WinMain**) creates an instance of the **D3D12HelloWindow** class by calling its constructor.
 
 ```{code-block} cpp
-:caption: D3D12HelloWindow constructor
+:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
 :name: D3D12HelloWindow-ctor-code
 D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name) :
     DXSample(width, height, name),
@@ -406,7 +406,7 @@ D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name) :
 The constructor of the **D3D12HelloWindow** class initializes some of the class's data members to default values and invokes the constructor of its base class (**DXSample**).
 
 ```{code-block} cpp
-:caption: DXSample constructor
+:caption: D3D12HelloWorld/src/HelloWindow/DXSample.cpp
 :name: DXSample-ctor-code
 DXSample::DXSample(UINT width, UINT height, std::wstring name) :
     m_width(width),
@@ -442,7 +442,7 @@ The client area is the region of a window where drawing is allowed. Technically 
 In {numref}`winmain-code`, **Win32Application::Run** is called passing the instance of the **D3D12HelloWindow** class, along with the named parameters of **WinMain**.
 
 ```{code-block} cpp
-:caption: Run method
+:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.cpp
 :name: run-code
 int Win32Application::Run(DXSample* pSample, HINSTANCE hInstance, int nCmdShow)
 {
@@ -539,7 +539,7 @@ Observe that the **OnInit** method is invoked through the **pSample** pointer be
 The **DXSample::OnInit** method is a virtual function that must be overridden in derived classes. We have done this in the **D3D12HelloWindow** class. The implementation is shown in {numref}`oninit-code`.
 
 ```{code-block} cpp
-:caption: OnInit method
+:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
 :name: oninit-code
 void D3D12HelloWindow::OnInit()
 {
