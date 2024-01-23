@@ -1011,8 +1011,8 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>The <strong>__uuidof</strong> operator allows to get IDs of COM interfaces and classes. Usually, we pass the address of a <strong>ComPtr</strong> as an argument to <strong>IID_PPV_ARGS</strong>, so that it must be dereference twice to get the underlying interface pointer, which is used by <strong>__uuidof</strong> to determine the type of the requested object and get the corresponding ID. The helper macro <strong>IID_PPV_ARGS_Helper</strong> simply converts the address of a <strong>ComPtr</strong> to a normal <strong>void</strong>** (take a look at the source code in <em>combaseapi.h</em> if you want to see how it is implemented).</p>
 <p>After getting a pointer to the <strong>ID3D12Debug</strong> interface, we use it to enable the Direct3D debug layer. This layer helps during debugging by showing error and warning messages in the output window of the debugger if any obscure rendering error, validation control or memory leak occurs.</p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p><strong>D3D12GetDebugInterface</strong> must be called before the D3D12 device is created. Calling it after creating the D3D12 device will cause the D3D12 runtime to remove the device. The D3D12 runtime refers to a set of functionalities provided by the Direct3D 12 library on which all Direct3D 12 applications depend at run time in order to run as intended. For example, during some critical calls to the DirectX API, the runtime is assumed to handle parameter validation before handing control to user-mode driver, which can assume the parameters are correct.</p>
 </div>
 <p>The <strong>IDXGIFactory4</strong> interface allows to create some important DXGI objects (for example, adapters and swap chains), as well as to enumerate adapters and outputs. It also allows to manage full-screen transitions. We use <strong>CreateDXGIFactory2</strong> to get a pointer to <strong>IDXGIFactory4</strong> because this method allows to pass a flag indicating we are also interested in enabling an additional layer to be informed of errors and warnings about DXGI (in addition to those related to Direct3D).</p>
@@ -1168,8 +1168,8 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p class="admonition-title">Note</p>
 <p>We’ll be recording commands in command lists from our C++ application, so the memory space managed by the allocators must be CPU visible. And indeed, the allocation occurs in memory accessible to both CPU and GPU. This implies that either of them can access the command list, although one of the two must do it through the PCI-e bus (unless you have an integrated GPU, of course; further details will be covered in the next tutorial).</p>
 </div>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>Be careful when reusing a command list because the CPU memory space holding the related commands might still be in use, accessed by the GPU. That is, we don’t know when the GPU finishes executing the commands of a command list, at least without a synchronization mechanism between CPU and GPU. We will see how to implement such a mechanism shortly.</p>
 </div>
 <p>Now, let’s examine the code of the <strong>LoadAssets</strong> function, responsible for creating other objects and resources required for rendering the frames of our graphics samples.</p>
