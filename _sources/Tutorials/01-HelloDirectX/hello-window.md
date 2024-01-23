@@ -873,7 +873,95 @@ We'll be recording commands in command lists from our C++ application, so the me
 Be careful when reusing a command list because the CPU memory space holding the related commands might still be in use, accessed by the GPU. That is, we don't know when the GPU finishes executing the commands of a command list, at least without a synchronization mechanism between CPU and GPU. We will see how to implement such a mechanism shortly.
 ```
 
-Now, it's time to look at the code of the **LoadAssets** function.
+Now, let's examine the code of the **LoadAssets** function, responsible for creating other objects and resources required for rendering the frames of our graphics samples.
+
+```{code-block} cpp
+:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
+:name: loadassets-code
+// Load the sample assets.
+void D3D12HelloWindow::LoadAssets()
+{
+    // Create the command list.
+    ThrowIfFailed(m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_commandList)));
+ 
+    // Command lists are created in the recording state, but there is nothing
+    // to record yet. The main loop expects it to be closed, so close it now.
+    ThrowIfFailed(m_commandList->Close());
+ 
+    // Create synchronization objects.
+    {
+        ThrowIfFailed(m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence)));
+        m_fenceValue = 1;
+ 
+        // Create an event handle to use for frame synchronization.
+        m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        if (m_fenceEvent == nullptr)
+        {
+            ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+        }
+    }
+}
+```
+<br>
+
+We first create a direct command list using **ID3D12Device::CreateCommandList**, passing the related command allocator as an argument. A command list is initially created in a state where it is ready to receive commands. We have no commands to record in the list right now, though. Additionally, a command list must be closed when you call **Reset** on it. This is a common operation to perform the first time you use a command list or when you reuse it (often after submitting the command list to draw a previous frame). Therefore, we close the command list now, waiting to call **Reset** on it later.
+
+**ID3D12Device::CreateFence** creates a fence. A fence is a synchronization object that you can insert in a command queue for synchronization purposes. Since a fence is a synchronization object that the GPU encounters during the execution of commands in command lists consumed from a command queue, we also need an event to notify a waiting CPU thread that the GPU reached a fence in the queue (more on this shortly).
+
+At this point, the initialization stage is complete (that is, the call to **DXSample::OnInit** in **Win32Application::Run** returns, see {numref}`run-code`), and **ShowWindow** is invoked to activate the window and display it at its current size and position. Then, the application can enter the message loop, where **PeekMessage** retrieves a message from the message queue, and stores the related information in the **MSG** structure passed in the first parameter before returning **TRUE** (otherwise it returns **FALSE** to indicate no message was available). **DispatchMessage** dispatches a message to the window procedure. **TranslateMessage** translates virtual-key messages (**WM_KEYDOWN**, **WM_KEYUP**) into character messages (**WM_CHAR**) containing ASCII characters. This allows us to better distinguish the various keys on the keyboard.
+
+However, remember that **CreateWindow**, before returning, sent a **WM_CREATE** message to the window procedure.
+
+```{code-block} cpp
+:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.cpp
+:name: WindowProc-code
+// Main message handler for the sample.
+LRESULT CALLBACK Win32Application::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    DXSample* pSample = reinterpret_cast<DXSample*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+ 
+    switch (message)
+    {
+    case WM_CREATE:
+        {
+            // Save the DXSample* passed in to CreateWindow.
+            LPCREATESTRUCT pCreateStruct = reinterpret_cast<LPCREATESTRUCT>(lParam);
+            SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pCreateStruct->lpCreateParams));
+        }
+        return 0;
+ 
+    case WM_KEYDOWN:
+        if (pSample)
+        {
+            pSample->OnKeyDown(static_cast<UINT8>(wParam));
+        }
+        return 0;
+ 
+    case WM_KEYUP:
+        if (pSample)
+        {
+            pSample->OnKeyUp(static_cast<UINT8>(wParam));
+        }
+        return 0;
+ 
+    case WM_PAINT:
+        if (pSample)
+        {
+            pSample->OnUpdate();
+            pSample->OnRender();
+        }
+        return 0;
+ 
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
+    }
+ 
+    // Handle any messages the switch statement didn't.
+    return DefWindowProc(hWnd, message, wParam, lParam);
+}
+```
+<br>
 
 [WIP]
 
