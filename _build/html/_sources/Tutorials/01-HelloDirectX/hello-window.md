@@ -536,7 +536,7 @@ Observe that the **OnInit** method is invoked through the **pSample** pointer be
 
 ## D3D12HelloWindow: code review
 
-The **DXSample::OnInit** method is a virtual function that must be overridden in derived classes. We have done this in the **D3D12HelloWindow** class. The implementation is shown in {numref}`oninit-code`.
+The **DXSample::OnInit** method is a virtual function that must be overridden in derived classes. This has been done this in the **D3D12HelloWindow** class. The implementation is shown in {numref}`oninit-code`.
 
 ```{code-block} cpp
 :caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
@@ -548,6 +548,332 @@ void D3D12HelloWindow::OnInit()
 }
 ```
 <br>
+
+The **OnInit** method simply calls **LoadPipeline** and **LoadAssets**. Let's start examining **LoadPipeline**.
+
+```{code-block} cpp
+:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
+:name: loadpipeline-code
+// Load the rendering pipeline dependencies.
+void D3D12HelloWindow::LoadPipeline()
+{
+    UINT dxgiFactoryFlags = 0;
+ 
+#if defined(_DEBUG)
+    // Enable the debug layer (requires the Graphics Tools "optional feature").
+    // NOTE: Enabling the debug layer after device creation will invalidate the active device.
+    {
+        ComPtr<ID3D12Debug> debugController;
+        if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+        {
+            debugController->EnableDebugLayer();
+ 
+            // Enable additional debug layers.
+            dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
+        }
+    }
+#endif
+ 
+    ComPtr<IDXGIFactory4> factory;
+    ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&factory)));
+ 
+    if (m_useWarpDevice)
+    {
+        ComPtr<IDXGIAdapter> warpAdapter;
+        ThrowIfFailed(factory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter)));
+ 
+        ThrowIfFailed(D3D12CreateDevice(
+            warpAdapter.Get(),
+            D3D_FEATURE_LEVEL_11_0,
+            IID_PPV_ARGS(&m_device)
+            ));
+    }
+    else
+    {
+        ComPtr<IDXGIAdapter1> hardwareAdapter;
+        GetHardwareAdapter(factory.Get(), &hardwareAdapter);
+ 
+        ThrowIfFailed(D3D12CreateDevice(
+            hardwareAdapter.Get(),
+            D3D_FEATURE_LEVEL_11_0,
+            IID_PPV_ARGS(&m_device)
+            ));
+    }
+ 
+    // Describe and create the command queue.
+    D3D12_COMMAND_QUEUE_DESC queueDesc = {};
+    queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+    queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+ 
+    ThrowIfFailed(m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_commandQueue)));
+ 
+    // Describe and create the swap chain.
+    DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+    swapChainDesc.BufferCount = FrameCount;
+    swapChainDesc.Width = m_width;
+    swapChainDesc.Height = m_height;
+    swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+    swapChainDesc.SampleDesc.Count = 1;
+ 
+    ComPtr<IDXGISwapChain1> swapChain;
+    ThrowIfFailed(factory->CreateSwapChainForHwnd(
+        m_commandQueue.Get(),        // Swap chain needs the queue so that it can force a flush on it.
+        Win32Application::GetHwnd(),
+        &swapChainDesc,
+        nullptr,
+        nullptr,
+        &swapChain
+        ));
+ 
+    // This sample does not support fullscreen transitions.
+    ThrowIfFailed(factory->MakeWindowAssociation(Win32Application::GetHwnd(), DXGI_MWA_NO_ALT_ENTER));
+ 
+    ThrowIfFailed(swapChain.As(&m_swapChain));
+    m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
+ 
+    // Create descriptor heaps.
+    {
+        // Describe and create a render target view (RTV) descriptor heap.
+        D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
+        rtvHeapDesc.NumDescriptors = FrameCount;
+        rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+        rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+        ThrowIfFailed(m_device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&m_rtvHeap)));
+ 
+        m_rtvDescriptorSize = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+    }
+ 
+    // Create frame resources.
+    {
+        CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart());
+ 
+        // Create a RTV for each frame.
+        for (UINT n = 0; n < FrameCount; n++)
+        {
+            ThrowIfFailed(m_swapChain->GetBuffer(n, IID_PPV_ARGS(&m_renderTargets[n])));
+            m_device->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle);
+            rtvHandle.Offset(1, m_rtvDescriptorSize);
+        }
+    }
+ 
+    ThrowIfFailed(m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_commandAllocator)));
+}
+```
+<br>
+
+**LoadPipeline** is responsible for creating some of the objects we need to render (draw) the frames of our sample. Here, for the first time, we meet a method to create a DirectX COM object indirectly: **D3D12GetDebugInterface**. The prototype of this method is as follows:
+
+```{code-block} cpp
+:caption: d3d12.h
+:name: D3D12GetDebugInterface-code
+
+HRESULT WINAPI D3D12GetDebugInterface( _In_ REFIID riid, _COM_Outptr_opt_ void** ppvDebug );
+```
+<br>
+
+The first parameter is the ID of the interface to which we want to get a pointer, while the second parameter is where the function will return the interface pointer to the caller (that is, the address where it will store the address of the COM interface; that's why the parameter is a pointer to a pointer). In this case, the first parameter is the ID of the **ID3D12Debug** interface. So, **D3D12GetDebugInterface** creates an instance of the COM object that implements this interface and returns the interface pointer in the second parameter. Then, the caller can use it to call functionality implemented by the related COM class. Often, the macro **IID_PPV_ARGS** is used to reduce typos. This macro is defined as:
+
+```{code-block} cpp
+:caption: combaseapi.h
+:name: iid-ppv-args-code
+
+#define IID_PPV_ARGS(ppType) __uuidof(**(ppType)), IID_PPV_ARGS_Helper(ppType)
+```
+<br>
+
+The **__uuidof** operator allows to get IDs of COM interfaces and classes. Usually, we pass the address of a **ComPtr** as an argument to **IID_PPV_ARGS**, so that it must be dereference twice to get the underlying interface pointer, which is used by **__uuidof** to determine the type of the requested object and get the corresponding ID. The helper macro **IID_PPV_ARGS_Helper** simply converts the address of a **ComPtr** to a normal **void**** (take a look at the source code in *combaseapi.h* if you want to see how it is implemented). 
+
+After getting a pointer to the **ID3D12Debug** interface, we use it to enable the Direct3D debug layer. This layer helps during debugging by showing error and warning messages in the output window of the debugger if any obscure rendering error, validation control or memory leak occurs.
+
+```{attention}
+**D3D12GetDebugInterface** must be called before the D3D12 device is created. Calling it after creating the D3D12 device will cause the D3D12 runtime to remove the device. The D3D12 runtime refers to a set of functionalities provided by the Direct3D 12 library on which all Direct3D 12 applications depend at run time in order to run as intended. For example, during some critical calls to the DirectX API, the runtime is assumed to handle parameter validation before handing control to user-mode driver, which can assume the parameters are correct.
+```
+
+The **IDXGIFactory4** interface allows to create some important DXGI objects (for example, adapters and swap chains), as well as to enumerate adapters and outputs. It also allows to manage full-screen transitions. We use **CreateDXGIFactory2** to get a pointer to **IDXGIFactory4** because this method allows to pass a flag indicating we are also interested in enabling an additional layer to be informed of errors and warnings about DXGI (in addition to those related to Direct3D).
+
+If you have a video card installed on your system, an interface pointer to the related adapter can be obtained by calling the helper function **DXSample::GetHardwareAdapter**. At that point, we can pass it as an argument to **D3D12CreateDevice** to create a device object and get an interface pointer to it. In the context of Direct3D, by device we simply mean a video card, and we use the device object created with **D3D12CreateDevice** to communicate with a specific video card. **D3D_FEATURE_LEVEL_11_0** specifies we are interested in creating a device object for a GPU that supports the basic functionality provided by Direct3D 12. 
+
+```{note}
+A feature level is a well-defined set of GPU functionalities. For instance, the 9_1 feature level implements the functionality that was implemented in Microsoft Direct3D 9, while the 11_0 feature level implements the functionality that was implemented in Direct3D 11. Of course, Direct3D 12 also implement the functionality of the earlier versions, adding new ones.
+```
+
+```{note}
+A software adapter (called WARP adapter) could also be installed on your system by default. To get an interface pointer to a WARP adapter you need to call **EnumWarpAdapter**. However, we won't make use of software adapters in this tutorial series.
+```
+
+Before proceeding with the explanation of the **LoadPipeline** function, let's see how we can obtain an interface pointer to a hardware adapter by examining the code of the **DXSample::GetHardwareAdapter** method.
+
+```{code-block} cpp
+:caption: D3D12HelloWorld/src/HelloWindow/DXSample.cpp
+:name: GetHardwareAdapter-code
+// Helper function for acquiring the first available hardware adapter that supports Direct3D 12.
+// If no such adapter can be found, *ppAdapter will be set to nullptr.
+_Use_decl_annotations_
+void DXSample::GetHardwareAdapter(
+    IDXGIFactory1* pFactory,
+    IDXGIAdapter1** ppAdapter,
+    bool requestHighPerformanceAdapter)
+{
+    *ppAdapter = nullptr;
+ 
+    ComPtr<IDXGIAdapter1> adapter;
+ 
+    ComPtr<IDXGIFactory6> factory6;
+    if (SUCCEEDED(pFactory->QueryInterface(IID_PPV_ARGS(&factory6))))
+    {
+        for (
+            UINT adapterIndex = 0;
+            SUCCEEDED(factory6->EnumAdapterByGpuPreference(
+                adapterIndex,
+                requestHighPerformanceAdapter == true ? DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE : DXGI_GPU_PREFERENCE_UNSPECIFIED,
+                IID_PPV_ARGS(&adapter)));
+            ++adapterIndex)
+        {
+            DXGI_ADAPTER_DESC1 desc;
+            adapter->GetDesc1(&desc);
+ 
+            if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+            {
+                // Don't select the Basic Render Driver adapter.
+                // If you want a software adapter, pass in "/warp" on the command line.
+                continue;
+            }
+ 
+            // Check to see whether the adapter supports Direct3D 12, but don't create the
+            // actual device yet.
+            if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr)))
+            {
+                break;
+            }
+        }
+    }
+ 
+    if(adapter.Get() == nullptr)
+    {
+        for (UINT adapterIndex = 0; SUCCEEDED(pFactory->EnumAdapters1(adapterIndex, &adapter)); ++adapterIndex)
+        {
+            DXGI_ADAPTER_DESC1 desc;
+            adapter->GetDesc1(&desc);
+ 
+            if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+            {
+                // Don't select the Basic Render Driver adapter.
+                // If you want a software adapter, pass in "/warp" on the command line.
+                continue;
+            }
+ 
+            // Check to see whether the adapter supports Direct3D 12, but don't create the
+            // actual device yet.
+            if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr)))
+            {
+                break;
+            }
+        }
+    }
+    
+    *ppAdapter = adapter.Detach();
+}
+```
+<br>
+
+We use **QueryInterface** to check if we can obtain a pointer to **IDXGIFactory6** from the pointer to the **IDXGIFactory4** interface we passed as an argument. Observe that this will work only if the related COM object implements both interfaces (**IDXGIFactory4** and **IDXGIFactory6**). In that case, we can loop to get a pointer to **IDXGIAdapter1** by calling **EnumAdapterByGpuPreference**. Otherwise, we must use **EnumAdapters1**. However, regardless of how you obtain it, we aim to skip software adapters. Such information (and much more) can be obtained from the **DXGI_ADAPTER_DESC1** structure returned by **IDXGIAdapter1::GetDesc1** as an output parameter.
+
+```{note}
+Typically, interface names ending with a number extend an earlier, well known interface by inheriting from it and adding new functionalities. For example, in the code above we passed **IDXGIFactory4** as an argument to a **IDXGIFactory1** parameter since we are confident that both interfaces implement **QueryInterface**, which is the function we call through the corresponding interface pointer.
+```
+
+Now, we can get back examining **LoadPipeline**.<br>
+We need to create a command queue where to submit command lists which, in turn, will hold the commands we want the GPU execute. Indeed, part of the work of a GPU is to execute commands in command lists consumed from a command queue. In this first sample we have very few commands to send to the GPU because it simply shows a window with a blueish client area. Despite this, we still need a command queue as we need to associate it with the swap chain (behind the scenes the DXGI API records commands to be executed by the GPU; more on this shortly). As shown in the image below, there are multiple types of command queues, each of which can hold command lists of a specific type. Then, CPU threads can create command lists of whatever type and insert them in the related command queue.
+
+<br>
+
+![Image](images/A/rect3158.png)
+
+<br>
+
+Many GPUs have one or more dedicated copy engines, a compute engine, and a 3D engine, each capable of executing specific commands in parallel with the other engines. For this reason, there can be no simple guarantee of the order of execution, hence the need for synchronization mechanisms that allow establishing an execution order, if needed.
+
+For this sample, we will use a graphics command queue (referred to as the 3D queue in the illustration above) as it is capable of holding direct command lists that, in turn, can include all types of commands. Indeed, a graphics queue can drive all GPU engines; the compute queue can drive the compute and copy engines, and the copy queue can only drive the copy engine.
+
+To create a swap chain, we need to specify the number of buffers, their size, format, and usage. We're going to use two buffers of the same size as the window's client area. That way, the buffers will be mapped to the client area without stretching the image. <br>
+**DXGI_FORMAT_R8G8B8A8_UNORM** indicates the format of the buffers. You can imagine the buffers in the swap chain as grids of (width * height) elements, whose common type is specified by a DXGI_FORMAT value. In this case, we indicate that each element is a 32-bit value composed of four 8-bit unsigned-normalized-integer channels, each in the range $[0/255, 255/255]=[0, 1]$ (that is, each channel can have 256 different values). The four channels are called R, G, B and A to mimic the RGB color model, where a color is defined by the amount of red, green and blue it includes. The channel A (called alpha) is used to control the transparency or the opacity of the color. <br>
+**DXGI_USAGE_RENDER_TARGET_OUTPUT** specifies that the buffers will be used as render targets (the targets of drawing operations executed by the GPU). <br>
+**DXGI_SWAP_EFFECT_FLIP_DISCARD** indicates that we want to use the flip presentation model (developed by Microsoft to provide a faster way to present frames on the screen) and that DXGI can discard the contents of a back buffer after it is presented to the user — this can enable some optimizations. <br>
+**SampleDesc.Count** specifies the number of samples per pixel. It should be always 1 as buffers presented using the flip presentation model don't support multisampling (you need to explicitly create MSAA render targets and resolve yourself the results from multi samples to a single sample as part of the presentation of the frame; we will see how to implement MSAA in a later tutorial). <br>
+The call to **CreateSwapChainForHwnd** creates the swap chain. It takes the command queue, the window handle that describes where the buffers will be presented and the description of the buffers in the swap chain. 
+
+```{note}
+The comment to the first argument of **CreateSwapChainForHwnd** in {numref}`loadpipeline-code` states that the swap chain needs a queue to flush. That's because, behind the scenes, the DXGI API creates a command list with the commands needed to create the buffers in the swap chain (in GPU memory).
+```
+
+Now, we have a pointer to **IDXGISwapChain1**. The corresponding COM object almost certainly also implements **IDXGISwapChain3**, so we get a pointer to this interface by using the member function **ComPtr::As**. **IDXGISwapChain3** allows to invoke **GetCurrentBackBufferIndex** to get the index of the current back buffer in the swap chain (the buffer we are going to draw on; the render target).
+
+The call to **IDXGIFactory::MakeWindowAssociation** prevents switching to full-screen mode using the <kbd>Alt</kbd>+<kbd>Enter</kbd> shortcut. We don't need to provide support for full-screen mode in this sample.
+
+The next step is to create a descriptor heap, a memory space we can consider as an array of descriptors. A descriptor, as its name implies, it's a block of data that describes a resource to the GPU (type, format, address and other hardware-specific information) for binding purposes. That is, whenever we need to bind a resource to the rendering pipeline, we pass a descriptor to the GPU to let it know where to find the resource and how to access it.
+
+<br>
+
+![Image](images/A/rect853.png)
+
+<br>
+
+![Image](images/A/rect853b.png)
+
+<br>
+
+But why do we need to create a descriptor heap? Well, many GPUs require that binding information resides in a small size region of memory, which allows the GPU to use less bits to address them (for example, by using byte offsets from a base address). So, the primary purpose of a descriptor heap is to encompass the bulk of memory allocation required for storing descriptors.
+
+Currently, we have a couple of buffers in the swap chain (allocated in GPU memory) that can be used as render targets. However, whenever we want to create a new frame, we need to bind one of them as render target so that the GPU exactly know where to draw. For this purpose, we need to create a descriptor for each buffer in the swap chain and record a binding command in the command list to specify the current render target to the GPU.
+
+We will create descriptors and store them in a descriptor heap from our C++ applications. This means the descriptor heap needs to be CPU visible. That is, the related space must be allocated in CPU-visible video memory (a small part of dedicated VRAM) or in system memory (RAM). That's exactly what **CreateDescriptorHeap** does. 
+
+```{note}
+If you are wondering how GPUs can access descriptors in system memory, the answer is that it is possible through the PCI-e bus. However, as for the descriptor of a render target, the GPU doesn't even need to do that since the driver implicitly copies this descriptor in the command that binds the render target to the pipeline, so that the GPU can directly read from that command (in the correpsponding command list) the details about the buffer to use as render target.
+```
+
+```{note}
+Differently from render targets, descriptors for texture and other type of resources need to be accessed by the GPU wherever they are in memory. That is, the driver doesn't copy the descriptors in the binding command (more on this in the next tutorial).
+```
+
+Then, we set the fields of a **D3D12_DESCRIPTOR_HEAP_DESC** structure to specify we want a descriptor heap that will hold two descriptors of type RTV (render target view; descriptor and view are pretty much the same thing in DirectX). That way, **ID3D12Device::CreateDescriptorHeap** creates a descriptor heap that has enough space to contain two RTVs, and returns an interface pointer to such descriptor heap in the last parameter (or more precisely, an interface pointer to the COM object that implements the interface we will use to reference the descriptor heap; I won't stress on this point anymore). <br>
+Observe that a descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.
+
+**ID3D12Device::GetDescriptorHandleIncrementSize** returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.
+
+Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. **ID3D12DescriptorHeap::GetCPUDescriptorHandleForHeapStart** returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.
+
+```{note}
+As mentioned earlier, a descriptor heap must be CPU visible, so we need a CPU descriptor handle that points to a descriptor in a descriptor heap in order to store a view. <br>
+Handles are opaque pointers, meaning that a handle uniquely identifies a resource, but you shouldn't dereference it as its value only makes sense within a specific context. However, as we will see later in this tutorial, in the context we are working in, CPU descriptor handles returned by **GetCPUDescriptorHandleForHeapStart** are simple CPU virtual addresses, allowing us to use pointer arithmetic to calculate the addresses of other descriptors (see the implementation of **CD3DX12_CPU_DESCRIPTOR_HANDLE::Offset** in *d3dx12.h*). This confirms that descriptor heaps are allocated in CPU-visible memory. <br>
+GPU descriptor handles also exist. However, we will only use them to reference descriptors in a special descriptor heap (more on this in the next tutorial). Observe that, unlike CPU handles, usually GPU handles are just byte offsets from the start of a descriptor heap, not virtual addresses.
+```
+
+```{note}
+**CD3DX12_CPU_DESCRIPTOR_HANDLE** is a wrapper for the Direct3D 12 structure **CPU_DESCRIPTOR_HANDLE**. In general, types with a name that begin with `CD3DX12` are defined in *d3dx12.h* and behave like C++ classes around Direct3D 12 structures to simplify their initialization and to provide useful helper functions.
+```
+
+**IDXGISwapChain:: GetBuffer** returns (as an output parameter) an interface pointer to the buffer of the swap chain associated with the index passed in the first parameter. In particular, we get a pointer to a **ID3D12Resource** interface, used to reference a wide variety of resources from our C++ application. That is, **ID3D12Resource** provides useful information about the related resource in GPU memory (type, format, dimension, GPU virtual address, etc.), but we cannot directly use it to access a GPU resource from CPU code.
+
+```{note}
+**ID3D12Resource** is only an interface implemented by a COM object in system memory: it doesn't directly reference resources in GPU memory. Even if you have the GPU virtual address of a resource, you can't access it from your C++ application because it only "understands" addresses of its CPU virtual address space. However, in some cases, we can use **ID3D12Resource** to map the GPU memory space of a resource to the virtual address space of our application in order to make it CPU visible\accessible. More on this in the next tutorial.
+```
+
+With the pointers to the **ID3D12Resource** interfaces that describe the buffers in the swap chain, we can create the related views by calling **ID3D12Device::CreateRenderTargetView**, indicating the descriptor\position in the descriptor heap where we want to store them. To get the handle of the second descriptor in the heap we use **CD3DX12_CPU_DESCRIPTOR_HANDLE::Offset**, which allows to offset a handle to point a different descriptor from the first one. For this purpose, we need to pass the number of descriptors to offset and their size. That's the reason we stored the size of RTVs.
+
+**ID3D12Device:: CreateCommandAllocator** creates a command allocator. This is essentially a memory manager for a command list, meaning it manages the memory space where a command list stores its commands. You must specify the type of command list the allocator is going to manage. A direct command list can hold all types of commands.
+
+```{note}
+We'll be recording commands in command lists from our C++ application, so the memory space managed by the allocators must be CPU visible. And indeed, the allocation occurs in memory accessible to both CPU and GPU. This implies that either of them can access the command list, although one of the two must do it through the PCI-e bus (unless you have an integrated GPU, of course; further details will be covered in the next tutorial).
+```
+
+```{attention}
+Be careful when reusing a command list because the CPU memory space holding the related commands might still be in use, accessed by the GPU. That is, we don't know when the GPU finishes executing the commands of a command list, at least without a synchronization mechanism between CPU and GPU. We will see how to implement such a mechanism shortly.
+```
+
+Now, it's time to look at the code of the **LoadAssets** function.
 
 [WIP]
 
