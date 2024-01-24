@@ -427,9 +427,14 @@ document.write(`
 <section id="windows-applications">
 <h2>Windows applications<a class="headerlink" href="#windows-applications" title="Permalink to this heading">#</a></h2>
 <p>This section is heavily inspired by the first chapter of the book “Programming Microsoft Visual C++, Fifth Edition” by David J. Kruglinski, George Shepherd and Scott Wingo.</p>
-<p>Windows applications use an event-driven programming model, as illustrated in the following below. In this model, programs respond to events by processing messages sent by the operating system. An event could be a keystroke, a mouse click, or a command for a window to repaint itself. The entry point of a Windows application is a function called <strong>WinMain</strong>, but most of the action occurs in a function known as the window procedure. The window procedure processes messages sent by the OS to the application that a window belongs to. <strong>WinMain</strong> creates that window and then enters a message loop, retrieving messages and dispatching them to the window procedure. Messages wait in a message queue until they are retrieved. The primary task of a Windows application is to respond to the messages it receives. In between messages, it does little except wait for the next message to arrive. An application can exit the message loop when a <strong>WM_QUIT</strong> message is retrieved from the message queue, signaling that the application is about to end. This message is sent by the OS when the user closes the window. When the message loop ends, <strong>WinMain</strong> returns, and the application terminates.</p>
+<p>Windows applications use an event-driven programming model, as illustrated in <a class="reference internal" href="#win-app"><span class="std std-numref">Fig. 1</span></a>. In this model, programs respond to events by processing messages sent by the operating system. An event could be a keystroke, a mouse click, or a command for a window to repaint itself. The entry point of a Windows application is a function called <strong>WinMain</strong>, but most of the action occurs in a function known as the window procedure. The window procedure processes messages sent by the OS to the application that a window belongs to. <strong>WinMain</strong> creates that window and then enters a message loop, retrieving messages and dispatching them to the window procedure. Messages wait in a message queue until they are retrieved. The primary task of a Windows application is to respond to the messages it receives. In between messages, it does little except wait for the next message to arrive. An application can exit the message loop when a <strong>WM_QUIT</strong> message is retrieved from the message queue, signaling that the application is about to end. This message is sent by the OS when the user closes the window. When the message loop ends, <strong>WinMain</strong> returns, and the application terminates.</p>
 <br>
-<p><img alt="Image" src="../../_images/rect31572.png" /></p>
+<figure class="align-default" id="win-app">
+<img alt="../../_images/rect31572.png" src="../../_images/rect31572.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Windows programming model</span><a class="headerlink" href="#win-app" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <br>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -549,8 +554,8 @@ document.write(`
 </section>
 <section id="directx-graphics-infrastructure-dxgi">
 <h2>DirectX Graphics Infrastructure (DXGI)<a class="headerlink" href="#directx-graphics-infrastructure-dxgi" title="Permalink to this heading">#</a></h2>
-<p>Microsoft DirectX Graphics Infrastructure (DXGI) is an API that collects functionality and tasks that don’t change regardless of the version of graphics API you are actually using (Direct3D 10, 11, or 12). Specifically, DXGI manages low-level tasks such as enumerating hardware graphics devices (GPUs) and outputs (monitors), creating rendering buffers, presenting rendered frames to an output, controlling gamma, and managing full-screen transitions. This allows a graphics API to focus on drawing 3D content into buffers without worrying about the origin of these buffers or how they will be displayed. <br>
-DXGI’s purpose is to communicate with the kernel mode driver and the system hardware, as shown in the following diagram.</p>
+<p>Microsoft DirectX Graphics Infrastructure (DXGI) is an API that collects functionality and tasks that don’t change regardless of the version of graphics API you are actually using (Direct3D 10, 11, or 12). Specifically, DXGI manages low-level tasks such as enumerating hardware graphics devices (GPUs) and outputs (monitors), creating rendering buffers, presenting rendered frames to an output, controlling gamma, and managing full-screen transitions. This allows a graphics API to focus on drawing 3D content into buffers without worrying about the origin of these buffers or how they will be displayed.</p>
+<p>DXGI’s purpose is to communicate with the kernel mode driver and the system hardware, as shown in the following diagram.</p>
 <br>
 <p><img alt="Image" src="../../_images/rect92360.png" /></p>
 <br>
@@ -570,12 +575,12 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <section id="framework-overview">
 <h2>Framework overview<a class="headerlink" href="#framework-overview" title="Permalink to this heading">#</a></h2>
 <p>As mentioned earlier in this tutorial, the framework used for building the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample is common to nearly all the other samples we’ll explore in the upcoming tutorials. This means that, by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.</p>
-<p>As you can see in <a class="reference internal" href="#project-props"><span class="std std-numref">Fig. 1</span></a> below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they’re needed, which can reduce startup time and improve memory usage.</p>
+<p>As you can see in <a class="reference internal" href="#project-props"><span class="std std-numref">Fig. 2</span></a> below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they’re needed, which can reduce startup time and improve memory usage.</p>
 <br>
 <figure class="align-default" id="project-props">
 <img alt="../../_images/project-properties.PNG" src="../../_images/project-properties.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Project property pages in Visual Studio</span><a class="headerlink" href="#project-props" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Project property pages in Visual Studio</span><a class="headerlink" href="#project-props" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <br>
@@ -1105,12 +1110,17 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <p>Typically, interface names ending with a number extend an earlier, well known interface by inheriting from it and adding new functionalities. For example, in the code above we passed <strong>IDXGIFactory4</strong> as an argument to a <strong>IDXGIFactory1</strong> parameter since we are confident that both interfaces implement <strong>QueryInterface</strong>, which is the function we call through the corresponding interface pointer.</p>
 </div>
 <p>Now, we can get back examining <strong>LoadPipeline</strong>.<br>
-We need to create a command queue where to submit command lists which, in turn, will hold the commands we want the GPU execute. Indeed, part of the work of a GPU is to execute commands in command lists consumed from a command queue. In this first sample we have very few commands to send to the GPU because it simply shows a window with a blueish client area. Despite this, we still need a command queue as we need to associate it with the swap chain (behind the scenes the DXGI API records commands to be executed by the GPU; more on this shortly). As shown in the image below, there are multiple types of command queues, each of which can hold command lists of a specific type. Then, CPU threads can create command lists of whatever type and insert them in the related command queue.</p>
+We need to create a command queue where to submit command lists which, in turn, will hold the commands we want the GPU execute. Indeed, part of the work of a GPU is to execute commands in command lists consumed from a command queue. In this first sample we have very few commands to send to the GPU because it simply shows a window with a blueish client area. Despite this, we still need a command queue as we need to associate it with the swap chain (behind the scenes the DXGI API records commands to be executed by the GPU; more on this shortly). As shown in <a class="reference internal" href="#command-queues"><span class="std std-numref">Fig. 3</span></a>, there are multiple types of command queues, each of which can hold command lists of a specific type. Then, CPU threads can create command lists of whatever type and insert them in the related command queue.</p>
 <br>
-<p><img alt="Image" src="../../_images/rect3158.png" /></p>
+<figure class="align-default" id="command-queues">
+<img alt="../../_images/rect3158.png" src="../../_images/rect3158.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">GPU command queues</span><a class="headerlink" href="#command-queues" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <br>
 <p>Many GPUs have one or more dedicated copy engines, a compute engine, and a 3D engine, each capable of executing specific commands in parallel with the other engines. For this reason, there can be no simple guarantee of the order of execution, hence the need for synchronization mechanisms that allow establishing an execution order, if needed.</p>
-<p>For this sample, we will use a graphics command queue (referred to as the 3D queue in the illustration above) as it is capable of holding direct command lists that, in turn, can include all types of commands. Indeed, a graphics queue can drive all GPU engines; the compute queue can drive the compute and copy engines, and the copy queue can only drive the copy engine.</p>
+<p>For this sample, we will use a graphics command queue (referred to as the 3D queue in <a class="reference internal" href="#command-queues"><span class="std std-numref">Fig. 3</span></a>) as it is capable of holding direct command lists that, in turn, can include all types of commands. Indeed, a graphics queue can drive all GPU engines; the compute queue can drive the compute and copy engines, and the copy queue can only drive the copy engine.</p>
 <p>To create a swap chain, we need to specify the number of buffers, their size, format, and usage. We’re going to use two buffers of the same size as the window’s client area. That way, the buffers will be mapped to the client area without stretching the image. <br>
 <strong>DXGI_FORMAT_R8G8B8A8_UNORM</strong> indicates the format of the buffers. You can imagine the buffers in the swap chain as grids of (width * height) elements, whose common type is specified by a DXGI_FORMAT value. In this case, we indicate that each element is a 32-bit value composed of four 8-bit unsigned-normalized-integer channels, each in the range <span class="math notranslate nohighlight">\([0/255, 255/255]=[0, 1]\)</span> (that is, each channel can have 256 different values). The four channels are called R, G, B and A to mimic the RGB color model, where a color is defined by the amount of red, green and blue it includes. The channel A (called alpha) is used to control the transparency or the opacity of the color. <br>
 <strong>DXGI_USAGE_RENDER_TARGET_OUTPUT</strong> specifies that the buffers will be used as render targets (the targets of drawing operations executed by the GPU). <br>
@@ -1145,8 +1155,8 @@ The call to <strong>CreateSwapChainForHwnd</strong> creates the swap chain. It t
 <p class="admonition-title">Important</p>
 <p>A descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.</p>
 </div>
-<p>ID3D12Device::GetDescriptorHandleIncrementSize returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.</p>
-<p>Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. ID3D12DescriptorHeap**::GetCPUDescriptorHandleForHeapStart returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.</p>
+<p><strong>ID3D12Device::GetDescriptorHandleIncrementSize</strong> returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.</p>
+<p>Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. <strong>ID3D12DescriptorHeap::GetCPUDescriptorHandleForHeapStart</strong> returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>As mentioned earlier, a descriptor heap must be CPU visible, so we need a CPU descriptor handle that points to a descriptor in a descriptor heap in order to store a view. <br>
@@ -1280,6 +1290,48 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 </pre></div>
 </div>
 </div>
+<br>
+<p>In <strong>PopulateCommandList</strong>, we record (into the command list) the commands required to render a frame. In this sample, we will simply paint the window’s client area blue. We’ll return to this function shortly.</p>
+<p>As we know, a command queue is a collection of command lists, so we can queue multiple command lists if needed. That’s why we pass an array of command lists to <strong>ID3D12CommandQueue::ExecuteCommandLists</strong>. This function submits the command lists (provided as the second parameter) to the command queue, making them ready for consumption by the GPU.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The GPU start executing the command lists sequentially, preserving the order of submission. However, commands within command lists can be executed in parallel whenever possible.</p>
+</div>
+<p>At this point, it should be clear that we are dealing with two different timelines. The term “timeline” in this context refers to the time when something is executed. For example, creating a command queue, a command list, and a command allocator are operations executed on the CPU timeline because the creation of the related resources occurs at the time of an API call in our C++ application, which is executed by the CPU. Adding commands to a command list is also executed on the CPU timeline, but the execution of those commands belongs to the GPU timeline when the GPU actually consumes command lists from a command queue.</p>
+<p><strong>IDXGISwapChain::Present</strong> allows presenting (to the user, on the screen) the frame just created on the CPU timeline (using the current back buffer as the render target). How does it work? Present operations occur on the graphics queue associated with the swap chain. That is, when you call <strong>Present</strong>, a present operation is recorded in the command queue associated with swap chain during its creation, and a request to present the frame is inserted in a queue called the present queue, waiting for the GPU to execute the commands to draw on the related back buffer. Since this happens only after recording all the commands needed to create the frame, you are sure the GPU reached the present operation in the command queue only at the very end (i.e., after executing all the other previous drawing commands). At that point, the frame associated with the request in the present queue is done, ready to be shown on the screen at the next vertical interval when the swap/flip between the back and present buffers takes place.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When you create a frame and present it on the CPU timeline, nothing happens on the related back buffer until the GPU starts executing drawing commands in the related command list.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Present</strong> also updates the index of the current back buffer in the swap chain so that the next frame will be created on the other buffer when it becomes available again as a render target.</p>
+</div>
+<p>Observe that <strong>Present</strong> takes, as its first parameter (called <em>SyncInterval</em>), a value that specifies how to synchronize the presentation of a frame with the vertical blank. For values greater than zero, it indicates the number of vertical intervals the frame waits in the present queue before getting ready to be presented on the screen, enabling v-sync. In this sample, we always pass 1 as an argument to this parameter to specify that we want to wait a single vertical interval. In a later tutorial, we will explore what it means if you pass 0 to this parameter.</p>
+<br>
+<p><img alt="Image" src="../../_images/rect853d.png" /></p>
+<br>
+<p>The term “vertical interval” (or vertical blank, depicted as a dashed diagonal line in <a class="reference internal" href="#present-op"><span class="std std-numref">Fig. 4</span></a>) refers to the time it takes for the scanning process to restart the refresh of your monitor.</p>
+<br>
+<figure class="align-default" id="present-op">
+<img alt="../../_images/path1143b.png" src="../../_images/path1143b.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Presenting a frame</span><a class="headerlink" href="#present-op" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<br>
+<p>In the images below, you can observe that if the GPU isn’t able to draw on the render target quickly enough, the frames per second (FPS) can decrease by half. If a new frame is not prepared for presentation, the previous one will persist on the screen. That is, no swap occurs between back and front buffers at the next v-sync interval since the GPU has not finished drawing on the back buffer.</p>
+<br>
+<p><img alt="Image" src="../../_images/path1143.png" /></p>
+<br>
+<p><img alt="Image" src="../../_images/path1143c.png" /></p>
+<br>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To be honest, the presentation of frames on the screen is a bit more intricate than I just explained. The outcome when presenting a frame can vary based on how you configure the swap chain, whether the window is in full-screen mode, or if v-sync is enabled. However, to avoid unnecessary complexity at this stage, we’ll revisit this topic in a later tutorial.</p>
+</div>
+<p>The sample examined in this tutorial uses a single command allocator to manage the memory space where drawing commands for both buffers in the swap chain are recorded. This implies that we need to flush the command queue before recording the commands to create and present a new frame, as all commands are recorded in the same memory space regardless of the frame we are creating — we can’t overwrite commands still in use by the GPU, obviously. <br>
+This way, CPU and GPU work sequentially: the CPU creates a frame and waits for the GPU to complete it. In other words, we still cannot create frames in advance on the CPU timeline compared to the GPU; in a later tutorial, we will explore how to unleash parallelism between CPU and GPU. <br> For this purpose, <strong>WaitForPreviousFrame</strong> waits for the GPU to finish executing the commands to compose the frame we just created and presented on the CPU timeline. However, before moving on to examine the code of <strong>WaitForPreviousFrame</strong>, we still need to review the implementation of the <strong>PopulateCommandList</strong> function.</p>
 <br>
 <p>[WIP]</p>
 <br>
