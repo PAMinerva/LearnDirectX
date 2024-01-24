@@ -581,7 +581,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>DirectX applications are normal Windows programs, so the entry point is <strong>WinMain</strong> as usual.</p>
 <div class="literal-block-wrapper docutils container" id="winmain-code">
-<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/Main.cpp</span><a class="headerlink" href="#winmain-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">HelloWindow/Main.cpp</span><a class="headerlink" href="#winmain-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stdafx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;D3D12HelloWindow.h&quot;</span>
 <span class="w"> </span>
@@ -602,7 +602,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 </div>
 <br>
 <div class="literal-block-wrapper docutils container" id="stdafx-code">
-<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/stdafx.h</span><a class="headerlink" href="#stdafx-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">HelloWindow/stdafx.h</span><a class="headerlink" href="#stdafx-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;windows.h&gt;</span>
 <span class="w"> </span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;d3d12.h&gt;</span>
@@ -624,7 +624,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>The <strong>D3D12HelloWindow</strong> class is the application class, which defines data and methods specific to the sample.</p>
 <div class="literal-block-wrapper docutils container" id="d3d12hellowindow-code">
-<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.h</span><a class="headerlink" href="#d3d12hellowindow-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.h</span><a class="headerlink" href="#d3d12hellowindow-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloWindow</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -666,7 +666,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>The <strong>DXSample</strong> base class defines data and methods used by all graphics samples.</p>
 <div class="literal-block-wrapper docutils container" id="dxsample-code">
-<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/DXSample.h</span><a class="headerlink" href="#dxsample-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">HelloWindow/DXSample.h</span><a class="headerlink" href="#dxsample-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DXSample</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -720,7 +720,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>The <strong>Win32Application</strong> class defines data and methods used by all Windows applications.</p>
 <div class="literal-block-wrapper docutils container" id="win32application-code">
-<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/Win32Application.h</span><a class="headerlink" href="#win32application-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">HelloWindow/Win32Application.h</span><a class="headerlink" href="#win32application-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Win32Application</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -744,7 +744,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>As you might have noticed in <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, the entry point (<strong>WinMain</strong>) creates an instance of the <strong>D3D12HelloWindow</strong> class by calling its constructor.</p>
 <div class="literal-block-wrapper docutils container" id="d3d12hellowindow-ctor-code">
-<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#d3d12hellowindow-ctor-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#d3d12hellowindow-ctor-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">D3D12HelloWindow</span><span class="o">::</span><span class="n">D3D12HelloWindow</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
 <span class="w">    </span><span class="n">DXSample</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
 <span class="w">    </span><span class="n">m_frameIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
@@ -757,7 +757,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>The constructor of the <strong>D3D12HelloWindow</strong> class initializes some of the class’s data members to default values and invokes the constructor of its base class (<strong>DXSample</strong>).</p>
 <div class="literal-block-wrapper docutils container" id="dxsample-ctor-code">
-<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/DXSample.cpp</span><a class="headerlink" href="#dxsample-ctor-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#dxsample-ctor-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">DXSample</span><span class="o">::</span><span class="n">DXSample</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
 <span class="w">    </span><span class="n">m_width</span><span class="p">(</span><span class="n">width</span><span class="p">),</span>
 <span class="w">    </span><span class="n">m_height</span><span class="p">(</span><span class="n">height</span><span class="p">),</span>
@@ -784,7 +784,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>In <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, <strong>Win32Application::Run</strong> is called passing the instance of the <strong>D3D12HelloWindow</strong> class, along with the named parameters of <strong>WinMain</strong>.</p>
 <div class="literal-block-wrapper docutils container" id="run-code">
-<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#run-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#run-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">Win32Application::Run</span><span class="p">(</span><span class="n">DXSample</span><span class="o">*</span><span class="w"> </span><span class="n">pSample</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="c1">// Parse the command line parameters</span>
@@ -870,7 +870,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <h2>D3D12HelloWindow: code review<a class="headerlink" href="#d3d12hellowindow-code-review" title="Permalink to this heading">#</a></h2>
 <p>The <strong>DXSample::OnInit</strong> method is a virtual function that must be overridden in derived classes. This has been done this in the <strong>D3D12HelloWindow</strong> class. The implementation is shown in <a class="reference internal" href="#oninit-code"><span class="std std-numref">Listing 9</span></a>.</p>
 <div class="literal-block-wrapper docutils container" id="oninit-code">
-<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#oninit-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#oninit-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnInit</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">LoadPipeline</span><span class="p">();</span>
@@ -882,7 +882,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 <br>
 <p>The <strong>OnInit</strong> method simply calls <strong>LoadPipeline</strong> and <strong>LoadAssets</strong>. Let’s start examining <strong>LoadPipeline</strong>.</p>
 <div class="literal-block-wrapper docutils container" id="loadpipeline-code">
-<div class="code-block-caption"><span class="caption-number">Listing 10 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#loadpipeline-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 10 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#loadpipeline-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the rendering pipeline dependencies.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::LoadPipeline</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1027,7 +1027,7 @@ DXGI’s purpose is to communicate with the kernel mode driver and the system ha
 </div>
 <p>Before proceeding with the explanation of the <strong>LoadPipeline</strong> function, let’s see how we can obtain an interface pointer to a hardware adapter by examining the code of the <strong>DXSample::GetHardwareAdapter</strong> method.</p>
 <div class="literal-block-wrapper docutils container" id="gethardwareadapter-code">
-<div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/DXSample.cpp</span><a class="headerlink" href="#gethardwareadapter-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#gethardwareadapter-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Helper function for acquiring the first available hardware adapter that supports Direct3D 12.</span>
 <span class="c1">// If no such adapter can be found, *ppAdapter will be set to nullptr.</span>
 <span class="n">_Use_decl_annotations_</span>
@@ -1145,8 +1145,8 @@ The call to <strong>CreateSwapChainForHwnd</strong> creates the swap chain. It t
 <p class="admonition-title">Important</p>
 <p>A descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.</p>
 </div>
-<p><strong>ID3D12Device::GetDescriptorHandleIncrementSize</strong> returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.</p>
-<p>Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. <strong>ID3D12DescriptorHeap::GetCPUDescriptorHandleForHeapStart</strong> returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.</p>
+<p><strong>ID3D12Device</strong>::<strong>GetDescriptorHandleIncrementSize</strong> returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.</p>
+<p>Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. <strong>ID3D12DescriptorHeap</strong>::<strong>GetCPUDescriptorHandleForHeapStart</strong> returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>As mentioned earlier, a descriptor heap must be CPU visible, so we need a CPU descriptor handle that points to a descriptor in a descriptor heap in order to store a view. <br>
@@ -1174,7 +1174,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 </div>
 <p>Now, let’s examine the code of the <strong>LoadAssets</strong> function, responsible for creating other objects and resources required for rendering the frames of our graphics samples.</p>
 <div class="literal-block-wrapper docutils container" id="loadassets-code">
-<div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#loadassets-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#loadassets-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::LoadAssets</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1207,7 +1207,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p>At this point, the initialization stage is complete (that is, the call to <strong>DXSample::OnInit</strong> in <strong>Win32Application::Run</strong> returns, see <a class="reference internal" href="#run-code"><span class="std std-numref">Listing 8</span></a>), and <strong>ShowWindow</strong> is invoked to activate the window and display it at its current size and position. Then, the application can enter the message loop, where <strong>PeekMessage</strong> retrieves a message from the message queue, and stores the related information in the <strong>MSG</strong> structure passed in the first parameter before returning <strong>TRUE</strong> (otherwise it returns <strong>FALSE</strong> to indicate no message was available). <strong>DispatchMessage</strong> dispatches a message to the window procedure. <strong>TranslateMessage</strong> translates virtual-key messages (<strong>WM_KEYDOWN</strong>, <strong>WM_KEYUP</strong>) into character messages (<strong>WM_CHAR</strong>) containing ASCII characters. This allows us to better distinguish the various keys on the keyboard.</p>
 <p>However, remember that <strong>CreateWindow</strong>, before returning, sent a <strong>WM_CREATE</strong> message to the window procedure.</p>
 <div class="literal-block-wrapper docutils container" id="windowproc-code">
-<div class="code-block-caption"><span class="caption-number">Listing 15 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#windowproc-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 15 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#windowproc-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Main message handler for the sample.</span>
 <span class="n">LRESULT</span><span class="w"> </span><span class="n">CALLBACK</span><span class="w"> </span><span class="n">Win32Application</span><span class="o">::</span><span class="n">WindowProc</span><span class="p">(</span><span class="n">HWND</span><span class="w"> </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">WPARAM</span><span class="w"> </span><span class="n">wParam</span><span class="p">,</span><span class="w"> </span><span class="n">LPARAM</span><span class="w"> </span><span class="n">lParam</span><span class="p">)</span>
 <span class="p">{</span>
@@ -1261,7 +1261,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p>After the user closes the window, a <strong>WM_DESTROY</strong> message is sent to the window procedure of the destroyed window. The <strong>WM_DESTROY</strong> message handler invokes <strong>PostQuitMessage</strong>, which queues a <strong>WM_QUIT</strong> message. This enables us to exit the message loop in <strong>Win32Application::Run</strong> and execute <strong>DXSample::OnDestroy</strong>. This is a pure virtual function overridden by <strong>D3D12HelloWindow::OnDestroy</strong>. This function simply calls <strong>WaitForPreviousFrame</strong>, which waits for the GPU to complete rendering the previous frame (more on this shortly).</p>
 <p>Typically, <strong>WM_PAINT</strong> messages are both sent to the window procedure and posted to the message queue throughout the application’s lifetime. This allows us to consistently call <strong>OnUpdate</strong> and <strong>OnRender</strong> within the <strong>WM_PAINT</strong> message handler. These are pure virtual functions overridden by the <strong>D3D12HelloWindow</strong> class. Since <strong>OnUpdate</strong> doesn’t perform any actions in this sample, let’s proceed directly to examining <strong>OnRender</strong>.</p>
 <div class="literal-block-wrapper docutils container" id="onrender-code">
-<div class="code-block-caption"><span class="caption-number">Listing 16 </span><span class="caption-text">D3D12HelloWorld/src/HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#onrender-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 16 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#onrender-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Render the scene.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnRender</span><span class="p">()</span>
 <span class="p">{</span>
