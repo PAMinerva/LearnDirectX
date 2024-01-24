@@ -232,7 +232,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
     return Win32Application::Run(&sample, hInstance, nCmdShow);
 }
 ```
-<br>
 
 {numref}`stdafx-code` show the *stdafx.h* header, which includes other header files associated with various DirectX libraries, such as Direct3D 12, DirectXMath, and DXGI. We need to include *wrl.h* to use the smart pointers provided by the Windows Template Library. *d3dx12.h* defines helpful structures that act as C++ wrappers around Direct3D 12 native structures, simplifying their initialization. Additionally, this header provides helper functions that make handling subresources more straightforward. *D3DCompiler.h* is the header associated with a library we will use to compile shader code. The concepts of subresources and shader code will be covered in upcoming tutorials.
 
@@ -399,7 +398,6 @@ D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name) :
 {
 }
 ```
-<br>
 
 The constructor of the **D3D12HelloWindow** class initializes some of the class's data members to default values and invokes the constructor of its base class (**DXSample**).
 
@@ -419,7 +417,6 @@ DXSample::DXSample(UINT width, UINT height, std::wstring name) :
     m_aspectRatio = static_cast<float>(width) / static_cast<float>(height);
 }
 ```
-<br>
 
 The constructor of the DXSample cass initializes the sample's name and the dimensions of the window's client area, where the rendering will take place.
 
@@ -497,19 +494,18 @@ int Win32Application::Run(DXSample* pSample, HINSTANCE hInstance, int nCmdShow)
     return static_cast<char>(msg.wParam);
 }
 ```
-<br>
 
 Creating a window requires an instance of a window class (represented by the **WNDCLASSEX** structure), which defines essential attributes for all windows derived from that class. Here's a summary of the most important **WNDCLASSEX** fields.
 
-**style** specifies additional informations about the window's appearance and behavior. For example, `CS_HREDRAW | CS_VREDRAW` instructs the OS to redraw the entire window if a resize operation affects the client area's dimensions.
+- **style** specifies additional informations about the window's appearance and behavior. For example, `CS_HREDRAW | CS_VREDRAW` instructs the OS to redraw the entire window if a resize operation affects the client area's dimensions.
 
-**hCursor** indicates the cursor displayed when the mouse hovers over the window's client area.
+- **hCursor** indicates the cursor displayed when the mouse hovers over the window's client area.
 
-**hInstance** specifies the application to which the window belongs. This information is passed to **WinMain** as the first argument.
+- **hInstance** specifies the application to which the window belongs. This information is passed to **WinMain** as the first argument.
 
-**lpszClassName** specifies the name we want to give to the window class.
+- **lpszClassName** specifies the name we want to give to the window class.
 
-**lpfnWndProc** specifies the address of the window procedure.
+- **lpfnWndProc** specifies the address of the window procedure.
 
 <br>
 
@@ -542,7 +538,6 @@ void D3D12HelloWindow::OnInit()
     LoadAssets();
 }
 ```
-<br>
 
 The **OnInit** method simply calls **LoadPipeline** and **LoadAssets**. Let's start examining **LoadPipeline**.
 
@@ -656,7 +651,6 @@ void D3D12HelloWindow::LoadPipeline()
     ThrowIfFailed(m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_commandAllocator)));
 }
 ```
-<br>
 
 **LoadPipeline** is responsible for creating some of the objects we need to render (draw) the frames of our sample. Here, for the first time, we meet a method to create a DirectX COM object indirectly: **D3D12GetDebugInterface**. The prototype of this method is as follows:
 
@@ -666,7 +660,6 @@ void D3D12HelloWindow::LoadPipeline()
 
 HRESULT WINAPI D3D12GetDebugInterface( _In_ REFIID riid, _COM_Outptr_opt_ void** ppvDebug );
 ```
-<br>
 
 The first parameter is the ID of the interface to which we want to get a pointer, while the second parameter is where the function will return the interface pointer to the caller (that is, the address where it will store the address of the COM interface; that's why the parameter is a pointer to a pointer). In this case, the first parameter is the ID of the **ID3D12Debug** interface. So, **D3D12GetDebugInterface** creates an instance of the COM object that implements this interface and returns the interface pointer in the second parameter. Then, the caller can use it to call functionality implemented by the related COM class. Often, the macro **IID_PPV_ARGS** is used to reduce typos. This macro is defined as:
 
@@ -676,7 +669,6 @@ The first parameter is the ID of the interface to which we want to get a pointer
 
 #define IID_PPV_ARGS(ppType) __uuidof(**(ppType)), IID_PPV_ARGS_Helper(ppType)
 ```
-<br>
 
 The **__uuidof** operator allows to get IDs of COM interfaces and classes. Usually, we pass the address of a **ComPtr** as an argument to **IID_PPV_ARGS**, so that it must be dereference twice to get the underlying interface pointer, which is used by **__uuidof** to determine the type of the requested object and get the corresponding ID. The helper macro **IID_PPV_ARGS_Helper** simply converts the address of a **ComPtr** to a normal **void**** (take a look at the source code in *combaseapi.h* if you want to see how it is implemented). 
 
@@ -771,7 +763,6 @@ void DXSample::GetHardwareAdapter(
     *ppAdapter = adapter.Detach();
 }
 ```
-<br>
 
 We use **QueryInterface** to check if we can obtain a pointer to **IDXGIFactory6** from the pointer to the **IDXGIFactory4** interface we passed as an argument. Observe that this will work only if the related COM object implements both interfaces (**IDXGIFactory4** and **IDXGIFactory6**). In that case, we can loop to get a pointer to **IDXGIAdapter1** by calling **EnumAdapterByGpuPreference**. Otherwise, we must use **EnumAdapters1**. However, regardless of how you obtain it, we aim to skip software adapters. Such information (and much more) can be obtained from the **DXGI_ADAPTER_DESC1** structure returned by **IDXGIAdapter1::GetDesc1** as an output parameter.
 
@@ -897,7 +888,6 @@ void D3D12HelloWindow::LoadAssets()
     }
 }
 ```
-<br>
 
 We first create a direct command list using **ID3D12Device::CreateCommandList**, passing the related command allocator as an argument. A command list is initially created in a state where it is ready to receive commands. We have no commands to record in the list right now, though. Additionally, a command list must be closed when you call **Reset** on it. This is a common operation to perform the first time you use a command list or when you reuse it (often after submitting the command list to draw a previous frame). Therefore, we close the command list now, waiting to call **Reset** on it later.
 
@@ -956,7 +946,6 @@ LRESULT CALLBACK Win32Application::WindowProc(HWND hWnd, UINT message, WPARAM wP
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
 ```
-<br>
 
 Observe that we pass a pointer to the instance of the application class as the last parameter to **CreateWindow**. The operating system returns this pointer to us in response to a **WM_CREATE** message, giving us the opportunity to save it for later access. Inside the **WM_CREATE** message handler, **lParam** holds a pointer to **CREATESTRUCT**. The **lpCreateParams** field of this structure contains the last parameter passed to **CreateWindow**. We call **SetWindowLongPtr** to store this information in the user data associated with the window (an additional memory space reserved for the user) and we will retrieve it later using **GetWindowLongPtr**.
 
@@ -983,7 +972,6 @@ void D3D12HelloWindow::OnRender()
     WaitForPreviousFrame();
 }
 ```
-<br>
 
 In **PopulateCommandList**, we record (into the command list) the commands required to render a frame. In this sample, we will simply paint the window's client area blue. We'll return to this function shortly.
 
@@ -1069,11 +1057,10 @@ void D3D12HelloWindow::PopulateCommandList()
     ThrowIfFailed(m_commandList->Close());
 }
 ```
-<br>
 
-As mentioned above, a command allocator cannot be reused until the GPU has finished executing all the commands in the memory space managed by the allocator. Therefore, we need a fence to track the GPU progress. That's exactly what **WaitForPreviousFrame** does at the end of **OnRender**. This way, we can be sure that whenever we call PopulateCommandexactlyList, we can reuse the command allocator.
+As mentioned above, a command allocator cannot be reused until the GPU has finished executing all the commands in the memory space managed by the allocator. Therefore, we need a fence to track the GPU progress. That's exactly what **WaitForPreviousFrame** does at the end of [**OnRender**](OnRender-code). This way, we can be sure that whenever we call PopulateCommandexactlyList, we can reuse the command allocator.
 
-On the other hand, we have no problems reusing the command list (associated with the same command allocator) after calling **ExecuteCommandList**, as we used a fence to ensure there are no pending commands. Thus, we can record new commands without worrying about overwriting pending commands in the memory space managed by the allocator. Alternatively, we can use the same command list but with a different command allocator. In any case, a command list must be reset every time we record new commands, and in turn, a reset needs a closed command list (which we did in **LoadAssets**). <br>
+On the other hand, we have no problems reusing the command list (associated with the same command allocator) after calling **ExecuteCommandList**, as we used a fence to ensure there are no pending commands. Thus, we can record new commands without worrying about overwriting pending commands in the memory space managed by the allocator. Alternatively, we can use the same command list but with a different command allocator. In any case, a command list must be reset every time we record new commands, and in turn, a reset needs a closed command list (which we did in [**LoadAssets**](loadassets-code)). <br>
 **ID3D12GraphicsCommandList::Reset** takes the command allocator associated with the command list and, optionally, a pipeline state object (PSO) that sets the state of the rendering pipeline. In this case, **m_pipelineState** holds a null pointer that indicates to set a default pipeline state. We'll return to the rendering pipeline and its state in the next tutorial.
 
 Then, we indicate that we are going to use the current back buffer as the render target. We specify this information with a resource state transition. Why do we need to point out a state transition for a resource? Imagine having a buffer you use both for read and write operations. Before starting a read operation, all ongoing write operations need to be completed. State transitions are used to inform the GPU how we intend to use a resource so it can complete some ongoing operations on that resource before starting new ones.
@@ -1113,7 +1100,7 @@ At this point, we have completed the frame creation on the CPU timeline, so we c
 Please remember that a command list must be closed before submitting it to the command queue.
 ```
 
-Now, we can finally review the code of the **WaitForPreviousFrame** function, which is invoked at the end of **OnRender**. As previously mentioned, the primary purpose of this method is to flush the command queue.
+Now, we can finally review the code of the **WaitForPreviousFrame** function, which is invoked at the end of [**OnRender**](OnRender-code). As previously mentioned, the primary purpose of this method is to flush the command queue.
 
 ```{code-block} cpp
 :caption: HelloWindow/Win32Application.cpp
@@ -1140,9 +1127,22 @@ void D3D12HelloWindow::WaitForPreviousFrame()
     m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
 }
 ```
+
+The comment at the beginning of {numref}`WaitForPreviousFrame-code` states that you shouldn’t wait for a frame to complete. Indeed, we could start recording commands for the next frame if we had separated command allocators for the two buffers in the swap chain. Unfortunately, this is not the case, so we merely wait for the GPU to complete a frame before creating the next one on the CPU timeline. That way, we are sure the command queue is empty, so that we can reuse the command allocator whenever we call **PopulateCommandList**.
+
+We store **m_fenceValue** in a local variable. Remember that the value of this member is 1 in the first call to **WaitForPreviousFrame** (look at the implementation of the [**LoadAssets**](loadassets-code) function again).
+
+**ID3D12CommandQueue::Signal** inserts in the command queue a fence with a value equal to the one passed as the second parameter (1, in this case). Then, we increase the value of **m_fenceValue**. At this point, in the command queue, there is the command list we submitted in [**OnRender**](OnRender-code), followed by a fence with value 1.
+
+**ID3D12Fence::GetCompletedValue** returns the value of the last fence met\executed by the GPU in the command queue. If still no fence has been executed, this function returns 0. So, if the GPU hasn’t finished drawing the frame, we wait for **m_fenceEvent** to get signaled. Otherwise, if **GetCompletedValue** returns the fence value passed to **Signal**, we are sure that the GPU finished drawing the frame. A fence is signaled when the GPU meets\executes it on the command queue (that is, the execution of a fence results in a change from a non-signaled to a signaled state of the corresponding event associated with **SetEventOnCompletion**).
+
+Observe that the call to **IDXGISwapChain::Present**, performed in [**OnRender**](OnRender-code) before invoking  **WaitForPreviousFrame**, updates the index of the current back buffer, so here **GetCurrentBackBufferIndex** returns the index of the buffer where to create the next frame. At that point **m_fenceValue** is 2, and a fence with this value will be used to delimit the command list submitted to the command queue to draw the second frame. And so on.
+
 <br>
 
-[WIP]
+<br>
+
+Source code: [D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
 
 <br>
 
