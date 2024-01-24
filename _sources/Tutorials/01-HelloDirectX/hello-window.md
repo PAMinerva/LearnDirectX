@@ -222,7 +222,7 @@ Project property pages in Visual Studio
 DirectX applications are normal Windows programs, so the entry point is **WinMain** as usual.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/Main.cpp
+:caption: HelloWindow/Main.cpp
 :name: winmain-code
 #include "stdafx.h"
 #include "D3D12HelloWindow.h"
@@ -244,7 +244,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 <br>
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/stdafx.h
+:caption: HelloWindow/stdafx.h
 :name: stdafx-code
 #include <windows.h>
  
@@ -269,7 +269,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 The **D3D12HelloWindow** class is the application class, which defines data and methods specific to the sample.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.h
+:caption: HelloWindow/D3D12HelloWindow.h
 :name: D3D12HelloWindow-code
 class D3D12HelloWindow : public DXSample
 {
@@ -312,7 +312,7 @@ private:
 The **DXSample** base class defines data and methods used by all graphics samples.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/DXSample.h
+:caption: HelloWindow/DXSample.h
 :name: DXSample-code
 class DXSample
 {
@@ -367,7 +367,7 @@ private:
 The **Win32Application** class defines data and methods used by all Windows applications.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.h
+:caption: HelloWindow/Win32Application.h
 :name: Win32Application-code
 class Win32Application
 {
@@ -392,7 +392,7 @@ It's perfectly fine if you don't understand the meaning of every single class me
 As you might have noticed in {numref}`winmain-code`, the entry point (**WinMain**) creates an instance of the **D3D12HelloWindow** class by calling its constructor.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
+:caption: HelloWindow/D3D12HelloWindow.cpp
 :name: D3D12HelloWindow-ctor-code
 D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name) :
     DXSample(width, height, name),
@@ -406,7 +406,7 @@ D3D12HelloWindow::D3D12HelloWindow(UINT width, UINT height, std::wstring name) :
 The constructor of the **D3D12HelloWindow** class initializes some of the class's data members to default values and invokes the constructor of its base class (**DXSample**).
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/DXSample.cpp
+:caption: HelloWindow/DXSample.cpp
 :name: DXSample-ctor-code
 DXSample::DXSample(UINT width, UINT height, std::wstring name) :
     m_width(width),
@@ -442,7 +442,7 @@ The client area is the region of a window where drawing is allowed. Technically 
 In {numref}`winmain-code`, **Win32Application::Run** is called passing the instance of the **D3D12HelloWindow** class, along with the named parameters of **WinMain**.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.cpp
+:caption: HelloWindow/Win32Application.cpp
 :name: run-code
 int Win32Application::Run(DXSample* pSample, HINSTANCE hInstance, int nCmdShow)
 {
@@ -539,7 +539,7 @@ Observe that the **OnInit** method is invoked through the **pSample** pointer be
 The **DXSample::OnInit** method is a virtual function that must be overridden in derived classes. This has been done this in the **D3D12HelloWindow** class. The implementation is shown in {numref}`oninit-code`.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
+:caption: HelloWindow/D3D12HelloWindow.cpp
 :name: oninit-code
 void D3D12HelloWindow::OnInit()
 {
@@ -552,7 +552,7 @@ void D3D12HelloWindow::OnInit()
 The **OnInit** method simply calls **LoadPipeline** and **LoadAssets**. Let's start examining **LoadPipeline**.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
+:caption: HelloWindow/D3D12HelloWindow.cpp
 :name: loadpipeline-code
 // Load the rendering pipeline dependencies.
 void D3D12HelloWindow::LoadPipeline()
@@ -706,7 +706,7 @@ A software adapter (called WARP adapter) could also be installed on your system 
 Before proceeding with the explanation of the **LoadPipeline** function, let's see how we can obtain an interface pointer to a hardware adapter by examining the code of the **DXSample::GetHardwareAdapter** method.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/DXSample.cpp
+:caption: HelloWindow/DXSample.cpp
 :name: GetHardwareAdapter-code
 // Helper function for acquiring the first available hardware adapter that supports Direct3D 12.
 // If no such adapter can be found, *ppAdapter will be set to nullptr.
@@ -844,9 +844,9 @@ Then, we set the fields of a **D3D12_DESCRIPTOR_HEAP_DESC** structure to specify
 A descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.
 ```
 
-**ID3D12Device::GetDescriptorHandleIncrementSize** returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.
+**ID3D12Device**::**GetDescriptorHandleIncrementSize** returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.
 
-Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. **ID3D12DescriptorHeap::GetCPUDescriptorHandleForHeapStart** returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.
+Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. **ID3D12DescriptorHeap**::**GetCPUDescriptorHandleForHeapStart** returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.
 
 ```{note}
 As mentioned earlier, a descriptor heap must be CPU visible, so we need a CPU descriptor handle that points to a descriptor in a descriptor heap in order to store a view. <br>
@@ -879,7 +879,7 @@ Be careful when reusing a command list because the CPU memory space holding the 
 Now, let's examine the code of the **LoadAssets** function, responsible for creating other objects and resources required for rendering the frames of our graphics samples.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/D3D12HelloWindow.cpp
+:caption: HelloWindow/D3D12HelloWindow.cpp
 :name: loadassets-code
 // Load the sample assets.
 void D3D12HelloWindow::LoadAssets()
@@ -916,7 +916,7 @@ At this point, the initialization stage is complete (that is, the call to **DXSa
 However, remember that **CreateWindow**, before returning, sent a **WM_CREATE** message to the window procedure.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.cpp
+:caption: HelloWindow/Win32Application.cpp
 :name: WindowProc-code
 // Main message handler for the sample.
 LRESULT CALLBACK Win32Application::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -973,7 +973,7 @@ After the user closes the window, a **WM_DESTROY** message is sent to the window
 Typically, **WM_PAINT** messages are both sent to the window procedure and posted to the message queue throughout the application's lifetime. This allows us to consistently call **OnUpdate** and **OnRender** within the **WM_PAINT** message handler. These are pure virtual functions overridden by the **D3D12HelloWindow** class. Since **OnUpdate** doesn't perform any actions in this sample, let's proceed directly to examining **OnRender**.
 
 ```{code-block} cpp
-:caption: D3D12HelloWorld/src/HelloWindow/Win32Application.cpp
+:caption: HelloWindow/Win32Application.cpp
 :name: OnRender-code
 // Render the scene.
 void D3D12HelloWindow::OnRender()
