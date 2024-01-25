@@ -415,14 +415,14 @@ document.write(`
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>DirectX provides a set of APIs that can be used to create games and graphics applications. Specifically, it includes support for high-performance 2-D and 3-D graphics, audio, arithmetic, and linear algebra operations. Below is a list of the main APIs included in DirectX. However, our primary focus is on Direct3D 12 and DirectXMath, the only ones we will be using for a while.</p>
-<br>
-<p><strong>Direct3D</strong> provides functionality for performing 3-D graphics rendering tasks. It is used to draw primitives (i.e., points, lines, and triangles) within the rendering pipeline or to start parallel operations on the GPU. When we refer to Direct3D 12, we are specifically talking about the API that enables apps to leverage the graphics and computing capabilities of PCs equipped with a DirectX 12-compatible GPU.</p>
-<p><strong>Direct2D</strong> offers functionality for rendering 2-D geometries, bitmaps, and text. It is designed to interoperate with existing code that uses Direct3D to create 2D menus, user interface (UI) elements, and Heads-up Displays (HUDs).</p>
-<p><strong>DirectWrite</strong> provides support for high-quality text rendering, resolution-independent outline fonts, and full Unicode text and layouts. It is designed to interoperate with Direct2D to render text by taking advantage of hardware acceleration. Text can also be filled with an arbitrary Direct2D brush, such as radial gradients, linear gradients, and bitmaps.</p>
-<p><strong>DirectXMath</strong> provides types and helper functions for common linear algebra and graphics math operations that are frequently used in DirectX applications.</p>
-<p><strong>XAudio2</strong> allows the addition of sound effects and background music, or the development of high-performance audio engines.</p>
-<p><strong>XInput</strong> enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.</p>
-<br>
+<ul class="simple">
+<li><p><strong>Direct3D</strong> provides functionality for performing 3-D graphics rendering tasks. It is used to draw primitives (i.e., points, lines, and triangles) within the rendering pipeline or to start parallel operations on the GPU. When we refer to Direct3D 12, we are specifically talking about the API that enables apps to leverage the graphics and computing capabilities of PCs equipped with a DirectX 12-compatible GPU.</p></li>
+<li><p><strong>Direct2D</strong> offers functionality for rendering 2-D geometries, bitmaps, and text. It is designed to interoperate with existing code that uses Direct3D to create 2D menus, user interface (UI) elements, and Heads-up Displays (HUDs).</p></li>
+<li><p><strong>DirectWrite</strong> provides support for high-quality text rendering, resolution-independent outline fonts, and full Unicode text and layouts. It is designed to interoperate with Direct2D to render text by taking advantage of hardware acceleration. Text can also be filled with an arbitrary Direct2D brush, such as radial gradients, linear gradients, and bitmaps.</p></li>
+<li><p><strong>DirectXMath</strong> provides types and helper functions for common linear algebra and graphics math operations that are frequently used in DirectX applications.</p></li>
+<li><p><strong>XAudio2</strong> allows the addition of sound effects and background music, or the development of high-performance audio engines.</p></li>
+<li><p><strong>XInput</strong> enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.</p></li>
+</ul>
 <p>To create graphics applications, you first need a window to draw on. Therefore, the aim of this tutorial is to create and display a simple window on your screen. For this purpose, we will examine the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, which is part of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">DirectX-Graphics-Samples</a> repository maintained by Microsoft. The only significant graphics operation performed by this sample is the setting of the window background color. You might be surprised to discover that you need to write a substantial amount of code to execute this simple operation. The good news is that the code we will review in this first tutorial primarily consists of boilerplate code. This means that, by the end of this tutorial, you will have a basic understanding of the common framework used by almost all samples we will examine in the upcoming tutorials, so we can solely focus on new additions.</p>
 <p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id14" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id16" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id15" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micc</a>]</span> for further information.</p>
 <br>
@@ -447,7 +447,6 @@ document.write(`
 <section id="messages">
 <h3>Messages<a class="headerlink" href="#messages" title="Permalink to this heading">#</a></h3>
 <p>Windows defines many different message types. Usually, messages have names that begin with the letters “WM_”, as in <strong>WM_CREATE</strong> and <strong>WM_PAINT</strong>. The following table shows ten of the most common messages.</p>
-<br>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Message</p></th>
@@ -495,7 +494,6 @@ document.write(`
 <li><p>A message ID, and</p></li>
 <li><p>Two 32-bit parameters known as <strong>wParam</strong> and <strong>lParam</strong>.</p></li>
 </ul>
-<br>
 <p>The window handle is a 32-bit value that uniquely identifies a window. Internally, the value references a data structure in which the OS stores relevant information about the window such as its size, style, and location on the screen.</p>
 <p>The message ID is a numeric value that identifies the message type: <strong>WM_CREATE</strong>, <strong>WM_PAINT</strong>, and so on.</p>
 <p><strong>wParam</strong> and <strong>lParam</strong> contain information specific to the message type. For example, when a <strong>WM_LBUTTONDOWN</strong> message arrives, <strong>wParam</strong> holds a series of bit flags identifying the state of the <kbd>Ctrl</kbd> and <kbd>Shift</kbd> keys and of the mouse buttons. <strong>lParam</strong> holds two 16-bit values identifying the location of the mouse pointer (in screen coordinates) when the click occurred. At that point, you have all you need to know to process the <strong>WM_LBUTTONDOWN</strong> message in the window procedure. Conventionally, <strong>WinMain</strong> should return the value stored in the <strong>wParam</strong> of the <strong>WM_QUIT</strong> message.</p>
@@ -523,7 +521,6 @@ document.write(`
 <li><p>Clients create COM objects using methods implemented in the servers. That way, the implementation of the COM class is hidden from the clients entirely. Only the server knows how to create a COM object, so if the private part of the COM class changes, the client is not affected because the interface is still the same — interfaces don’t contain data members.</p></li>
 <li><p>COM classes and interfaces have unique IDs. That way it’s possible for more than a server to implement the same interface, and for a client to load the correct server (DLL) in memory. So, if there are more versions of the DLL available, the client can choose what server to load. Then, if your application wants to use new functionalities, you are forced to recompile.</p></li>
 </ul>
-<br>
 <p>However, even though COM involves the use of abstract interfaces, client and server still need to agree on the binary representation of these interfaces for effective communication. To address this, the COM specification outlines a binary object layout that can be implemented and comprehended by nearly any language and platform. Notably, Microsoft opted to employ a virtual table mechanism similar to the one used in their C++ implementation. Essentially, a COM interface in memory is nothing more than a virtual table containing function pointers and additional data. Consequently, an interface pointer to a COM object is merely a pointer to a virtual table.</p>
 <p>In essence, for a language or compiler to support COM, it must adhere to the layout of COM interfaces as specified by the COM specification. This requirement highlights one of the reasons why you may not always be able to use DirectX with your preferred programming language.</p>
 <p>As mentioned earlier, clients cannot directly create COM objects. Typically, we use a method like <strong>CoCreateInstance</strong>, specifying the COM class ID for which the client wants to create a COM object, and the interface ID implemented by the COM class that the client is interested in obtaining a pointer to. The client doesn’t need to know where the server is located. The Windows Registry is used for this purpose, and <strong>CoCreateInstance</strong> (with the help of a system service) can locate the server based on the arguments passed as parameters. At this point, the server can create the COM object, and an interface pointer to that object is returned to the client, which can use it to communicate with the server (i.e., call its member functions).</p>
@@ -536,7 +533,6 @@ document.write(`
 <li><p><strong>Release</strong> decrements the reference count for an interface on a COM object. When the reference count on an object reaches zero, this method must cause the interface pointer to free itself.</p></li>
 <li><p><strong>QueryInterface</strong> queries a COM object for a pointer to one of its interfaces; identifying the interface by a reference to its interface identifier (IID). If the COM object implements the interface, then it returns a pointer to that interface after calling <strong>AddRef</strong> on it.</p></li>
 </ul>
-<br>
 <p>Directly managing interface pointers to COM objects can be a challenging task, as you need to explicitly call <strong>Release</strong> and <strong>AddRef</strong> to maintain the reference count. A more convenient solution with C++ is to use smart pointers. <strong>Microsoft::WRL::ComPtr</strong> is a smart pointer provided by the Windows Runtime C++ Template Library (WRL). This library is “pure” C++, making it suitable for classic Win32 desktop applications. It automatically calls <strong>AddRef</strong> and <strong>Release</strong> on the underlying interface pointer, meaning it maintains a reference count for the underlying interface pointer and releases the interface pointer when the reference count drops to zero. Moreover, it defines various other methods, including:</p>
 <ul class="simple">
 <li><p><strong>Get</strong> returns the underlying interface pointer to a COM object. It’s especially useful when you have functions that accept a raw interface pointer instead of a <strong>ComPtr</strong>.</p></li>
@@ -546,7 +542,6 @@ document.write(`
 <li><p><strong>Detach</strong> returns the underlying interface pointer to a COM object and then set it to <strong>nullptr</strong>. It can be useful if you need to return the underlying interface pointer to a caller and, at the same time, you don’t need the local <strong>ComPtr</strong> object anymore.</p></li>
 <li><p><strong>As</strong> is just a wrapper around <strong>QueryInterface</strong>. It takes another <strong>ComPtr</strong> as input parameter to get a pointer to one of the interfaces implemented by a COM object.</p></li>
 </ul>
-<br>
 <p>Also, the dereference operator -&gt; is overloaded and returns the underlying interface pointer to a COM object, so that you don’t need to call <strong>Get</strong> if you only want to invoke a function through the interface pointer.</p>
 <br>
 </section>
@@ -597,7 +592,6 @@ document.write(`
 <p class="admonition-title">See also</p>
 <p><strong><em>Use_decl_annotations</em></strong> is a macro that simplifies SAL annotations. We won’t go into detail about this concept, as it’s not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see <span id="id2">[<a class="reference internal" href="#id17" title="Microsoft. Using sal annotations. https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170.">Micd</a>]</span>.</p>
 </div>
-<br>
 <div class="literal-block-wrapper docutils container" id="stdafx-code">
 <div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">HelloWindow/stdafx.h</span><a class="headerlink" href="#stdafx-code" title="Permalink to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;windows.h&gt;</span>
@@ -614,11 +608,9 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<br>
 <p><strong>WinMain</strong> is called by the C/C++ runtime startup and takes four parameters. However, we are only interested in the named ones in <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>. <br>
 <strong>hInstance</strong> represents the base virtual address of the executable file loaded into memory. This information is primarily used by the operating system to identify the application and manage some of its resources. <br>
 <strong>nCmdShow</strong> is a flag that indicates whether the main application window is minimized, maximized, or shown normally. We’ll pass this flag to a Windows function that’s responsible for showing windows (we’ll discuss this in more detail in the next section).</p>
-<br>
 <p>The <strong>D3D12HelloWindow</strong> class is the application class, which defines data and methods specific to the sample.</p>
 <div class="literal-block-wrapper docutils container" id="d3d12hellowindow-code">
 <div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.h</span><a class="headerlink" href="#d3d12hellowindow-code" title="Permalink to this code">#</a></div>
@@ -660,7 +652,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<br>
 <p>The <strong>DXSample</strong> base class defines data and methods used by all graphics samples.</p>
 <div class="literal-block-wrapper docutils container" id="dxsample-code">
 <div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">HelloWindow/DXSample.h</span><a class="headerlink" href="#dxsample-code" title="Permalink to this code">#</a></div>
@@ -714,7 +705,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<br>
 <p>The <strong>Win32Application</strong> class defines data and methods used by all Windows applications.</p>
 <div class="literal-block-wrapper docutils container" id="win32application-code">
 <div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">HelloWindow/Win32Application.h</span><a class="headerlink" href="#win32application-code" title="Permalink to this code">#</a></div>
@@ -733,12 +723,10 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<br>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>It’s perfectly fine if you don’t understand the meaning of every single class member at this point. The important thing is to focus on comprehending the overall structure and purpose of the classes. In the next section and in later tutorials, I will provide more detailed explanations for each of the class members.</p>
 </div>
-<br>
 <p>As you might have noticed in <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, the entry point (<strong>WinMain</strong>) creates an instance of the <strong>D3D12HelloWindow</strong> class by calling its constructor.</p>
 <div class="literal-block-wrapper docutils container" id="d3d12hellowindow-ctor-code">
 <div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#d3d12hellowindow-ctor-code" title="Permalink to this code">#</a></div>
@@ -776,7 +764,6 @@ document.write(`
 <img alt="../../_images/win-client-area.png" src="../../_images/win-client-area.png" />
 </figure>
 <p>The client area is the region of a window where drawing is allowed. Technically speaking, it’s the area where the render target is mapped (once the GPU finishes drawing a frame on it). Conceptually, you can consider a render target as a texture that the GPU utilizes for rendering\drawing operations.</p>
-<br>
 <p>In <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, <strong>Win32Application::Run</strong> is called passing the instance of the <strong>D3D12HelloWindow</strong> class, along with the named parameters of <strong>WinMain</strong>.</p>
 <div class="literal-block-wrapper docutils container" id="run-code">
 <div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#run-code" title="Permalink to this code">#</a></div>
@@ -848,7 +835,6 @@ document.write(`
 <li><p><strong>lpszClassName</strong> specifies the name we want to give to the window class.</p></li>
 <li><p><strong>lpfnWndProc</strong> specifies the address of the window procedure.</p></li>
 </ul>
-<br>
 <p><strong>RegisterClassEx</strong> registers a window class, allowing us to create multiple windows with the same style, window procedure, and other attributes.</p>
 <p><strong>CreateWindow</strong> creates a window and returns its handle, which is used to identify and manipulate the window. It takes the name of the window class and additional parameters that define the window’s characteristics. For more details, refer to the Microsoft documentation for <strong>CreateWindow</strong></p>
 <div class="admonition note">

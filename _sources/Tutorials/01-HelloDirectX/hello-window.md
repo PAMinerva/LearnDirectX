@@ -8,21 +8,17 @@
 ## Introduction
 DirectX provides a set of APIs that can be used to create games and graphics applications. Specifically, it includes support for high-performance 2-D and 3-D graphics, audio, arithmetic, and linear algebra operations. Below is a list of the main APIs included in DirectX. However, our primary focus is on Direct3D 12 and DirectXMath, the only ones we will be using for a while.
 
-<br>
+- **Direct3D** provides functionality for performing 3-D graphics rendering tasks. It is used to draw primitives (i.e., points, lines, and triangles) within the rendering pipeline or to start parallel operations on the GPU. When we refer to Direct3D 12, we are specifically talking about the API that enables apps to leverage the graphics and computing capabilities of PCs equipped with a DirectX 12-compatible GPU.
 
-**Direct3D** provides functionality for performing 3-D graphics rendering tasks. It is used to draw primitives (i.e., points, lines, and triangles) within the rendering pipeline or to start parallel operations on the GPU. When we refer to Direct3D 12, we are specifically talking about the API that enables apps to leverage the graphics and computing capabilities of PCs equipped with a DirectX 12-compatible GPU.
+- **Direct2D** offers functionality for rendering 2-D geometries, bitmaps, and text. It is designed to interoperate with existing code that uses Direct3D to create 2D menus, user interface (UI) elements, and Heads-up Displays (HUDs).
 
-**Direct2D** offers functionality for rendering 2-D geometries, bitmaps, and text. It is designed to interoperate with existing code that uses Direct3D to create 2D menus, user interface (UI) elements, and Heads-up Displays (HUDs).
+- **DirectWrite** provides support for high-quality text rendering, resolution-independent outline fonts, and full Unicode text and layouts. It is designed to interoperate with Direct2D to render text by taking advantage of hardware acceleration. Text can also be filled with an arbitrary Direct2D brush, such as radial gradients, linear gradients, and bitmaps.
 
-**DirectWrite** provides support for high-quality text rendering, resolution-independent outline fonts, and full Unicode text and layouts. It is designed to interoperate with Direct2D to render text by taking advantage of hardware acceleration. Text can also be filled with an arbitrary Direct2D brush, such as radial gradients, linear gradients, and bitmaps.
+- **DirectXMath** provides types and helper functions for common linear algebra and graphics math operations that are frequently used in DirectX applications.
 
-**DirectXMath** provides types and helper functions for common linear algebra and graphics math operations that are frequently used in DirectX applications.
+- **XAudio2** allows the addition of sound effects and background music, or the development of high-performance audio engines.
 
-**XAudio2** allows the addition of sound effects and background music, or the development of high-performance audio engines.
-
-**XInput** enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.
-
-<br>
+- **XInput** enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.
 
 To create graphics applications, you first need a window to draw on. Therefore, the aim of this tutorial is to create and display a simple window on your screen. For this purpose, we will examine the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample, which is part of the [DirectX-Graphics-Samples](https://github.com/microsoft/DirectX-Graphics-Samples) repository maintained by Microsoft. The only significant graphics operation performed by this sample is the setting of the window background color. You might be surprised to discover that you need to write a substantial amount of code to execute this simple operation. The good news is that the code we will review in this first tutorial primarily consists of boilerplate code. This means that, by the end of this tutorial, you will have a basic understanding of the common framework used by almost all samples we will examine in the upcoming tutorials, so we can solely focus on new additions.
 
@@ -55,8 +51,6 @@ Since a window procedure is shared by all windows belonging to the same class, i
 
 Windows defines many different message types. Usually, messages have names that begin with the letters "WM_", as in **WM_CREATE** and **WM_PAINT**. The following table shows ten of the most common messages.
 
-<br>
-
 | Message        | Sent when                                                                      |
 | -------------- | ------------------------------------------------------------------------------ |
 | WM_CHAR        | A character is input from the keyboard.                                        |
@@ -81,8 +75,6 @@ When the message loop dispatches a message, the window procedure is called, and 
 * A message ID, and
 
 * Two 32-bit parameters known as **wParam** and **lParam**.
-
-<br>
 
 The window handle is a 32-bit value that uniquely identifies a window. Internally, the value references a data structure in which the OS stores relevant information about the window such as its size, style, and location on the screen.
 
@@ -121,8 +113,6 @@ These problems arise from the fact that the binary representation of the DLL is 
 
 * COM classes and interfaces have unique IDs. That way it's possible for more than a server to implement the same interface, and for a client to load the correct server (DLL) in memory. So, if there are more versions of the DLL available, the client can choose what server to load. Then, if your application wants to use new functionalities, you are forced to recompile.
 
-<br>
-
 However, even though COM involves the use of abstract interfaces, client and server still need to agree on the binary representation of these interfaces for effective communication. To address this, the COM specification outlines a binary object layout that can be implemented and comprehended by nearly any language and platform. Notably, Microsoft opted to employ a virtual table mechanism similar to the one used in their C++ implementation. Essentially, a COM interface in memory is nothing more than a virtual table containing function pointers and additional data. Consequently, an interface pointer to a COM object is merely a pointer to a virtual table.
 
 In essence, for a language or compiler to support COM, it must adhere to the layout of COM interfaces as specified by the COM specification. This requirement highlights one of the reasons why you may not always be able to use DirectX with your preferred programming language.
@@ -143,8 +133,6 @@ COM defines a base interface that all other interfaces must extend: **IUnknown**
 
 * **QueryInterface** queries a COM object for a pointer to one of its interfaces; identifying the interface by a reference to its interface identifier (IID). If the COM object implements the interface, then it returns a pointer to that interface after calling **AddRef** on it.
 
-<br>
-
 Directly managing interface pointers to COM objects can be a challenging task, as you need to explicitly call **Release** and **AddRef** to maintain the reference count. A more convenient solution with C++ is to use smart pointers. **Microsoft::WRL::ComPtr** is a smart pointer provided by the Windows Runtime C++ Template Library (WRL). This library is "pure" C++, making it suitable for classic Win32 desktop applications. It automatically calls **AddRef** and **Release** on the underlying interface pointer, meaning it maintains a reference count for the underlying interface pointer and releases the interface pointer when the reference count drops to zero. Moreover, it defines various other methods, including:
 
 * **Get** returns the underlying interface pointer to a COM object. It's especially useful when you have functions that accept a raw interface pointer instead of a **ComPtr**.
@@ -158,8 +146,6 @@ Directly managing interface pointers to COM objects can be a challenging task, a
 * **Detach** returns the underlying interface pointer to a COM object and then set it to **nullptr**. It can be useful if you need to return the underlying interface pointer to a caller and, at the same time, you don't need the local **ComPtr** object anymore.
 
 * **As** is just a wrapper around **QueryInterface**. It takes another **ComPtr** as input parameter to get a pointer to one of the interfaces implemented by a COM object.
-
-<br>
 
 Also, the dereference operator -> is overloaded and returns the underlying interface pointer to a COM object, so that you don't need to call **Get** if you only want to invoke a function through the interface pointer.
 
@@ -222,7 +208,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 ```{seealso}
 **_Use_decl_annotations_** is a macro that simplifies SAL annotations. We won't go into detail about this concept, as it's not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see {cite}`UsingSALAnnotations`.
 ```
-<br>
 
 ```{code-block} cpp
 :caption: HelloWindow/stdafx.h
@@ -239,13 +224,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 #include <wrl.h>
 #include <shellapi.h>
 ```
-<br>
 
 **WinMain** is called by the C/C++ runtime startup and takes four parameters. However, we are only interested in the named ones in {numref}`winmain-code`. <br>
 **hInstance** represents the base virtual address of the executable file loaded into memory. This information is primarily used by the operating system to identify the application and manage some of its resources. <br>
 **nCmdShow** is a flag that indicates whether the main application window is minimized, maximized, or shown normally. We'll pass this flag to a Windows function that's responsible for showing windows (we'll discuss this in more detail in the next section).
-
-<br>
 
 The **D3D12HelloWindow** class is the application class, which defines data and methods specific to the sample.
 
@@ -288,7 +270,6 @@ private:
     void WaitForPreviousFrame();
 };
 ```
-<br>
 
 The **DXSample** base class defines data and methods used by all graphics samples.
 
@@ -343,7 +324,6 @@ private:
     std::wstring m_title;
 };
 ```
-<br>
 
 The **Win32Application** class defines data and methods used by all Windows applications.
 
@@ -363,12 +343,10 @@ private:
     static HWND m_hwnd;
 };
 ```
-<br>
 
 ```{note}
 It's perfectly fine if you don't understand the meaning of every single class member at this point. The important thing is to focus on comprehending the overall structure and purpose of the classes. In the next section and in later tutorials, I will provide more detailed explanations for each of the class members.
 ```
-<br>
 
 As you might have noticed in {numref}`winmain-code`, the entry point (**WinMain**) creates an instance of the **D3D12HelloWindow** class by calling its constructor.
 
@@ -412,8 +390,6 @@ The aspect ratio refers to the proportional relationship between the width and h
 ```
 
 The client area is the region of a window where drawing is allowed. Technically speaking, it's the area where the render target is mapped (once the GPU finishes drawing a frame on it). Conceptually, you can consider a render target as a texture that the GPU utilizes for rendering\drawing operations.
-
-<br>
 
 In {numref}`winmain-code`, **Win32Application::Run** is called passing the instance of the **D3D12HelloWindow** class, along with the named parameters of **WinMain**.
 
@@ -490,8 +466,6 @@ Creating a window requires an instance of a window class (represented by the **W
 - **lpszClassName** specifies the name we want to give to the window class.
 
 - **lpfnWndProc** specifies the address of the window procedure.
-
-<br>
 
 **RegisterClassEx** registers a window class, allowing us to create multiple windows with the same style, window procedure, and other attributes.
 
