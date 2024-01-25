@@ -18,13 +18,9 @@ If you are familiar with video games, you know that the image you see on the scr
 
 It can be stated that the whole art of computer graphics boils down to creating a 2D representation from a 3D scene. Indeed, this is the result of processing 3D geometries through a rendering pipeline, which will be briefly discussed in the next section.
 
-In {numref}`3d-2d`, you can see a 3D scene projected onto a 2D rectangle\window lying on a plane in front of a special viewpoint called the camera. You can think of a 2D projection window as the film of a camera (or the retina of the human eye) that captures the light and allows the creation of a 2D representation from a 3D scene. Eventually, this 2D representation is mapped to the render target, which, in turn, is mapped to the window's client area.
+In the figure below, you can see a 3D scene projected onto a 2D rectangle\window lying on a plane in front of a special viewpoint called the camera. You can think of a 2D projection window as the film of a camera (or the retina of the human eye) that captures the light and allows the creation of a 2D representation from a 3D scene. Eventually, this 2D representation is mapped to the render target, which, in turn, is mapped to the window's client area.
 
 ```{figure} images/02/3d-scene-2d-repres.png
----
-name: 3d-2d
----
-Projection of a 3D scene onto a 2D plane
 ```
 
 You can easily guess that only a particular region of the 3D scene should be captured by the camera (that is, we generally won't capture the whole 3D scene). The extent of the region captured can be controlled in a similar way to how we set the field of view (FOV) of the camera lens when we want to take a picture.  However, in computer graphics, the film is typically positioned in front of the camera lens, not behind.
@@ -51,22 +47,15 @@ The next section will provide a high-level overview of the graphics pipeline, ex
 GPUs are equipped with thousands of programmable cores, which means that they can execute programs in the form of instructions provided by a programmer, much like how CPU cores run C++ applications. As illustrated below, CPUs typically have fewer cores than GPUs. However, GPU cores are smaller and more specialized in processing tasks that can be divided up and processed across many cores. In particular, GPUs use parallelism to execute the same instructions on multiple cores simultaneously, resulting in high-speed processing of vast amounts of data. On the other hand, CPUs excel at executing many sequential instructions on each core to execute multiple tasks on small data really fast.
 
 ```{figure} images/02/CPU-vs-GPU.png
----
-name: cpu-gpu
----
 CPU (on the left) versus GPU (on the right)
 ```
 
-GPUs that support Direct3D can execute programs on their cores to perform the work of various stages composing a pipeline. Direct3D provides different pipeline types, but we will focus on the rendering pipeline (also called the graphics pipeline) for now. A rendering pipeline defines the steps needed to draw something on the render target. In particular, {numref}`rendering-pipeline` illustrates the stages of the rendering pipeline used to draw on a render target with the Direct3D API.
+GPUs that support Direct3D can execute programs on their cores to perform the work of various stages composing a pipeline. Direct3D provides different pipeline types, but we will focus on the rendering pipeline (also called the graphics pipeline) for now. A rendering pipeline defines the steps needed to draw something on the render target. In particular, the following image illustrates the stages of the rendering pipeline used to draw on a render target with the Direct3D API.
 
 ```{figure} images/02/rendering-pipeline.png
----
-name: rendering-pipeline
----
-Direct3D rendering pipeline
 ```
 
-Programmable stages can execute programs (often called shader programs, or simply shaders, with the GPU cores executing them often referred to as shader cores) written by programmers. Configurable stages (the rectangles with gear wheels in {numref}`rendering-pipeline`) can't be programmed: they always execute the same code, but you can still configure their state. This means you can't specify what a configurable stage can do, but you can still specify how it performs its task. For this reason, they are often called fixed-function stages.
+Programmable stages can execute programs (often called shader programs, or simply shaders, with the GPU cores executing them often referred to as shader cores) written by programmers. Configurable stages (the rectangles with gear wheels in the image above) can't be programmed: they always execute the same code, but you can still configure their state. This means you can't specify what a configurable stage can do, but you can still specify how it performs its task. For this reason, they are often called fixed-function stages.
 
 Data flows from input to output through each of the configurable or programmable stages. In other words, each stage consumes the input from the previous stage and provides its output to the next one (which can use it as input).
 
@@ -96,14 +85,14 @@ Data flows from input to output through each of the configurable or programmable
 Hull Shader, Tessellator and Domain Shader together form the Tessellation stage. They are optional and we won't use them for a while. The same goes for the Geometry Shader and the Stream Output stage.
 ```
 
-As illustrated in {numref}`rendering-pipeline`, many stages can take part of their input by reading resources from GPU memory (in addition to the input passed from the previous stage), and some of them can write their output in GPU memory as well. The little squares at the bottom right of some stages represent the slots where descriptors\views are bound. At the left of each stage, you can find a visual description of the task usually performed by the stage. `VSMAIN`, `PSMAIN`, etc., suggest that programmable stages execute shader programs.
+As illustrated in the figure above, many stages can take part of their input by reading resources from GPU memory (in addition to the input passed from the previous stage), and some of them can write their output in GPU memory as well. The little squares at the bottom right of some stages represent the slots where descriptors\views are bound. At the left of each stage, you can find a visual description of the task usually performed by the stage. `VSMAIN`, `PSMAIN`, etc., suggest that programmable stages execute shader programs.
 
 ```{note}
 A descriptor (or view) is a data structure that fully describes a resource to the GPU (type, dimension, GPU virtual address, and other hardware-specific information). This means the size of a descriptor can change from GPU to GPU. Usually, descriptors are bound to the slots of the stages, rather than the actual resources. This way, the GPU can access resources by reading the descriptors bound to the slots used in the shader program being executed. 
 ```
 
 ```{important}
-Binding slots are not physical blocks of memory or registers that a GPU can access to read descriptors. They are simple names (character strings) used to associate descriptors to resource declarations in shader programs. However, since the documentation uses the term "slots" in the context of resource binding, I still opted to represent them in {numref}`rendering-pipeline` as physical blocks. As described in the previous tutorial, descriptors are stored in a descriptor heap. In the remainder of this tutorial we will see how a GPU accesses descriptors during the execution of a shader program.
+Binding slots are not physical blocks of memory or registers that a GPU can access to read descriptors. They are simple names (character strings) used to associate descriptors to resource declarations in shader programs. However, since the documentation uses the term "slots" in the context of resource binding, I still opted to represent them in the image above as physical blocks. As described in the previous tutorial, descriptors are stored in a descriptor heap. In the remainder of this tutorial we will see how a GPU accesses descriptors during the execution of a shader program.
 ```
 
 ```{note}
@@ -115,21 +104,13 @@ The depth buffer is a texture associated with the render target (both should be 
 Typically, the stencil buffer is coupled with the depth buffer (that is, both share the same buffer in memory, though using different bits) and stores stencil information to mask pixels. The mask controls whether a pixel is drawn or not on the render target, enabling the creation of specialized effects such as dissolves, decaling, and outlining. We will return to the stencil buffer in a later tutorial.
 
 ```{figure} images/02/depth-buffer.png
----
-name: depth-buffer
----
-Depth buffer
 ```
 
-In {numref}`depth-buffer`, the 2D projection window lies in the plane identified by the X- and Y-axes. We already know that the projection window is eventually mapped to the render target, so let's temporarily assume that we are directly drawing on the render target (without passing through the projection window). The Z-axis is used to measure the depth of the pixels (that is, their distance from the XY-plane). In {numref}`depth-buffer`, the texel of the render target will store the pixel color of the yellow square, which occludes the pixel of the red triangle. Indeed, the value stored in the corresponding texel of the depth buffer (that is, at the same position of the texel in the render target) is the depth of the nearest pixel: the one of the yellow square, in this example. So, the pixel of the triangle will be discarded if the depth test is enabled. On the other hand, if the depth test is disabled, the texel of the render target will store the color of the last pixel processed by the pixel shader since it will always overwrite whatever color is stored in that texel. Observe that if blending is enabled, the pixel color is blended with the color stored in the corresponding texel of the render rather than overwriting it.
+In the illustration above, the 2D projection window lies in the plane identified by the X- and Y-axes. We already know that the projection window is eventually mapped to the render target, so let's temporarily assume that we are directly drawing on the render target (without passing through the projection window). The Z-axis is used to measure the depth of the pixels (that is, their distance from the XY-plane). As you can see, the texel of the render target will store the pixel color of the yellow square, which occludes the pixel of the red triangle. Indeed, the value stored in the corresponding texel of the depth buffer (that is, at the same position of the texel in the render target) is the depth of the nearest pixel: the one of the yellow square, in this example. So, the pixel of the triangle will be discarded if the depth test is enabled. On the other hand, if the depth test is disabled, the texel of the render target will store the color of the last pixel processed by the pixel shader since it will always overwrite whatever color is stored in that texel. Observe that if blending is enabled, the pixel color is blended with the color stored in the corresponding texel of the render rather than overwriting it.
 
 The following image shows how a generic programmable stage works.
 
 ```{figure} images/02/programmable-stage.png
----
-name: programmable-stage
----
-Programmable stage
 ```
 
 * **Input Data**: A vertex shader receives its input from the input assembler stage; geometry and pixel shaders receive their inputs from the previous stage. This data typically consists of multiple values, called attributes, that describe various aspects of the geometric data being processed. For example, attributes might include the position or color associated with a vertex, or the texture coordinates for a pixel. Additional inputs include system-value semantics, which are consumable by the first stage in the pipeline to which they are applicable.
