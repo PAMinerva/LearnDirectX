@@ -781,9 +781,9 @@ Then, we set the fields of a **D3D12_DESCRIPTOR_HEAP_DESC** structure to specify
 A descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.
 ```
 
-**ID3D12Device::GetDescriptorHandleIncrementSize** returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.
+`ID3D12Device::GetDescriptorHandleIncrementSize` returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.
 
-Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. **ID3D12DescriptorHeap::GetCPUDescriptorHandleForHeapStart** returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.
+Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. `ID3D12DescriptorHeap::GetCPUDescriptorHandleForHeapStart` returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.
 
 ```{note}
 As mentioned earlier, a descriptor heap must be CPU visible, so we need a CPU descriptor handle that points to a descriptor in a descriptor heap in order to store a view. <br>
