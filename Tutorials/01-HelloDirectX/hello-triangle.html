@@ -412,6 +412,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-shader">Pixel shader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotriangle-code-review">D3D12HelloTriangle: code review</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -936,6 +937,207 @@ In this tutorial we won’t directly use the functionalities provided by the OM 
 <img alt="../../_images/interpolated-colors.png" src="../../_images/interpolated-colors.png" />
 </figure>
 <br>
+</section>
+<section id="d3d12hellotriangle-code-review">
+<h2>D3D12HelloTriangle: code review<a class="headerlink" href="#d3d12hellotriangle-code-review" title="Permalink to this heading">#</a></h2>
+<p>We can finally review the code of the sample.<br>
+The application class now includes a root signature, a Pipeline State Object (PSO), a vertex buffer, and both viewport and scissor rectangles. It’s important to note that the comment regarding <strong>ComPtr</strong> highlights the necessity of not releasing COM objects on the CPU timeline before the GPU has finished using the corresponding resources on its timeline.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellotriangle-code">
+<div class="code-block-caption"><span class="caption-number">Listing 23 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.h</span><a class="headerlink" href="#d3d12hellotriangle-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Note that while ComPtr is used to manage the lifetime of resources on the CPU,</span>
+<span class="c1">// it has no understanding of the lifetime of resources on the GPU. Apps must account</span>
+<span class="c1">// for the GPU lifetime of resources to avoid destroying objects that may still be</span>
+<span class="c1">// referenced by the GPU.</span>
+<span class="c1">// An example of this can be found in the class method: OnDestroy().</span>
+<span class="k">using</span><span class="w"> </span><span class="n">Microsoft</span><span class="o">::</span><span class="n">WRL</span><span class="o">::</span><span class="n">ComPtr</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloTriangle</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">D3D12HelloTriangle</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnInit</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnRender</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">FrameCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">        </span><span class="n">XMFLOAT4</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Pipeline objects.</span>
+<span class="w">    </span><span class="n">CD3DX12_VIEWPORT</span><span class="w"> </span><span class="n">m_viewport</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CD3DX12_RECT</span><span class="w"> </span><span class="n">m_scissorRect</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGISwapChain3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_swapChain</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_device</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandAllocator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandQueue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandQueue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12RootSignature</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rtvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12PipelineState</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12GraphicsCommandList</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// App resources.</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="p">;</span>
+<span class="w">    </span><span class="n">D3D12_VERTEX_BUFFER_VIEW</span><span class="w"> </span><span class="n">m_vertexBufferView</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Synchronization objects.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HANDLE</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Fence</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_fence</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT64</span><span class="w"> </span><span class="n">m_fenceValue</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadAssets</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">PopulateCommandList</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>As evident in the constructor of the <strong>D3D12HelloTriangle</strong> class (shown below), we will set the viewport and scissor rectangles to encompass the entire render target. This setup enables drawing on the entire back buffer (without stretching the image), while simultaneously discarding the pixels outside it (as they have no chance to be shown\mapped on the screen). Observe that, in Windows programming, a rectangle is often defined by specifying a starting point and a size.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellotriangle-ctor-code">
+<div class="code-block-caption"><span class="caption-number">Listing 24 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#d3d12hellotriangle-ctor-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">D3D12HelloTriangle</span><span class="o">::</span><span class="n">D3D12HelloTriangle</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">DXSample</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_frameIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_viewport</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">width</span><span class="p">),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">height</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">m_scissorRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">width</span><span class="p">),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">height</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">m_rtvDescriptorSize</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>While the code of the <strong>LoadPipeline</strong> function remains unchanged from the previous sample (<strong>D3D12HelloWindow</strong>), the <strong>LoadAssets</strong> method introduces several additions, which will be carefully examined one by one.</p>
+<div class="literal-block-wrapper docutils container" id="hellotriangle-loadassets-code">
+<div class="code-block-caption"><span class="caption-number">Listing 25 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#hellotriangle-loadassets-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTriangle::LoadAssets</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Create an empty root signature.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">CD3DX12_ROOT_SIGNATURE_DESC</span><span class="w"> </span><span class="n">rootSignatureDesc</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rootSignatureDesc</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">signature</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3D12SerializeRootSignature</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rootSignatureDesc</span><span class="p">,</span><span class="w"> </span><span class="n">D3D_ROOT_SIGNATURE_VERSION_1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">error</span><span class="p">));</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateRootSignature</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferPointer</span><span class="p">(),</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferSize</span><span class="p">(),</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_rootSignature</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the pipeline state, which includes compiling and loading shaders.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vertexShader</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pixelShader</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="cp">#if defined(_DEBUG)</span>
+<span class="w">        </span><span class="c1">// Enable better shader debugging with the graphics debugging tools.</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">compileFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3DCOMPILE_DEBUG</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">D3DCOMPILE_SKIP_OPTIMIZATION</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">compileFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DCompileFromFile</span><span class="p">(</span><span class="n">GetAssetFullPath</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;shaders.hlsl&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;VSMain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vs_5_0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compileFlags</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vertexShader</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">));</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DCompileFromFile</span><span class="p">(</span><span class="n">GetAssetFullPath</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;shaders.hlsl&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;PSMain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ps_5_0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compileFlags</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pixelShader</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Define the vertex input layout.</span>
+<span class="w">        </span><span class="n">D3D12_INPUT_ELEMENT_DESC</span><span class="w"> </span><span class="n">inputElementDescs</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;POSITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32B32_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;COLOR&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32B32A32_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create the graphics pipeline state object (PSO).</span>
+<span class="w">        </span><span class="n">D3D12_GRAPHICS_PIPELINE_STATE_DESC</span><span class="w"> </span><span class="n">psoDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">InputLayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">inputElementDescs</span><span class="p">,</span><span class="w"> </span><span class="n">_countof</span><span class="p">(</span><span class="n">inputElementDescs</span><span class="p">)</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">pRootSignature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">();</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">VS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">vertexShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">pixelShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RasterizerState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_RASTERIZER_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">BlendState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_BLEND_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">DepthEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">StencilEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UINT_MAX</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PrimitiveTopologyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">NumRenderTargets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RTVFormats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_R8G8B8A8_UNORM</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateGraphicsPipelineState</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psoDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_pipelineState</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the command list.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommandList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_COMMAND_LIST_TYPE_DIRECT</span><span class="p">,</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_commandList</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Command lists are created in the recording state, but there is nothing</span>
+<span class="w">    </span><span class="c1">// to record yet. The main loop expects it to be closed, so close it now.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the vertex buffer.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define the geometry for a triangle.</span>
+<span class="w">        </span><span class="n">Vertex</span><span class="w"> </span><span class="n">triangleVertices</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.25f</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">-0.25f</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">vertexBufferSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">triangleVertices</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Note: using upload heaps to transfer static data like vert buffers is not </span>
+<span class="w">        </span><span class="c1">// recommended. Every time the GPU needs it, the upload heap will be marshalled </span>
+<span class="w">        </span><span class="c1">// over. Please read up on Default Heap usage. An upload heap is used here for </span>
+<span class="w">        </span><span class="c1">// code simplicity and because there are very few verts to actually transfer.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommittedResource</span><span class="p">(</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_HEAP_PROPERTIES</span><span class="p">(</span><span class="n">D3D12_HEAP_TYPE_UPLOAD</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_HEAP_FLAG_NONE</span><span class="p">,</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_DESC</span><span class="o">::</span><span class="n">Buffer</span><span class="p">(</span><span class="n">vertexBufferSize</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_RESOURCE_STATE_GENERIC_READ</span><span class="p">,</span>
+<span class="w">            </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_vertexBuffer</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Copy the triangle data to the vertex buffer.</span>
+<span class="w">        </span><span class="n">UINT8</span><span class="o">*</span><span class="w"> </span><span class="n">pVertexDataBegin</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CD3DX12_RANGE</span><span class="w"> </span><span class="n">readRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">        </span><span class="c1">// We do not intend to read from this resource on the CPU.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">Map</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readRange</span><span class="p">,</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">**&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pVertexDataBegin</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="n">pVertexDataBegin</span><span class="p">,</span><span class="w"> </span><span class="n">triangleVertices</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">triangleVertices</span><span class="p">));</span>
+<span class="w">        </span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">Unmap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Initialize the vertex buffer view.</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">BufferLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">GetGPUVirtualAddress</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">StrideInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">Vertex</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">SizeInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vertexBufferSize</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create synchronization objects and wait until assets have been uploaded to the GPU.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateFence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_FENCE_FLAG_NONE</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_fence</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">m_fenceValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create an event handle to use for frame synchronization.</span>
+<span class="w">        </span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateEvent</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">HRESULT_FROM_WIN32</span><span class="p">(</span><span class="n">GetLastError</span><span class="p">()));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Wait for the command list to execute; we are reusing the same command </span>
+<span class="w">        </span><span class="c1">// list in our main loop but for now, we just want to wait for setup to </span>
+<span class="w">        </span><span class="c1">// complete before continuing.</span>
+<span class="w">        </span><span class="n">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <p>[WIP]</p>
 <br>
 </section>
@@ -1028,6 +1230,7 @@ In this tutorial we won’t directly use the functionalities provided by the OM 
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-shader">Pixel shader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotriangle-code-review">D3D12HelloTriangle: code review</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
