@@ -335,6 +335,46 @@ The pipeline state defines the behavior\setup of every stage in the pipeline whe
 
 * The root signature. 
 
+We will cover each of these points in more detail both later and in upcoming tutorials. <br>
+As mentioned earlier, while most of the pipeline state is configured using a PSO, certain states need to be set directly in the command list. The following list highlights the states that must be configured directly in a command list.
+
+* Resource bindings (vertex and index buffers, render target, depth-stencil buffer, descriptor heaps).
+
+* Viewport and Scissor rectangles.
+
+* Blend factors.
+
+* The depth stencil reference value.
+
+* The input-assembler primitive topology order and adjacency type (line list, line strip, line strip with adjacency data, etc.).
+
+Regarding the first point, recall that IBVs, VBVs, RTVs, and DSVs are copied into the command list. Also, we can associate a shader-visible descriptor heap to a command list. We will revisit the remaining points both in this tutorial and upcoming ones.
+
+To set the part of the pipeline state defined within a PSO, we record a dedicated command in the command list with **ID3D12GraphicsCommandList::SetPipelineState**. Alternatively, we can set the same state during the creation or reset of a command list with **ID3D12Device::CreateCommandList** and **ID3D12GraphicsCommandList::Reset**, respectively. The result is the same: a command (in the command list) that sets the pipeline state. Either way, we pass a PSO as an argument. If no PSO is specified in **CreateCommandList**, a default initial state is used. Then, we can use **SetPipelineState** to change the PSO associated to the command list. <br>
+Therefore, all of the pipeline state is recorded in a command list, and none of the pipeline state that was set by previously executed command lists will be inherited. Additional information on pipeline state inheritance will be provided in the next tutorial.
+
+```{important}
+The documentation states that, ideally, the same root signature should be shared by more than one PSO whenever possible. This implies that we should design the root signature to be as general as possible. The last sentence suggests that root signatures could easily become large structures, seemingly in contrast with the earlier emphasis on the need for small root signatures. However, the key is always to find the right balance for the specific application on which we are working.
+```
+
+We set both a PSO and a root signature in the command list so that the GPU can use them to define (most of) the pipeline state and the types of resources to bind to the pipeline (recall that non-PSO states are individually set in the command list). For binding purposes, we may also need to set a couple of shader-visible descriptor heaps to the command list – one for CBVs\SRVs\UAVs and another for dynamic samplers, since samplers cannot share a descriptor heap with other views. This setup allows us to bind sets of descriptors in a descriptor heap through root descriptor tables in the root signature.
+
+When recording a drawing command in a command list, it's important that the root signature stored in the PSO associated with (recorded in) the command list matches the one directly associated with the command list. Failure to do so results in undefined behavior. As emphasized earlier, root signatures should be kept as small as possible while still being large enough to be shared by multiple PSOs. This enables switching between PSOs without changing the root signature associated with the command list, which would otherwise invalidate the root arguments.
+
+We create a PSO with **ID3D12Device::CreateGraphicsPipelineState**,  which requires a **D3D12_GRAPHICS_PIPELINE_STATE_DESC** as a parameter. This structure describes a pipeline state object, meaning that we need to set its fields to define the part of pipeline state within a PSO, such as bytecode of the shaders, root signature, and so on. When we call **CreateGraphicsPipelineState** to create a PSO, the driver compiles the bytecode in machine code executable by the GPU. The driver also uses the root signature inside the PSO to embed the traversal details in the machine code to let the GPU know how to access resources (through the root arguments specified in the command list).
+
+```{note}
+While we won't delve into the driver's implementation-specific details regarding the translation of bytecode to GPU machine code, we can shed some light on the traversal details embedded in the machine code. <br>
+Regarding root constants, a plausible implementation might involve loading them directly into registers, allowing the GPU to access the associated values without any additional memory reads during shader execution. <br>
+For root descriptors, an implementation could specify loading GPU virtual addresses for the corresponding resources into registers. In this case, the GPU would need to read from memory to access them, introducing a level of indirection. <br>
+In the case of root tables, an implementation might load the address of the currently bound shader-visible descriptor heap into one register and the byte offset of a set of descriptors into another register. This would require the GPU to read from memory twice – once to obtain a descriptor and a second time to access the related resource, resulting in two levels of indirection. <br>
+At first glance, one might assume that root constants would always be the optimal choice. Unfortunately, GPUs have a limited number of registers, and if you use an excessive number of root constants, the driver might need to spill them to memory, effectively introducing a level of indirection.
+```
+
+At this point, you might question the necessity of specifying the root signature twice — both in the PSO and the command list. In simpler terms, if the root signature in the PSO and the command list must match, couldn't the command list simply retrieve this information from the associated PSO? The key distinction lies in the purpose of the root signature in each context. The PSO uses the root signature only for compiling the bytecode, while a command list uses the root signature to establish the parameter space, enabling the mapping of root arguments to root parameters. Furthermore, we might set root arguments before binding a PSO to a command list. Consequently, the parameter space must be configured even in the absence of a PSO.
+
+Once more, don't be concerned if things seem a bit unclear right now. The upcoming four sections will delve deeply into the pipeline stages used by **D3D12HelloTriangle**, the sample discussed in this tutorial that renders a triangle on the render target. Additionally, in the final section, we'll review the sample's source code, offering a practical application of the theoretical concepts discussed thus far. By the end of this tutorial, you'll have a foundational understanding of the rendering pipeline and how to use it for rendering on the render target.
+
 [WIP]
 
 
