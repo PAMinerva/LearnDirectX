@@ -214,6 +214,8 @@ In Direct3D 12, we specify the intended use of a resource by transitioning its s
 
 In Direct3D 12, most per-resource state is managed by our application with **ID3D12GraphicsCommandList::ResourceBarrier**. At any given time, a resource is in exactly one state, determined by the **D3D12_RESOURCE_STATES** flag provided to the **ResourceBarrier** function. 
 
+
+(root-signature-label)=
 ### Root signature
 
 Obviously, GPUs need a way to access resources stored in GPU heaps (default, upload or readback) from shader programs. For example, in HLSL (the language used to write shader programs) you can declare the following variable:
@@ -374,6 +376,190 @@ At first glance, one might assume that root constants would always be the optima
 At this point, you might question the necessity of specifying the root signature twice — both in the PSO and the command list. In simpler terms, if the root signature in the PSO and the command list must match, couldn't the command list simply retrieve this information from the associated PSO? The key distinction lies in the purpose of the root signature in each context. The PSO uses the root signature only for compiling the bytecode, while a command list uses the root signature to establish the parameter space, enabling the mapping of root arguments to root parameters. Furthermore, we might set root arguments before binding a PSO to a command list. Consequently, the parameter space must be configured even in the absence of a PSO.
 
 Once more, don't be concerned if things seem a bit unclear right now. The upcoming four sections will delve deeply into the pipeline stages used by **D3D12HelloTriangle**, the sample discussed in this tutorial that renders a triangle on the render target. Additionally, in the final section, we'll review the sample's source code, offering a practical application of the theoretical concepts discussed thus far. By the end of this tutorial, you'll have a foundational understanding of the rendering pipeline and how to use it for rendering on the render target.
+
+<br>
+
+## The Input Assembler
+
+The input assembler is the first stage of the rendering pipeline. It assembles primitives (points, lines, triangles) from a couple of user-defined arrays (known as vertex and index buffers) and passes those primitives to the vertex shader, vertex by vertex. It's a fixed-function stage, so we can only set up its state. In particular, we need to bind at least an array of vertices (the vertex buffer) and, optionally, an array of indices (the index buffer) that describe, primitive by primitive, one or more meshes we want to render. As we'll explore in this section, the input assembler requires additional information to execute its task effectively.
+
+```{note}
+The input assembler doesn't actually assemble primitives from the vertex buffer. It simply passes vertex data to the vertex shader in a specific order, determined by the input assembler state, which is stored both in the PSO and directly in the command list (more on this will be discussed shortly). As a result, the vertex shader will receive and process, one by one, the vertices of each primitive described in the vertex buffer, in the specific order designated by the input assembler. However, remember that GPUs can run the vertex shaders for vertices of multiple primitives simultaneously in parallel.
+```
+
+### Meshes
+
+A mesh is a geometrical structure composed of polygons\primitives (often triangles) which are defined by their vertices. Regardless of whether it is a complex model made with graphic modeling tools such as 3ds Max or Blender, or a straightforward cube created programmatically, the underlying structure used to represent it in memory is the same: an array of vertices (known as the vertex buffer) that describes, vertex by vertex, the primitives that compose the mesh. Therefore, it is useful to understand what vertices are and how they can be organized in memory as a vertex buffer.
+
+```{figure} images/02/meshes.png
+```
+
+### Vertex buffer
+
+In computer graphics, a vertex can be considered as a structure whose fields describe important attributes of the vertex, such as position, color, and so on. A vertex buffer is simply a buffer that contains an array (that is, a contiguous collection) of vertices.
+
+```{figure} images/02/VB.png
+```
+
+Unfortunately, the vertex buffer illustrated in the image above only represents the logical representation from our point of view, which reflects how we expect the input assembler to interpret the vertex buffer. Indeed, if we were to bind an array of vertices without providing additional information, the input assembler would have no clue about how to interpret the data in the buffer. Essentially, the vertex buffer, on its own, is a straightforward collection of contiguous, generic data. This means that the input assembler cannot determine the number of attributes contained in each vertex, or their types, by simply reading from the vertex buffer. This makes it impossible for the input assembler to identify the end of a vertex or the start of a new one in the vertex buffer. Therefore, we must also provide the memory layout of the vertices in the vertex buffer as information to the input assembler. We will discuss this aspect in detail shortly.
+
+The input assembler has 16 slots (from 0 to 15) where you can bind views to buffers of homogeneous (uniform, similar) attributes. This enables the separation of attributes of vertices into distinct buffers.
+
+```{figure} images/02/ia-1.jpg
+```
+
+However, most of the time we will bind a single buffer of heterogeneous (various, mixed) attributes for all vertices: the whole vertex buffer.
+
+```{figure} images/02/ia-2.jpg
+```
+
+Separated buffers of homogeneous attributes are useful if you need to only access some of the attributes. In that case, you can get better cache and bandwidth performance with separated buffers of homogeneous attributes, which allows cache lines and registers to only fetch the relevant data. Anyway, we don't need to worry about these low-level details right now.
+
+
+(input-layout-label)=
+### Input layout
+
+The input layout holds part of the state of the input assembler. In particular, it describes the vertex layout to let the input assembler know how to access the vertex attributes. Also, the input layout specifies, for each vertex attribute, the semantic name (to identify the attribute), a semantic index (to append to the semantic name in case there were more attributes with the same semantic name; that is, to distinguish them from each other), the format, the input slot, the offset (in bytes) from the start of the vertex, and other information. That way, the input assembler knows how to convey vertex attributes to the vertex shader through input registers (more on this shortly).
+
+
+### Primitive topologies
+
+In order to assemble primitives, the input assembler needs to know their basic type (point, line, triangle or patch) and topology, which allows to define a relationship between the primitives defined in a vertex buffer (connection, adiacency, and so on). We must provide this information, along with other details, to ensure that the input assembler properly interprets the vertex buffer data. The following image shows the main primitive types that the input assembler can generate from the vertex buffer data.
+
+```{figure} images/02/topology.png
+```
+
+**Point List** indicates a collection of vertices that are rendered as isolated points. The order of the vertices in the vertex buffer is not important as it describes a set of separated points.
+
+**Line List** indicates a collection of line segments. The two vertices that represent the extremes of each line segment must be contiguous in the vertex buffer.
+
+**Line Strip** indicates a connected series of line segments. In the vertex buffer, the vertices are ordered so that the first vertex represents the starting point of the first segment of the line strip, the second vertex represents both the end point of the first segment and the starting point of the second segment, and so on.
+
+**Triangle List** indicates a series of triangles that make up a mesh. The three vertices of each triangle must be contiguous in the vertex buffer, and in a specific order (clockwise or counterclockwise).
+
+**Triangle Strip** indicates a series of connected triangles that make up a mesh. The three vertices of the i-th triangle in the strip can be determined according to the formula $\triangle_i=\\{i,\quad i+(1+i\\%2),\quad i+(2-i\\% 2)\\}$. <br>
+As you can see in the image above, this allows to have an invariant winding order (clockwise or counterclockwise) of the vertices of each triangle in the strip.
+
+Adjacent primitives are intended to provide more information about a geometry and are only visible through a geometry shader. We will return to adjacent primitives in a later tutorial.
+
+
+### Index buffer
+
+Consider the following figure.
+
+```{figure} images/02/poly-ib.png
+```
+
+Here, we have a geometry composed of 8 primitives (triangles) and 9 vertices. However, the vertex buffer that describes this geometry as a triangle list contains 24 vertices with lots of repetitions.
+
+```{code-block} cpp
+:caption: Vertex buffer
+:name: vertex-buffer-code
+
+Vertex octagon[24] = {
+v0, v1, v2, // Triangle 0
+v0, v2, v3, // Triangle 1
+v0, v3, v4, // Triangle 2
+v0, v4, v5, // Triangle 3
+v0, v5, v6, // Triangle 4
+v0, v6, v7, // Triangle 5
+v0, v7, v8, // Triangle 6
+v0, v8, v1  // Triangle 7
+};
+```
+
+To avoid duplication in the vertex buffer, we can build an index buffer that describes the geometry as a triangle list by picking up vertices in the vertex buffer. For example,
+
+```{code-block} cpp
+:caption: Index buffer
+:name: index-buffer-code
+
+Vertex v[9] = { v0, v1, v2, v3, v4, v5, v6, v7, v8 };
+ 
+UINT indexList[24] = {
+0, 1, 2, // Triangle 0
+0, 2, 3, // Triangle 1
+0, 3, 4, // Triangle 2
+0, 4, 5, // Triangle 3
+0, 5, 6, // Triangle 4
+0, 6, 7, // Triangle 5
+0, 7, 8, // Triangle 6
+0, 8, 1  // Triangle 7
+};
+```
+
+Now, the vertex buffer only contains 9 vertices. Although we have repeated some vertices in the index buffer, it's important to note that indices are usually stored as short integers (2 bytes), whereas vertices are complex structures that require more memory to be stored. Using an index buffer can help save memory space. However, since the vertex buffer used in this tutorial only contains 3 vertices to describe a triangle, we will not be using an index buffer. Anyway, an index buffer can be bound to the command buffer just like a vertex buffer. However, unlike a vertex buffer, it doesn't require any additional information to be bound to the pipeline since it only contains integer values (that is, the input assembler knows how to interpret the data from an index buffer).
+
+
+### System-Generated Values
+
+In addition to the vertex attributes from the vertex buffer, the input assembler can also pass to the next stages some system-generated values, such as a primitive ID and/or a vertex ID. These values assist subsequent stages in identifying the primitives generated and the vertices processed by the input assembler.
+
+<br>
+
+## The Vertex Shader
+
+The vertex shader processes, one by one, the vertices of the primitives generated by the input assembler. For this purpose, the input assembler outputs vertex attributes to input variables declared in the vertex shader code. These input variables are associated with vertex attributes by using the same semantic names applied to vertex attributes in the input layout (as explained in [](input-layout-label)).
+
+Typically, the vertex shader is responsible for transforming vertices to scale, rotate, or translate a mesh before passing the results to the next stage through output variables, which of course become input variables in that stage.
+
+````{note}
+The image below shows a simplified design of a shader core, as exposed by the shader model, which abstract\hide the hardware details to expose the rendering pipeline to the programmer.
+
+```{figure} images/02/shader-core.png
+```
+
+Binding slots (**s#**, **b#**, **t#** and **u#**) are used to associate resources in memory with variable declarations in the shader code, as discussed in [](root-signature-layout).
+
+128-bit registers are used for input and output data (**v#** and **o#**), and for temporary data (**r#** and **x#**). Each register can be seen as a four 32-bit component vector (that's why you see arrays of four squares in the image above). For example, a vertex shader can receive the position of a vertex (from the input assembler) in the input register **v0**, and the color in the input register **v1**. Then, it can transform the position using a temporary register and put the result in the output register **o0** to pass the data to the next stage. A shader core also provides shader registers (that are not shown in the illustration above) for constant buffer references (**cb#**), and input and output resource references (**t#** and **u#**). The symbol **#** is used because the number of registers of a certain type depends on the stage\shader type. In this context, a shader core is similar to a CPU core. However, unlike CPU programs, you will hardly write shader code in assembly language. Despite this, looking at the assembly code of shader programs is a crucial task in the optimization process to speed up the execution of your graphics applications. Observe that, as stated above, shader cores are just an abstraction of real hardware to "execute" bytecode instead of actual GPU instructions.
+
+An important thing to understand is that GPUs have no idea what pipelines, stages, and shader cores are, because they typically have hardware cores with 32-bit registers that execute the same instruction in parallel on scalar data within different threads. This is known as a SIMT (Single Instruction Multiple Threads) architecture. On the other hand, a rendering pipeline runs on shader cores, which provide an abstraction to enable a SIMD (Single Instruction Multiple Data) architecture. This means that each shader core can execute a single instruction on multiple (vector) data within a single thread. Also, a rendering pipeline is required a theoretical sequential processing of the primitives generated by the input assembler. However, in practice this restriction applies only when necessary. That is, a GPU can execute shaders in parallel on its cores for different primitives (in any order) until it needs to perform a task depending on the order of such primitives. We will return to these low-level details in later tutorials.
+```````
+
+```{note}
+You may wonder why we stated in [](root-signature-layout) that there are no registers or memory regions behind binding slots (virtual register) despite the existence of **cb#** registers for constant buffers (CBVs) and **t#** registers for shader resource views (SRVs), for example. The essence of that statement is that there are no hardware registers or GPU memory space behind slots. Indeed, remember that shader registers only exist in the context of the shader model, which abstracts real hardware. So, at the end, a slot is just a name used by the GPU for linkage purposes to dispatch resource references or actual data to GPU core registers.
+```
+
+The listing below shows an example of a vertex shader. As you can see, input variables are explicitly declared as parameters of the entry point. However, you have the option to include them within a structure. The same applies to output variables. If you are passing a single variable to the next stage, you can explicitly declare it as the return value of the entry point. However, if multiple output variables are involved, you must use a structure encompassing all the output variables.
+
+```{code-block} hlsl
+:caption: Vertex shader
+:name: vertex-shader-code
+
+struct VSIntput
+{
+    float4 position : POSITION;
+    float4 color : COLOR;
+};
+
+struct VSOutput
+{
+    // data to output to the next stage
+};
+ 
+
+// Explicitly declare the input vars as params of the entry point.
+// Therefore, the VSIntput struct is useless in this case.
+VSOutput VSMain(float4 position : POSITION, float4 color : COLOR)
+{
+    // Use position and color to output the data that the next stage expects as input
+}
+
+// Equivalent but use the VSIntput struct
+// VSOutput VSMain( VSIntput )
+// {
+//     // use position and color to output data that the next stage expects as input
+// }
+```
+
+If no optional stage is used between the vertex shader and the rasterizer, the vertex shader must also compute a 2D representation from the 3D vertex positions passed as input by the input assembler. The rasterizer requires this information that can be passed by the last pre-rasterizer programmable stage by associating the corresponding output variable with the system-value semantic **SV_POSITION**. 
+
+```{figure} images/02/3d-to-2d.png
+```
+
+However, there's no point in providing further details right now, as the sample examined in this tutorial will use a vertex buffer where the vertex positions are already in 2D and projected onto the projection window (more on this in the last section). Also, we don't need to apply any transformations to the triangle we want to show on the screen. Therefore, the vertex shader used by the sample will operate as a simple pass-through. We will return to transformations and projections in later tutorials.
+
+<br>
 
 [WIP]
 
