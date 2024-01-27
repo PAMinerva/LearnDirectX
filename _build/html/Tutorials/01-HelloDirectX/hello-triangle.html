@@ -468,10 +468,13 @@ document.write(`
 </figcaption>
 </figure>
 <p>GPUs that support Direct3D can execute programs on their cores to perform the work of various stages composing a pipeline. Direct3D provides different pipeline types, but we will focus on the rendering pipeline (also called the graphics pipeline) for now. A rendering pipeline defines the steps needed to draw something on the render target. In particular, the following image illustrates the stages of the rendering pipeline used to draw on a render target with the Direct3D API.</p>
-<figure class="align-default">
+<figure class="align-default" id="rendering-pipeline">
 <img alt="../../_images/rendering-pipeline.png" src="../../_images/rendering-pipeline.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Direct3D rendering pipeline</span><a class="headerlink" href="#rendering-pipeline" title="Permalink to this image">#</a></p>
+</figcaption>
 </figure>
-<p>Programmable stages can execute programs (often called shader programs, or simply shaders, with the GPU cores executing them often referred to as shader cores) written by programmers. Configurable stages (the rectangles with gear wheels in the image above) can’t be programmed: they always execute the same code, but you can still configure their state. This means you can’t specify what a configurable stage can do, but you can still specify how it performs its task. For this reason, they are often called fixed-function stages.</p>
+<p>Programmable stages can execute programs (often called shader programs, or simply shaders, with the GPU cores executing them often referred to as shader cores) written by programmers. Configurable stages (the rectangles with gear wheels in <a class="reference internal" href="#rendering-pipeline"><span class="std std-numref">Fig. 11</span></a>) can’t be programmed: they always execute the same code, but you can still configure their state. This means you can’t specify what a configurable stage can do, but you can still specify how it performs its task. For this reason, they are often called fixed-function stages.</p>
 <p>Data flows from input to output through each of the configurable or programmable stages. In other words, each stage consumes the input from the previous stage and provides its output to the next one (which can use it as input).</p>
 <ul class="simple">
 <li><p><strong>Input-Assembler Stage</strong> - The input assembler is responsible for supplying data to the pipeline. This stage takes its input from user-filled buffers in memory that contain arrays of vertices (and often also indices), and from those buffers it assembles primitives (triangles, lines and points) with attached system-generated values (such as a primitive ID, an instance ID, or a vertex ID) to pass to the next stage, vertex by vertex.</p></li>
@@ -496,7 +499,7 @@ document.write(`
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Binding slots are not physical blocks of memory or registers that a GPU can access to read descriptors. They are simple names (character strings) used to associate descriptors to resource declarations in shader programs. However, since the documentation uses the term “slots” in the context of resource binding, I still opted to represent them in the image above as physical blocks. As described in the previous tutorial, descriptors are stored in a descriptor heap. In the remainder of this tutorial we will see how a GPU accesses descriptors during the execution of a shader program.</p>
+<p>Binding slots are not physical blocks of memory or registers that a GPU can access to read descriptors. They are simple names (character strings) used to associate descriptors to resource declarations in shader programs. However, since the documentation uses the term “slots” in the context of resource binding, I still opted to represent them in <a class="reference internal" href="#rendering-pipeline"><span class="std std-numref">Fig. 11</span></a> as physical blocks. As described in the previous tutorial, descriptors are stored in a descriptor heap. In the remainder of this tutorial we will see how a GPU accesses descriptors during the execution of a shader program.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -607,7 +610,7 @@ IBVs, VBVs, and SOVs don’t need to be stored in a descriptor (similarly to des
 <strong>u</strong> – for unordered access views (UAV) <br>
 <strong>b</strong> – for constant buffer views (CBV)</p>
 <p>The register attribute specifies that <strong>g_texture</strong> is bound to slot (virtual register) <span class="math notranslate nohighlight">\(0\)</span> of the register space <strong>t</strong>, which is reserved for SRVs. Therefore, this variable allows access to a descriptor that holds an SRV describing a 2D texture. The use of the term “register” is a bit misleading in this case. There are no registers or memory regions behind binding slots. A more appropriate term would have been <strong>linkname</strong>, indicating that a slot name is only used to link descriptors in memory and resource declarations in HLSL. In this case, we are using the string <strong>t0</strong> to bind a descriptor stored in a GPU heap (maybe included in a descriptor heap or in a command list) to a resource declaration in a shader program.</p>
-<p>That said, the following illustration shows the general idea: we can bind descriptors in memory to variables declared in the shader code by associating both a root signature and a shader-visible descriptor heap with the command list. Now, we are elaborating further on this general idea.</p>
+<p>That said, the image below illustrates the general idea: we can bind descriptors in memory to variables declared in the shader code by associating both a root signature and a shader-visible descriptor heap with the command list. Now, we are elaborating further on this general idea.</p>
 <figure class="align-default">
 <img alt="../../_images/root-signature.png" src="../../_images/root-signature.png" />
 </figure>
@@ -760,20 +763,54 @@ At first glance, one might assume that root constants would always be the optima
 <section id="primitive-topologies">
 <h3>Primitive topologies<a class="headerlink" href="#primitive-topologies" title="Permalink to this heading">#</a></h3>
 <p>In order to assemble primitives, the input assembler needs to know their basic type (point, line, triangle or patch) and topology, which allows to define a relationship between the primitives defined in a vertex buffer (connection, adiacency, and so on). We must provide this information, along with other details, to ensure that the input assembler properly interprets the vertex buffer data. The following image shows the main primitive types that the input assembler can generate from the vertex buffer data.</p>
-<figure class="align-default">
+<figure class="align-default" id="primitive-types">
 <img alt="../../_images/topology.png" src="../../_images/topology.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Primitive types</span><a class="headerlink" href="#primitive-types" title="Permalink to this image">#</a></p>
+</figcaption>
 </figure>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img alt="" src="../../_images/primitive-vertex.png" /></p></td>
+<td><p>Vertex</p></td>
+<td><p>A point in 3D space</p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="" src="../../_images/primitive-winding-direction.png" /></p></td>
+<td><p>Winding Direction</p></td>
+<td><p>The vertex order when assembling a primitive. Can be clockwise or counterclockwise</p></td>
+</tr>
+<tr class="row-even"><td><p><img alt="" src="../../_images/primitive-leading-vertex.png" /></p></td>
+<td><p>Leading Vertex</p></td>
+<td><p>The first non-adjacent vertex in a primitive that contains per-constant data.</p></td>
+</tr>
+</tbody>
+</table>
+<br>
 <p><strong>Point List</strong> indicates a collection of vertices that are rendered as isolated points. The order of the vertices in the vertex buffer is not important as it describes a set of separated points.</p>
 <p><strong>Line List</strong> indicates a collection of line segments. The two vertices that represent the extremes of each line segment must be contiguous in the vertex buffer.</p>
 <p><strong>Line Strip</strong> indicates a connected series of line segments. In the vertex buffer, the vertices are ordered so that the first vertex represents the starting point of the first segment of the line strip, the second vertex represents both the end point of the first segment and the starting point of the second segment, and so on.</p>
 <p><strong>Triangle List</strong> indicates a series of triangles that make up a mesh. The three vertices of each triangle must be contiguous in the vertex buffer, and in a specific order (clockwise or counterclockwise).</p>
-<p><strong>Triangle Strip</strong> indicates a series of connected triangles that make up a mesh. The three vertices of the i-th triangle in the strip can be determined according to the formula <span class="math notranslate nohighlight">\(\triangle_i=\\{i,\quad i+(1+i\\%2),\quad i+(2-i\\% 2)\\}\)</span>. <br>
-As you can see in the image above, this allows to have an invariant winding order (clockwise or counterclockwise) of the vertices of each triangle in the strip.</p>
+<p><strong>Triangle Strip</strong> indicates a series of connected triangles that make up a mesh. The three vertices of the i-th triangle in the strip can be determined according to the formula <span class="math notranslate nohighlight">\(\triangle_i=\{i,\quad i+(1+i\%2),\quad i+(2-i\% 2)\}\)</span>. <br>
+As you can see in <a class="reference internal" href="#primitive-types"><span class="std std-numref">Fig. 12</span></a>, this allows to have an invariant winding order (clockwise or counterclockwise) of the vertices of each triangle in the strip.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Adjacent primitives are intended to provide more information about a geometry and are only visible through a geometry shader. We will return to adjacent primitives in a later tutorial.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In general, vertex attributes are interpolated to ensure smooth transitions between adjacent pixels within a primitive (see <a class="reference internal" href="#attribute-interpolation-label"><span class="std std-ref">Attribute interpolation</span></a>). However, it is also possible to “nullify” interpolation (and smooth transitions) by specifying a constant value that is shared by all the vertices of a primitive. In order to assign constant per-primitive vertex attribute values, there must be a way to associate a vertex with a primitive. The vertex in a primitive which supplies its per-primitive constant data is usually defined as the “leading vertex”. A primitive topology can have multiple leading vertices, one for each primitive in the topology. The leading vertex for an individual primitive in a topology is the first non-adjacent vertex in the primitive. For example, in the triangle strip with adjacency illustrated in <a class="reference internal" href="#primitive-types"><span class="std std-numref">Fig. 12</span></a>, the leading vertices are 0, 2, 4, 6, etc. For the line strip with adjacency, the leading vertices are 1, 2, 3 etc.</p>
+<p>Observe that adjacent primitives have no leading vertex. This means that there is no primitive data associated with adjacent primitives.</p>
+</div>
 </section>
 <section id="index-buffer">
 <h3>Index buffer<a class="headerlink" href="#index-buffer" title="Permalink to this heading">#</a></h3>
-<p>Consider the following figure.</p>
+<p>Consider the following image.</p>
 <figure class="align-default">
 <img alt="../../_images/poly-ib.png" src="../../_images/poly-ib.png" />
 </figure>
@@ -877,8 +914,11 @@ As you can see in the image above, this allows to have an invariant winding orde
 <section id="the-rasterizer">
 <h2>The Rasterizer<a class="headerlink" href="#the-rasterizer" title="Permalink to this heading">#</a></h2>
 <p>The rasterizer takes vertices of 2D primitives (projected onto the projection window), and passes to the next stage the pixels covered by these 2D representations of the original 3D primitives. For this purpose, the rasterizer first use the viewport to transform the 2D vertex positions to render target positions, so that it can consider them with respect to the space of the render target. At that point, the rasterizer can compute the pixels covered by the 2D primitives so that to each pixel corresponds a texel in the render target at the same location. Then, it uses the scissor to discard the pixels falling outside a rectangular region on the render target. As you can see in the image below, the viewport is represented as a rectangle jut like a scissor, so that we can select a region on the render target where to restrict the drawing operations (more details on the viewport will be provided in a later tutorial). Therefore, the viewport can be seen as a transformation to map\stretch the projection window onto a particular rectangle of the render target. On the other hand, the scissor rectangle can be seen as a filter to discard pixels.</p>
-<figure class="align-default">
+<figure class="align-default" id="viewport-scissor">
 <img alt="../../_images/viewport-scissor.png" src="../../_images/viewport-scissor.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Viewport and scissor</span><a class="headerlink" href="#viewport-scissor" title="Permalink to this image">#</a></p>
+</figcaption>
 </figure>
 <p>The calculation the rasterizer performs to check if a 2D primitive in the render target space covers a pixel is made with respect to itsl center. In other words, a pixel is covered if a primitive covers its center. Additionally, if two or more primitives overlap, the rasterizer generates and passes several pixels for the same texel position in the render target. However, which pixel is actually stored in the render target and how it is stored depends on whether blending, or depth and stencil tests are enabled. Additional details about this topics will be provided in a later tutorial, when we discuss the Output-Merger stage.</p>
 <figure class="align-default">
@@ -897,14 +937,14 @@ As you can see in the image above, this allows to have an invariant winding orde
 <img alt="../../_images/front-face-triangle.gif" src="../../_images/front-face-triangle.gif" />
 </figure>
 <p>The front face of a triangle is the face that is oriented towards the normal vector. This vector is perpendicular to the triangle and points away from its front face. The rasterizer receives the vertices of each primitive in a specific order, specified in the input assembler state based on the primitive type and topology, and can determine whether a triangle is back-facing or front-facing by checking the sign of the triangle’s area computed in render target space. In a later tutorial, we will see how to derive a formula to compute the signed area of a triangle and how it can be used to establish whether a triangle is back-facing or front-facing.</p>
-<p>The following image demonstrates the effect of setting the rasterizer state to cull the back face of triangles. In that case, the rasterizer will not generate any pixels for primitives showing their back face. This means that subsequent stages won’t process any pixels for those primitives, and you will see through them as if they were transparent.</p>
+<p>The image below demonstrates the effect of setting the rasterizer state to cull the back face of triangles. In that case, the rasterizer will not generate any pixels for primitives showing their back face. This means that subsequent stages won’t process any pixels for those primitives, and you will see through them as if they were transparent.</p>
 <figure class="align-default">
 <img alt="../../_images/backface-culling.png" src="../../_images/backface-culling.png" />
 </figure>
 </section>
 <section id="attribute-interpolation">
-<h3>Attribute interpolation<a class="headerlink" href="#attribute-interpolation" title="Permalink to this heading">#</a></h3>
-<p>We know that vertex attributes are data associated with vertices, but the rasterizer generates pixels from primitives. This raises a question: what color is a pixel inside a triangle? In other words, given the three vertices of a triangle storing color information, what is the color of a point within the triangle? Fortunately, the rasterizer can calculate this for us by interpolating the attributes of the vertices of a primitive using barycentric coordinates, and adjusting the result to account for the problems that arise when obtaining a 2D representation from a 3D primitive. Don’t worry if the last sentence seemed confusing. The rasterizer is a fixed-function stage, and we can simply welcome the result in the pixel shader without getting too caught up in the low-level details. However, the image below should help to illustrate why the rasterizer needs to fix the interpolation.</p>
+<span id="attribute-interpolation-label"></span><h3>Attribute interpolation<a class="headerlink" href="#attribute-interpolation" title="Permalink to this heading">#</a></h3>
+<p>We know that vertex attributes are data associated with vertices, but the rasterizer generates pixels from primitives. This raises a question: what color is a pixel inside a triangle? In other words, given the three vertices of a triangle storing color information, what is the color of a point within the triangle? Fortunately, the rasterizer can calculate this for us by interpolating the attributes of the vertices of a primitive using barycentric coordinates, and adjusting the result to account for the problems that arise when obtaining a 2D representation from a 3D primitive. Don’t worry if the last sentence seemed confusing. The rasterizer is a fixed-function stage, and we can simply welcome the result in the pixel shader without getting too caught up in the low-level details. However, the following image should help to illustrate why the rasterizer needs to fix the interpolation.</p>
 <figure class="align-default">
 <img alt="../../_images/perspective-correction.png" src="../../_images/perspective-correction.png" />
 </figure>
