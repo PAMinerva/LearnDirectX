@@ -29,9 +29,13 @@ Before starting to review the source code of the [D3D12HelloWindow](https://gith
 ## Windows applications
 This section is heavily inspired by the first chapter of the book “Programming Microsoft Visual C++, Fifth Edition” by David J. Kruglinski, George Shepherd and Scott Wingo.
 
-Windows applications use an event-driven programming model, as illustrated in the image below. In this model, programs respond to events by processing messages sent by the operating system. An event could be a keystroke, a mouse click, or a command for a window to repaint itself. The entry point of a Windows application is a function called **WinMain**, but most of the action occurs in a function known as the window procedure. The window procedure processes messages sent by the OS to the application that a window belongs to. **WinMain** creates that window and then enters a message loop, retrieving messages and dispatching them to the window procedure. Messages wait in a message queue until they are retrieved. The primary task of a Windows application is to respond to the messages it receives. In between messages, it does little except wait for the next message to arrive. An application can exit the message loop when a **WM_QUIT** message is retrieved from the message queue, signaling that the application is about to end. This message is sent by the OS when the user closes the window. When the message loop ends, **WinMain** returns, and the application terminates.
+Windows applications use an event-driven programming model, as illustrated in {numref}`win-app`. In this model, programs respond to events by processing messages sent by the operating system. An event could be a keystroke, a mouse click, or a command for a window to repaint itself. The entry point of a Windows application is a function called **WinMain**, but most of the action occurs in a function known as the window procedure. The window procedure processes messages sent by the OS to the application that a window belongs to. **WinMain** creates that window and then enters a message loop, retrieving messages and dispatching them to the window procedure. Messages wait in a message queue until they are retrieved. The primary task of a Windows application is to respond to the messages it receives. In between messages, it does little except wait for the next message to arrive. An application can exit the message loop when a **WM_QUIT** message is retrieved from the message queue, signaling that the application is about to end. This message is sent by the OS when the user closes the window. When the message loop ends, **WinMain** returns, and the application terminates.
 
 ```{figure} images/01/rect31572.png
+---
+name: win-app
+---
+Windows programming model
 ```
 
 ```{note}
@@ -96,9 +100,13 @@ Unfortunately, this doesn't automatically mean you can write DirectX application
 
 COM is a complex programming model, but fortunately, you don't need to master it to write DirectX applications. Indeed, we will only use COM as end-users rather than for developing our API or framework. That is, DirectX will hide the complexity of COM from us. However, to effectively program with DirectX, we still need to know some basic concepts about COM. First, it can be useful to understand what it means to break dependencies of the code at the binary level and what type of problems this break can solve.
 
-If you've ever developed a Windows library, you're likely familiar with the process of exporting functionality from DLLs written in the C language for use by applications written in other languages (such as C++, C#, Java, Python, etc.). Microsoft didn't use C to write DirectX, though. They preferred an object-oriented language like C++. Now, consider the scenario of writing a DLL that exports a C++ class. The functionality provided by this class can't be easily used by other languages because C++ only specifies what happens at the source code level. The standard doesn't say anything about what happens at the binary level. For example, we know that object-oriented languages use virtual tables to implement polymorphism. However, this is an implementation concept, just like the stack and the heap: the C++ standard doesn't say anything about how to implement polymorphism. The figure below shows a common layout for a class in memory. However, nothing prevents a new language from placing the virtual table pointer at the end, or defining a whole new system to implement polymorphism.
+If you've ever developed a Windows library, you're likely familiar with the process of exporting functionality from DLLs written in the C language for use by applications written in other languages (such as C++, C#, Java, Python, etc.). Microsoft didn't use C to write DirectX, though. They preferred an object-oriented language like C++. Now, consider the scenario of writing a DLL that exports a C++ class. The functionality provided by this class can't be easily used by other languages because C++ only specifies what happens at the source code level. The standard doesn't say anything about what happens at the binary level. For example, we know that object-oriented languages use virtual tables to implement polymorphism. However, this is an implementation concept, just like the stack and the heap: the C++ standard doesn't say anything about how to implement polymorphism. {numref}`class-layout` shows a common layout for a class in memory. However, nothing prevents a new language from placing the virtual table pointer at the end, or defining a whole new system to implement polymorphism.
 
 ```{figure} images/01/class-layout2.png
+---
+name: class-layout
+---
+Class memory layout
 ```
 
 In other words, using a C++ class exported from a DLL is feasible as long as you are operating on the same OS and with the same compiler. Conversely, other languages or different implementations of C++ might struggle to communicate with the DLL if they lack knowledge about the binary layout of the exported class in memory. Specifically, when a compiler attempts to resolve a call to a virtual function, it requires knowledge of the class's memory layout to access the function in the virtual table.
@@ -182,9 +190,13 @@ A swap chain can be configured for drawing in either full-screen or windowed mod
 
 As mentioned earlier in this tutorial, the framework used for building the [D3D12HelloWindow](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld) sample is common to nearly all the other samples we'll explore in the upcoming tutorials. This means that, by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.
 
-As illustrated in the image below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they're needed, which can reduce startup time and improve memory usage.
+As illustrated in {numref}`project-props` below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they're needed, which can reduce startup time and improve memory usage.
 
 ```{figure} images/01/project-properties.PNG
+---
+name: project-props
+---
+Project property pages in Visual Studio
 ```
 
 DirectX applications are normal Windows programs, so the entry point is **WinMain** as usual.
@@ -740,14 +752,18 @@ Typically, interface names ending with a number extend an earlier, well known in
 ```
 
 Now, we can get back examining **LoadPipeline**.<br>
-We need to create a command queue where to submit command lists which, in turn, will hold the commands we want the GPU execute. Indeed, part of the work of a GPU is to execute commands in command lists consumed from a command queue. In this first sample we have very few commands to send to the GPU because it simply shows a window with a blueish client area. Despite this, we still need a command queue as we need to associate it with the swap chain (behind the scenes the DXGI API records commands to be executed by the GPU; more on this shortly). As illustrated in the figure below, there are multiple types of command queues, each of which can hold command lists of a specific type. Then, CPU threads can create command lists of whatever type and insert them in the related command queue.
+We need to create a command queue where to submit command lists which, in turn, will hold the commands we want the GPU execute. Indeed, part of the work of a GPU is to execute commands in command lists consumed from a command queue. In this first sample we have very few commands to send to the GPU because it simply shows a window with a blueish client area. Despite this, we still need a command queue as we need to associate it with the swap chain (behind the scenes the DXGI API records commands to be executed by the GPU; more on this shortly). As illustrated in {numref}`command-queues` below, there are multiple types of command queues, each of which can hold command lists of a specific type. Then, CPU threads can create command lists of whatever type and insert them in the related command queue.
 
 ```{figure} images/01/rect3158.png
+---
+name: command-queues
+---
+GPU command queues
 ```
 
 Many GPUs have one or more dedicated copy engines, a compute engine, and a 3D engine, each capable of executing specific commands in parallel with the other engines. For this reason, there can be no simple guarantee of the order of execution, hence the need for synchronization mechanisms that allow establishing an execution order, if needed.
 
-For this sample, we will use a graphics command queue (referred to as the 3D queue in the image above) as it is capable of holding direct command lists that, in turn, can include all types of commands. Indeed, a graphics queue can drive all GPU engines; the compute queue can drive the compute and copy engines, and the copy queue can only drive the copy engine.
+For this sample, we will use a graphics command queue (referred to as the 3D queue in {numref}`command-queues`) as it is capable of holding direct command lists that, in turn, can include all types of commands. Indeed, a graphics queue can drive all GPU engines; the compute queue can drive the compute and copy engines, and the copy queue can only drive the copy engine.
 
 To create a swap chain, we need to specify the number of buffers, their size, format, and usage. We're going to use two buffers of the same size as the window's client area. That way, the buffers will be mapped to the client area without stretching the image. <br>
 **DXGI_FORMAT_R8G8B8A8_UNORM** indicates the format of the buffers. You can imagine the buffers in the swap chain as grids of (width * height) elements, whose common type is specified by a DXGI_FORMAT value. In this case, we indicate that each element is a 32-bit value composed of four 8-bit unsigned-normalized-integer channels, each in the range $[0/255, 255/255]=[0, 1]$ (that is, each channel can have 256 different values). The four channels are called R, G, B and A to mimic the RGB color model, where a color is defined by the amount of red, green and blue it includes. The channel A (called alpha) is used to control the transparency or the opacity of the color. <br>
@@ -954,6 +970,7 @@ At this point, it should be clear that we are dealing with two different timelin
 **IDXGISwapChain::Present** allows presenting (to the user, on the screen) the frame just created on the CPU timeline (using the current back buffer as the render target). How does it work? Present operations occur on the graphics queue associated with the swap chain. That is, when you call **Present**, a present operation is recorded in the command queue associated with swap chain during its creation, and a request to present the frame is inserted in a queue called the present queue, waiting for the GPU to execute the commands to draw on the related back buffer. Since this happens only after recording all the commands needed to create the frame, you are sure the GPU reached the present operation in the command queue only at the very end (i.e., after executing all the other previous drawing commands). At that point, the frame associated with the request in the present queue is done, ready to be shown on the screen at the next vertical interval when the swap/flip between the back and present buffers takes place.
 
 ```{figure} images/01/rect853d.png
+Presenting frames
 ```
 
 ```{important}
@@ -966,9 +983,13 @@ When you create a frame and present it on the CPU timeline, nothing happens on t
 
 Observe that **Present** takes, as its first parameter (called *SyncInterval*), a value that specifies how to synchronize the presentation of a frame with the vertical blank. For values greater than zero, it indicates the number of vertical intervals the frame waits in the present queue before getting ready to be presented on the screen, enabling v-sync. In this sample, we always pass 1 as an argument to this parameter to specify that we want to wait a single vertical interval. In a later tutorial, we will explore what it means if you pass 0 to this parameter.
 
-The term "vertical interval" (or vertical blank, depicted as a dashed diagonal line in the following image) refers to the time it takes for the scanning process to restart the refresh of your monitor.
+The term "vertical interval" (or vertical blank, depicted as a dashed diagonal line in {numref}`refresh-op`) refers to the time it takes for the scanning process to restart the refresh of your monitor.
 
 ```{figure} images/01/path1143b.png
+---
+name: refresh-op
+---
+Monitor refreshing
 ```
 
 In the images below, you can observe that if the GPU isn't able to draw on the render target quickly enough, the frames per second (FPS) can decrease by half. If a new frame is not prepared for presentation, the previous one will persist on the screen. That is, no swap occurs between back and front buffers at the next v-sync interval since the GPU has not finished drawing on the back buffer.
