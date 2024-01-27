@@ -465,7 +465,6 @@ In general, vertex attributes are interpolated to ensure smooth transitions betw
 Observe that adjacent primitives have no leading vertex. This means that there is no primitive data associated with adjacent primitives.
 ```
 
-
 ### Index buffer
 
 Consider the following image.
