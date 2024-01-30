@@ -3,9 +3,15 @@
 
 format: jb-book
 root: presentation
-chapters:
-- file: Tutorials/00-Intro/intro-and-prerequisites
-- file: Tutorials/01-HelloDirectX/hello-directx
-  sections:
-  - file: Tutorials/01-HelloDirectX/hello-window
-  - file: Tutorials/01-HelloDirectX/hello-triangle
+parts:
+- caption:
+  chapters:
+  - file: Tutorials/00-Intro/intro-and-prerequisites
+
+- caption: Hello World
+  chapters:
+  - file: Tutorials/01-HelloDirectX/hello-directx
+    sections:
+    - file: Tutorials/01-HelloDirectX/hello-window
+    - file: Tutorials/01-HelloDirectX/hello-triangle
+    - file: Tutorials/01-HelloDirectX/hello-bundles
