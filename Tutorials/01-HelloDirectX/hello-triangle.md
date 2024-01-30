@@ -297,7 +297,7 @@ We must associate a root signature with a command list in order to set up a para
 If you pass a root argument for a root parameter to draw an object A and then, in the same command list, you pass a different root argument for the same root parameter to draw an object B, the driver may need to copy the whole memory region where the root arguments are stored. However, if the root arguments are split into fast and slow memory regions, the driver can only copy the region of memory where the new root arguments reside. This allows to execute drawing commands in parallel, where each draw references the proper memory region of root arguments.
 ```
 
-```{important}
+```{tip}
 The maximum size of a root signature is 64 DWORDs. However, this is more a suggestion (rather than a rule) to keep in mind that smaller root signatures allow for the root arguments to be stored exclusively in the fast memory region. The documentation also recommends sorting root parameters (within the root signature) from most frequently changing to least frequently changing. In other words, root parameters that receive different root arguments within the same command list should be placed before root parameters that remain static. This approach provides the driver with a better chance of only copying root arguments to the fast memory region (which is more efficient to access).
 ```
 
@@ -359,7 +359,7 @@ Regarding the first point, recall that IBVs, VBVs, RTVs, and DSVs are copied int
 To set the part of the pipeline state defined within a PSO, we record a dedicated command in the command list with **ID3D12GraphicsCommandList::SetPipelineState**. Alternatively, we can set the same state during the creation or reset of a command list with **ID3D12Device::CreateCommandList** and **ID3D12GraphicsCommandList::Reset**, respectively. The result is the same: a command (in the command list) that sets the pipeline state. Either way, we pass a PSO as an argument. If no PSO is specified in **CreateCommandList**, a default initial state is used. Then, we can use **SetPipelineState** to change the PSO associated to the command list. <br>
 Therefore, all of the pipeline state is recorded in a command list, and none of the pipeline state that was set by previously executed command lists will be inherited. Additional information on pipeline state inheritance will be provided in the next tutorial.
 
-```{important}
+```{tip}
 The documentation states that, ideally, the same root signature should be shared by more than one PSO whenever possible. This implies that we should design the root signature to be as general as possible. The last sentence suggests that root signatures could easily become large structures, seemingly in contrast with the earlier emphasis on the need for small root signatures. However, the key is always to find the right balance for the specific application on which we are working.
 ```
 
@@ -870,7 +870,7 @@ void D3D12HelloTriangle::LoadAssets()
 }
 ```
 
-First, we create an empty root signature (with no root parameters and static samplers) as the shader programs used by this sample don't need to access any GPU memory resources (we will review the shader code at the end of the tutorial). We use the **CD3DX12_ROOT_SIGNATURE_DESC** structure, and its **Init** helper function, to specify root parameters, static samplers and flags. <br>
+Firstly, we create an empty root signature (with no root parameters and static samplers) as the shader programs used by this sample don't need to access any GPU memory resources (we will review the shader code at the end of the tutorial). We use the **CD3DX12_ROOT_SIGNATURE_DESC** structure, and its **Init** helper function, to specify root parameters, static samplers and flags. <br>
 The flag **D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT** specifies we want to use the input assembler as a stage of the pipeline (indeed, we can also render without it, but we won't cover the details here as it goes beyond the scope of this tutorial). On some GPUs, omitting this flag can save an additional DWORD in the root argument space to store our root arguments. Omit this flag if the input assembler is not required, though the optimization is minor.
 
 We create a serialized version of the root signature by calling **D3D12SerializeRootSignature**. This generates a memory blob of the root signature, which can then be used to create the root signature object using the **CreateRootSignature** function. The serialized version could be stored in a file on disk for quick loading, eliminating the need to recreate it each time. To store the serialized version in memory we use a pointer to a **ID3DBlob** interface. This interface is used to hold generic byte arrays called memory blob (whether it be object code or a simple vertex array; it's up to the programmer to cast data to the correct type) that can be easily stored to disk using the **D3DWriteBlobToFile** function.
@@ -941,7 +941,131 @@ Lastly, we create a fence and call **WaitForPreviousFrame** at the end of **Load
 
 Now, we can review the code of the **PopulateCommandList** function.
 
-[WIP]
+```{code-block} cpp
+:caption: HelloTriangle/D3D12HelloTriangle.cpp
+:name: hellotriangle-PopulateCommandList-code
+
+void D3D12HelloTriangle::PopulateCommandList()
+{
+    // Command list allocators can only be reset when the associated 
+    // command lists have finished execution on the GPU; apps should use 
+    // fences to determine GPU execution progress.
+    ThrowIfFailed(m_commandAllocator->Reset());
+ 
+    // However, when ExecuteCommandList() is called on a particular command 
+    // list, that command list can then be reset at any time and must be before 
+    // re-recording.
+    ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), m_pipelineState.Get()));
+ 
+    // Set necessary state.
+    m_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
+    m_commandList->RSSetViewports(1, &m_viewport);
+    m_commandList->RSSetScissorRects(1, &m_scissorRect);
+ 
+    // Indicate that the back buffer will be used as a render target.
+    m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+ 
+    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart(), m_frameIndex, m_rtvDescriptorSize);
+    m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
+ 
+    // Record commands.
+    const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+    m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+    m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
+    m_commandList->DrawInstanced(3, 1, 0, 0);
+ 
+    // Indicate that the back buffer will now be used to present.
+    m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+ 
+    ThrowIfFailed(m_commandList->Close());
+}
+```
+
+In resetting the command list, we pass the PSO as an argument to set the pipeline state. Remember that if you pass a null pointer, a default pipeline state will be set, and we want to prevent this behavior as we have a custom PSO to set.
+
+Next, we associate the root signature with the command list using **SetGraphicsRootSignature** to set up the parameter space.
+
+We need to record some commands in the command list to set the pipeline states outside the PSO. <br> 
+To complete the input assembler state, we bind the vertex buffer view using IASetVertexBuffers and set the topology with IASetPrimitiveTopology. In this case, we set TRIANGLELIST as we have a single triangle described with 3 contiguous vertices in the vertex buffer, in clockwise order. <br>
+The rasterizer state is completed by setting the viewport and scissor rectangles, which are the same size as the render target so that we can draw on the whole back buffer. <br>
+To complete the output-merger state, we call **OMSetRenderTargets**, which binds the current render target as the final output of the rendering pipeline.
+
+```{note}
+Some rendering techniques require writing different per-pixel data to different render targets. To avoid restarting the rendering pipeline each time we need to write to a different render target, Direct3D allows writing to multiple render targets simultaneously (we can select the render target to store a value in the shader code with **SV_Target**[n], where *n* is the index of the render target). This is why **OMSetRenderTargets** takes the number of render targets as the first parameter and an array of render targets as the second parameter. It also explains why we need to pass arrays of viewport and scissor rectangles to **RSSetViewports** and **RSSetScissorRects**, respectively. <br>
+The third parameter of **OMSetRenderTargets** is a boolean that specifies whether the handle passed as an argument to the second parameter is a pointer to a contiguous range of RTVs in a descriptor heap. In this case, we pass **FALSE**, indicating that the handle is the first of an array of handles to descriptors. In our case, it's okay to pass **FALSE**, as we only have a handle to the RTV we want to bind. We will delve into these advanced topics in later tutorials.
+```
+
+**ID3D12GraphicsCommandList::DrawInstanced**  instructs the GPU to draw one or more instances of a mesh. In this case, we will draw a single triangle. When the GPU executes this command, the rendering pipeline starts working. The first parameter of **DrawInstanced** is the number of vertices to draw per instance (that is, it is the number of vertices that make up the primitives of the mesh in the vertex buffer, so it's also the number of times the vertex shader will be executed per instance; remember that the vertex shader processes the primitives one vertex at a time). The remaining parameters will be explained in a later tutorial.
+
+To conclude this section, let's take a look at the shader code.
+
+```{code-block} hlsl
+:caption: HelloTriangle/shaders.hlsl
+:name: hellotriangle-shader-code
+
+struct PSInput
+{
+    float4 position : SV_POSITION;
+    float4 color : COLOR;
+};
+ 
+
+
+PSInput VSMain(float4 position : POSITION, float4 color : COLOR)
+{
+    PSInput result;
+ 
+    result.position = position;
+    result.color = color;
+ 
+    return result;
+}
+ 
+ 
+ 
+float4 PSMain(PSInput input) : SV_TARGET
+{
+    return input.color;
+}
+```
+
+The **PSInput** structure declares both the output of the vertex shader and the (interpolated) input the pixel shader expects from the rasterizer. It is possible to have a single structure for both shaders as the per-pixel attributes are a simple interpolation of the per-vertex attributes (that is, we have the same type and number of attributes both per-vertex and per-pixel). <br>
+The system-value semantic **SV_POSITION** identifies a special position both in the output of the vertex shader and in the input of the pixel shader. In the context of a vertex shader, this semantic specifies the 2D representation of a 3D vertex position (recall that the rasterizer expects a 2D representation of 3D primitives). In the context of a pixel shader, **SV_POSITION** specifies the pixel position of the pixel currently processed (offset by 0.5 to get the position of its center). In other words, it identifies the render target coordinates of the pixel; remember that the pixel shader processes pixels related to texels in the render target, so the rasterizer can easily compute this value. However, the pixel position is rarely used in the pixel shader unless you need to implement some advanced rendering techniques. <br>
+The semantic **COLOR** is used to simply convey the color attribute of the vertices from the input assembler (remember how we built the vertex buffer and set up the input layout) up to the pixel shader, where it is returned as the per-pixel data to store in the render target (at the same position of the currently processed pixel).
+
+```{note}
+You may wonder why we need to use a **float4** to describe a position in the **PSInput** structure if we defined it as an array of three **float**s in the vertex buffer (for the x-, y- and z-coordinates). Actually, you can use a **float3** as the first input parameter (position) for the entry point of the vertex shader. However, you can't change the type of the position field in the **PSInput** structure. We will see why in an upcoming tutorial.
+```
+
+The vertex shader specified within the PSO is executed for each vertex of the primitives generated by the input assembler. In this case, we have a vertex buffer containing just three vertices (red, green, and blue) that represent a single triangle. Therefore, the vertex shader runs three times (almost certainly in parallel). The vertex shader can perform a wide range of tasks, but it is typically used to obtain a sort of 2D representation of the 3D primitives that constitute the meshes in a 3D scene. Actually, we already have a 2D representation of the triangle we wish to render on the screen, so we'll use the vertex shader as a straightforward pass-through to transfer data from the input assembler to the rasterizer. In accordance with the input layout, the entry point of the vertex shader is **VSMain**. The input layout also defines the semantics employed to transmit the vertex attributes so, in the vertex shader, we associate the same semantics to the input parameters of **VSMain** to indicate where we want to receive the corresponding attributes from the input assembler. Observe that we might have also defined a **VSInput** structure to pass position and color as parameters to **VSMain**, similar to how we pass a **PSInput** structure to **PSMain**.
+
+The rasterizer identifies the pixels occupied by the projected, 2D primitives (passed by the last pre-rasterizer shader through the **SV_POSITION** semantic) and then interpolates output vertex attributes (in this case color and position) for those pixels in order to convey the result to the pixel shader. Pixels covered by primitives outside the projection window are discarded to prevent the pixel shader from wasting time processing pixels that won't be displayed on the screen. Remember that, in this case, the viewport and scissor are the same size as the render target, ensuring that the triangle will be rendered across the entire back buffer.
+
+The pixel shader processes, one by one, the pixels covered by the projected, 2D primitives processed by the rasterizer. In this case, we don't need to perform any specific tasks or tests in the pixel shader, so we simply return the interpolated color as the per-pixel data to store in the render target at the corresponding position (that is, in the texel associated with the currently processed pixel). If you run the sample, you will notice that the colors of the pixels inside the triangle, and along its edges, are interpolated from the colors associated with the three vertices in the vertex buffer. Remember that the system-value semantic **SV_TARGET** is used to identify the output value returned by the pixel shader as the per-pixel data that could be stored in the render target. When you have a pixel shader that return a single value as the per-pixel data, you can specify **SV_TARGET** for that value after the pixel shader's entry point, followed by a colon symbol. In this case, the per-pixel data will be stored for sure as we haven't enabled blending, depth or stencil testing in the output merger stage.
+
+```{admonition} Try
+:class: tip
+
+Execute the sample and try resizing the window. What happens? The triangle gets stretched because we have a swap chain with two buffers of $1280\times 720$, while the window no longer matches the same size. You can mitigate the problem by resizing the window to a dimension with an aspect ratio similar to $1280/720$. However, we will ultimately fix this problem in a later tutorial.
+```
+<br>
+
+<br>
+
+Source code: [D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
+
+<br>
+
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
+
+```{figure} ../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
 
 <br>
 
