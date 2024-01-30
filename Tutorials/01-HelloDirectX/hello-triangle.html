@@ -659,8 +659,8 @@ IBVs, VBVs, and SOVs don’t need to be stored in a descriptor (similarly to des
 <p class="admonition-title">Note</p>
 <p>If you pass a root argument for a root parameter to draw an object A and then, in the same command list, you pass a different root argument for the same root parameter to draw an object B, the driver may need to copy the whole memory region where the root arguments are stored. However, if the root arguments are split into fast and slow memory regions, the driver can only copy the region of memory where the new root arguments reside. This allows to execute drawing commands in parallel, where each draw references the proper memory region of root arguments.</p>
 </div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
 <p>The maximum size of a root signature is 64 DWORDs. However, this is more a suggestion (rather than a rule) to keep in mind that smaller root signatures allow for the root arguments to be stored exclusively in the fast memory region. The documentation also recommends sorting root parameters (within the root signature) from most frequently changing to least frequently changing. In other words, root parameters that receive different root arguments within the same command list should be placed before root parameters that remain static. This approach provides the driver with a better chance of only copying root arguments to the fast memory region (which is more efficient to access).</p>
 </div>
 <div class="admonition warning">
@@ -706,8 +706,8 @@ As mentioned earlier, while most of the pipeline state is configured using a PSO
 <p>Regarding the first point, recall that IBVs, VBVs, RTVs, and DSVs are copied into the command list. Also, we can associate a shader-visible descriptor heap to a command list. We will revisit the remaining points both in this tutorial and upcoming ones.</p>
 <p>To set the part of the pipeline state defined within a PSO, we record a dedicated command in the command list with <strong>ID3D12GraphicsCommandList::SetPipelineState</strong>. Alternatively, we can set the same state during the creation or reset of a command list with <strong>ID3D12Device::CreateCommandList</strong> and <strong>ID3D12GraphicsCommandList::Reset</strong>, respectively. The result is the same: a command (in the command list) that sets the pipeline state. Either way, we pass a PSO as an argument. If no PSO is specified in <strong>CreateCommandList</strong>, a default initial state is used. Then, we can use <strong>SetPipelineState</strong> to change the PSO associated to the command list. <br>
 Therefore, all of the pipeline state is recorded in a command list, and none of the pipeline state that was set by previously executed command lists will be inherited. Additional information on pipeline state inheritance will be provided in the next tutorial.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
 <p>The documentation states that, ideally, the same root signature should be shared by more than one PSO whenever possible. This implies that we should design the root signature to be as general as possible. The last sentence suggests that root signatures could easily become large structures, seemingly in contrast with the earlier emphasis on the need for small root signatures. However, the key is always to find the right balance for the specific application on which we are working.</p>
 </div>
 <p>We set both a PSO and a root signature in the command list so that the GPU can use them to define (most of) the pipeline state and the types of resources to bind to the pipeline (recall that non-PSO states are individually set in the command list). For binding purposes, we may also need to set a couple of shader-visible descriptor heaps to the command list – one for CBVs\SRVs\UAVs and another for dynamic samplers, since samplers cannot share a descriptor heap with other views. This setup allows us to bind sets of descriptors in a descriptor heap through root descriptor tables in the root signature.</p>
@@ -1178,7 +1178,7 @@ The application class now includes a root signature, a Pipeline State Object (PS
 </pre></div>
 </div>
 </div>
-<p>First, we create an empty root signature (with no root parameters and static samplers) as the shader programs used by this sample don’t need to access any GPU memory resources (we will review the shader code at the end of the tutorial). We use the <strong>CD3DX12_ROOT_SIGNATURE_DESC</strong> structure, and its <strong>Init</strong> helper function, to specify root parameters, static samplers and flags. <br>
+<p>Firstly, we create an empty root signature (with no root parameters and static samplers) as the shader programs used by this sample don’t need to access any GPU memory resources (we will review the shader code at the end of the tutorial). We use the <strong>CD3DX12_ROOT_SIGNATURE_DESC</strong> structure, and its <strong>Init</strong> helper function, to specify root parameters, static samplers and flags. <br>
 The flag <strong>D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</strong> specifies we want to use the input assembler as a stage of the pipeline (indeed, we can also render without it, but we won’t cover the details here as it goes beyond the scope of this tutorial). On some GPUs, omitting this flag can save an additional DWORD in the root argument space to store our root arguments. Omit this flag if the input assembler is not required, though the optimization is minor.</p>
 <p>We create a serialized version of the root signature by calling <strong>D3D12SerializeRootSignature</strong>. This generates a memory blob of the root signature, which can then be used to create the root signature object using the <strong>CreateRootSignature</strong> function. The serialized version could be stored in a file on disk for quick loading, eliminating the need to recreate it each time. To store the serialized version in memory we use a pointer to a <strong>ID3DBlob</strong> interface. This interface is used to hold generic byte arrays called memory blob (whether it be object code or a simple vertex array; it’s up to the programmer to cast data to the correct type) that can be easily stored to disk using the <strong>D3DWriteBlobToFile</strong> function.</p>
 <div class="admonition note">
@@ -1236,7 +1236,113 @@ In Direct3D, resource access occurs at a subresource granularity. In other words
 </div>
 <p>Lastly, we create a fence and call <strong>WaitForPreviousFrame</strong> at the end of <strong>LoadAssets</strong>. However, we don’t really need it here, as there is nothing in the command list right now. We will revisit this concept in a later tutorial.</p>
 <p>Now, we can review the code of the <strong>PopulateCommandList</strong> function.</p>
-<p>[WIP]</p>
+<div class="literal-block-wrapper docutils container" id="hellotriangle-populatecommandlist-code">
+<div class="code-block-caption"><span class="caption-number">Listing 26 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#hellotriangle-populatecommandlist-code" title="Permalink to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTriangle::PopulateCommandList</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Command list allocators can only be reset when the associated </span>
+<span class="w">    </span><span class="c1">// command lists have finished execution on the GPU; apps should use </span>
+<span class="w">    </span><span class="c1">// fences to determine GPU execution progress.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// However, when ExecuteCommandList() is called on a particular command </span>
+<span class="w">    </span><span class="c1">// list, that command list can then be reset at any time and must be before </span>
+<span class="w">    </span><span class="c1">// re-recording.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">()));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Set necessary state.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootSignature</span><span class="p">(</span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetViewports</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_viewport</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetScissorRects</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_scissorRect</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will be used as a render target.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">CD3DX12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">(</span><span class="n">m_rtvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">(),</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">,</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">OMSetRenderTargets</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Record commands.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">clearColor</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ClearRenderTargetView</span><span class="p">(</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">clearColor</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetPrimitiveTopology</span><span class="p">(</span><span class="n">D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetVertexBuffers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_vertexBufferView</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">DrawInstanced</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will now be used to present.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>In resetting the command list, we pass the PSO as an argument to set the pipeline state. Remember that if you pass a null pointer, a default pipeline state will be set, and we want to prevent this behavior as we have a custom PSO to set.</p>
+<p>Next, we associate the root signature with the command list using <strong>SetGraphicsRootSignature</strong> to set up the parameter space.</p>
+<p>We need to record some commands in the command list to set the pipeline states outside the PSO. <br>
+To complete the input assembler state, we bind the vertex buffer view using IASetVertexBuffers and set the topology with IASetPrimitiveTopology. In this case, we set TRIANGLELIST as we have a single triangle described with 3 contiguous vertices in the vertex buffer, in clockwise order. <br>
+The rasterizer state is completed by setting the viewport and scissor rectangles, which are the same size as the render target so that we can draw on the whole back buffer. <br>
+To complete the output-merger state, we call <strong>OMSetRenderTargets</strong>, which binds the current render target as the final output of the rendering pipeline.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some rendering techniques require writing different per-pixel data to different render targets. To avoid restarting the rendering pipeline each time we need to write to a different render target, Direct3D allows writing to multiple render targets simultaneously (we can select the render target to store a value in the shader code with <strong>SV_Target</strong>[n], where <em>n</em> is the index of the render target). This is why <strong>OMSetRenderTargets</strong> takes the number of render targets as the first parameter and an array of render targets as the second parameter. It also explains why we need to pass arrays of viewport and scissor rectangles to <strong>RSSetViewports</strong> and <strong>RSSetScissorRects</strong>, respectively. <br>
+The third parameter of <strong>OMSetRenderTargets</strong> is a boolean that specifies whether the handle passed as an argument to the second parameter is a pointer to a contiguous range of RTVs in a descriptor heap. In this case, we pass <strong>FALSE</strong>, indicating that the handle is the first of an array of handles to descriptors. In our case, it’s okay to pass <strong>FALSE</strong>, as we only have a handle to the RTV we want to bind. We will delve into these advanced topics in later tutorials.</p>
+</div>
+<p><strong>ID3D12GraphicsCommandList::DrawInstanced</strong>  instructs the GPU to draw one or more instances of a mesh. In this case, we will draw a single triangle. When the GPU executes this command, the rendering pipeline starts working. The first parameter of <strong>DrawInstanced</strong> is the number of vertices to draw per instance (that is, it is the number of vertices that make up the primitives of the mesh in the vertex buffer, so it’s also the number of times the vertex shader will be executed per instance; remember that the vertex shader processes the primitives one vertex at a time). The remaining parameters will be explained in a later tutorial.</p>
+<p>To conclude this section, let’s take a look at the shader code.</p>
+<div class="literal-block-wrapper docutils container" id="hellotriangle-shader-code">
+<div class="code-block-caption"><span class="caption-number">Listing 27 </span><span class="caption-text">HelloTriangle/shaders.hlsl</span><a class="headerlink" href="#hellotriangle-shader-code" title="Permalink to this code">#</a></div>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="n">PSInput</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_POSITION</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="w"> </span>
+
+
+<span class="n">PSInput</span><span class="w"> </span><span class="n">VSMain</span><span class="p">(</span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">POSITION</span><span class="p">,</span><span class="w"> </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PSInput</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">PSMain</span><span class="p">(</span><span class="n">PSInput</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_TARGET</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">color</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The <strong>PSInput</strong> structure declares both the output of the vertex shader and the (interpolated) input the pixel shader expects from the rasterizer. It is possible to have a single structure for both shaders as the per-pixel attributes are a simple interpolation of the per-vertex attributes (that is, we have the same type and number of attributes both per-vertex and per-pixel). <br>
+The system-value semantic <strong>SV_POSITION</strong> identifies a special position both in the output of the vertex shader and in the input of the pixel shader. In the context of a vertex shader, this semantic specifies the 2D representation of a 3D vertex position (recall that the rasterizer expects a 2D representation of 3D primitives). In the context of a pixel shader, <strong>SV_POSITION</strong> specifies the pixel position of the pixel currently processed (offset by 0.5 to get the position of its center). In other words, it identifies the render target coordinates of the pixel; remember that the pixel shader processes pixels related to texels in the render target, so the rasterizer can easily compute this value. However, the pixel position is rarely used in the pixel shader unless you need to implement some advanced rendering techniques. <br>
+The semantic <strong>COLOR</strong> is used to simply convey the color attribute of the vertices from the input assembler (remember how we built the vertex buffer and set up the input layout) up to the pixel shader, where it is returned as the per-pixel data to store in the render target (at the same position of the currently processed pixel).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may wonder why we need to use a <strong>float4</strong> to describe a position in the <strong>PSInput</strong> structure if we defined it as an array of three <strong>float</strong>s in the vertex buffer (for the x-, y- and z-coordinates). Actually, you can use a <strong>float3</strong> as the first input parameter (position) for the entry point of the vertex shader. However, you can’t change the type of the position field in the <strong>PSInput</strong> structure. We will see why in an upcoming tutorial.</p>
+</div>
+<p>The vertex shader specified within the PSO is executed for each vertex of the primitives generated by the input assembler. In this case, we have a vertex buffer containing just three vertices (red, green, and blue) that represent a single triangle. Therefore, the vertex shader runs three times (almost certainly in parallel). The vertex shader can perform a wide range of tasks, but it is typically used to obtain a sort of 2D representation of the 3D primitives that constitute the meshes in a 3D scene. Actually, we already have a 2D representation of the triangle we wish to render on the screen, so we’ll use the vertex shader as a straightforward pass-through to transfer data from the input assembler to the rasterizer. In accordance with the input layout, the entry point of the vertex shader is <strong>VSMain</strong>. The input layout also defines the semantics employed to transmit the vertex attributes so, in the vertex shader, we associate the same semantics to the input parameters of <strong>VSMain</strong> to indicate where we want to receive the corresponding attributes from the input assembler. Observe that we might have also defined a <strong>VSInput</strong> structure to pass position and color as parameters to <strong>VSMain</strong>, similar to how we pass a <strong>PSInput</strong> structure to <strong>PSMain</strong>.</p>
+<p>The rasterizer identifies the pixels occupied by the projected, 2D primitives (passed by the last pre-rasterizer shader through the <strong>SV_POSITION</strong> semantic) and then interpolates output vertex attributes (in this case color and position) for those pixels in order to convey the result to the pixel shader. Pixels covered by primitives outside the projection window are discarded to prevent the pixel shader from wasting time processing pixels that won’t be displayed on the screen. Remember that, in this case, the viewport and scissor are the same size as the render target, ensuring that the triangle will be rendered across the entire back buffer.</p>
+<p>The pixel shader processes, one by one, the pixels covered by the projected, 2D primitives processed by the rasterizer. In this case, we don’t need to perform any specific tasks or tests in the pixel shader, so we simply return the interpolated color as the per-pixel data to store in the render target at the corresponding position (that is, in the texel associated with the currently processed pixel). If you run the sample, you will notice that the colors of the pixels inside the triangle, and along its edges, are interpolated from the colors associated with the three vertices in the vertex buffer. Remember that the system-value semantic <strong>SV_TARGET</strong> is used to identify the output value returned by the pixel shader as the per-pixel data that could be stored in the render target. When you have a pixel shader that return a single value as the per-pixel data, you can specify <strong>SV_TARGET</strong> for that value after the pixel shader’s entry point, followed by a colon symbol. In this case, the per-pixel data will be stored for sure as we haven’t enabled blending, depth or stencil testing in the output merger stage.</p>
+<div class="tip admonition">
+<p class="admonition-title">Try</p>
+<p>Execute the sample and try resizing the window. What happens? The triangle gets stretched because we have a swap chain with two buffers of <span class="math notranslate nohighlight">\(1280\times 720\)</span>, while the window no longer matches the same size. You can mitigate the problem by resizing the window to a dimension with an aspect ratio similar to <span class="math notranslate nohighlight">\(1280/720\)</span>. However, we will ultimately fix this problem in a later tutorial.</p>
+</div>
+<br>
+<br>
+<p>Source code: <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
+<br>
+<div class="admonition-support-this-project admonition">
+<p class="admonition-title">Support this project</p>
+<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
+<figure class="align-center">
+<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../_images/sponsor.png" src="../../_images/sponsor.png" /></a>
+</figure>
+</div>
 <br>
 </section>
 <section id="references">
