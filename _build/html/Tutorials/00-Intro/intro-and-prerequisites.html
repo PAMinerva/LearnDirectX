@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Introduction and Prerequisites &#8212; Learn DirectX</title>
   
@@ -29,39 +28,43 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/00-Intro/intro-and-prerequisites';</script>
@@ -174,7 +177,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -406,9 +420,9 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction-and-prerequisites">
-<h1>Introduction and Prerequisites<a class="headerlink" href="#introduction-and-prerequisites" title="Permalink to this heading">#</a></h1>
+<h1>Introduction and Prerequisites<a class="headerlink" href="#introduction-and-prerequisites" title="Link to this heading">#</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>New graphics APIs, like DirectX 12 and Vulkan, have a reputation for being difficult to learn for beginners. The main reason is that modern APIs hide less to the programmer than the old ones (DirectX 11 and OpenGL) so you just end up studying low-level details even to draw a single triangle. However, learning DirectX 12 also has some advantages as it designed to make full use of multi-threading, and to get a finer control on resource management and CPU/GPU synchronization. Thanks to a better support for multi-threading, the CPU workload is more evenly distributed across all cores. Also, if you understand the use and re-use of resources, then you can take advantage of that by minimizing uploading and copying. That way you can free up CPU time to increase the number of draw calls (and consequently the GPU workload) to enhance performance of your graphics applications.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -442,15 +456,15 @@ document.write(`
 <br>
 </section>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <section id="background-knowledge">
-<h3>Background knowledge<a class="headerlink" href="#background-knowledge" title="Permalink to this heading">#</a></h3>
+<h3>Background knowledge<a class="headerlink" href="#background-knowledge" title="Link to this heading">#</a></h3>
 <p>Of course, I can’t explain everything, so having basic math skills is essential to completely understand the content of the tutorials and the techniques used in the related samples. Fortunately, knowledge of college-level math, including algebra, trigonometry, and calculus, covers about 90% of the math used throughout this tutorial series. For the remaining 10%, I will provide dedicated math appendices.</p>
 <p>If your math skills are a bit rusty, don’t worry! You can consider <span id="id3">[<a class="reference internal" href="#id11" title="K. A. Stroud and Dexter J. Booth. Engineering Mathematics. Bloomsbury Academic, 8th edition, 2020.">SB20b</a>]</span> as an brilliant math review that starts from the basics and is accessible to everyone. Additionally, I recommend <span id="id4">[<a class="reference internal" href="#id12" title="K. A. Stroud and Dexter J. Booth. Advanced Engineering Mathematics. Bloomsbury Academic, 6th edition, 2020.">SB20a</a>]</span> (for self-study) or <span id="id5">[<a class="reference internal" href="#id13" title="Erwin Kreyszig. Advanced Engineering Mathematics. Wiley, 10th edition, 2011.">Kre11</a>]</span> (for formal education) as excellent references for more advanced topics. Additional textbook recommendations will be provided at the appropriate time.</p>
 <p>If you’re looking for an introductory textbook on C++, you may find <span id="id6">[<a class="reference internal" href="#id14" title="Mark Dawson. Beginning C++ Through Game Programming. Cengage Learning, 2015.">Daw15</a>]</span> and <span id="id7">[<a class="reference internal" href="#id15" title="Bjarne Stroustrup. A Tour of C++. Addison-Wesley Professional, 6th edition, 2022.">Str22</a>]</span> helpful. Then, you can use <span id="id8">[<a class="reference internal" href="#id16" title="Bjarne Stroustrup. The C++ Programming Language. Addison-Wesley Professional, 4th edition, 2014.">Str14</a>]</span> as a reference, and <span id="id9">[<a class="reference internal" href="#id17" title="Randall Hyde. Write Great Code, Volume 1, 2nd Edition: Understanding the Machine. No Starch Press, 2nd edition, 2020.">Hyd20a</a>, <a class="reference internal" href="#id18" title="Randall Hyde. Write Great Code, Volume 2, 2nd Edition: Thinking Low-Level, Writing High-Level. No Starch Press, 2nd edition, 2020.">Hyd20b</a>]</span> for a deeper understanding of the low-level details.</p>
 </section>
 <section id="hardware">
-<h3>Hardware<a class="headerlink" href="#hardware" title="Permalink to this heading">#</a></h3>
+<h3>Hardware<a class="headerlink" href="#hardware" title="Link to this heading">#</a></h3>
 <p>Obviously, you need a DirectX 12-capable graphics card if you want to run the samples examined in this tutorial series. In particular, a GPU that fully supports DirectX 12 Ultimate is required to execute some of the demos and compile the related source code. To check if your system meets these requirements, press <kbd>Win</kbd> + <kbd>G</kbd> to open the Xbox Game Bar and select Gaming features from Settings.</p>
 <br>
 <p><img alt="Image" src="../../_images/XboxGameBar.png" /></p>
@@ -458,7 +472,7 @@ document.write(`
 <p>If your graphics card supports DirectX 12 Ultimate, then you should see something like the above image. Otherwise, it’s time to upgrade your PC with a new graphics card.</p>
 </section>
 <section id="software">
-<h3>Software<a class="headerlink" href="#software" title="Permalink to this heading">#</a></h3>
+<h3>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h3>
 <p>The complete set of DirectX 12 Ultimate features is available starting from Windows 10, version 2004, so you need to upgrade your OS to at least this version if necessary.<br>
 Visual Studio is required to open the projects and compile the samples presented in this tutorial series. Additionally, you might require Visual Studio to create your own DirectX applications, unless you prefer to use your IDE of choice. However, ensure that you have installed the latest Windows 10 SDK (version 10.0.19041.0 or higher) and have updated your graphics card drivers to the latest version.</p>
 <br>
@@ -466,10 +480,10 @@ Visual Studio is required to open the projects and compile the samples presented
 <br>
 <p>You will also need a graphics debugger: I recommend to install <a href="https://devblogs.microsoft.com/pix/download/" target="_blank">PIX on Windows</a> and\or <a href="https://renderdoc.org/" target="_blank">RenderDoc</a>.</p>
 <br>
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
-<tr class="row-odd"><th class="text-center head"><p>RenderDoc</p></th>
-<th class="text-center head"><p>Pix on Windows</p></th>
+<tr class="row-odd"><th class="head text-center"><p>RenderDoc</p></th>
+<th class="head text-center"><p>Pix on Windows</p></th>
 </tr>
 </thead>
 <tbody>
@@ -490,40 +504,50 @@ Visual Studio is required to open the projects and compile the samples presented
 </section>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id10">
-<dl class="citation">
-<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id6">Daw15</a></span></dt>
-<dd><p>Mark Dawson. <em>Beginning C++ Through Game Programming</em>. Cengage Learning, 2015.</p>
-</dd>
-<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id9">Hyd20a</a></span></dt>
-<dd><p>Randall Hyde. <em>Write Great Code, Volume 1, 2nd Edition: Understanding the Machine</em>. No Starch Press, 2nd edition, 2020.</p>
-</dd>
-<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id9">Hyd20b</a></span></dt>
-<dd><p>Randall Hyde. <em>Write Great Code, Volume 2, 2nd Edition: Thinking Low-Level, Writing High-Level</em>. No Starch Press, 2nd edition, 2020.</p>
-</dd>
-<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id5">Kre11</a></span></dt>
-<dd><p>Erwin Kreyszig. <em>Advanced Engineering Mathematics</em>. Wiley, 10th edition, 2011.</p>
-</dd>
-<dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id1">Mica</a></span></dt>
-<dd><p>Microsoft. Directx graphics and gaming. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/directx">https://docs.microsoft.com/en-us/windows/win32/directx</a>.</p>
-</dd>
-<dt class="label" id="id20"><span class="brackets"><a class="fn-backref" href="#id2">Micb</a></span></dt>
-<dd><p>Microsoft. Directx-specs. <a class="reference external" href="https://microsoft.github.io/DirectX-Specs/">https://microsoft.github.io/DirectX-Specs/</a>.</p>
-</dd>
-<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id4">SB20a</a></span></dt>
-<dd><p>K. A. Stroud and Dexter J. Booth. <em>Advanced Engineering Mathematics</em>. Bloomsbury Academic, 6th edition, 2020.</p>
-</dd>
-<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id3">SB20b</a></span></dt>
-<dd><p>K. A. Stroud and Dexter J. Booth. <em>Engineering Mathematics</em>. Bloomsbury Academic, 8th edition, 2020.</p>
-</dd>
-<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id8">Str14</a></span></dt>
-<dd><p>Bjarne Stroustrup. <em>The C++ Programming Language</em>. Addison-Wesley Professional, 4th edition, 2014.</p>
-</dd>
-<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id7">Str22</a></span></dt>
-<dd><p>Bjarne Stroustrup. <em>A Tour of C++</em>. Addison-Wesley Professional, 6th edition, 2022.</p>
-</dd>
-</dl>
+<div role="list" class="citation-list">
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">Daw15</a><span class="fn-bracket">]</span></span>
+<p>Mark Dawson. <em>Beginning C++ Through Game Programming</em>. Cengage Learning, 2015.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">Hyd20a</a><span class="fn-bracket">]</span></span>
+<p>Randall Hyde. <em>Write Great Code, Volume 1, 2nd Edition: Understanding the Machine</em>. No Starch Press, 2nd edition, 2020.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">Hyd20b</a><span class="fn-bracket">]</span></span>
+<p>Randall Hyde. <em>Write Great Code, Volume 2, 2nd Edition: Thinking Low-Level, Writing High-Level</em>. No Starch Press, 2nd edition, 2020.</p>
+</div>
+<div class="citation" id="id13" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">Kre11</a><span class="fn-bracket">]</span></span>
+<p>Erwin Kreyszig. <em>Advanced Engineering Mathematics</em>. Wiley, 10th edition, 2011.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Mica</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Directx graphics and gaming. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/directx">https://docs.microsoft.com/en-us/windows/win32/directx</a>.</p>
+</div>
+<div class="citation" id="id20" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Micb</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Directx-specs. <a class="reference external" href="https://microsoft.github.io/DirectX-Specs/">https://microsoft.github.io/DirectX-Specs/</a>.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">SB20a</a><span class="fn-bracket">]</span></span>
+<p>K. A. Stroud and Dexter J. Booth. <em>Advanced Engineering Mathematics</em>. Bloomsbury Academic, 6th edition, 2020.</p>
+</div>
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">SB20b</a><span class="fn-bracket">]</span></span>
+<p>K. A. Stroud and Dexter J. Booth. <em>Engineering Mathematics</em>. Bloomsbury Academic, 8th edition, 2020.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">Str14</a><span class="fn-bracket">]</span></span>
+<p>Bjarne Stroustrup. <em>The C++ Programming Language</em>. Addison-Wesley Professional, 4th edition, 2014.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">Str22</a><span class="fn-bracket">]</span></span>
+<p>Bjarne Stroustrup. <em>A Tour of C++</em>. Addison-Wesley Professional, 6th edition, 2022.</p>
+</div>
+</div>
 </div>
 </section>
 </section>

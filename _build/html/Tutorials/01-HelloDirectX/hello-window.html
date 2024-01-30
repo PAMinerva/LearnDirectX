@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Hello Window &#8212; Learn DirectX</title>
   
@@ -29,39 +28,43 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
   <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/01-HelloDirectX/hello-window';</script>
@@ -172,7 +175,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -394,6 +408,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">Framework overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellowindow-code-review">D3D12HelloWindow: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -407,13 +422,13 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="hello-window">
-<h1>Hello Window<a class="headerlink" href="#hello-window" title="Permalink to this heading">#</a></h1>
+<h1>Hello Window<a class="headerlink" href="#hello-window" title="Link to this heading">#</a></h1>
 <br>
 <figure class="align-default">
 <img alt="../../_images/HelloWindow.png" src="../../_images/HelloWindow.png" />
 </figure>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>DirectX provides a set of APIs that can be used to create games and graphics applications. Specifically, it includes support for high-performance 2-D and 3-D graphics, audio, arithmetic, and linear algebra operations. Below is a list of the main APIs included in DirectX. However, our primary focus is on Direct3D 12 and DirectXMath, the only ones we will be using for a while.</p>
 <ul class="simple">
 <li><p><strong>Direct3D</strong> provides functionality for performing 3-D graphics rendering tasks. It is used to draw primitives (i.e., points, lines, and triangles) within the rendering pipeline or to start parallel operations on the GPU. When we refer to Direct3D 12, we are specifically talking about the API that enables apps to leverage the graphics and computing capabilities of PCs equipped with a DirectX 12-compatible GPU.</p></li>
@@ -428,13 +443,13 @@ document.write(`
 <br>
 </section>
 <section id="windows-applications">
-<h2>Windows applications<a class="headerlink" href="#windows-applications" title="Permalink to this heading">#</a></h2>
+<h2>Windows applications<a class="headerlink" href="#windows-applications" title="Link to this heading">#</a></h2>
 <p>This section is heavily inspired by the first chapter of the book “Programming Microsoft Visual C++, Fifth Edition” by David J. Kruglinski, George Shepherd and Scott Wingo.</p>
 <p>Windows applications use an event-driven programming model, as illustrated in <a class="reference internal" href="#win-app"><span class="std std-numref">Fig. 1</span></a>. In this model, programs respond to events by processing messages sent by the operating system. An event could be a keystroke, a mouse click, or a command for a window to repaint itself. The entry point of a Windows application is a function called <strong>WinMain</strong>, but most of the action occurs in a function known as the window procedure. The window procedure processes messages sent by the OS to the application that a window belongs to. <strong>WinMain</strong> creates that window and then enters a message loop, retrieving messages and dispatching them to the window procedure. Messages wait in a message queue until they are retrieved. The primary task of a Windows application is to respond to the messages it receives. In between messages, it does little except wait for the next message to arrive. An application can exit the message loop when a <strong>WM_QUIT</strong> message is retrieved from the message queue, signaling that the application is about to end. This message is sent by the OS when the user closes the window. When the message loop ends, <strong>WinMain</strong> returns, and the application terminates.</p>
 <figure class="align-default" id="win-app">
 <img alt="../../_images/rect31572.png" src="../../_images/rect31572.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Windows programming model</span><a class="headerlink" href="#win-app" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Windows programming model</span><a class="headerlink" href="#win-app" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition note">
@@ -442,15 +457,15 @@ document.write(`
 <p>Window messages can also be sent directly to a window procedure, bypassing the message queue. If the sending thread is dispatching a message to a window created by the same thread, the window procedure of the specified window is invoked. However, if a thread is dispatching a message to a window created by a different thread, the process becomes more complex. Fortunately, we don’t need to delve into the low-level details in this tutorial series.</p>
 </div>
 <section id="window-procedure">
-<h3>Window Procedure<a class="headerlink" href="#window-procedure" title="Permalink to this heading">#</a></h3>
+<h3>Window Procedure<a class="headerlink" href="#window-procedure" title="Link to this heading">#</a></h3>
 <p>As previously mentioned, a window procedure is a function that receives and processes messages sent by the operating system to the application that a window belongs to. A window class defines key characteristics of a window, such as its window procedure address, its default background color, and its icon. Every window created with a specific class will use the same window procedure to respond to messages.</p>
 <p>When the application dispatches a message to a window procedure, it also passes additional information about the message as arguments in its input parameters. This allows the window procedure to perform an appropriate action for a message by consuming the related message data. If a window procedure does not process a message, it must return the message to the system for default processing by calling the <strong>DefWindowProc</strong> function, which performs a default action and returns a message result. The window procedure must then return this value as its own message result.</p>
 <p>Since a window procedure is shared by all windows belonging to the same class, it can process messages for different windows. To identify the specific window a message is addressed to, a window procedure can examine the window handle passed as an input parameter. The code provided in the window procedure to process a particular message is known as a message handler.</p>
 </section>
 <section id="messages">
-<h3>Messages<a class="headerlink" href="#messages" title="Permalink to this heading">#</a></h3>
+<h3>Messages<a class="headerlink" href="#messages" title="Link to this heading">#</a></h3>
 <p>Windows defines many different message types. Usually, messages have names that begin with the letters “WM_”, as in <strong>WM_CREATE</strong> and <strong>WM_PAINT</strong>. The following table shows ten of the most common messages.</p>
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Message</p></th>
 <th class="head"><p>Sent when</p></th>
@@ -505,7 +520,7 @@ document.write(`
 </section>
 </section>
 <section id="component-object-model-com">
-<h2>Component Object Model (COM)<a class="headerlink" href="#component-object-model-com" title="Permalink to this heading">#</a></h2>
+<h2>Component Object Model (COM)<a class="headerlink" href="#component-object-model-com" title="Link to this heading">#</a></h2>
 <p>Microsoft used the Component Object Model (COM) to design the internals of DirectX. Therefore, whenever you program with DirectX, you are also implicitly using COM. This is an object-oriented programming model created by Microsoft to break dependencies of the code at the binary level. This implies that if an API, a framework, or a generic technology is built upon COM, then it will be language-independent and backward-compatible, to a certain extent.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -516,7 +531,7 @@ document.write(`
 <figure class="align-default" id="class-layout">
 <img alt="../../_images/class-layout2.png" src="../../_images/class-layout2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Class memory layout</span><a class="headerlink" href="#class-layout" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Class memory layout</span><a class="headerlink" href="#class-layout" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In other words, using a C++ class exported from a DLL is feasible as long as you are operating on the same OS and with the same compiler. Conversely, other languages or different implementations of C++ might struggle to communicate with the DLL if they lack knowledge about the binary layout of the exported class in memory. Specifically, when a compiler attempts to resolve a call to a virtual function, it requires knowledge of the class’s memory layout to access the function in the virtual table.</p>
@@ -552,7 +567,7 @@ document.write(`
 <br>
 </section>
 <section id="directx-graphics-infrastructure-dxgi">
-<h2>DirectX Graphics Infrastructure (DXGI)<a class="headerlink" href="#directx-graphics-infrastructure-dxgi" title="Permalink to this heading">#</a></h2>
+<h2>DirectX Graphics Infrastructure (DXGI)<a class="headerlink" href="#directx-graphics-infrastructure-dxgi" title="Link to this heading">#</a></h2>
 <p>Microsoft DirectX Graphics Infrastructure (DXGI) is an API that collects functionality and tasks that don’t change regardless of the version of graphics API you are actually using (Direct3D 10, 11, or 12). Specifically, DXGI manages low-level tasks such as enumerating hardware graphics devices (GPUs) and outputs (monitors), creating rendering buffers, presenting rendered frames to an output, controlling gamma, and managing full-screen transitions. This allows a graphics API to focus on drawing 3D content into buffers without worrying about the origin of these buffers or how they will be displayed.</p>
 <p>DXGI’s purpose is to communicate with the kernel mode driver and the system hardware, as shown in the following diagram.</p>
 <figure class="align-default">
@@ -572,18 +587,18 @@ document.write(`
 <br>
 </section>
 <section id="framework-overview">
-<h2>Framework overview<a class="headerlink" href="#framework-overview" title="Permalink to this heading">#</a></h2>
+<h2>Framework overview<a class="headerlink" href="#framework-overview" title="Link to this heading">#</a></h2>
 <p>As mentioned earlier in this tutorial, the framework used for building the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample is common to nearly all the other samples we’ll explore in the upcoming tutorials. This means that, by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.</p>
 <p>As illustrated in <a class="reference internal" href="#project-props"><span class="std std-numref">Fig. 3</span></a> below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they’re needed, which can reduce startup time and improve memory usage.</p>
 <figure class="align-default" id="project-props">
 <img alt="../../_images/project-properties.PNG" src="../../_images/project-properties.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Project property pages in Visual Studio</span><a class="headerlink" href="#project-props" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Project property pages in Visual Studio</span><a class="headerlink" href="#project-props" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>DirectX applications are normal Windows programs, so the entry point is <strong>WinMain</strong> as usual.</p>
 <div class="literal-block-wrapper docutils container" id="winmain-code">
-<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">HelloWindow/Main.cpp</span><a class="headerlink" href="#winmain-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">HelloWindow/Main.cpp</span><a class="headerlink" href="#winmain-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stdafx.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;D3D12HelloWindow.h&quot;</span>
 <span class="w"> </span>
@@ -602,7 +617,7 @@ document.write(`
 <p><strong><em>Use_decl_annotations</em></strong> is a macro that simplifies SAL annotations. We won’t go into detail about this concept, as it’s not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see <span id="id2">[<a class="reference internal" href="#id17" title="Microsoft. Using sal annotations. https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170.">Micd</a>]</span>.</p>
 </div>
 <div class="literal-block-wrapper docutils container" id="stdafx-code">
-<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">HelloWindow/stdafx.h</span><a class="headerlink" href="#stdafx-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">HelloWindow/stdafx.h</span><a class="headerlink" href="#stdafx-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;windows.h&gt;</span>
 <span class="w"> </span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;d3d12.h&gt;</span>
@@ -622,7 +637,7 @@ document.write(`
 <strong>nCmdShow</strong> is a flag that indicates whether the main application window is minimized, maximized, or shown normally. We’ll pass this flag to a Windows function that’s responsible for showing windows (we’ll discuss this in more detail in the next section).</p>
 <p>The <strong>D3D12HelloWindow</strong> class is the application class, which defines data and methods specific to the sample.</p>
 <div class="literal-block-wrapper docutils container" id="d3d12hellowindow-code">
-<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.h</span><a class="headerlink" href="#d3d12hellowindow-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.h</span><a class="headerlink" href="#d3d12hellowindow-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloWindow</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -663,7 +678,7 @@ document.write(`
 </div>
 <p>The <strong>DXSample</strong> base class defines data and methods used by all graphics samples.</p>
 <div class="literal-block-wrapper docutils container" id="dxsample-code">
-<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">HelloWindow/DXSample.h</span><a class="headerlink" href="#dxsample-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">HelloWindow/DXSample.h</span><a class="headerlink" href="#dxsample-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DXSample</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -716,7 +731,7 @@ document.write(`
 </div>
 <p>The <strong>Win32Application</strong> class defines data and methods used by all Windows applications.</p>
 <div class="literal-block-wrapper docutils container" id="win32application-code">
-<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">HelloWindow/Win32Application.h</span><a class="headerlink" href="#win32application-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">HelloWindow/Win32Application.h</span><a class="headerlink" href="#win32application-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Win32Application</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -738,7 +753,7 @@ document.write(`
 </div>
 <p>As you might have noticed in <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, the entry point (<strong>WinMain</strong>) creates an instance of the <strong>D3D12HelloWindow</strong> class by calling its constructor.</p>
 <div class="literal-block-wrapper docutils container" id="d3d12hellowindow-ctor-code">
-<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#d3d12hellowindow-ctor-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#d3d12hellowindow-ctor-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">D3D12HelloWindow</span><span class="o">::</span><span class="n">D3D12HelloWindow</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
 <span class="w">    </span><span class="n">DXSample</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
 <span class="w">    </span><span class="n">m_frameIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
@@ -750,7 +765,7 @@ document.write(`
 </div>
 <p>The constructor of the <strong>D3D12HelloWindow</strong> class initializes some of the class’s data members to default values and invokes the constructor of its base class (<strong>DXSample</strong>).</p>
 <div class="literal-block-wrapper docutils container" id="dxsample-ctor-code">
-<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#dxsample-ctor-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#dxsample-ctor-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">DXSample</span><span class="o">::</span><span class="n">DXSample</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
 <span class="w">    </span><span class="n">m_width</span><span class="p">(</span><span class="n">width</span><span class="p">),</span>
 <span class="w">    </span><span class="n">m_height</span><span class="p">(</span><span class="n">height</span><span class="p">),</span>
@@ -775,7 +790,7 @@ document.write(`
 <p>The client area is the region of a window where drawing is allowed. Technically speaking, it’s the area where the render target is mapped (once the GPU finishes drawing a frame on it). Conceptually, you can consider a render target as a texture that the GPU utilizes for rendering\drawing operations.</p>
 <p>In <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, <strong>Win32Application::Run</strong> is called passing the instance of the <strong>D3D12HelloWindow</strong> class, along with the named parameters of <strong>WinMain</strong>.</p>
 <div class="literal-block-wrapper docutils container" id="run-code">
-<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#run-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#run-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">Win32Application::Run</span><span class="p">(</span><span class="n">DXSample</span><span class="o">*</span><span class="w"> </span><span class="n">pSample</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="c1">// Parse the command line parameters</span>
@@ -858,10 +873,10 @@ document.write(`
 <br>
 </section>
 <section id="d3d12hellowindow-code-review">
-<h2>D3D12HelloWindow: code review<a class="headerlink" href="#d3d12hellowindow-code-review" title="Permalink to this heading">#</a></h2>
+<h2>D3D12HelloWindow: code review<a class="headerlink" href="#d3d12hellowindow-code-review" title="Link to this heading">#</a></h2>
 <p>The <strong>DXSample::OnInit</strong> method is a virtual function that must be overridden in derived classes. This has been done this in the <strong>D3D12HelloWindow</strong> class. The implementation is shown in <a class="reference internal" href="#oninit-code"><span class="std std-numref">Listing 9</span></a>.</p>
 <div class="literal-block-wrapper docutils container" id="oninit-code">
-<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#oninit-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#oninit-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnInit</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">LoadPipeline</span><span class="p">();</span>
@@ -872,7 +887,7 @@ document.write(`
 </div>
 <p>The <strong>OnInit</strong> method simply calls <strong>LoadPipeline</strong> and <strong>LoadAssets</strong>. Let’s start examining <strong>LoadPipeline</strong>.</p>
 <div class="literal-block-wrapper docutils container" id="loadpipeline-code">
-<div class="code-block-caption"><span class="caption-number">Listing 10 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#loadpipeline-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 10 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#loadpipeline-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the rendering pipeline dependencies.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::LoadPipeline</span><span class="p">()</span>
 <span class="p">{</span>
@@ -984,14 +999,14 @@ document.write(`
 </div>
 <p><strong>LoadPipeline</strong> is responsible for creating some of the objects we need to render (draw) the frames of our sample. Here, for the first time, we meet a method to create a DirectX COM object indirectly: <strong>D3D12GetDebugInterface</strong>. The prototype of this method is as follows:</p>
 <div class="literal-block-wrapper docutils container" id="d3d12getdebuginterface-code">
-<div class="code-block-caption"><span class="caption-number">Listing 11 </span><span class="caption-text">d3d12.h</span><a class="headerlink" href="#d3d12getdebuginterface-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 11 </span><span class="caption-text">d3d12.h</span><a class="headerlink" href="#d3d12getdebuginterface-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">HRESULT</span><span class="w"> </span><span class="n">WINAPI</span><span class="w"> </span><span class="n">D3D12GetDebugInterface</span><span class="p">(</span><span class="w"> </span><span class="n">_In_</span><span class="w"> </span><span class="n">REFIID</span><span class="w"> </span><span class="n">riid</span><span class="p">,</span><span class="w"> </span><span class="n">_COM_Outptr_opt_</span><span class="w"> </span><span class="kt">void</span><span class="o">**</span><span class="w"> </span><span class="n">ppvDebug</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <p>The first parameter is the ID of the interface to which we want to get a pointer, while the second parameter is where the function will return the interface pointer to the caller (that is, the address where it will store the address of the COM interface; that’s why the parameter is a pointer to a pointer). In this case, the first parameter is the ID of the <strong>ID3D12Debug</strong> interface. So, <strong>D3D12GetDebugInterface</strong> creates an instance of the COM object that implements this interface and returns the interface pointer in the second parameter. Then, the caller can use it to call functionality implemented by the related COM class. Often, the macro <strong>IID_PPV_ARGS</strong> is used to reduce typos. This macro is defined as:</p>
 <div class="literal-block-wrapper docutils container" id="iid-ppv-args-code">
-<div class="code-block-caption"><span class="caption-number">Listing 12 </span><span class="caption-text">combaseapi.h</span><a class="headerlink" href="#iid-ppv-args-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 12 </span><span class="caption-text">combaseapi.h</span><a class="headerlink" href="#iid-ppv-args-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#define IID_PPV_ARGS(ppType) __uuidof(**(ppType)), IID_PPV_ARGS_Helper(ppType)</span>
 </pre></div>
 </div>
@@ -1014,7 +1029,7 @@ document.write(`
 </div>
 <p>Before proceeding with the explanation of the <strong>LoadPipeline</strong> function, let’s see how we can obtain an interface pointer to a hardware adapter by examining the code of the <strong>DXSample::GetHardwareAdapter</strong> method.</p>
 <div class="literal-block-wrapper docutils container" id="gethardwareadapter-code">
-<div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#gethardwareadapter-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#gethardwareadapter-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Helper function for acquiring the first available hardware adapter that supports Direct3D 12.</span>
 <span class="c1">// If no such adapter can be found, *ppAdapter will be set to nullptr.</span>
 <span class="n">_Use_decl_annotations_</span>
@@ -1095,7 +1110,7 @@ We need to create a command queue where to submit command lists which, in turn, 
 <figure class="align-default" id="command-queues">
 <img alt="../../_images/rect3158.png" src="../../_images/rect3158.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">GPU command queues</span><a class="headerlink" href="#command-queues" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">GPU command queues</span><a class="headerlink" href="#command-queues" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Many GPUs have one or more dedicated copy engines, a compute engine, and a 3D engine, each capable of executing specific commands in parallel with the other engines. For this reason, there can be no simple guarantee of the order of execution, hence the need for synchronization mechanisms that allow establishing an execution order, if needed.</p>
@@ -1164,7 +1179,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 </div>
 <p>Now, let’s examine the code of the <strong>LoadAssets</strong> function, responsible for creating other objects and resources required for rendering the frames of our graphics samples.</p>
 <div class="literal-block-wrapper docutils container" id="hellowindow-loadassets-code">
-<div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#hellowindow-loadassets-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#hellowindow-loadassets-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::LoadAssets</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1196,7 +1211,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p>At this point, the initialization stage is complete (that is, the call to <strong>DXSample::OnInit</strong> in <strong>Win32Application::Run</strong> returns, see <a class="reference internal" href="#run-code"><span class="std std-numref">Listing 8</span></a>), and <strong>ShowWindow</strong> is invoked to activate the window and display it at its current size and position. Then, the application can enter the message loop, where <strong>PeekMessage</strong> retrieves a message from the message queue, and stores the related information in the <strong>MSG</strong> structure passed in the first parameter before returning <strong>TRUE</strong> (otherwise it returns <strong>FALSE</strong> to indicate no message was available). <strong>DispatchMessage</strong> dispatches a message to the window procedure. <strong>TranslateMessage</strong> translates virtual-key messages (<strong>WM_KEYDOWN</strong>, <strong>WM_KEYUP</strong>) into character messages (<strong>WM_CHAR</strong>) containing ASCII characters. This allows us to better distinguish the various keys on the keyboard.</p>
 <p>However, remember that <strong>CreateWindow</strong>, before returning, sent a <strong>WM_CREATE</strong> message to the window procedure.</p>
 <div class="literal-block-wrapper docutils container" id="hellowindow-windowproc-code">
-<div class="code-block-caption"><span class="caption-number">Listing 15 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-windowproc-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 15 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-windowproc-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Main message handler for the sample.</span>
 <span class="n">LRESULT</span><span class="w"> </span><span class="n">CALLBACK</span><span class="w"> </span><span class="n">Win32Application</span><span class="o">::</span><span class="n">WindowProc</span><span class="p">(</span><span class="n">HWND</span><span class="w"> </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">WPARAM</span><span class="w"> </span><span class="n">wParam</span><span class="p">,</span><span class="w"> </span><span class="n">LPARAM</span><span class="w"> </span><span class="n">lParam</span><span class="p">)</span>
 <span class="p">{</span>
@@ -1249,7 +1264,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p>After the user closes the window, a <strong>WM_DESTROY</strong> message is sent to the window procedure of the destroyed window. The <strong>WM_DESTROY</strong> message handler invokes <strong>PostQuitMessage</strong>, which queues a <strong>WM_QUIT</strong> message. This enables us to exit the message loop in <strong>Win32Application::Run</strong> and execute <strong>DXSample::OnDestroy</strong>. This is a pure virtual function overridden by <strong>D3D12HelloWindow::OnDestroy</strong>. This function simply calls <strong>WaitForPreviousFrame</strong>, which waits for the GPU to complete rendering the previous frame (more on this shortly).</p>
 <p>Typically, <strong>WM_PAINT</strong> messages are both sent to the window procedure and posted to the message queue throughout the application’s lifetime. This allows us to consistently call <strong>OnUpdate</strong> and <strong>OnRender</strong> within the <strong>WM_PAINT</strong> message handler. These are pure virtual functions overridden by the <strong>D3D12HelloWindow</strong> class. Since <strong>OnUpdate</strong> doesn’t perform any actions in this sample, let’s proceed directly to examining <strong>OnRender</strong>.</p>
 <div class="literal-block-wrapper docutils container" id="hellowindow-onrender-code">
-<div class="code-block-caption"><span class="caption-number">Listing 16 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-onrender-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 16 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-onrender-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Render the scene.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnRender</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1279,7 +1294,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <figure class="align-default" id="id18">
 <img alt="../../_images/rect853d.png" src="../../_images/rect853d.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Presenting frames</span><a class="headerlink" href="#id18" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Presenting frames</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition important">
@@ -1295,7 +1310,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <figure class="align-default" id="refresh-op">
 <img alt="../../_images/path1143b.png" src="../../_images/path1143b.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Monitor refreshing</span><a class="headerlink" href="#refresh-op" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Monitor refreshing</span><a class="headerlink" href="#refresh-op" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In the images below, you can observe that if the GPU isn’t able to draw on the render target quickly enough, the frames per second (FPS) can decrease by half. If a new frame is not prepared for presentation, the previous one will persist on the screen. That is, no swap occurs between back and front buffers at the next v-sync interval since the GPU has not finished drawing on the back buffer.</p>
@@ -1312,7 +1327,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p>The sample examined in this tutorial uses a single command allocator to manage the memory space where drawing commands for both buffers in the swap chain are recorded. This implies that we need to flush the command queue before recording the commands to create and present a new frame, as all commands are recorded in the same memory space regardless of the frame we are creating — we can’t overwrite commands still in use by the GPU, obviously. This way, CPU and GPU work sequentially: the CPU creates a frame and waits for the GPU to complete it. In other words, we still cannot create frames in advance on the CPU timeline compared to the GPU; in a later tutorial, we will explore how to unleash parallelism between CPU and GPU. For this purpose, <strong>WaitForPreviousFrame</strong> waits for the GPU to finish executing the commands to compose the frame we just created and presented on the CPU timeline.</p>
 <p>However, before moving on to examine the code of <strong>WaitForPreviousFrame</strong>, we still need to review the implementation of the <strong>PopulateCommandList</strong> function.</p>
 <div class="literal-block-wrapper docutils container" id="hellowindow-populatecommandlist-code">
-<div class="code-block-caption"><span class="caption-number">Listing 17 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-populatecommandlist-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 17 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-populatecommandlist-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::PopulateCommandList</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="c1">// Command list allocators can only be reset when the associated </span>
@@ -1353,19 +1368,19 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <figure class="align-default" id="id19">
 <img alt="../../_images/cpu-gpu-handle2.PNG" src="../../_images/cpu-gpu-handle2.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">First call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id19" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">First call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id20">
 <img alt="../../_images/cpu-gpu-handle3.PNG" src="../../_images/cpu-gpu-handle3.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Second call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id20" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Second call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id20" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id21">
 <img alt="../../_images/cpu-gpu-handle1.PNG" src="../../_images/cpu-gpu-handle1.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Memory regions in the virtual address space of <strong>D3D12HelloWindow</strong></span><a class="headerlink" href="#id21" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Memory regions in the virtual address space of <strong>D3D12HelloWindow</strong></span><a class="headerlink" href="#id21" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>At this point, we have completed the frame creation on the CPU timeline, so we can modify the state of the back buffer to “present”. This indicates that, once this transition command is executed by the GPU, the back buffer is almost ready to be displayed on the screen (the GPU must first execute the corresponding present operation in the command queue).</p>
@@ -1375,7 +1390,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 </div>
 <p>Now, we can finally review the code of the <strong>WaitForPreviousFrame</strong> function, which is invoked at the end of <a class="reference internal" href="#hellowindow-onrender-code"><span class="std std-ref"><strong>OnRender</strong></span></a>. As previously mentioned, the primary purpose of this method is to flush the command queue.</p>
 <div class="literal-block-wrapper docutils container" id="hellowindow-waitforpreviousframe-code">
-<div class="code-block-caption"><span class="caption-number">Listing 18 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-waitforpreviousframe-code" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 18 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-waitforpreviousframe-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::WaitForPreviousFrame</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="c1">// WAITING FOR THE FRAME TO COMPLETE BEFORE CONTINUING IS NOT BEST PRACTICE.</span>
@@ -1406,8 +1421,10 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p><strong>ID3D12Fence::GetCompletedValue</strong> returns the value of the last fence met\executed by the GPU in the command queue. If still no fence has been executed, this function returns 0. So, if the GPU hasn’t finished drawing the frame, we wait for <strong>m_fenceEvent</strong> to get signaled. Otherwise, if <strong>GetCompletedValue</strong> returns the fence value passed to <strong>Signal</strong>, we are sure that the GPU finished drawing the frame. A fence is signaled when the GPU meets\executes it on the command queue (that is, the execution of a fence results in a change from a non-signaled to a signaled state of the corresponding event associated with <strong>SetEventOnCompletion</strong>).</p>
 <p>Observe that the call to <strong>IDXGISwapChain::Present</strong>, performed in <a class="reference internal" href="#hellowindow-onrender-code"><span class="std std-ref"><strong>OnRender</strong></span></a> before invoking  <strong>WaitForPreviousFrame</strong>, updates the index of the current back buffer, so here <strong>GetCurrentBackBufferIndex</strong> returns the index of the buffer where to create the next frame. At that point <strong>m_fenceValue</strong> is 2, and a fence with this value will be used to delimit the command list submitted to the command queue to draw the second frame. And so on.</p>
 <br>
-<br>
-<p>Source code: <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
+</section>
+<section id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
 <br>
 <div class="admonition-support-this-project admonition">
 <p class="admonition-title">Support this project</p>
@@ -1419,22 +1436,26 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <br>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id3">
-<dl class="citation">
-<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id1">Mica</a></span></dt>
-<dd><p>Microsoft. About windows. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows">https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows</a>.</p>
-</dd>
-<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id1">Micb</a></span></dt>
-<dd><p>Microsoft. Dxgi overview. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi">https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi</a>.</p>
-</dd>
-<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id1">Micc</a></span></dt>
-<dd><p>Microsoft. Programming directx with com. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com">https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com</a>.</p>
-</dd>
-<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id2">Micd</a></span></dt>
-<dd><p>Microsoft. Using sal annotations. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170">https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170</a>.</p>
-</dd>
-</dl>
+<div role="list" class="citation-list">
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Mica</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. About windows. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows">https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows</a>.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Micb</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Dxgi overview. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi">https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi</a>.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Micc</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Programming directx with com. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com">https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com</a>.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Micd</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Using sal annotations. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170">https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170</a>.</p>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -1513,6 +1534,7 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">Framework overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellowindow-code-review">D3D12HelloWindow: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
