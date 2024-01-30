@@ -239,6 +239,7 @@ And finally, we can examine the code of our revised version of the **PopulateCom
 ```{code-block} cpp
 :caption: HelloBundles/D3D12HelloBundles.cpp
 :name: hellobundles-PopulateCommandList-code
+:emphasize-lines: 14
 
 void D3D12HelloBundles::PopulateCommandList()
 {
@@ -253,7 +254,7 @@ void D3D12HelloBundles::PopulateCommandList()
     ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), m_pipelineState.Get()));
  
     // Set necessary state.
-    //m_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
+    //m_commandList->SetGraphicsRootSignature(m_rootSignature.Get()); // REDUNDANT?!?
     m_commandList->RSSetViewports(1, &m_viewport);
     m_commandList->RSSetScissorRects(1, &m_scissorRect);
  
@@ -280,7 +281,7 @@ void D3D12HelloBundles::PopulateCommandList()
 We call **ExecuteBundle** on the direct command list to record the execution of the group of commands previously recorded in the bundle.
 
 ```{attention}
-In the official sample provided by Microsoft, **SetGraphicsRootSignature** is recorded both in the bundle (as seen in **LoadAssets**) and in the direct command list (as shown in **PopulateCommandList**). I commented the latter out since it should be redundant. Please let me know, by opening a new issue or discussion in the repository of this tutorial series, if you are aware of any reasons why this might not be a mistake.
+In the official sample provided by Microsoft, **SetGraphicsRootSignature** is recorded both in the bundle (see {numref}`hellobundles-LoadAssets-code`) and in the direct command list (see the highlighted instruction in {numref}`hellobundles-PopulateCommandList-code`). I commented the latter out since it should be redundant. Please let me know, by opening a new issue or discussion in the repository of this tutorial series, if you are aware of any reasons why this might not be a mistake.
 ```
 <br>
 
