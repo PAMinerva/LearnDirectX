@@ -650,8 +650,8 @@ In the application class, we declare a bundle (as a <strong>ID3D12GraphicsComman
 <span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">()));</span>
 <span class="w"> </span>
 <span class="w">    </span><span class="c1">// Set necessary state.</span>
-<span class="w">    </span><span class="c1">//m_commandList-&gt;SetGraphicsRootSignature(m_rootSignature.Get());</span>
-<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetViewports</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_viewport</span><span class="p">);</span>
+<span class="hll"><span class="w">    </span><span class="c1">//m_commandList-&gt;SetGraphicsRootSignature(m_rootSignature.Get()); // REDUNDANT?!?</span>
+</span><span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetViewports</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_viewport</span><span class="p">);</span>
 <span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetScissorRects</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_scissorRect</span><span class="p">);</span>
 <span class="w"> </span>
 <span class="w">    </span><span class="c1">// Indicate that the back buffer will be used as a render target.</span>
@@ -678,7 +678,7 @@ In the application class, we declare a bundle (as a <strong>ID3D12GraphicsComman
 <p>We call <strong>ExecuteBundle</strong> on the direct command list to record the execution of the group of commands previously recorded in the bundle.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>In the official sample provided by Microsoft, <strong>SetGraphicsRootSignature</strong> is recorded both in the bundle (as seen in <strong>LoadAssets</strong>) and in the direct command list (as shown in <strong>PopulateCommandList</strong>). I commented the latter out since it should be redundant. Please let me know, by opening a new issue or discussion in the repository of this tutorial series, if you are aware of any reasons why this might not be a mistake.</p>
+<p>In the official sample provided by Microsoft, <strong>SetGraphicsRootSignature</strong> is recorded both in the bundle (see <a class="reference internal" href="#hellobundles-loadassets-code"><span class="std std-numref">Listing 31</span></a>) and in the direct command list (see the highlighted instruction in <a class="reference internal" href="#hellobundles-populatecommandlist-code"><span class="std std-numref">Listing 32</span></a>). I commented the latter out since it should be redundant. Please let me know, by opening a new issue or discussion in the repository of this tutorial series, if you are aware of any reasons why this might not be a mistake.</p>
 </div>
 <br>
 </section>
