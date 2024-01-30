@@ -1051,9 +1051,9 @@ Execute the sample and try resizing the window. What happens? The triangle gets 
 ```
 <br>
 
-<br>
+## Source Code
 
-Source code: [D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
+[D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
 
 <br>
 
@@ -1066,10 +1066,3 @@ If you found the content of this tutorial somewhat useful or interesting, please
 
 ```
 ````
-
-<br>
-
-## References
-```{bibliography}
-:filter: docname in docnames
-```

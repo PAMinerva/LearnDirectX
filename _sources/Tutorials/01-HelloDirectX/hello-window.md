@@ -1114,9 +1114,9 @@ Observe that the call to **IDXGISwapChain::Present**, performed in [**OnRender**
 
 <br>
 
-<br>
+## Source Code
 
-Source code: [D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
+[D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
 
 <br>
 
