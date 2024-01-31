@@ -435,7 +435,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-shader">Pixel shader</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotriangle-code-review">D3D12HelloTriangle: code review</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Source Code</a></li>
 </ul>
             </nav>
         </div>
@@ -483,10 +482,10 @@ document.write(`
 <section id="direct3d-rendering-pipeline-overview">
 <h2>Direct3D rendering pipeline overview<a class="headerlink" href="#direct3d-rendering-pipeline-overview" title="Link to this heading">#</a></h2>
 <p>GPUs are equipped with thousands of programmable cores, which means that they can execute programs in the form of instructions provided by a programmer, much like how CPU cores run C++ applications. As illustrated below, CPUs typically have fewer cores than GPUs. However, GPU cores are smaller and more specialized in processing tasks that can be divided up and processed across many cores. In particular, GPUs use parallelism to execute the same instructions on multiple cores simultaneously, resulting in high-speed processing of vast amounts of data. On the other hand, CPUs excel at executing many sequential instructions on each core to execute multiple tasks on small data really fast.</p>
-<figure class="align-default" id="id2">
+<figure class="align-default" id="id1">
 <img alt="../../_images/CPU-vs-GPU.png" src="../../_images/CPU-vs-GPU.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">CPU (on the left) versus GPU (on the right)</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+<p><span class="caption-text">CPU (on the left) versus GPU (on the right)</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>GPUs that support Direct3D can execute programs on their cores to perform the work of various stages composing a pipeline. Direct3D provides different pipeline types, but we will focus on the rendering pipeline (also called the graphics pipeline) for now. A rendering pipeline defines the steps needed to draw something on the render target. In particular, the following image illustrates the stages of the rendering pipeline used to draw on a render target with the Direct3D API.</p>
@@ -1369,18 +1368,6 @@ The semantic <strong>COLOR</strong> is used to simply convey the color attribute
 </div>
 <br>
 </section>
-<section id="id1">
-<h2>Source Code<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
-<br>
-<div class="admonition-support-this-project admonition">
-<p class="admonition-title">Support this project</p>
-<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
-<figure class="align-center">
-<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../_images/sponsor.png" src="../../_images/sponsor.png" /></a>
-</figure>
-</div>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1478,7 +1465,6 @@ The semantic <strong>COLOR</strong> is used to simply convey the color attribute
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-shader">Pixel shader</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotriangle-code-review">D3D12HelloTriangle: code review</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Source Code</a></li>
 </ul>
   </nav></div>
 

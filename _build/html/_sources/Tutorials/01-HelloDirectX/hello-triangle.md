@@ -1066,21 +1066,4 @@ If you found the content of this tutorial somewhat useful or interesting, please
 
 ```
 ````
-
 <br>
-
-## Source Code
-
-[D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
-
-<br>
-
-````{admonition} Support this project
-If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
-
-```{figure} ../../sponsor.png
-:align: center
-:target: https://github.com/sponsors/PAMinerva
-
-```
-````

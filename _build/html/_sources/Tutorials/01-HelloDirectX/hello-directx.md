@@ -4,3 +4,4 @@ These sections describe how to create simple graphics applications to get starte
 
 ```{tableofcontents}
 ```
+<br>
