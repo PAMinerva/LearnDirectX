@@ -497,3 +497,21 @@ Here, we update the constant buffer data stored in the constant buffer variable 
 ```{note}
 As stated in [](hello-triangle.md), a primitive is rendered on the screen as long as the x- and y-coordinates are in the range $[−1, +1]$. In [**OnUpdate**](hellocbs-OnUpdate-code) we restrict both these coordinates within the interval $[−1.25, +1.25]$ so that the triangle exits one side and enter the other one without disappearing.
 ```
+<br>
+
+## Source Code
+
+[D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
+
+<br>
+
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
+
+```{figure} ../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
+<br>
