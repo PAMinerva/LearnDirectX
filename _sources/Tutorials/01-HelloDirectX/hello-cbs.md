@@ -407,8 +407,6 @@ We map the constant buffer to the virtual address space of our C++ application s
 
 Now, let's take a look at the **PopulateCommandList** function.
 
-<br>
-
 ```{code-block} cpp
 :caption: HelloConstBuffers/D3D12HelloConstBuffers.cpp
 :name: hellocbs-PopulateCommandList-code
