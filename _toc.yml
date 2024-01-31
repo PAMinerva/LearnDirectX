@@ -15,3 +15,4 @@ parts:
     - file: Tutorials/01-HelloDirectX/hello-window
     - file: Tutorials/01-HelloDirectX/hello-triangle
     - file: Tutorials/01-HelloDirectX/hello-bundles
+    - file: Tutorials/01-HelloDirectX/hello-cbs

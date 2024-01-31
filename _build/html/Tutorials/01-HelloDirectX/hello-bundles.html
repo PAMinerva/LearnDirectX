@@ -68,6 +68,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/01-HelloDirectX/hello-bundles';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hello Constant Buffers" href="hello-cbs.html" />
     <link rel="prev" title="Hello Triangle" href="hello-triangle.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -202,6 +203,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="hello-window.html">Hello Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hello-triangle.html">Hello Triangle</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Bundles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-cbs.html">Hello Constant Buffers</a></li>
 </ul>
 </li>
 </ul>
@@ -526,7 +528,7 @@ If any of these APIs are called on a bundle, the runtime will drop the call. The
 <p>At this point, we can finally take a look at the code of the <strong>D3D12HelloBundles</strong> sample.<br>
 In the application class, we declare a bundle (as a <strong>ID3D12GraphicsCommandList</strong>), along with the related allocator.</p>
 <div class="literal-block-wrapper docutils container" id="hellobundles-code">
-<div class="code-block-caption"><span class="caption-number">Listing 29 </span><span class="caption-text">HelloBundles/D3D12HelloBundles.cpp</span><a class="headerlink" href="#hellobundles-code" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 29 </span><span class="caption-text">HelloBundles/D3D12HelloBundles.h</span><a class="headerlink" href="#hellobundles-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloBundles</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -746,6 +748,15 @@ In the application class, we declare a bundle (as a <strong>ID3D12GraphicsComman
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Hello Triangle</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="hello-cbs.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hello Constant Buffers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
