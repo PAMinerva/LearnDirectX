@@ -95,3 +95,5 @@ The array texture illustrated above contains three textures, each with a $3\time
 ```{bibliography}
 :filter: docname in docnames
 ```
+
+<br>
