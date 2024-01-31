@@ -206,6 +206,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="hello-triangle.html">Hello Triangle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hello-bundles.html">Hello Bundles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hello-cbs.html">Hello Constant Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-texture.html">Hello Texture</a></li>
 </ul>
 </li>
 </ul>
@@ -1296,10 +1297,10 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 </div>
 <p>At this point, it should be clear that we are dealing with two different timelines. The term “timeline” in this context refers to the time when something is executed. For example, creating a command queue, a command list, and a command allocator are operations executed on the CPU timeline because the creation of the related resources occurs at the time of an API call in our C++ application, which is executed by the CPU. Adding commands to a command list is also executed on the CPU timeline, but the execution of those commands belongs to the GPU timeline when the GPU actually consumes command lists from a command queue.</p>
 <p><strong>IDXGISwapChain::Present</strong> allows presenting (to the user, on the screen) the frame just created on the CPU timeline (using the current back buffer as the render target). How does it work? Present operations occur on the graphics queue associated with the swap chain. That is, when you call <strong>Present</strong>, a present operation is recorded in the command queue associated with swap chain during its creation, and a request to present the frame is inserted in a queue called the present queue, waiting for the GPU to execute the commands to draw on the related back buffer. Since this happens only after recording all the commands needed to create the frame, you are sure the GPU reached the present operation in the command queue only at the very end (i.e., after executing all the other previous drawing commands). At that point, the frame associated with the request in the present queue is done, ready to be shown on the screen at the next vertical interval when the swap/flip between the back and present buffers takes place.</p>
-<figure class="align-default" id="id19">
+<figure class="align-default" id="id21">
 <img alt="../../_images/rect853d.png" src="../../_images/rect853d.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Presenting frames</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Presenting frames</span><a class="headerlink" href="#id21" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition important">
@@ -1370,22 +1371,22 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p>Observe how we get a CPU handle to the RTV (Render Target View) of the current back buffer by offsetting the handle to the first RTV in the descriptor heap. For this purpose, we need the index of the current back buffer (<strong>m_frameIndex</strong>) and the size of an RTV (<strong>m_rtvDescriptorSize</strong>).</p>
 <p>The images below demonstrate that, if you modify the code slightly and debug the sample, CPU descriptor handles are simple CPU virtual addresses, while GPU descriptor handles are offsets. Note that, in my case, <strong>m_ rtvDescriptorSize</strong> is 32 bytes (0x20 in hexadecimal), but remember that descriptors hold hardware-specific information, so this can vary from system to system.</p>
 <p>if you change a bit the code and debug the sample, CPU descriptor handles are simple CPU virtual addresses, while GPU descriptor handles are offsets. Note that, in my case, <strong>m_ rtvDescriptorSize</strong> is 32 bytes (0x20 in hexadecimal), but remember that descriptors hold hardware-specific information, so this can vary from system to system.</p>
-<figure class="align-default" id="id20">
+<figure class="align-default" id="id22">
 <img alt="../../_images/cpu-gpu-handle2.PNG" src="../../_images/cpu-gpu-handle2.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">First call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id20" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">First call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id22" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<figure class="align-default" id="id21">
+<figure class="align-default" id="id23">
 <img alt="../../_images/cpu-gpu-handle3.PNG" src="../../_images/cpu-gpu-handle3.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Second call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id21" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Second call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id23" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<figure class="align-default" id="id22">
+<figure class="align-default" id="id24">
 <img alt="../../_images/cpu-gpu-handle1.PNG" src="../../_images/cpu-gpu-handle1.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Memory regions in the virtual address space of <strong>D3D12HelloWindow</strong></span><a class="headerlink" href="#id22" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Memory regions in the virtual address space of <strong>D3D12HelloWindow</strong></span><a class="headerlink" href="#id24" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>At this point, we have completed the frame creation on the CPU timeline, so we can modify the state of the back buffer to “present”. This indicates that, once this transition command is executed by the GPU, the back buffer is almost ready to be displayed on the screen (the GPU must first execute the corresponding present operation in the command queue).</p>
