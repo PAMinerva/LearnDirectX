@@ -121,7 +121,7 @@ At this point, we can finally take a look at the code of the **D3D12HelloBundles
 In the application class, we declare a bundle (as a **ID3D12GraphicsCommandList**), along with the related allocator.
 
 ```{code-block} cpp
-:caption: HelloBundles/D3D12HelloBundles.cpp
+:caption: HelloBundles/D3D12HelloBundles.h
 :name: hellobundles-code
 
 class D3D12HelloBundles : public DXSample

@@ -906,7 +906,7 @@ During the creation of a command list, we can pass a PSO as an argument to set t
 To create the vertex buffer, we first use the **Vertex** structure defined in the application class to build an array of vertices. Ineed, in this case, the vertex buffer is an array of only 3 vertices specified in clockwise order, with position and color as vertex attributes (in accordance with the input layout). As you may notice, the last coordinate of the position (the z-coordinate) is $0.0$ for all three vertices. This means the triangle lies in the XY-plane, where also lies the projection window. This presents a significant advantage as we already have a 2D representation of the triangle, and we only need to ensure that it is within the projection window's boundaries. 
 
 ```{note}
-In a later tutorial we will see that a projected primitive is inside the 2D projection window (in front of the camera) as long as the x- and y-coordinates of its vertex positions are in the range $[−1,\ 1]$, while the z-coordinate is in the range $[0,\ 1]$. As you can see in the definition of the array of vertices, that's exactly the case of our triangle, which will be rendered for sure.
+In a later tutorial we will see that a projected primitive is inside the 2D projection window (in front of the camera) as long as the x- and y-coordinates of its vertex positions are in the range $[−1, +1]$, while the z-coordinate is in the range $[0, 1]$. As you can see in the definition of the array of vertices, that's exactly the case of our triangle, which will be rendered for sure.
 ```
 
 Once the array of vertices is ready, we must transfer it to a GPU heap for use as a vertex buffer by the input assembler. **ID3D12Device::CreateCommittedResource** serves a dual purpose, creating a resource while also allocating sufficient GPU heap memory space to accommodate the entire resource. As discussed earlier, there are three types of GPU heaps where memory space can be allocated:
@@ -1049,6 +1049,24 @@ The pixel shader processes, one by one, the pixels covered by the projected, 2D 
 
 Execute the sample and try resizing the window. What happens? The triangle gets stretched because we have a swap chain with two buffers of $1280\times 720$, while the window no longer matches the same size. You can mitigate the problem by resizing the window to a dimension with an aspect ratio similar to $1280/720$. However, we will ultimately fix this problem in a later tutorial.
 ```
+<br>
+
+## Source Code
+
+[D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
+
+<br>
+
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
+
+```{figure} ../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
+
 <br>
 
 ## Source Code
