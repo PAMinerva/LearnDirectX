@@ -86,6 +86,54 @@ The array texture illustrated above contains three textures, each with a $3\time
 
 <br>
 
+##  Texel Coordinate System
+
+The texel coordinate system has its origin at the top-left corner of the texture, as shown in the following diagram. Texel coordinates $(s,t)$ are typically continuous, but texels are usually located at integer locations (discrete coordinates). In this space, texel centers are offset by $(0.5, 0.5)$ (half-integer locations). Normalized coordinates in the following illustration below contribute to a better understanding of the relationship between the texel and texture coordinate systems (explained in more detail in the subsequent sections).
+
+```{figure} images/05/texel-coord.png
+```
+
+<br>
+
+## Texture Coordinate System
+
+As stated in the previous section, each texel in a texture can be specified by its integer texel coordinates. However, in order to map texels onto primitives, Direct3D requires a uniform address range. That is, it uses a generic addressing scheme in which each component of all texel addresses $(s,t)$ is normalized to be within the range $[0.0,\ 1.0]$.
+
+```{figure} images/05/texture-coord.png
+```
+
+```{note}
+Technically, Direct3D can actually process texture coordinates outside the range $[0, 1]$. The way it handles these coordinates depends on the parameters you set for texture addressing (more on this shortly).
+```
+
+With texture coordinates, we can address texels without knowing the size of a texture. For example, in the following illustration, we can select the central texel in the last row for two different textures by using the texture coordinates $(0.5, 1.0)$.
+
+```{figure} images/05/texture-coord2.png
+```
+
+Applying a texture to a 3D primitive involves mapping texel coordinates to the vertices of the primitive. However, how can we map 2D texel coordinates to 3D positions? One way to do that is through a technique called UV mapping, which conceptually involves unwrapping the 3D mesh onto the unit square $[0,1]\times [0,1]$ that defines the texture coordinate system. This process is similar to unwrapping a Christmas chocolate on a table, as illustrated below.
+
+```{figure} images/05/tex-unwrap.jpg
+```
+
+UV mapping allows vertex positions to be associated with texture coordinates within the unit square defined above. This ends up allowing us to determine which texel from the texture will be mapped to a specific vertex position. We'll demonstrate this soon with a straightforward example.
+
+```{figure} images/05/texture2texel.png
+```
+
+Here, for the sake of semplicity, we will consider a single triangle that is mapped to take the whole unit square of texture coordinate system.
+
+```{figure} images/05/triangle-unwrap.png
+```
+
+By associating (using vertex attributes in the definition of the corresponding vertex buffer) the texture coordinates $(0.5, 0)$, $(1, 1)$ and $(0, 1)$ respectively with the vertices $\mathbf{v}_1$, $\mathbf{v}_2$ and $\mathbf{v}_3$ of a triangle in 3D space, we establish a connection between vertex positions and texture coordinates. To obtain the integer texel coordinates that allow us to select a texel from the texture, we can multiply each component of the texture coordinates by the corresponding dimension of the texture, minus 1, and round the result by simply truncating the fractional part.
+
+For example, if we have an $8\times 4$ texture, the vertex $\mathbf{v}_1$ in the figure above would be paired with the integer texel coordinates $\big(⌊(0.5∗(8-1))⌋,\ ⌊(0.0∗(4-1))⌋\big)=(3,0)$. This way, we associated the vertex position $\mathbf{v}_1$ with the fourth texel of the first row of the texture. The same goes for the vertices $\mathbf{v}_2$ and $\mathbf{v}_3$, which would be associated respectively with the last and first texels of the last row. Eventually, we established a connection between vertices and texels.
+
+This association between vertices and texels allows us to enhance the level of detail and realism in our rendering. How? Well, first of all, it should be noted that associating vertices with texels practically means that we must declare the texture coordinates as a vertex attribute to associate them with vertex positions in 3D space. When the rasterizer interpolates the texture coordinates of a pixel, we can use the result in the shader code to select a texel from a texture as the per-pixel color (more on this shortly). This means that instead of having an interpolated color for each pixel within a primitive, we now have a color selected from a texture that represents a real material. This allows us to select a color per-pixel rather than per-vertex, leading to an higher level of detail and realism.
+
+<br>
+
 ## [WIP]
 
 

@@ -412,6 +412,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-textures-and-2d-texture-arrays">2D Textures and 2D Texture arrays</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texel-coordinate-system">Texel Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texture-coordinate-system">Texture Coordinate System</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">[WIP]</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
@@ -499,6 +501,45 @@ As an alternative, graphic artists or programmers can convert the image data int
 <br>
 </section>
 </section>
+<section id="texel-coordinate-system">
+<h2>Texel Coordinate System<a class="headerlink" href="#texel-coordinate-system" title="Link to this heading">#</a></h2>
+<p>The texel coordinate system has its origin at the top-left corner of the texture, as shown in the following diagram. Texel coordinates <span class="math notranslate nohighlight">\((s,t)\)</span> are typically continuous, but texels are usually located at integer locations (discrete coordinates). In this space, texel centers are offset by <span class="math notranslate nohighlight">\((0.5, 0.5)\)</span> (half-integer locations). Normalized coordinates in the following illustration below contribute to a better understanding of the relationship between the texel and texture coordinate systems (explained in more detail in the subsequent sections).</p>
+<figure class="align-default">
+<img alt="../../_images/texel-coord.png" src="../../_images/texel-coord.png" />
+</figure>
+<br>
+</section>
+<section id="texture-coordinate-system">
+<h2>Texture Coordinate System<a class="headerlink" href="#texture-coordinate-system" title="Link to this heading">#</a></h2>
+<p>As stated in the previous section, each texel in a texture can be specified by its integer texel coordinates. However, in order to map texels onto primitives, Direct3D requires a uniform address range. That is, it uses a generic addressing scheme in which each component of all texel addresses <span class="math notranslate nohighlight">\((s,t)\)</span> is normalized to be within the range <span class="math notranslate nohighlight">\([0.0,\ 1.0]\)</span>.</p>
+<figure class="align-default">
+<img alt="../../_images/texture-coord.png" src="../../_images/texture-coord.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Technically, Direct3D can actually process texture coordinates outside the range <span class="math notranslate nohighlight">\([0, 1]\)</span>. The way it handles these coordinates depends on the parameters you set for texture addressing (more on this shortly).</p>
+</div>
+<p>With texture coordinates, we can address texels without knowing the size of a texture. For example, in the following illustration, we can select the central texel in the last row for two different textures by using the texture coordinates <span class="math notranslate nohighlight">\((0.5, 1.0)\)</span>.</p>
+<figure class="align-default">
+<img alt="../../_images/texture-coord2.png" src="../../_images/texture-coord2.png" />
+</figure>
+<p>Applying a texture to a 3D primitive involves mapping texel coordinates to the vertices of the primitive. However, how can we map 2D texel coordinates to 3D positions? One way to do that is through a technique called UV mapping, which conceptually involves unwrapping the 3D mesh onto the unit square <span class="math notranslate nohighlight">\([0,1]\times [0,1]\)</span> that defines the texture coordinate system. This process is similar to unwrapping a Christmas chocolate on a table, as illustrated below.</p>
+<figure class="align-default">
+<img alt="../../_images/tex-unwrap.jpg" src="../../_images/tex-unwrap.jpg" />
+</figure>
+<p>UV mapping allows vertex positions to be associated with texture coordinates within the unit square defined above. This ends up allowing us to determine which texel from the texture will be mapped to a specific vertex position. We’ll demonstrate this soon with a straightforward example.</p>
+<figure class="align-default">
+<img alt="../../_images/texture2texel.png" src="../../_images/texture2texel.png" />
+</figure>
+<p>Here, for the sake of semplicity, we will consider a single triangle that is mapped to take the whole unit square of texture coordinate system.</p>
+<figure class="align-default">
+<img alt="../../_images/triangle-unwrap.png" src="../../_images/triangle-unwrap.png" />
+</figure>
+<p>By associating (using vertex attributes in the definition of the corresponding vertex buffer) the texture coordinates <span class="math notranslate nohighlight">\((0.5, 0)\)</span>, <span class="math notranslate nohighlight">\((1, 1)\)</span> and <span class="math notranslate nohighlight">\((0, 1)\)</span> respectively with the vertices <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>, <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_3\)</span> of a triangle in 3D space, we establish a connection between vertex positions and texture coordinates. To obtain the integer texel coordinates that allow us to select a texel from the texture, we can multiply each component of the texture coordinates by the corresponding dimension of the texture, minus 1, and round the result by simply truncating the fractional part.</p>
+<p>For example, if we have an <span class="math notranslate nohighlight">\(8\times 4\)</span> texture, the vertex <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> in the figure above would be paired with the integer texel coordinates <span class="math notranslate nohighlight">\(\big(⌊(0.5∗(8-1))⌋,\ ⌊(0.0∗(4-1))⌋\big)=(3,0)\)</span>. This way, we associated the vertex position <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> with the fourth texel of the first row of the texture. The same goes for the vertices <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_3\)</span>, which would be associated respectively with the last and first texels of the last row. Eventually, we established a connection between vertices and texels.</p>
+<p>This association between vertices and texels allows us to enhance the level of detail and realism in our rendering. How? Well, first of all, it should be noted that associating vertices with texels practically means that we must declare the texture coordinates as a vertex attribute to associate them with vertex positions in 3D space. When the rasterizer interpolates the texture coordinates of a pixel, we can use the result in the shader code to select a texel from a texture as the per-pixel color (more on this shortly). This means that instead of having an interpolated color for each pixel within a primitive, we now have a color selected from a texture that represents a real material. This allows us to select a color per-pixel rather than per-vertex, leading to an higher level of detail and realism.</p>
+<br>
+</section>
 <section id="wip">
 <h2>[WIP]<a class="headerlink" href="#wip" title="Link to this heading">#</a></h2>
 <br>
@@ -585,6 +626,8 @@ As an alternative, graphic artists or programmers can convert the image data int
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-textures-and-2d-texture-arrays">2D Textures and 2D Texture arrays</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texel-coordinate-system">Texel Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texture-coordinate-system">Texture Coordinate System</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">[WIP]</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
