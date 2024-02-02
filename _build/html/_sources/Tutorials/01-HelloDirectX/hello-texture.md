@@ -261,10 +261,12 @@ Setting the texture addressing mode to "Border" means we want to use an arbitrar
 
 In this section, we will review the code of a sample that draws a textured triangle. The image below shows the texture we will map to this basic mesh. The texture presents a classic checkerboard pattern, alternating between black and white squares. As mentioned earlier in this tutorial, textures are typically created by graphic artists. However, in this case, the pattern of the texture is regular enough to be manually generated.
 
-As usual, let's start from the application class.
-
 ```{figure} images/05/checkboard-tex.png
 ```
+
+### C++
+
+As usual, let's start from the application class.
 
 ```{code-block} cpp
 :caption: HelloTexture/D3D12HelloTexture.h
@@ -376,8 +378,400 @@ std::vector<UINT8> D3D12HelloTexture::GenerateTextureData()
 
 The **rowPitch** variable represents the byte size of a texture row, calculated as `TextureWidth * TexturePixelSize` $(256∗4=1024)$. The **cellPitch** variable represents the width of a checkerboard cell in bytes, calculated as ```rowPitch >> 3``` $(1024/8=128)$. This means that each row has 8 cells, where each cell includes $(128/4)= 32$ texels. The height of each cell is calculated as `TextureWidth >> 3` $(256/8=32)$, which means each cell includes 32 texels as well. Observe that the cell height is measured in texels, not bytes like the cell width. This is because we will use the local variable *j* to count the texels of a cell vertically while the local variable *i* to count the bytes of a cell horizontally. These two variables, along with the loop counter *n*, play a crucial role in alternating between black and white cells. In partcular, for each texel, the function sets the RGBA values to either 0x00 or 0xFF depending on whether `(i % 2 == j % 2)`. This creates a checkerboard pattern with black and white cells.
 
-[WIP]
+Now, let's take a look at the **LoadPipeline** function.
 
+```{code-block} cpp
+:caption: HelloTexture/D3D12HelloTexture.cpp
+:name: hellotexture-LoadPipeline-code
+
+// Load the rendering pipeline dependencies.
+void D3D12HelloTexture::LoadPipeline()
+{
+ 
+    // ...
+
+ 
+    // Create descriptor heaps.
+    {
+        // Describe and create a render target view (RTV) descriptor heap.
+        D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
+        rtvHeapDesc.NumDescriptors = FrameCount;
+        rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+        rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+        ThrowIfFailed(m_device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&m_rtvHeap)));
+ 
+        // Describe and create a shader resource view (SRV) heap for the texture.
+        D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
+        srvHeapDesc.NumDescriptors = 1;
+        srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+        srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+        ThrowIfFailed(m_device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&m_srvHeap)));
+ 
+        m_rtvDescriptorSize = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+    }
+
+ 
+    // ...
+
+
+}
+```
+
+We need a descriptor heap to hold the SRV we are about to create as a view for the texture. This is not much different from what we have seen in [](hello-cbs.md) (we simply renamed **m_cbvHeap** to **m_srvHeap**). Remember that a descriptor heap of type **D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV** can hold both CBVs and SRVs.
+
+The **LoadAssets** function has grown considerably in this sample, but there's no need to worry. We will carefully review all the code in detail.
+
+```{code-block} cpp
+:caption: HelloTexture/D3D12HelloTexture.cpp
+:name: hellotexture-LoadAssets-code
+
+// Load the sample assets.
+void D3D12HelloTexture::LoadAssets()
+{
+    // Create the root signature.
+    {
+        D3D12_FEATURE_DATA_ROOT_SIGNATURE featureData = {};
+ 
+        // This is the highest version the sample supports. If CheckFeatureSupport succeeds, the HighestVersion returned will not be greater than this.
+        featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
+ 
+        if (FAILED(m_device->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE, &featureData, sizeof(featureData))))
+        {
+            featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
+        }
+ 
+        CD3DX12_DESCRIPTOR_RANGE1 ranges[1];
+        ranges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
+ 
+        CD3DX12_ROOT_PARAMETER1 rootParameters[1];
+        rootParameters[0].InitAsDescriptorTable(1, &ranges[0], D3D12_SHADER_VISIBILITY_PIXEL);
+ 
+        D3D12_STATIC_SAMPLER_DESC sampler = {};
+        sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
+        sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+        sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+        sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+        sampler.MipLODBias = 0;
+        sampler.MaxAnisotropy = 0;
+        sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+        sampler.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+        sampler.MinLOD = 0.0f;
+        sampler.MaxLOD = D3D12_FLOAT32_MAX;
+        sampler.ShaderRegister = 0;
+        sampler.RegisterSpace = 0;
+        sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+ 
+        CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+        rootSignatureDesc.Init_1_1(_countof(rootParameters), rootParameters, 1, &sampler, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+ 
+        ComPtr<ID3DBlob> signature;
+        ComPtr<ID3DBlob> error;
+        ThrowIfFailed(D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, featureData.HighestVersion, &signature, &error));
+        ThrowIfFailed(m_device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&m_rootSignature)));
+    }
+ 
+    // Create the pipeline state, which includes compiling and loading shaders.
+    {
+        ComPtr<ID3DBlob> vertexShader;
+        ComPtr<ID3DBlob> pixelShader;
+ 
+#if defined(_DEBUG)
+        // Enable better shader debugging with the graphics debugging tools.
+        UINT compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+#else
+        UINT compileFlags = 0;
+#endif
+ 
+        ThrowIfFailed(D3DCompileFromFile(GetAssetFullPath(L"shaders.hlsl").c_str(), nullptr, nullptr, "VSMain", "vs_5_0", compileFlags, 0, &vertexShader, nullptr));
+        ThrowIfFailed(D3DCompileFromFile(GetAssetFullPath(L"shaders.hlsl").c_str(), nullptr, nullptr, "PSMain", "ps_5_0", compileFlags, 0, &pixelShader, nullptr));
+ 
+        // Define the vertex input layout.
+        D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
+        {
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+        };
+ 
+        // Describe and create the graphics pipeline state object (PSO).
+        D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+        psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
+        psoDesc.pRootSignature = m_rootSignature.Get();
+        psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
+        psoDesc.PS = CD3DX12_SHADER_BYTECODE(pixelShader.Get());
+        psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+        psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+        psoDesc.DepthStencilState.DepthEnable = FALSE;
+        psoDesc.DepthStencilState.StencilEnable = FALSE;
+        psoDesc.SampleMask = UINT_MAX;
+        psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+        psoDesc.NumRenderTargets = 1;
+        psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+        psoDesc.SampleDesc.Count = 1;
+        ThrowIfFailed(m_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_pipelineState)));
+    }
+ 
+    // Create the command list.
+    ThrowIfFailed(m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocator.Get(), m_pipelineState.Get(), IID_PPV_ARGS(&m_commandList)));
+ 
+    // Create the vertex buffer.
+    {
+        // Define the geometry for a triangle.
+        Vertex triangleVertices[] =
+        {
+            { { 0.0f, 0.25f * m_aspectRatio, 0.0f }, { 0.5f, 0.0f } },
+            { { 0.25f, -0.25f * m_aspectRatio, 0.0f }, { 1.0f, 1.0f } },
+            { { -0.25f, -0.25f * m_aspectRatio, 0.0f }, { 0.0f, 1.0f } }
+        };
+ 
+        const UINT vertexBufferSize = sizeof(triangleVertices);
+ 
+        // Note: using upload heaps to transfer static data like vert buffers is not 
+        // recommended. Every time the GPU needs it, the upload heap will be marshalled 
+        // over. Please read up on Default Heap usage. An upload heap is used here for 
+        // code simplicity and because there are very few verts to actually transfer.
+        ThrowIfFailed(m_device->CreateCommittedResource(
+            &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+            D3D12_HEAP_FLAG_NONE,
+            &CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize),
+            D3D12_RESOURCE_STATE_GENERIC_READ,
+            nullptr,
+            IID_PPV_ARGS(&m_vertexBuffer)));
+ 
+        // Copy the triangle data to the vertex buffer.
+        UINT8* pVertexDataBegin;
+        CD3DX12_RANGE readRange(0, 0);        // We do not intend to read from this resource on the CPU.
+        ThrowIfFailed(m_vertexBuffer->Map(0, &readRange, reinterpret_cast<void**>(&pVertexDataBegin)));
+        memcpy(pVertexDataBegin, triangleVertices, sizeof(triangleVertices));
+        m_vertexBuffer->Unmap(0, nullptr);
+ 
+        // Initialize the vertex buffer view.
+        m_vertexBufferView.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
+        m_vertexBufferView.StrideInBytes = sizeof(Vertex);
+        m_vertexBufferView.SizeInBytes = vertexBufferSize;
+    }
+ 
+    // Note: ComPtr's are CPU objects but this resource needs to stay in scope until
+    // the command list that references it has finished executing on the GPU.
+    // We will flush the GPU at the end of this method to ensure the resource is not
+    // prematurely destroyed.
+    ComPtr<ID3D12Resource> textureUploadHeap;
+ 
+    // Create the texture.
+    {
+        // Describe and create a Texture2D.
+        D3D12_RESOURCE_DESC textureDesc = {};
+        textureDesc.MipLevels = 1;
+        textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        textureDesc.Width = TextureWidth;
+        textureDesc.Height = TextureHeight;
+        textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+        textureDesc.DepthOrArraySize = 1;
+        textureDesc.SampleDesc.Count = 1;
+        textureDesc.SampleDesc.Quality = 0;
+        textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+ 
+        ThrowIfFailed(m_device->CreateCommittedResource(
+            &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+            D3D12_HEAP_FLAG_NONE,
+            &textureDesc,
+            D3D12_RESOURCE_STATE_COPY_DEST,
+            nullptr,
+            IID_PPV_ARGS(&m_texture)));
+ 
+        const UINT64 uploadBufferSize = GetRequiredIntermediateSize(m_texture.Get(), 0, 1);
+ 
+        // Create the GPU upload buffer.
+        ThrowIfFailed(m_device->CreateCommittedResource(
+            &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+            D3D12_HEAP_FLAG_NONE,
+            &CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
+            D3D12_RESOURCE_STATE_GENERIC_READ,
+            nullptr,
+            IID_PPV_ARGS(&textureUploadHeap)));
+ 
+        // Copy data to the intermediate upload heap and then schedule a copy 
+        // from the upload heap to the Texture2D.
+        std::vector<UINT8> texture = GenerateTextureData();
+ 
+        D3D12_SUBRESOURCE_DATA textureData = {};
+        textureData.pData = &texture[0];
+        textureData.RowPitch = TextureWidth * TexturePixelSize;
+        textureData.SlicePitch = textureData.RowPitch * TextureHeight;
+ 
+        UpdateSubresources(m_commandList.Get(), m_texture.Get(), textureUploadHeap.Get(), 0, 0, 1, &textureData);
+        m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_texture.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+ 
+        // Describe and create a SRV for the texture.
+        D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+        srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+        srvDesc.Format = textureDesc.Format;
+        srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+        srvDesc.Texture2D.MipLevels = 1;
+        m_device->CreateShaderResourceView(m_texture.Get(), &srvDesc, m_srvHeap->GetCPUDescriptorHandleForHeapStart());
+    }
+    
+    // Close the command list and execute it to begin the initial GPU setup.
+    ThrowIfFailed(m_commandList->Close());
+    ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
+    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+ 
+    // Create synchronization objects and wait until assets have been uploaded to the GPU.
+    {
+        ThrowIfFailed(m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence)));
+        m_fenceValue = 1;
+ 
+        // Create an event handle to use for frame synchronization.
+        m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        if (m_fenceEvent == nullptr)
+        {
+            ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+        }
+ 
+        // Wait for the command list to execute; we are reusing the same command 
+        // list in our main loop but for now, we just want to wait for setup to 
+        // complete before continuing.
+        WaitForPreviousFrame();
+    }
+}
+```
+
+The root signature includes a single root parameter: a descriptor table with a range of a single descriptor (for the SRV that describes the texture). The shader visibility is used to prevent broadcasting the root table to all shader cores, since we will only use the SRV from the pixel shader to select a texel from the checkerboard texture (as the per-pixel data to store in the render target). Also, setting root arguments for individual shader stages allows the use of the same binding name across different stages. For example, an SRV binding of `t0, SHADER_VISIBILITY_VERTEX` and another SRV binding of `t0, SHADER_VISIBILITY_PIXEL` would be valid. However, if the visibility setting were `t0, SHADER_VISIBILITY_ALL` for one of the bindings, the root signature would be invalid. That is, if you want each shader to see different textures bound to the same virtual register, the application can define two root parameters using the same slot (for example `t0`) with distinct visibilities (e.g., `VISIBILITY_VERTEX` and `VISIBILITY_PIXEL`). On the other hand, if all shaders are intended to access the same texture, the application can define a single root signature binding to `t0, VISIBILITY_ALL`. <br>
+In the third parameter of **CD3DX12_DESCRIPTOR_RANGE1::Init**, we specify that the view will be bound to slot 0 reserved for SRVs. Consequently, in this case, we are binding to the virtual register **t0**.
+
+We won't make use of dynamic samplers. As mentioned in [](hello-triangle.md), static samplers are part of the root signature but do not contribute to the 64 DWORD limit. In defining the static sampler used by **D3D12HelloTextures**, we specify **D3D12_FILTER_MIN_MAG_MIP_POINT** as a filter, indicating the use of a point filter for both texel and mipmap selection. <br>
+The texture addressing mode is set to Border, with transparent black as the border color (essentially denoting a transparent color, where the alpha channel is set to 1.0). Observe static samplers impose some limitations on the border colors that can be specified. However, this is not a concern at the moment. <br>
+Within the static sampler, we also define the shader visibility (pixel shader) and the slot where we intend to bind it (slot 0 reserved for samplers, thus we will bind it to the virtual register **s0**). The remaining fields that can be configured for a static sampler are not essential for our current purpose.
+
+In the input layout, we inform the input assembler that the second element\attribute refer to texture coordinates. To this purpose, **DXGI_FORMAT_R32G32_FLOAT** indicates the vertex attribute consists of two 32-bit floating-point values. We mark it with the semantic name **TEXTURE**.
+
+In the vertex buffer, , we pair each vertex position with the associated texture coordinates, as illustrated in the final image of the "Texture Coordinate System" section.
+
+```{note}
+At this point, we are ready to create the texture. However, before delving into the details, it's worthwhile to understand the meaning of the comment associated with the **textureUploadHeap** variable. The comment emphasizes that a local variable must remain in scope until the command list that references the corresponding resource has completed executing on the GPU. This is crucial because, while we can successfully create resources on GPU heaps from our C++ application, we only receive interface pointers to COM objects to reference them. So, when does a resource actually get destroyed? The answer is surprisingly simple: when our application no longer has any references to it. Thus, if **textureUploadHeap** were to go out of scope, the destructor of **ComPtr** would call **Release** on the underlying pointer to the **ID3D12Resource** interface. If we had no other references to the resource from our application, the associated physical memory could be reclaimed. However, if this occurs before a command referencing the resource is executed in a command list, undesirable consequences may arise. Fortunately, at the end of the **LoadAssets** function, we call **WaitForPreviousFrame**, which halts execution until all commands in the command list have been executed. This ensures that the GPU has processed all commands referencing the resource by the time we exit **LoadAssets**, permitting **textureUploadHeap** to go out of scope without any issues.
+```
+
+To create the checkerboard texture and allocate the corresponding memory space, we initialize a **D3D12_RESOURCE_DESC** structure with the required information. We desire a 2D texture of $256\times 256$ texels including a single mipmap level (the texture itself), where each texel is a 32-bit value composed of four 8-bit unsigned-normalized integer channels. This can be specified by setting **DXGI_FORMAT_R8G8B8A8_UNORM** as the texture format. **DepthOrArraySize** indicates the number of textures (for texture arrays) or the depth (for 3D textures). In this case, we aim for a single 2D texture, so we set this field to 1. You can ignore **SampleDesc.Count** and **SampleDesc.Quality** for now. <br>
+In the subsequent call to **CreateCommittedResource**, we allocate sufficient memory space on the default heap to accommodate the texture. However, we need to initialize this memory location with the checkerboard texture data residing in system memory. Therefore, we must allocate additional memory space of the same size on the upload heap to load the texture data created by **GenerateTextureData**, and then copy it to the memory space allocated on the default heap (remember that we cannot directly access the default heap from the CPU). Note that the resource on the default heap is created with **D3D12_RESOURCE_STATE_COPY_DEST**, signifying that this resource will be used as the destination of a copy operation. On the other hand, the resource on the upload heap is created with **D3D12_RESOURCE_STATE_GENERIC_READ**, indicating that we can upload data from the CPU and read it from the GPU, enabling us to employ this resource as the source of a copy operation. Once we copy the texture data from the upload to the default heap (more on this shortly), we no longer require the resource on the upload heap, so **textureUploadHeap** can go out of scope as mentioned earlier.
+
+```{note}
+You might be wondering why we used **GetRequiredIntermediateSize** to determine the amount of memory space to allocate on the upload heap. Well, the intermediate resource on the upload heap is only used to store the texture data. In other words, we don't need to create another texture; a buffer is more than enough. Accordingly, **CD3DX12_RESOURCE_DESC::Buffer** is employed to create a **D3D12_RESOURCE_DESC** that describes a buffer. **GetRequiredIntermediateSize** takes an **ID3DResource** to compute the amount of memory used by that specific resource. This enables us to pass the texture on the default heap as an argument to calculate the necessary memory size to allocate on the upload heap.
+```
+
+We have already examined how **GenerateTextureData** generates the checkerboard texture data. We employ this data to initialize the only subresource that constitutes the texture applied to the triangle displayed on the screen (remember that we access resources in memory at a subresource granularity). **RowPitch** represents the byte size of a row of the subresource, while **SlicePitch** is the byte size of the entire subresource (at least for 2D subresources; for 3D subresources, it is the byte size of the depth). <br>
+**UpdateSubresources** is a helper function defined in *d3dx12.h*. It maps a set of subresources from the upload heap to the virtual address space of our C++ application in order to initialize them with subresource data stored in system memory. Subsequently, it records a copy operation on the command list to copy the subresource data from the subresources on the upload heap to the related subresources on the default heap. In this case we have a texture with a single subresource: the texture itself (without additional mipmap levels).
+
+We record (with a command in the command list) a resource state transition to indicate to the GPU that we intend to read the texture on the default heap from the pixel shader. Observe that a (sub)resource must be in **D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE** before being accessed by the pixel shader via an SRV. Otherwise, if the resource is used with a shader other than the pixel shader, you would need to specify a transition to **D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE**. This distinction between resources accessed by the pixel shader and other shaders can enable some optimizations. For example, a state transition from **D3D12_RESOURCE_STATE_RENDER_TARGET** to **D3D12_RESOURCE_STATE_NON_PIXEL_SHADER** will halt all subsequent shader execution until the render target data is resolved (written). In contrast, transitioning to **D3D12_RESOURCE_STATE_PIXEL_SHADER** will only block subsequent pixel shader execution, allowing the vertex processing pipeline to run concurrently with render target resolve.
+
+At this point, we can create the view for the texture. To achieve this, a **D3D12_SHADER_RESOURCE_VIEW_DESC** structure is initialized to specify some important information. <br>
+**Shader4ComponentMapping** specifies a mapping for texel components\channels. It enable a remapping from components of the texels in the texture to components of the vector returned as a result of reading a texel through the corresponding view. The options for each return component are: a component (specified in the range $[0..3]$) from the SRV fetch result or force 0 or 1. In other words, you can map a channel value in the texel to another channel in the returned result, or set it to 0 or 1, whenever you read a texture by using the corresponding view. The default 1:1 mapping can be specified with **D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING**, indicating you want component 0 as the first return component, component 1 as the second return component, component 2 as the third return component, component 3 as the fourth return component. <br>
+**CreateShaderResourceView** creates the SRV and specifies to put it in the first descriptor of **m_srvHeap**. . 
+
+Now, the call to **WaitForPreviousFrame** at the end of **LoadAssets** starts to make sense, since we implicitly recorded commands in the command list with the call to **UpdateSubresources**. It's a good practice to flush the command queue at the end of the initialization phase before starting to record commands in **OnRender** (called by the message handler of **WM_PAINT**). At that point,  we no longer require **textureUploadHeap**, since the GPU has executed the copy operation from the upload heap to the default heap. Therefore, we can exit **LoadAssets** without any concerns about the scope of the **textureUploadHeap** variable.
+
+In **PopulateCommandList**, we pass the GPU handle of the SRV stored in **m_srvHeap** as root argument for the root table in the root signature. Remember that root tables take byte offsets as root arguments, and indeed a GPU descriptor handle is essentially a byte offset from the start of a descriptor heap. Then, we record a draw command (**DrawInstanced**) to draw the triangle.  The rest of the code is analogous to that examined in previous tutorials.
+
+```{code-block} cpp
+:caption: HelloTexture/D3D12HelloTexture.cpp
+:name: hellotexture-PopulateCommandList-code
+
+void D3D12HelloTexture::PopulateCommandList()
+{
+
+    // ... 
+
+ 
+    // Set necessary state.
+    m_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
+
+    ID3D12DescriptorHeap* ppHeaps[] = { m_srvHeap.Get() };
+    m_commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+    m_commandList->SetGraphicsRootDescriptorTable(0, m_srvHeap->GetGPUDescriptorHandleForHeapStart());
+    m_commandList->RSSetViewports(1, &m_viewport);
+    m_commandList->RSSetScissorRects(1, &m_scissorRect); 
+ 
+    // Indicate that the back buffer will be used as a render target.
+    m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+ 
+    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart(), m_frameIndex, m_rtvDescriptorSize);
+    m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
+ 
+    // Record commands.
+    const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+    m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+    m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
+    m_commandList->DrawInstanced(3, 1, 0, 0);
+ 
+    // Indicate that the back buffer will now be used to present.
+    m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+ 
+    ThrowIfFailed(m_commandList->Close());
+}
+```
+
+### HLSL
+
+Now, let's see what happens in the shader code.
+
+```{code-block} hlsl
+:caption: HelloTexture/shaders.hlsl
+:name: hellotexture-shader-code
+
+struct PSInput
+{
+    float4 position : SV_POSITION;
+    float2 uv : TEXCOORD;
+};
+ 
+
+Texture2D g_texture : register(t0);
+SamplerState g_sampler : register(s0);
+
+
+ 
+PSInput VSMain(float4 position : POSITION, float4 uv : TEXCOORD)
+{
+    PSInput result;
+ 
+    result.position = position;
+    result.uv = uv;
+ 
+    return result;
+}
+
+
+ 
+float4 PSMain(PSInput input) : SV_TARGET
+{
+    return g_texture.Sample(g_sampler, input.uv);
+}
+
+```
+
+The shader code reflects the fact that the SRV that describes the checkerboard texture is bound to **t0**, while the sampler is bound to **s0**. Also, the **PSInput** structure now includes the texture coordinates (instead of a color) associated with each vertex position.
+
+In the vertex shader, we simply pass the vertex data to the rasterizer, which interpolates it and subsequently passes the result to the pixel shader. 
+
+In the pixel shader, we sample the checkerboard texture using the sampler object bound to **s0** and the interpolated texture coordinates. Then, we return the sampled texel as the per-pixel color to be stored in the render target.
+
+<br>
+
+## Source Code
+
+[D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
+
+<br>
+
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
+
+```{figure} ../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
 
 <br>
 
