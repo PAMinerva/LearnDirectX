@@ -261,6 +261,8 @@ Setting the texture addressing mode to "Border" means we want to use an arbitrar
 
 In this section, we will review the code of a sample that draws a textured triangle. The image below shows the texture we will map to this basic mesh. The texture presents a classic checkerboard pattern, alternating between black and white squares. As mentioned earlier in this tutorial, textures are typically created by graphic artists. However, in this case, the pattern of the texture is regular enough to be manually generated.
 
+As usual, let's start from the application class.
+
 ```{figure} images/05/checkboard-tex.png
 ```
 
@@ -329,8 +331,6 @@ The Vertex structure (that describe the elements of the vertex buffer) now uses 
 We will use the **m_texture** variable to reference the texture from our C++ application, and **m_srvHeap** to create a descriptor heap that will hold a view to the texture.
 
 **GenerateTextureData** is the method that procedurally generates the checkerboard texture data, texel by texel.
-
-<br>
 
 ```{code-block} cpp
 :caption: HelloTexture/D3D12HelloTexture.cpp

@@ -655,6 +655,7 @@ Imagine zooming in on a 3D textured mesh until it covers an area of <span class=
 <section id="d3d12hellotextures-code-review">
 <h2>D3D12HelloTextures: code review<a class="headerlink" href="#d3d12hellotextures-code-review" title="Link to this heading">#</a></h2>
 <p>In this section, we will review the code of a sample that draws a textured triangle. The image below shows the texture we will map to this basic mesh. The texture presents a classic checkerboard pattern, alternating between black and white squares. As mentioned earlier in this tutorial, textures are typically created by graphic artists. However, in this case, the pattern of the texture is regular enough to be manually generated.</p>
+<p>As usual, let’s start from the application class.</p>
 <figure class="align-default">
 <img alt="../../_images/checkboard-tex.png" src="../../_images/checkboard-tex.png" />
 </figure>
@@ -721,7 +722,6 @@ Imagine zooming in on a 3D textured mesh until it covers an area of <span class=
 The Vertex structure (that describe the elements of the vertex buffer) now uses texture coordinates (rather than a color) as a vertex attribute. That way, we can go from selecting a color per-vertex to selecting a color per-pixel, increasing the level of detail and realism. <br>
 We will use the <strong>m_texture</strong> variable to reference the texture from our C++ application, and <strong>m_srvHeap</strong> to create a descriptor heap that will hold a view to the texture.</p>
 <p><strong>GenerateTextureData</strong> is the method that procedurally generates the checkerboard texture data, texel by texel.</p>
-<br>
 <div class="literal-block-wrapper docutils container" id="hellotexture-generatetexturedata-code">
 <div class="code-block-caption"><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-generatetexturedata-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generate a simple black and white checkerboard texture.</span>
