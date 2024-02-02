@@ -634,7 +634,11 @@ Imagine zooming in on a 3D textured mesh until it covers an area of <span class=
 <section id="mirror">
 <h2>6.2 - Mirror<a class="headerlink" href="#mirror" title="Link to this heading">#</a></h2>
 <p>This addressing mode mirrors and repeats the texture at every integer boundary by using the following function to transform the <em>u</em>-coordinate.</p>
-<p><span class="math notranslate nohighlight">\(\text{mirror}(u)=\begin{cases}u-\text{floor}(u),\quad\quad\quad\text{floor}(u)\\% 2=0 \\\\ \text{floor}(u+1)-u,\quad\ \text{floor}(u)\\% 2=1\end{cases}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\text{mirror}(u)=
+\begin{cases}
+u-\text{floor}(u), &amp; \text{floor}(u) \% 2=0 \\ 
+\text{floor}(u+1)-u, &amp; \text{floor}(u) \% 2=1
+\end{cases}\)</span></p>
 <p>Setting the texture addressing mode to “Mirror” results in the texture being applied three times in both the <em>u</em> and <em>v</em> directions. Observe that every other row and column that it is applied to is a mirror image of the preceding row or column, as shown in the following illustration. The reason is that when, for example, the interpolated texture coordinate <em>u</em> is <span class="math notranslate nohighlight">\(3.0\)</span>, <span class="math notranslate nohighlight">\(\text{mirror}(3.0)\)</span> returns <span class="math notranslate nohighlight">\(1.0\)</span> while when <em>u</em> is <span class="math notranslate nohighlight">\(2.0\)</span> it returns <span class="math notranslate nohighlight">\(0.0\)</span>.</p>
 <figure class="align-default">
 <img alt="../../_images/mirror-mode.png" src="../../_images/mirror-mode.png" />
