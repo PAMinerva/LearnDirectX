@@ -134,7 +134,249 @@ This association between vertices and texels allows us to enhance the level of d
 
 <br>
 
-## [WIP]
+## Sampling
+
+In the context of texture mapping, sampling refers to the process of retrieving data from a texture using a sampler, which allows to look up texel values from their texture coordinates.
+
+In theory, it would be possible to associate vertex positions in the vertex buffer with texture coordinates that always translate to integer texel coordinates. However, even in that case, the rasterizer will likely emit pixels with interpolated texture coordinates that do not translate to integer texel coordinates.
+
+```{figure} images/05/sampling.png
+```
+
+For example, consider the generic interpolated texture coordinates $(u, v)$ which translate to the texel coordinates $(s, t) = (82.12, 74.38)$ as shown in the illustration above. Now, a question arises: which texel should be selected in this case? To address this issue, we require a sampler that, among its various properties, specifies a filter for texel selection.
+
+There are three filters available for texel selection: point, linear and anisotropic (we will cover the anisotropic filter in a later tutorial).
+
+**Point filtering** means that the selected texel is the nearest one, computed by simply truncating the fractional part from texel coordinates. So, in the case illustrated above, the selected texel will be the one with texel coordinates $(82,74)$. That is, the one with center in $\mathbf{c}_4$.
+
+**Linear filtering** means that we select the four nearest texels to interpolate their values. In this case, it is preferable to consider the centers of the texels for the texel selection. The reason for this is that the calculation of the four texels is computed by simply dropping the fractional part and increasing the components of the texel coordinates, that is: $(⌊x⌋,\ ⌊y⌋)$, $(⌊x⌋+1,\ ⌊y⌋)$, $(⌊x⌋,\ ⌊y⌋+1)$ and $(⌊x⌋+1,\ ⌊y⌋+1)$. That way, if we were to use the texel coordinates in this calculation, we might not select the nearest texels. For example, in the case illustrated above, the four selected texels would range from $(82, 74)$ to $(83, 75)$, which are not the nearest ones. The nearest texels actually range from $(81, 73)$ to $(82, 74)$. So how can we select them? We need to convert the texel coordinates to consider their location relative to the coordinate system formed by the four nearest texel centers. This can be done by subtracting $0.5$ from both components of the texel coordinates. For example, $(82.12, 74.38)–(0.5, 0.5)=(81.62, 73.88)$. This way, the nearest texels range exactly from $(81, 73)$ to $(82,74)$. Now, retaining only the fractional parts we have that $(81.62, 73.88)$ converts to $(0.62, 0.88)$. That's the exact location of texel coordinates $(s, t)$ in the $[0,1]\times [0,1]$ square formed by the four nearest texel centers. Eventually, we can interpolate their values as follows:
+
+$\mathbf{c}_A=38\\%$ of $\mathbf{c}_1+62\\%$ of $\mathbf{c}_2$ <br>
+$\mathbf{c}_B=38\\%$ of $\mathbf{c}_3+62\\%$ of $\mathbf{c}_4$ <br>
+$\mathbf{C}=12\\%$ of $\mathbf{c}_A+78%$ of $\mathbf{c}_B$
+
+This way, we obtain a color $\mathbf{C}$ starting from the interpolated texel coordinates provided by the rasterizer. Observe that we linearly interpolated between the horizontal texels in the $4\times 4$ block of nearest texels using the fractional part that corresponds to the *s*-coordinate, and then we linearly interpolated the results ($\mathbf{c}_A$ and $\mathbf{c}_B$) vertically using the fractional part that corresponds to the *t*-coordinate. In other words, we performed a bilinear interpolation. Additional information on linear and bilinear interpolation will be provided as an appendix in a later tutorial.
+
+```{note}
+The mapping from texture coordinates to the color returned by a texture fetch instruction in a shader program is an operation automatically performed by the GPU and is transparent to the programmer, who only needs to specify a filter in a sampler. However, knowing the low-level details can prove to be beneficial in the future.
+```
+
+### Magnification
+
+Using a point filter can lead to ugly visual effects (artifacts) during magnification. <br>
+Imagine zooming in on a 3D textured mesh until it covers an area of $1024\times 1024$ pixels on your screen. What happens if the texture of this mesh is, for example, $64\times 64$? Well, that means that we have approximately $1024/64=16$ pixels for each texel, as shown in the following illustration.
+
+```{figure} images/05/magnification.png
+```
+
+Now, imagine that pixels on your screen were stickers you can shoot straight at the surface of a mesh. This means that, in the case illustrated above, you need to shoot about 16 pixels to cover a single texel. The distortion of the texel may depend on the shape of the mesh and the viewing angle, but we can ignore that for now. What's important here is that, if we move from a pixel to the next one on the screen, we don't necessarily move from a texel to another in the texture. That means that the texture coordinates of many pixels will be mapped to the same texel (i.e., to its integer texel coordinates).
+
+```{note}
+Another way to think about it is this: if you zoom in on a 3D textured mesh, then big triangles will likely be projected onto the projection window. Since interpolation is performed by the rasterizer using barycentric coordinates (more on this in a later tutorial), texture coordinates of adjacent fragments won't change much. Therefore, if the texture is small, many pixels will fall into the same texel area after being converted from texture to texel coordinates.
+```
+
+Visually, this can lead to a blocky effect, as shown in the following illustration (on the left), where many pixels display the same color sampled from the same texel.
+
+```{figure} images/05/point-linear.png
+```
+
+You can mitigate this problem by using a linear filter (the result is shown in the image above, on the right). That way, we don't select the same texel, but rather we interpolate between four texels in the $3\times 3$ block surrounding it. That is, the interpolated texture coordinates of a pixel translate to texel coordinates within four texel centers that can vary, as shown in the illustration below. This results in a smoother transition between texels and can improve the visual quality of magnified textures.
+
+```{figure} images/05/linear-filter-block.png
+```
+
+### Minification
+
+It’s also interesting to consider what happens, using a point filter, during minification, when you zoom out to expand the viewing area. Imagine shooting a pixel straight at a mesh that, this time, is far away from the camera. Now, a single pixel can cover lots of texels.
+
+```{figure} images/05/minification.png
+```
+
+As we know, the color of a pixel depends on the selected texel, calculated from the interpolated texture coordinates associated with the pixel. If we have lots of texels mapped to a single pixel, then the selected texel can randomly vary from a frame to another, even if the mesh moves only slightly (less than a pixel). For example, in the case illustrated above, moving the primitive to the right or left by half a pixel would change approximately half of the texels covered by the pixel. This means that the texture coordinates of the pixel can be mapped to different texels (integer texel coordinates) during this little movement. This can lead to display flickering caused by pixels that rapidly change their color. Using a linear filter can help mitigate this issue, but it doesn’t completely solve it since the four nearest texels can also change rapidly.
+
+```{note}
+Another way to think about it is this: if you zoom out until a textured mesh is far away from the camera, then small triangles will likely be projected onto the projection window. Since interpolation is performed by the rasterizer using barycentric coordinates (more on this in a later tutorial), texture coordinates of adjacent pixels will likely differ significantly from each other. At that point, if the texture is big enough, adjacent pixels can select distant texels in the texture. This means that if a mesh moves slightly (less than a pixel), the interpolated texture coordinates can vary enough to selected different texels for the same pixel on the screen, leading to display flickering.
+```
+
+Fortunately, mipmap levels provide a way to select the texture that best matches the area covered by the mesh on the screen, allowing for a mapping as close to 1:1 as possible between pixels and texels. This can help reduce artifacts caused by minification. For this purpose, in a sampler we can also specify a filter for mipmap selection (in addition to the one for texel selection). A point filter (for mipmap selection) selects the mipmap whose texels are closest in size to screen pixels, while a linear filter selects the two mipmaps that provide the best match. From these two mipmaps, two texels (one from each mipmap) are sampled using the filter for texel selection. These two texels are then interpolated to return the final result (color or other data).
+
+```{note}
+Do you recall our discussion about how blocks of $2\times 2$ pixels are processed in parallel by the pixel shader? Well, this allows the GPU to calculate the change in interpolated texture coordinates of a pixel relative to its companion pixels in the block. As a result, a LOD index can be computed from this information to select the most appropriate mipmap level. Further details on this topic will be provided in a later tutorial.
+```
+
+<br>
+
+## Addressing Modes
+
+Typically, the *u* and *v* components of texture coordinates range from $0.0$ to $1.0$. However, extending beyond this range can create unique texturing effects. To control how the Direct3D will handle texture coordinates outside of the range, we can set a texture addressing mode for each component. For example, you can set the texture addressing mode so that a texture is tiled across a primitive. For this purpose, Direct3D only need to find a way to map texture coordinates outside the unit square back to $[0.0, 1.0]$. There are various methods to restrict coordinates in a specific range.
+
+In this section we will only focus on the *u*-coordinate, but the same applies to the *v*-coordinate. Additionally, we will assume that we want to draw a quad consisting of two triangles. The vertex positions of the first triangle, $\triangle_1=(v0, v1, v2)$, are associated with texture coordinates of $(0.0, 0.0)$, $(3.0, 0.0)$ and $(0.0, 3.0)$ respectively, while the positions of the second triangle, $\triangle_2=(v1, v3, v2)$, are associated with texture coordinates of $(3.0, 0.0)$, $(3.0, 3.0)$ and $(0.0, 3.0)$. The vertices are in clockwise order. The following illustration shows the quad in a $[0,3]\times [0,3]$ square, which extends the $[0,1]\times [0,1]$ square representing the usual texture space.
+
+```{figure} images/05/quad-triangles.png
+```
+
+## 6.1 - Wrap
+
+This addressing mode repeats the texture on every integer junction by using the following function to transform the *u*-coordinate.
+
+$\text{wrap}(u) = u – \text{floor}(u)$
+
+So, in our example, setting the addressing mode to "Wrap" for both the *u*- and *v*-coordinates results in the texture being applied three times in both the *u* and *v* directions, as shown in the following illustration. The reason is that when, for example, the interpolated texture coordinate *u* is $3.0$, $\text{wrap}(3.0)$ returns $1.0$. The same happens when *u* is $2.0$ and (obviously) $1.0$.
+
+```{figure} images/05/wrap-mode.png
+```
+
+## 6.2 - Mirror
+
+This addressing mode mirrors and repeats the texture at every integer boundary by using the following function to transform the *u*-coordinate.
+
+$\text{mirror}(u)=\begin{cases}u-\text{floor}(u),\quad\quad\quad\text{floor}(u)\\% 2=0 \\\\ \text{floor}(u+1)-u,\quad\ \text{floor}(u)\\% 2=1\end{cases}$
+
+Setting the texture addressing mode to "Mirror" results in the texture being applied three times in both the *u* and *v* directions. Observe that every other row and column that it is applied to is a mirror image of the preceding row or column, as shown in the following illustration. The reason is that when, for example, the interpolated texture coordinate *u* is $3.0$, $\text{mirror}(3.0)$ returns $1.0$ while when *u* is $2.0$ it returns $0.0$.
+
+```{figure} images/05/mirror-mode.png
+```
+
+## 6.3 - Clamp
+
+This addressing mode clamps the *u*-component of the texture coordinate to the $[0.0,\ 1.0]$ range by using the following function.
+
+$\text{clamp}(u) = \text{max}(\text{min}(u, 1),  0)$
+
+Setting the texture addressing mode to "Clamp" applies the texture once, then smears the color of edge texels. In the following illustration the edges of the texture are delimited with a light grey square.
+
+```{figure} images/05/clamp-mode.png
+```
+
+## 6.4 - Border
+
+Setting the texture addressing mode to "Border" means we want to use an arbitrary color, known as the border color, for any texture coordinates outside the range of $0.0$ through $1.0$, inclusive. We can set the border color in the sampler.  The following illustration shows a texture (on the left), and its mapping to our quad (on the right) when a red border color is specified in the sampler.
+
+```{figure} images/05/border-mode.png
+```
+
+<br>
+
+## D3D12HelloTextures: code review
+
+In this section, we will review the code of a sample that draws a textured triangle. The image below shows the texture we will map to this basic mesh. The texture presents a classic checkerboard pattern, alternating between black and white squares. As mentioned earlier in this tutorial, textures are typically created by graphic artists. However, in this case, the pattern of the texture is regular enough to be manually generated.
+
+As usual, let's start from the application class.
+
+```{figure} images/05/checkboard-tex.png
+```
+
+```{code-block} cpp
+:caption: HelloTexture/D3D12HelloTexture.h
+:name: hellotexture-D3D12HelloTexture-code
+
+class D3D12HelloTexture : public DXSample
+{
+public:
+    D3D12HelloTexture(UINT width, UINT height, std::wstring name);
+ 
+    virtual void OnInit();
+    virtual void OnUpdate();
+    virtual void OnRender();
+    virtual void OnDestroy();
+ 
+private:
+    static const UINT FrameCount = 2;
+    static const UINT TextureWidth = 256;
+    static const UINT TextureHeight = 256;
+    static const UINT TexturePixelSize = 4;    // The number of bytes used to represent a pixel\texel in the texture.
+ 
+    struct Vertex
+    {
+        XMFLOAT3 position;
+        XMFLOAT2 uv;
+    };
+ 
+    // Pipeline objects.
+    CD3DX12_VIEWPORT m_viewport;
+    CD3DX12_RECT m_scissorRect;
+    ComPtr<IDXGISwapChain3> m_swapChain;
+    ComPtr<ID3D12Device> m_device;
+    ComPtr<ID3D12Resource> m_renderTargets[FrameCount];
+    ComPtr<ID3D12CommandAllocator> m_commandAllocator;
+    ComPtr<ID3D12CommandQueue> m_commandQueue;
+    ComPtr<ID3D12RootSignature> m_rootSignature;
+    ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
+    ComPtr<ID3D12DescriptorHeap> m_srvHeap;
+    ComPtr<ID3D12PipelineState> m_pipelineState;
+    ComPtr<ID3D12GraphicsCommandList> m_commandList;
+    UINT m_rtvDescriptorSize;
+ 
+    // App resources.
+    ComPtr<ID3D12Resource> m_vertexBuffer;
+    D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
+    ComPtr<ID3D12Resource> m_texture;
+ 
+    // Synchronization objects.
+    UINT m_frameIndex;
+    HANDLE m_fenceEvent;
+    ComPtr<ID3D12Fence> m_fence;
+    UINT64 m_fenceValue;
+ 
+    void LoadPipeline();
+    void LoadAssets();
+    std::vector<UINT8> GenerateTextureData();
+    void PopulateCommandList();
+    void WaitForPreviousFrame();
+};
+```
+
+We will use a texture of $256\times 256$ texels, where the size of each texel is 4 bytes. We will use this information to determine the amount of GPU heap space to allocate for the texture. <br>
+The Vertex structure (that describe the elements of the vertex buffer) now uses texture coordinates (rather than a color) as a vertex attribute. That way, we can go from selecting a color per-vertex to selecting a color per-pixel, increasing the level of detail and realism. <br>
+We will use the **m_texture** variable to reference the texture from our C++ application, and **m_srvHeap** to create a descriptor heap that will hold a view to the texture.
+
+**GenerateTextureData** is the method that procedurally generates the checkerboard texture data, texel by texel.
+
+```{code-block} cpp
+:caption: HelloTexture/D3D12HelloTexture.cpp
+:name: hellotexture-GenerateTextureData-code
+
+// Generate a simple black and white checkerboard texture.
+std::vector<UINT8> D3D12HelloTexture::GenerateTextureData()
+{
+    const UINT rowPitch = TextureWidth * TexturePixelSize;
+    const UINT cellPitch = rowPitch >> 3;        // The width of a cell in the checkerboard texture.
+    const UINT cellHeight = TextureWidth >> 3;   // The height of a cell in the checkerboard texture.
+    const UINT textureSize = rowPitch * TextureHeight;
+ 
+    std::vector<UINT8> data(textureSize);
+    UINT8* pData = &data[0];
+ 
+    for (UINT n = 0; n < textureSize; n += TexturePixelSize)
+    {
+        UINT x = n % rowPitch;
+        UINT y = n / rowPitch;
+        UINT i = x / cellPitch;
+        UINT j = y / cellHeight;
+ 
+        if (i % 2 == j % 2)
+        {
+            pData[n] = 0x00;        // R
+            pData[n + 1] = 0x00;    // G
+            pData[n + 2] = 0x00;    // B
+            pData[n + 3] = 0xff;    // A
+        }
+        else
+        {
+            pData[n] = 0xff;        // R
+            pData[n + 1] = 0xff;    // G
+            pData[n + 2] = 0xff;    // B
+            pData[n + 3] = 0xff;    // A
+        }
+    }
+ 
+    return data;
+}
+```
+
+The **rowPitch** variable represents the byte size of a texture row, calculated as `TextureWidth * TexturePixelSize` $(256∗4=1024)$. The **cellPitch** variable represents the width of a checkerboard cell in bytes, calculated as ```rowPitch >> 3``` $(1024/8=128)$. This means that each row has 8 cells, where each cell includes $(128/4)= 32$ texels. The height of each cell is calculated as `TextureWidth >> 3` $(256/8=32)$, which means each cell includes 32 texels as well. Observe that the cell height is measured in texels, not bytes like the cell width. This is because we will use the local variable *j* to count the texels of a cell vertically while the local variable *i* to count the bytes of a cell horizontally. These two variables, along with the loop counter *n*, play a crucial role in alternating between black and white cells. In partcular, for each texel, the function sets the RGBA values to either 0x00 or 0xFF depending on whether `(i % 2 == j % 2)`. This creates a checkerboard pattern with black and white cells.
+
+[WIP]
 
 
 <br>
