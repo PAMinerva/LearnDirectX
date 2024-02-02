@@ -15,7 +15,7 @@ The sample we will review in this tutorial ([D3D12HelloFrameBuffering](https://g
 
 ## CPU-GPU parallelism
 
-In order to explain how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in [](hello-window.md) about frame presentation, which is reiterated below for convenience.
+In order to explain how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in [](hello-window.md) about frame presentation, which is replicated below for convenience.
 
 
 ````{admonition} from Hello Window
