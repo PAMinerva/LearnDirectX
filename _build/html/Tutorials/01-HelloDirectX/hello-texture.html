@@ -419,11 +419,13 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minification">Minification</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-modes">Addressing Modes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap">6.1 - Wrap</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror">6.2 - Mirror</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clamp">6.3 - Clamp</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#border">6.4 - Border</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-modes">Addressing Modes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap">Wrap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror">Mirror</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clamp">Clamp</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#border">Border</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotextures-code-review">D3D12HelloTextures: code review</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
@@ -621,9 +623,8 @@ Imagine zooming in on a 3D textured mesh until it covers an area of <span class=
 <figure class="align-default">
 <img alt="../../_images/quad-triangles.png" src="../../_images/quad-triangles.png" />
 </figure>
-</section>
 <section id="wrap">
-<h2>6.1 - Wrap<a class="headerlink" href="#wrap" title="Link to this heading">#</a></h2>
+<h3>Wrap<a class="headerlink" href="#wrap" title="Link to this heading">#</a></h3>
 <p>This addressing mode repeats the texture on every integer junction by using the following function to transform the <em>u</em>-coordinate.</p>
 <p><span class="math notranslate nohighlight">\(\text{wrap}(u) = u – \text{floor}(u)\)</span></p>
 <p>So, in our example, setting the addressing mode to “Wrap” for both the <em>u</em>- and <em>v</em>-coordinates results in the texture being applied three times in both the <em>u</em> and <em>v</em> directions, as shown in the following illustration. The reason is that when, for example, the interpolated texture coordinate <em>u</em> is <span class="math notranslate nohighlight">\(3.0\)</span>, <span class="math notranslate nohighlight">\(\text{wrap}(3.0)\)</span> returns <span class="math notranslate nohighlight">\(1.0\)</span>. The same happens when <em>u</em> is <span class="math notranslate nohighlight">\(2.0\)</span> and (obviously) <span class="math notranslate nohighlight">\(1.0\)</span>.</p>
@@ -632,7 +633,7 @@ Imagine zooming in on a 3D textured mesh until it covers an area of <span class=
 </figure>
 </section>
 <section id="mirror">
-<h2>6.2 - Mirror<a class="headerlink" href="#mirror" title="Link to this heading">#</a></h2>
+<h3>Mirror<a class="headerlink" href="#mirror" title="Link to this heading">#</a></h3>
 <p>This addressing mode mirrors and repeats the texture at every integer boundary by using the following function to transform the <em>u</em>-coordinate.</p>
 <p><span class="math notranslate nohighlight">\(\text{mirror}(u)=
 \begin{cases}
@@ -645,7 +646,7 @@ u-\text{floor}(u), &amp; \text{floor}(u) \% 2=0 \\
 </figure>
 </section>
 <section id="clamp">
-<h2>6.3 - Clamp<a class="headerlink" href="#clamp" title="Link to this heading">#</a></h2>
+<h3>Clamp<a class="headerlink" href="#clamp" title="Link to this heading">#</a></h3>
 <p>This addressing mode clamps the <em>u</em>-component of the texture coordinate to the <span class="math notranslate nohighlight">\([0.0,\ 1.0]\)</span> range by using the following function.</p>
 <p><span class="math notranslate nohighlight">\(\text{clamp}(u) = \text{max}(\text{min}(u, 1),  0)\)</span></p>
 <p>Setting the texture addressing mode to “Clamp” applies the texture once, then smears the color of edge texels. In the following illustration the edges of the texture are delimited with a light grey square.</p>
@@ -654,12 +655,13 @@ u-\text{floor}(u), &amp; \text{floor}(u) \% 2=0 \\
 </figure>
 </section>
 <section id="border">
-<h2>6.4 - Border<a class="headerlink" href="#border" title="Link to this heading">#</a></h2>
+<h3>Border<a class="headerlink" href="#border" title="Link to this heading">#</a></h3>
 <p>Setting the texture addressing mode to “Border” means we want to use an arbitrary color, known as the border color, for any texture coordinates outside the range of <span class="math notranslate nohighlight">\(0.0\)</span> through <span class="math notranslate nohighlight">\(1.0\)</span>, inclusive. We can set the border color in the sampler.  The following illustration shows a texture (on the left), and its mapping to our quad (on the right) when a red border color is specified in the sampler.</p>
 <figure class="align-default">
 <img alt="../../_images/border-mode.png" src="../../_images/border-mode.png" />
 </figure>
 <br>
+</section>
 </section>
 <section id="d3d12hellotextures-code-review">
 <h2>D3D12HelloTextures: code review<a class="headerlink" href="#d3d12hellotextures-code-review" title="Link to this heading">#</a></h2>
@@ -1236,11 +1238,13 @@ In the subsequent call to <strong>CreateCommittedResource</strong>, we allocate 
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minification">Minification</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-modes">Addressing Modes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap">6.1 - Wrap</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror">6.2 - Mirror</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clamp">6.3 - Clamp</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#border">6.4 - Border</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-modes">Addressing Modes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap">Wrap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror">Mirror</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clamp">Clamp</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#border">Border</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotextures-code-review">D3D12HelloTextures: code review</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>

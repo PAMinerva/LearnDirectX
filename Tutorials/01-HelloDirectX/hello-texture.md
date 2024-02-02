@@ -215,7 +215,7 @@ In this section we will only focus on the *u*-coordinate, but the same applies t
 ```{figure} images/05/quad-triangles.png
 ```
 
-## 6.1 - Wrap
+### Wrap
 
 This addressing mode repeats the texture on every integer junction by using the following function to transform the *u*-coordinate.
 
@@ -226,7 +226,7 @@ So, in our example, setting the addressing mode to "Wrap" for both the *u*- and 
 ```{figure} images/05/wrap-mode.png
 ```
 
-## 6.2 - Mirror
+### Mirror
 
 This addressing mode mirrors and repeats the texture at every integer boundary by using the following function to transform the *u*-coordinate.
 
@@ -241,7 +241,7 @@ Setting the texture addressing mode to "Mirror" results in the texture being app
 ```{figure} images/05/mirror-mode.png
 ```
 
-## 6.3 - Clamp
+### Clamp
 
 This addressing mode clamps the *u*-component of the texture coordinate to the $[0.0,\ 1.0]$ range by using the following function.
 
@@ -252,7 +252,7 @@ Setting the texture addressing mode to "Clamp" applies the texture once, then sm
 ```{figure} images/05/clamp-mode.png
 ```
 
-## 6.4 - Border
+### Border
 
 Setting the texture addressing mode to "Border" means we want to use an arbitrary color, known as the border color, for any texture coordinates outside the range of $0.0$ through $1.0$, inclusive. We can set the border color in the sampler.  The following illustration shows a texture (on the left), and its mapping to our quad (on the right) when a red border color is specified in the sampler.
 
