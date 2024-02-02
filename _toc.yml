@@ -17,3 +17,4 @@ parts:
     - file: Tutorials/01-HelloDirectX/hello-bundles
     - file: Tutorials/01-HelloDirectX/hello-cbs
     - file: Tutorials/01-HelloDirectX/hello-texture
+    - file: Tutorials/01-HelloDirectX/hello-frame-buffering
