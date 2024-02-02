@@ -70,6 +70,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/01-HelloDirectX/hello-texture';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hello Frame Buffering" href="hello-frame-buffering.html" />
     <link rel="prev" title="Hello Constant Buffers" href="hello-cbs.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -206,6 +207,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="hello-bundles.html">Hello Bundles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hello-cbs.html">Hello Constant Buffers</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Texture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-frame-buffering.html">Hello Frame Buffering</a></li>
 </ul>
 </li>
 </ul>
@@ -673,7 +675,7 @@ u-\text{floor}(u), &amp; \text{floor}(u) \% 2=0 \\
 <h3>C++<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
 <p>As usual, let’s start from the application class.</p>
 <div class="literal-block-wrapper docutils container" id="hellotexture-d3d12hellotexture-code">
-<div class="code-block-caption"><span class="caption-text">HelloTexture/D3D12HelloTexture.h</span><a class="headerlink" href="#hellotexture-d3d12hellotexture-code" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 39 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.h</span><a class="headerlink" href="#hellotexture-d3d12hellotexture-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloTexture</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
@@ -736,7 +738,7 @@ The Vertex structure (that describe the elements of the vertex buffer) now uses 
 We will use the <strong>m_texture</strong> variable to reference the texture from our C++ application, and <strong>m_srvHeap</strong> to create a descriptor heap that will hold a view to the texture.</p>
 <p><strong>GenerateTextureData</strong> is the method that procedurally generates the checkerboard texture data, texel by texel.</p>
 <div class="literal-block-wrapper docutils container" id="hellotexture-generatetexturedata-code">
-<div class="code-block-caption"><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-generatetexturedata-code" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 40 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-generatetexturedata-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generate a simple black and white checkerboard texture.</span>
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">UINT8</span><span class="o">&gt;</span><span class="w"> </span><span class="n">D3D12HelloTexture</span><span class="o">::</span><span class="n">GenerateTextureData</span><span class="p">()</span>
 <span class="p">{</span>
@@ -779,7 +781,7 @@ We will use the <strong>m_texture</strong> variable to reference the texture fro
 <p>The <strong>rowPitch</strong> variable represents the byte size of a texture row, calculated as <code class="docutils literal notranslate"><span class="pre">TextureWidth</span> <span class="pre">*</span> <span class="pre">TexturePixelSize</span></code> <span class="math notranslate nohighlight">\((256∗4=1024)\)</span>. The <strong>cellPitch</strong> variable represents the width of a checkerboard cell in bytes, calculated as <code class="docutils literal notranslate"><span class="pre">rowPitch</span> <span class="pre">&gt;&gt;</span> <span class="pre">3</span></code> <span class="math notranslate nohighlight">\((1024/8=128)\)</span>. This means that each row has 8 cells, where each cell includes <span class="math notranslate nohighlight">\((128/4)= 32\)</span> texels. The height of each cell is calculated as <code class="docutils literal notranslate"><span class="pre">TextureWidth</span> <span class="pre">&gt;&gt;</span> <span class="pre">3</span></code> <span class="math notranslate nohighlight">\((256/8=32)\)</span>, which means each cell includes 32 texels as well. Observe that the cell height is measured in texels, not bytes like the cell width. This is because we will use the local variable <em>j</em> to count the texels of a cell vertically while the local variable <em>i</em> to count the bytes of a cell horizontally. These two variables, along with the loop counter <em>n</em>, play a crucial role in alternating between black and white cells. In partcular, for each texel, the function sets the RGBA values to either 0x00 or 0xFF depending on whether <code class="docutils literal notranslate"><span class="pre">(i</span> <span class="pre">%</span> <span class="pre">2</span> <span class="pre">==</span> <span class="pre">j</span> <span class="pre">%</span> <span class="pre">2)</span></code>. This creates a checkerboard pattern with black and white cells.</p>
 <p>Now, let’s take a look at the <strong>LoadPipeline</strong> function.</p>
 <div class="literal-block-wrapper docutils container" id="hellotexture-loadpipeline-code">
-<div class="code-block-caption"><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-loadpipeline-code" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 41 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-loadpipeline-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the rendering pipeline dependencies.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTexture::LoadPipeline</span><span class="p">()</span>
 <span class="p">{</span>
@@ -817,7 +819,7 @@ We will use the <strong>m_texture</strong> variable to reference the texture fro
 <p>We need a descriptor heap to hold the SRV we are about to create as a view for the texture. This is not much different from what we have seen in <a class="reference internal" href="hello-cbs.html"><span class="std std-doc">Hello Constant Buffers</span></a> (we simply renamed <strong>m_cbvHeap</strong> to <strong>m_srvHeap</strong>). Remember that a descriptor heap of type <strong>D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</strong> can hold both CBVs and SRVs.</p>
 <p>The <strong>LoadAssets</strong> function has grown considerably in this sample, but there’s no need to worry. We will carefully review all the code in detail.</p>
 <div class="literal-block-wrapper docutils container" id="hellotexture-loadassets-code">
-<div class="code-block-caption"><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-loadassets-code" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 42 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-loadassets-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTexture::LoadAssets</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1055,7 +1057,7 @@ In the subsequent call to <strong>CreateCommittedResource</strong>, we allocate 
 <p>Now, the call to <strong>WaitForPreviousFrame</strong> at the end of <strong>LoadAssets</strong> starts to make sense, since we implicitly recorded commands in the command list with the call to <strong>UpdateSubresources</strong>. It’s a good practice to flush the command queue at the end of the initialization phase before starting to record commands in <strong>OnRender</strong> (called by the message handler of <strong>WM_PAINT</strong>). At that point,  we no longer require <strong>textureUploadHeap</strong>, since the GPU has executed the copy operation from the upload heap to the default heap. Therefore, we can exit <strong>LoadAssets</strong> without any concerns about the scope of the <strong>textureUploadHeap</strong> variable.</p>
 <p>In <strong>PopulateCommandList</strong>, we pass the GPU handle of the SRV stored in <strong>m_srvHeap</strong> as root argument for the root table in the root signature. Remember that root tables take byte offsets as root arguments, and indeed a GPU descriptor handle is essentially a byte offset from the start of a descriptor heap. Then, we record a draw command (<strong>DrawInstanced</strong>) to draw the triangle.  The rest of the code is analogous to that examined in previous tutorials.</p>
 <div class="literal-block-wrapper docutils container" id="hellotexture-populatecommandlist-code">
-<div class="code-block-caption"><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-populatecommandlist-code" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 43 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-populatecommandlist-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTexture::PopulateCommandList</span><span class="p">()</span>
 <span class="p">{</span>
 
@@ -1098,7 +1100,7 @@ In the subsequent call to <strong>CreateCommittedResource</strong>, we allocate 
 <h3>HLSL<a class="headerlink" href="#hlsl" title="Link to this heading">#</a></h3>
 <p>Now, let’s see what happens in the shader code.</p>
 <div class="literal-block-wrapper docutils container" id="hellotexture-shader-code">
-<div class="code-block-caption"><span class="caption-text">HelloTexture/shaders.hlsl</span><a class="headerlink" href="#hellotexture-shader-code" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-number">Listing 44 </span><span class="caption-text">HelloTexture/shaders.hlsl</span><a class="headerlink" href="#hellotexture-shader-code" title="Link to this code">#</a></div>
 <div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="n">PSInput</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_POSITION</span><span class="p">;</span>
@@ -1205,6 +1207,15 @@ In the subsequent call to <strong>CreateCommittedResource</strong>, we allocate 
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Hello Constant Buffers</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="hello-frame-buffering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hello Frame Buffering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
