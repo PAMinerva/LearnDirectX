@@ -8,9 +8,9 @@ parts:
   chapters:
   - file: Tutorials/00-Intro/intro-and-prerequisites
 
-- caption: Hello World
+- caption: Hello DirectX
   chapters:
-  - file: Tutorials/01-HelloDirectX/hello-directx
+  - file: Tutorials/01-HelloDirectX/hello-world
     sections:
     - file: Tutorials/01-HelloDirectX/hello-window
     - file: Tutorials/01-HelloDirectX/hello-triangle
