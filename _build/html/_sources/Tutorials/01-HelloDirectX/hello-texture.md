@@ -230,7 +230,11 @@ So, in our example, setting the addressing mode to "Wrap" for both the *u*- and 
 
 This addressing mode mirrors and repeats the texture at every integer boundary by using the following function to transform the *u*-coordinate.
 
-$\text{mirror}(u)=\begin{cases}u-\text{floor}(u),\quad\quad\quad\text{floor}(u)\\% 2=0 \\\\ \text{floor}(u+1)-u,\quad\ \text{floor}(u)\\% 2=1\end{cases}$
+$\text{mirror}(u)=
+\begin{cases}
+u-\text{floor}(u), & \text{floor}(u) \% 2=0 \\ 
+\text{floor}(u+1)-u, & \text{floor}(u) \% 2=1
+\end{cases}$
 
 Setting the texture addressing mode to "Mirror" results in the texture being applied three times in both the *u* and *v* directions. Observe that every other row and column that it is applied to is a mirror image of the preceding row or column, as shown in the following illustration. The reason is that when, for example, the interpolated texture coordinate *u* is $3.0$, $\text{mirror}(3.0)$ returns $1.0$ while when *u* is $2.0$ it returns $0.0$.
 
