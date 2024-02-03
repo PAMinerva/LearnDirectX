@@ -15,7 +15,7 @@ The sample we will review in this tutorial ([D3D12HelloFrameBuffering](https://g
 
 ## CPU-GPU parallelism
 
-In order to explain how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in [](hello-window.md) about frame presentation, which is replicated below for convenience.
+Before discussing how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in [](hello-window.md) regarding frame presentation, which is replicated below for convenience.
 
 
 ````{admonition} from Hello Window
@@ -38,5 +38,29 @@ Observe that **Present** takes, as its first parameter (called *SyncInterval*), 
 ````
 
 While this explanation provides a basic understanding on frame presentation, it offers an oversimplified view of how frames are actually presented on the screen. Indeed, when a frame is presented, various factors can affect the presentation process, which depends on the presentation model (specified in the swap chain), window mode (full screen or windowed), and V-Sync settings (on or off). However, exploring every possible combination is beyond the scope of this tutorial. Therefore, I will focus on explaining what happens in the **D3D12HelloFrameBuffering** sample (and previous ones as well), where we create a swap chain that uses the flip model to present frames on the screen, with a window that cannot be switched to full screen, and V-Sync enabled (that is, when we pass 1 to *SyncInterval*). Other combinations will be covered in later tutorials.
+
+By specifying the flag **DXGI_SWAP_EFFECT_FLIP_DISCARD** during swap chain creation, we indicate our intention to use the flip model to present frames on the screen. When this model is employed with windowed applications (i.e., not full screen), a system service called the **Desktop Window Manager** (DWM) wakes up at every vertical blank and retrieves the latest completed back buffer in the swap chain of all graphics applications running on the desktop (including the offscreen buffers of all "normal" windowed applications). It then composes the final image of the entire desktop into its own back buffer, which will be displayed on the screen at the next vertical interval, when it becomes the present buffer.
+
+```{figure} images/06/dwm.png
+```
+
+Let’s use a practical example to explain in more detail what happens under the conditions outlined above, where the flip model is used with a swap chain that includes two buffers for rendering in an application running in windowed mode. This will also allow us to illustrate how to unlock parallelism between CPU and GPU. For convenience, we'll refer to the two buffers in the swap chain as A and B.
+
+As soon as we start the application, the commands to draw the very first frame on buffer A are recorded in a command list. Then, **ExecuteCommandLists** and **Present** are invoked to send the command list to the command queue and insert the first frame into the present queue, respectively. As a consequence, a present operation is also added to the command queue after the command list.
+
+```{note}
+Until now, we have only created the frame on the CPU timeline. By recording drawing commands in a command list and calling **Present**, we have simply submitted instructions to the GPU. The actual rendering process on the associated back buffer will not begin until the GPU starts executing those commands from the command queue.
+```
+
+Provided that we don't overwrite the memory space managed by the command allocator for the command list operating on buffer A (e.g., using a new allocator for the command list operating on buffer B), we can start creating (on the CPU timeline) a second frame with buffer B as the render target. We can queue this new frame with the confidence that the GPU won't write onto buffer B if it is unavailable.
+
+```{note}
+A buffer is said to be available if there are no outstanding present operations that reference it, and it is currently not being displayed by the system. Otherwise, it is unavailable.<br>
+A frame is considered ready to be shown on the screen when the GPU met the related present operation in the command queue, and if the synchronization time associated with the presentation of the frame in the present queue expired.<br>
+A frame is retired from the present queue if discarded by the DWM (more on this shortly), or when replaced by a new frame as the one displayed on the screen.
+```
+
+```{figure} images/06/dwm-composition.png
+```
 
 [WIP]
