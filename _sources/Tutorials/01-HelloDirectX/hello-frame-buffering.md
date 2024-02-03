@@ -55,7 +55,7 @@ As soon as we start the application, the commands to draw the very first frame o
 Until now, we have only created the frame on the CPU timeline. By recording drawing commands in a command list and calling **Present**, we have simply submitted instructions to the GPU. The actual rendering process on the associated back buffer will not begin until the GPU starts executing those commands from the command queue.
 ```
 
-Provided that we don't overwrite the memory space managed by the command allocator for the command list operating on buffer A (e.g., using a new allocator for the command list operating on buffer B), we can start creating (on the CPU timeline) a second frame with buffer B as the render target. We can queue this new frame with the confidence that the GPU won't write onto buffer B if it is unavailable.
+Provided that we don't overwrite the memory space managed by the command allocator for the command list operating on buffer A (e.g., using a new allocator for the command list operating on buffer B), we can start creating (on the CPU timeline) a second frame with buffer B as the render target. We can queue this new frame with the confidence that the GPU won't write onto buffer B before it finishes drawing on buffer A (since command lists submitted through separate calls to **ExecuteCommandLists** are executed sequentially within the command queue; more on this shortly), or if buffer B is unavailable.
 
 ```{note}
 A buffer is said to be available if there are no outstanding present operations that reference it, and it is currently not being displayed by the system. Otherwise, it is unavailable.<br>
