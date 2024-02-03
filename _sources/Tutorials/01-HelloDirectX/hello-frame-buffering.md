@@ -44,6 +44,9 @@ By specifying the flag **DXGI_SWAP_EFFECT_FLIP_DISCARD** during swap chain creat
 ```{figure} images/06/dwm.png
 ```
 
+```{figure} images/06/dwm-composition.png
+```
+
 Let’s use a practical example to explain in more detail what happens under the conditions outlined above, where the flip model is used with a swap chain that includes two buffers for rendering in an application running in windowed mode. This will also allow us to illustrate how to unlock parallelism between CPU and GPU. For convenience, we'll refer to the two buffers in the swap chain as A and B.
 
 As soon as we start the application, the commands to draw the very first frame on buffer A are recorded in a command list. Then, **ExecuteCommandLists** and **Present** are invoked to send the command list to the command queue and insert the first frame into the present queue, respectively. As a consequence, a present operation is also added to the command queue after the command list.
@@ -58,9 +61,6 @@ Provided that we don't overwrite the memory space managed by the command allocat
 A buffer is said to be available if there are no outstanding present operations that reference it, and it is currently not being displayed by the system. Otherwise, it is unavailable.<br>
 A frame is considered ready to be shown on the screen when the GPU met the related present operation in the command queue, and if the synchronization time associated with the presentation of the frame in the present queue expired.<br>
 A frame is retired from the present queue if discarded by the DWM (more on this shortly), or when replaced by a new frame as the one displayed on the screen.
-```
-
-```{figure} images/06/dwm-composition.png
 ```
 
 [WIP]
