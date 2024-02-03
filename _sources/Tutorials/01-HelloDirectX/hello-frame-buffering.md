@@ -15,10 +15,10 @@ The sample we will review in this tutorial ([D3D12HelloFrameBuffering](https://g
 
 ## CPU-GPU parallelism
 
-Before discussing how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in [](hello-window.md) regarding frame presentation, which is replicated below for convenience.
+Before discussing how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in a previous tutorial regarding frame presentation, which is replicated below for convenience.
 
 
-````{admonition} from Hello Window
+````{admonition} from [](hello-window.md)
 :class: seealso
 
 **IDXGISwapChain::Present** allows presenting (to the user, on the screen) the frame just created on the CPU timeline (using the current back buffer as the render target). How does it work? Present operations occur on the graphics queue associated with the swap chain. That is, when you call **Present**, a present operation is recorded in the command queue associated with swap chain during its creation, and a request to present the frame is inserted in a queue called the present queue, waiting for the GPU to execute the commands to draw on the related back buffer. Since this happens only after recording all the commands needed to create the frame, you are sure the GPU reached the present operation in the command queue only at the very end (i.e., after executing all the other previous drawing commands). At that point, the frame associated with the request in the present queue is done, ready to be shown on the screen at the next vertical interval when the swap/flip between the back and present buffers takes place.

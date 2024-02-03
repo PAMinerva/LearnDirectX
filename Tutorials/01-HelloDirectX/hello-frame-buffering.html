@@ -429,9 +429,9 @@ document.write(`
 </section>
 <section id="cpu-gpu-parallelism">
 <h2>CPU-GPU parallelism<a class="headerlink" href="#cpu-gpu-parallelism" title="Link to this heading">#</a></h2>
-<p>Before discussing how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in <a class="reference internal" href="hello-window.html"><span class="std std-doc">Hello Window</span></a> regarding frame presentation, which is replicated below for convenience.</p>
+<p>Before discussing how to unleash parallelism between CPU and GPU, it can be useful to revisit the explanation provided in a previous tutorial regarding frame presentation, which is replicated below for convenience.</p>
 <div class="seealso admonition">
-<p class="admonition-title">from Hello Window</p>
+<p class="admonition-title">from <a class="reference internal" href="hello-window.html"><span class="std std-doc">Hello Window</span></a></p>
 <p><strong>IDXGISwapChain::Present</strong> allows presenting (to the user, on the screen) the frame just created on the CPU timeline (using the current back buffer as the render target). How does it work? Present operations occur on the graphics queue associated with the swap chain. That is, when you call <strong>Present</strong>, a present operation is recorded in the command queue associated with swap chain during its creation, and a request to present the frame is inserted in a queue called the present queue, waiting for the GPU to execute the commands to draw on the related back buffer. Since this happens only after recording all the commands needed to create the frame, you are sure the GPU reached the present operation in the command queue only at the very end (i.e., after executing all the other previous drawing commands). At that point, the frame associated with the request in the present queue is done, ready to be shown on the screen at the next vertical interval when the swap/flip between the back and present buffers takes place.</p>
 <figure class="align-default">
 <img alt="../../_images/rect853d.png" src="../../_images/rect853d.png" />
