@@ -460,12 +460,22 @@ document.write(`
 <p class="admonition-title">Note</p>
 <p>Until now, we have only created the frame on the CPU timeline. By recording drawing commands in a command list and calling <strong>Present</strong>, we have simply submitted instructions to the GPU. The actual rendering process on the associated back buffer will not begin until the GPU starts executing those commands from the command queue.</p>
 </div>
-<p>Provided that we don’t overwrite the memory space managed by the command allocator for the command list operating on buffer A (e.g., using a new allocator for the command list operating on buffer B), we can start creating (on the CPU timeline) a second frame with buffer B as the render target. We can queue this new frame with the confidence that the GPU won’t write onto buffer B before it finishes drawing on buffer A (more on this shortly), or if buffer B is unavailable.</p>
+<p>Provided that we don’t overwrite the memory space managed by the command allocator for the command list operating on buffer A (e.g., using a new allocator for the command list operating on buffer B), we can start creating (on the CPU timeline) the second frame with buffer B as the render target. We can queue this new frame with the confidence that the GPU won’t write onto buffer B before it finishes drawing on buffer A, or if buffer B is unavailable.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When command lists are submitted to the same command queue through separate calls to <strong>ExecuteCommandLists</strong>, strict sequential execution is guaranteed. This means that the GPU processes them in the same order they were submitted, ensuring each command list completes before the next one begins. <br>
+However, submitting multiple command lists together within a single <strong>ExecuteCommandLists</strong> call provides weaker ordering guarantees. The GPU typically start execution in submission order, but it may not necessarily finish them in the same order. It is free to start processing new command lists (in parallel) even before older ones have completed.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>A buffer is said to be available if there are no outstanding present operations that reference it, and it is currently not being displayed by the system. Otherwise, it is unavailable.<br>
 A frame is considered ready to be shown on the screen when the GPU met the related present operation in the command queue, and if the synchronization time associated with the presentation of the frame in the present queue expired.<br>
 A frame is retired from the present queue if discarded by the DWM (more on this shortly), or when replaced by a new frame as the one displayed on the screen.</p>
+</div>
+<p>At this point, we need a way to know when we can start creating other frames on the CPU timeline with buffer A and B as the render targets. For this purpose, a fence can be appended after every command list submitted to the command queue (included the first two we have already submitted). That way, we can just wait on the CPU timeline for the GPU to signal a fence before creating a new frame. Indeed, at that point, we are sure that no pending commands are left in a command list (or rather, in the related memory space managed by the command allocator). This means that we can keep presenting frames as long as there is place in the present queue (three slots is the default, but we can change it), and provided that the back buffer we want to use as render target is available. Otherwise, a call to <strong>Present</strong> will block until a frame is retired from the present queue, so that the related buffer becomes available again, and the present queue is ready to receive a new frame.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since you send command lists to the command queue (with <strong>ExecuteCommandLists</strong>) before calling <strong>Present</strong>, the rendering work of the GPU could be paused\queued, and resume once the back buffer is available (that is, when the frame that use the back buffer as render target is retired from the present queue).</p>
 </div>
 <p>[WIP]</p>
 </section>
