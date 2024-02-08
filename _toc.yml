@@ -10,11 +10,17 @@ parts:
 
 - caption: Hello DirectX
   chapters:
-  - file: Tutorials/01-HelloDirectX/hello-world
+  - file: Tutorials/01-HelloWorld/hello-world
     sections:
-    - file: Tutorials/01-HelloDirectX/hello-window
-    - file: Tutorials/01-HelloDirectX/hello-triangle
-    - file: Tutorials/01-HelloDirectX/hello-bundles
-    - file: Tutorials/01-HelloDirectX/hello-cbs
-    - file: Tutorials/01-HelloDirectX/hello-texture
-    - file: Tutorials/01-HelloDirectX/hello-frame-buffering
+    - file: Tutorials/01-HelloWorld/hello-window
+    - file: Tutorials/01-HelloWorld/hello-triangle
+    - file: Tutorials/01-HelloWorld/hello-bundles
+    - file: Tutorials/01-HelloWorld/hello-cbs
+    - file: Tutorials/01-HelloWorld/hello-texture
+    - file: Tutorials/01-HelloWorld/hello-frame-buffering
+
+- caption: Appendices
+  chapters:
+  - file: Tutorials/Appendices/01-MathPrimer/math-primer
+    sections:
+    - file: Tutorials/Appendices/01-MathPrimer/vectors

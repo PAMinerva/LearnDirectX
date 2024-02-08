@@ -1,0 +1,1608 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello Window &#8212; Learn DirectX</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/01-HelloWorld/hello-window';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hello Triangle" href="hello-triangle.html" />
+    <link rel="prev" title="Hello World" href="hello-world.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 This documentation is a work in progress! 🚧</div>
+  </div>
+
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../presentation.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Learn DirectX - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Learn DirectX - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../presentation.html">
+                    Welcome to Learn DirectX
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../00-Intro/intro-and-prerequisites.html">Introduction and Prerequisites</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hello DirectX</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hello-world.html">Hello World</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-triangle.html">Hello Triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-bundles.html">Hello Bundles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-cbs.html">Hello Constant Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-texture.html">Hello Texture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-frame-buffering.html">Hello Frame Buffering</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Appendices/01-MathPrimer/math-primer.html">Appendices</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathPrimer/vectors.html">Vectors</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX/issues/new?title=Issue%20on%20page%20%2FTutorials/01-HelloWorld/hello-window.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Tutorials/01-HelloWorld/hello-window.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hello Window</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messages">Messages</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">Framework overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellowindow-code-review">D3D12HelloWindow: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hello-window">
+<h1>Hello Window<a class="headerlink" href="#hello-window" title="Link to this heading">#</a></h1>
+<br>
+<figure class="align-default">
+<img alt="../../_images/HelloWindow.png" src="../../_images/HelloWindow.png" />
+</figure>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>DirectX provides a set of APIs that can be used to create games and graphics applications. Specifically, it includes support for high-performance 2-D and 3-D graphics, audio, arithmetic, and linear algebra operations. Below is a list of the main APIs included in DirectX. However, our primary focus is on Direct3D 12 and DirectXMath, the only ones we will be using for a while.</p>
+<ul class="simple">
+<li><p><strong>Direct3D</strong> provides functionality for performing 3-D graphics rendering tasks. It is used to draw primitives (i.e., points, lines, and triangles) within the rendering pipeline or to start parallel operations on the GPU. When we refer to Direct3D 12, we are specifically talking about the API that enables apps to leverage the graphics and computing capabilities of PCs equipped with a DirectX 12-compatible GPU.</p></li>
+<li><p><strong>Direct2D</strong> offers functionality for rendering 2-D geometries, bitmaps, and text. It is designed to interoperate with existing code that uses Direct3D to create 2D menus, user interface (UI) elements, and Heads-up Displays (HUDs).</p></li>
+<li><p><strong>DirectWrite</strong> provides support for high-quality text rendering, resolution-independent outline fonts, and full Unicode text and layouts. It is designed to interoperate with Direct2D to render text by taking advantage of hardware acceleration. Text can also be filled with an arbitrary Direct2D brush, such as radial gradients, linear gradients, and bitmaps.</p></li>
+<li><p><strong>DirectXMath</strong> provides types and helper functions for common linear algebra and graphics math operations that are frequently used in DirectX applications.</p></li>
+<li><p><strong>XAudio2</strong> allows the addition of sound effects and background music, or the development of high-performance audio engines.</p></li>
+<li><p><strong>XInput</strong> enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.</p></li>
+</ul>
+<p>To create graphics applications, you first need a window to draw on. Therefore, the aim of this tutorial is to create and display a simple window on your screen. For this purpose, we will examine the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, which is part of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">DirectX-Graphics-Samples</a> repository maintained by Microsoft. The only significant graphics operation performed by this sample is the setting of the window background color. You might be surprised to discover that you need to write a substantial amount of code to execute this simple operation. The good news is that the code we will review in this first tutorial primarily consists of boilerplate code. This means that, by the end of this tutorial, you will have a basic understanding of the common framework used by almost all samples we will examine in the upcoming tutorials, so we can solely focus on new additions.</p>
+<p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id14" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id16" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id15" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micc</a>]</span> for further information.</p>
+<br>
+</section>
+<section id="windows-applications">
+<h2>Windows applications<a class="headerlink" href="#windows-applications" title="Link to this heading">#</a></h2>
+<p>This section is heavily inspired by the first chapter of the book “Programming Microsoft Visual C++, Fifth Edition” by David J. Kruglinski, George Shepherd and Scott Wingo.</p>
+<p>Windows applications use an event-driven programming model, as illustrated in <a class="reference internal" href="#win-app"><span class="std std-numref">Fig. 1</span></a>. In this model, programs respond to events by processing messages sent by the operating system. An event could be a keystroke, a mouse click, or a command for a window to repaint itself. The entry point of a Windows application is a function called <strong>WinMain</strong>, but most of the action occurs in a function known as the window procedure. The window procedure processes messages sent by the OS to the application that a window belongs to. <strong>WinMain</strong> creates that window and then enters a message loop, retrieving messages and dispatching them to the window procedure. Messages wait in a message queue until they are retrieved. The primary task of a Windows application is to respond to the messages it receives. In between messages, it does little except wait for the next message to arrive. An application can exit the message loop when a <strong>WM_QUIT</strong> message is retrieved from the message queue, signaling that the application is about to end. This message is sent by the OS when the user closes the window. When the message loop ends, <strong>WinMain</strong> returns, and the application terminates.</p>
+<figure class="align-default" id="win-app">
+<img alt="../../_images/rect31572.png" src="../../_images/rect31572.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Windows programming model</span><a class="headerlink" href="#win-app" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Window messages can also be sent directly to a window procedure, bypassing the message queue. If the sending thread is dispatching a message to a window created by the same thread, the window procedure of the specified window is invoked. However, if a thread is dispatching a message to a window created by a different thread, the process becomes more complex. Fortunately, we don’t need to delve into the low-level details in this tutorial series.</p>
+</div>
+<section id="window-procedure">
+<h3>Window Procedure<a class="headerlink" href="#window-procedure" title="Link to this heading">#</a></h3>
+<p>As previously mentioned, a window procedure is a function that receives and processes messages sent by the operating system to the application that a window belongs to. A window class defines key characteristics of a window, such as its window procedure address, its default background color, and its icon. Every window created with a specific class will use the same window procedure to respond to messages.</p>
+<p>When the application dispatches a message to a window procedure, it also passes additional information about the message as arguments in its input parameters. This allows the window procedure to perform an appropriate action for a message by consuming the related message data. If a window procedure does not process a message, it must return the message to the system for default processing by calling the <strong>DefWindowProc</strong> function, which performs a default action and returns a message result. The window procedure must then return this value as its own message result.</p>
+<p>Since a window procedure is shared by all windows belonging to the same class, it can process messages for different windows. To identify the specific window a message is addressed to, a window procedure can examine the window handle passed as an input parameter. The code provided in the window procedure to process a particular message is known as a message handler.</p>
+</section>
+<section id="messages">
+<h3>Messages<a class="headerlink" href="#messages" title="Link to this heading">#</a></h3>
+<p>Windows defines many different message types. Usually, messages have names that begin with the letters “WM_”, as in <strong>WM_CREATE</strong> and <strong>WM_PAINT</strong>. The following table shows ten of the most common messages.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Message</p></th>
+<th class="head"><p>Sent when</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WM_CHAR</p></td>
+<td><p>A character is input from the keyboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_COMMAND</p></td>
+<td><p>The user selects a menu item, or a control sends a notification to its parent.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_CREATE</p></td>
+<td><p>A window is created.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_DESTROY</p></td>
+<td><p>A window is destroyed.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_LBUTTONDOWN</p></td>
+<td><p>The left mouse button is pressed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_LBUTTONUP</p></td>
+<td><p>The left mouse button is released.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_MOUSEMOVE</p></td>
+<td><p>The mouse pointer is moved.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_PAINT</p></td>
+<td><p>A window needs repainting.</p></td>
+</tr>
+<tr class="row-even"><td><p>WM_QUIT</p></td>
+<td><p>The application is about to terminate.</p></td>
+</tr>
+<tr class="row-odd"><td><p>WM_SIZE</p></td>
+<td><p>A window is resized.</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<p>For example, a window receives a <strong>WM_PAINT</strong> message when its interior needs repainting. You can think of a Windows program as a collection of message handlers.</p>
+<p>When the message loop dispatches a message, the window procedure is called, and you can retrieve the information on the message from its four input parameters:</p>
+<ul class="simple">
+<li><p>The handle of the window to which the message is directed,</p></li>
+<li><p>A message ID, and</p></li>
+<li><p>Two 32-bit parameters known as <strong>wParam</strong> and <strong>lParam</strong>.</p></li>
+</ul>
+<p>The window handle is a 32-bit value that uniquely identifies a window. Internally, the value references a data structure in which the OS stores relevant information about the window such as its size, style, and location on the screen.</p>
+<p>The message ID is a numeric value that identifies the message type: <strong>WM_CREATE</strong>, <strong>WM_PAINT</strong>, and so on.</p>
+<p><strong>wParam</strong> and <strong>lParam</strong> contain information specific to the message type. For example, when a <strong>WM_LBUTTONDOWN</strong> message arrives, <strong>wParam</strong> holds a series of bit flags identifying the state of the <kbd>Ctrl</kbd> and <kbd>Shift</kbd> keys and of the mouse buttons. <strong>lParam</strong> holds two 16-bit values identifying the location of the mouse pointer (in screen coordinates) when the click occurred. At that point, you have all you need to know to process the <strong>WM_LBUTTONDOWN</strong> message in the window procedure. Conventionally, <strong>WinMain</strong> should return the value stored in the <strong>wParam</strong> of the <strong>WM_QUIT</strong> message.</p>
+<p>The only criticism to the above explanation is that, unlike typical window applications, graphics applications perform the majority of their processing in between messages. However, the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample is an exception as its sole purpose is to display a window on the screen (i.e., no significant graphics operations are involved).</p>
+<br>
+</section>
+</section>
+<section id="component-object-model-com">
+<h2>Component Object Model (COM)<a class="headerlink" href="#component-object-model-com" title="Link to this heading">#</a></h2>
+<p>Microsoft used the Component Object Model (COM) to design the internals of DirectX. Therefore, whenever you program with DirectX, you are also implicitly using COM. This is an object-oriented programming model created by Microsoft to break dependencies of the code at the binary level. This implies that if an API, a framework, or a generic technology is built upon COM, then it will be language-independent and backward-compatible, to a certain extent.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unfortunately, this doesn’t automatically mean you can write DirectX applications using any programming language you want, or that you can run a DX12 application with older libraries and runtime (DX11 or earlier).</p>
+</div>
+<p>COM is a complex programming model, but fortunately, you don’t need to master it to write DirectX applications. Indeed, we will only use COM as end-users rather than for developing our API or framework. That is, DirectX will hide the complexity of COM from us. However, to effectively program with DirectX, we still need to know some basic concepts about COM. First, it can be useful to understand what it means to break dependencies of the code at the binary level and what type of problems this break can solve.</p>
+<p>If you’ve ever developed a Windows library, you’re likely familiar with the process of exporting functionality from DLLs written in the C language for use by applications written in other languages (such as C++, C#, Java, Python, etc.). Microsoft didn’t use C to write DirectX, though. They preferred an object-oriented language like C++. Now, consider the scenario of writing a DLL that exports a C++ class. The functionality provided by this class can’t be easily used by other languages because C++ only specifies what happens at the source code level. The standard doesn’t say anything about what happens at the binary level. For example, we know that object-oriented languages use virtual tables to implement polymorphism. However, this is an implementation concept, just like the stack and the heap: the C++ standard doesn’t say anything about how to implement polymorphism. <a class="reference internal" href="#class-layout"><span class="std std-numref">Fig. 2</span></a> shows a common layout for a class in memory. However, nothing prevents a new language from placing the virtual table pointer at the end, or defining a whole new system to implement polymorphism.</p>
+<figure class="align-default" id="class-layout">
+<img alt="../../_images/class-layout2.png" src="../../_images/class-layout2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Class memory layout</span><a class="headerlink" href="#class-layout" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In other words, using a C++ class exported from a DLL is feasible as long as you are operating on the same OS and with the same compiler. Conversely, other languages or different implementations of C++ might struggle to communicate with the DLL if they lack knowledge about the binary layout of the exported class in memory. Specifically, when a compiler attempts to resolve a call to a virtual function, it requires knowledge of the class’s memory layout to access the function in the virtual table.</p>
+<p>Even if you were able to use a C++ class exported from a DLL, one problem still remains. Typically, the DLL developer provides an include file with the class declaration. Now, consider using this include file to compile an application that creates an instance of the exported class as a local variable on the stack. Additionally, assume you place the DLL in the executable directory of your application. Also, suppose that you put the DLL in the executable directory of your application. After a while, the developer releases an updated version of their DLL, and you choose to overwrite the old one in the executable directory without recompiling your app as the notes of the developer indicate they only added a private member in the exported class. Indeed, C++ rules state that everything should be fine as the public part has not changed. The problem is that this statement is only valid at the source level, not at the binary level. If you now execute your app, the new DLL is loaded in memory and the new constructor of the exported class is invoked to initialize the new private member. However, you haven’t recompiled your app, so the space reserved for the local variable on the stack is the one specified by the definition of the class in the old include file you used to compile the first time. You can easily imagine how this can lead to incorrect results, or even worse, crashes.</p>
+<p>These problems arise from the fact that the binary representation of the DLL is exposed to the app. COM try to resolve this inconvenience with few fundamental principles:</p>
+<ul class="simple">
+<li><p>Clients (apps) communicate with servers (DLLs) using abstract interfaces instead of concrete classes. If a server exports a class (called COM class) that implements an interface, a client can reference an instance of the COM class (called COM object) through an interface pointer and use it to call the member methods exported by the COM class.</p></li>
+<li><p>Clients create COM objects using methods implemented in the servers. That way, the implementation of the COM class is hidden from the clients entirely. Only the server knows how to create a COM object, so if the private part of the COM class changes, the client is not affected because the interface is still the same — interfaces don’t contain data members.</p></li>
+<li><p>COM classes and interfaces have unique IDs. That way it’s possible for more than a server to implement the same interface, and for a client to load the correct server (DLL) in memory. So, if there are more versions of the DLL available, the client can choose what server to load. Then, if your application wants to use new functionalities, you are forced to recompile.</p></li>
+</ul>
+<p>However, even though COM involves the use of abstract interfaces, client and server still need to agree on the binary representation of these interfaces for effective communication. To address this, the COM specification outlines a binary object layout that can be implemented and comprehended by nearly any language and platform. Notably, Microsoft opted to employ a virtual table mechanism similar to the one used in their C++ implementation. Essentially, a COM interface in memory is nothing more than a virtual table containing function pointers and additional data. Consequently, an interface pointer to a COM object is merely a pointer to a virtual table.</p>
+<p>In essence, for a language or compiler to support COM, it must adhere to the layout of COM interfaces as specified by the COM specification. This requirement highlights one of the reasons why you may not always be able to use DirectX with your preferred programming language.</p>
+<p>As mentioned earlier, clients cannot directly create COM objects. Typically, we use a method like <strong>CoCreateInstance</strong>, specifying the COM class ID for which the client wants to create a COM object, and the interface ID implemented by the COM class that the client is interested in obtaining a pointer to. The client doesn’t need to know where the server is located. The Windows Registry is used for this purpose, and <strong>CoCreateInstance</strong> (with the help of a system service) can locate the server based on the arguments passed as parameters. At this point, the server can create the COM object, and an interface pointer to that object is returned to the client, which can use it to communicate with the server (i.e., call its member functions).</p>
+<p>However, you would rarely use <strong>CoCreateInstance</strong> to directly create DirectX COM objects. Typically, we will create COM objects indirectly by using specific DirectX methods that return pointers (as output parameters) to whatever interface is implemented by the related COM classes. Although this mechanism is less centralized (i.e., it doesn’t rely on the Windows Registry to locate servers), it functions similarly. Generally, the functions to create DirectX COM objects return an <strong>HRESULT</strong>, an encoded value indicating the success or failure of the operation.</p>
+<p>At this point we can better define the meaning of backward compatibility mentioned at the beginning of this section. In short, a DirectX application can run on a system provided that the servers with the COM classes used by the client can be loaded. So, as long as new versions of a DLL don’t change the COM classes to include new disruptive functionalities that modify the related COM interfaces, the application can still load the new DLL and use the new COM classes without problems.</p>
+<p>before creating any COM object, you should initialize the COM library by calling <strong>CoInitializeEx</strong>. However, when you create COM objects indirectly, the creation methods will handle this task for you. We will see many examples of such methods in the upcoming tutorials.</p>
+<p>COM defines a base interface that all other interfaces must extend: <strong>IUnknown</strong>. This interface defines some basic operations:</p>
+<ul class="simple">
+<li><p><strong>AddRef</strong> increments the reference count for an interface pointer to a COM object. You should call this method whenever you make a copy of an interface pointer.</p></li>
+<li><p><strong>Release</strong> decrements the reference count for an interface on a COM object. When the reference count on an object reaches zero, this method must cause the interface pointer to free itself.</p></li>
+<li><p><strong>QueryInterface</strong> queries a COM object for a pointer to one of its interfaces; identifying the interface by a reference to its interface identifier (IID). If the COM object implements the interface, then it returns a pointer to that interface after calling <strong>AddRef</strong> on it.</p></li>
+</ul>
+<p>Directly managing interface pointers to COM objects can be a challenging task, as you need to explicitly call <strong>Release</strong> and <strong>AddRef</strong> to maintain the reference count. A more convenient solution with C++ is to use smart pointers. <strong>Microsoft::WRL::ComPtr</strong> is a smart pointer provided by the Windows Runtime C++ Template Library (WRL). This library is “pure” C++, making it suitable for classic Win32 desktop applications. It automatically calls <strong>AddRef</strong> and <strong>Release</strong> on the underlying interface pointer, meaning it maintains a reference count for the underlying interface pointer and releases the interface pointer when the reference count drops to zero. Moreover, it defines various other methods, including:</p>
+<ul class="simple">
+<li><p><strong>Get</strong> returns the underlying interface pointer to a COM object. It’s especially useful when you have functions that accept a raw interface pointer instead of a <strong>ComPtr</strong>.</p></li>
+<li><p><strong>GetAddressOf</strong> returns a pointer to the underlying interface pointer to a COM object. It’s especially useful because, whenever you create a COM object indirectly, the default is to return the interface pointer as an output parameter (i.e., as a pointer to an interface pointer).</p></li>
+<li><p><strong>Reset</strong> calls <strong>Release</strong> on the underlying interface pointer to a COM object and then set it to <strong>nullptr</strong>. It can be useful when you don’t need the underlying interface pointer anymore, but the <strong>ComPtr</strong> hasn’t gone out of scope yet.</p></li>
+<li><p><strong>ReleaseAndGetAddressOf</strong> is similar to <strong>Reset</strong> but it returns the underlying pointer (that will be a <strong>nullptr</strong>) to the caller. It can be useful if you want a new initialization for an underlying interface pointer you don’t need anymore (e.g., when you want to pass it as an argument to the output parameter of a creation method).</p></li>
+<li><p><strong>Detach</strong> returns the underlying interface pointer to a COM object and then set it to <strong>nullptr</strong>. It can be useful if you need to return the underlying interface pointer to a caller and, at the same time, you don’t need the local <strong>ComPtr</strong> object anymore.</p></li>
+<li><p><strong>As</strong> is just a wrapper around <strong>QueryInterface</strong>. It takes another <strong>ComPtr</strong> as input parameter to get a pointer to one of the interfaces implemented by a COM object.</p></li>
+</ul>
+<p>Also, the dereference operator -&gt; is overloaded and returns the underlying interface pointer to a COM object, so that you don’t need to call <strong>Get</strong> if you only want to invoke a function through the interface pointer.</p>
+<br>
+</section>
+<section id="directx-graphics-infrastructure-dxgi">
+<h2>DirectX Graphics Infrastructure (DXGI)<a class="headerlink" href="#directx-graphics-infrastructure-dxgi" title="Link to this heading">#</a></h2>
+<p>Microsoft DirectX Graphics Infrastructure (DXGI) is an API that collects functionality and tasks that don’t change regardless of the version of graphics API you are actually using (Direct3D 10, 11, or 12). Specifically, DXGI manages low-level tasks such as enumerating hardware graphics devices (GPUs) and outputs (monitors), creating rendering buffers, presenting rendered frames to an output, controlling gamma, and managing full-screen transitions. This allows a graphics API to focus on drawing 3D content into buffers without worrying about the origin of these buffers or how they will be displayed.</p>
+<p>DXGI’s purpose is to communicate with the kernel mode driver and the system hardware, as shown in the following diagram.</p>
+<figure class="align-default">
+<img alt="../../_images/rect92360.png" src="../../_images/rect92360.png" />
+</figure>
+<p>A graphics application can either access DXGI directly or use the Direct3D API, which manages communications with DXGI. You might prefer to interact with DXGI directly if your application needs to enumerate devices or control how data is presented to an output.</p>
+<p>An adapter is an abstraction of a hardware or software device. Typically, there are multiple adapters on a machine. Some devices are implemented in hardware, such as a video card, while others are implemented in software, like the Direct3D rasterizer provided by Microsoft. The following diagram illustrates a system consisting of a single computer, two adapters (video cards), and three output monitors.</p>
+<figure class="align-default">
+<img alt="../../_images/dxgi-adapter-output.png" src="../../_images/dxgi-adapter-output.png" />
+</figure>
+<p>The primary task of your graphics applications is to draw on buffers and ask DXGI to present those buffers as frames to the output. If the application has two buffers available, it can render on one buffer (the render target) while presenting another one. Depending on the time it takes to render a frame, or the desired frame rate for presentation, the application may need more than two buffers. The collection of buffers created is referred to as a swap chain, as depicted in the following illustration.</p>
+<figure class="align-default">
+<img alt="../../_images/dxgi-swap-chain.png" src="../../_images/dxgi-swap-chain.png" />
+</figure>
+<p>A swap chain consists of one front (or present) buffer and one or more back buffers, which are used as render targets. Each application creates its own swap chain. To maximize the speed of data presentation to an output, a swap chain is almost always created in GPU memory. DXGI, with the assistance of the kernel driver, is responsible for scanning rendered content in the front buffer from video memory and presenting it on outputs.</p>
+<p>A swap chain can be configured for drawing in either full-screen or windowed mode, eliminating the need to determine whether an output is windowed or full screen. A full-screen mode swap chain can optimize performance by switching the display resolution. An output can support one or more display modes, which include resolution, refresh rate, format, etc. DXGI might change the display mode of an output when making a full-screen transition. However, resizing swap chain buffers will not trigger a display mode switch. The swap chain makes an implicit promise that if you choose a back buffer that exactly matches a display mode supported by the target output, then it will switch to that display mode when entering full-screen mode on that output. Consequently, you actually select a display mode by choosing your back buffer size and format.</p>
+<br>
+</section>
+<section id="framework-overview">
+<h2>Framework overview<a class="headerlink" href="#framework-overview" title="Link to this heading">#</a></h2>
+<p>As mentioned earlier in this tutorial, the framework used for building the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample is common to nearly all the other samples we’ll explore in the upcoming tutorials. This means that, by the end of this tutorial, you will know how to write a generic DirectX application, or at least the backbone of a complete graphics application.</p>
+<p>As illustrated in <a class="reference internal" href="#project-props"><span class="std std-numref">Fig. 3</span></a> below, the Direct3D 12 and DXGI import libraries (LIB files) are listed in the additional dependencies of the project. The information stored in these files will help the linker resolve references to functions exported by the corresponding DLLs. Also, observe that the Direct3D 12 DLL will not be loaded when the application starts, but only the first time we call an exported function. This approach improves performance by only loading DLLs when they’re needed, which can reduce startup time and improve memory usage.</p>
+<figure class="align-default" id="project-props">
+<img alt="../../_images/project-properties.PNG" src="../../_images/project-properties.PNG" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Project property pages in Visual Studio</span><a class="headerlink" href="#project-props" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>DirectX applications are normal Windows programs, so the entry point is <strong>WinMain</strong> as usual.</p>
+<div class="literal-block-wrapper docutils container" id="winmain-code">
+<div class="code-block-caption"><span class="caption-number">Listing 1 </span><span class="caption-text">HelloWindow/Main.cpp</span><a class="headerlink" href="#winmain-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stdafx.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;D3D12HelloWindow.h&quot;</span>
+<span class="w"> </span>
+<span class="n">_Use_decl_annotations_</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">WINAPI</span><span class="w"> </span><span class="n">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="p">,</span><span class="w"> </span><span class="n">LPSTR</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">D3D12HelloWindow</span><span class="w"> </span><span class="n">sample</span><span class="p">(</span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="mi">720</span><span class="p">,</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;D3D12 Hello Window&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Win32Application</span><span class="o">::</span><span class="n">Run</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sample</span><span class="p">,</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p><a class="reference internal" href="#stdafx-code"><span class="std std-numref">Listing 2</span></a> show the <em>stdafx.h</em> header, which includes other header files associated with various DirectX libraries, such as Direct3D 12, DirectXMath, and DXGI. We need to include <em>wrl.h</em> to use the smart pointers provided by the Windows Template Library. <em>d3dx12.h</em> defines helpful structures that act as C++ wrappers around Direct3D 12 native structures, simplifying their initialization. Additionally, this header provides helper functions that make handling subresources more straightforward. <em>D3DCompiler.h</em> is the header associated with a library we will use to compile shader code. The concepts of subresources and shader code will be covered in upcoming tutorials.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><strong><em>Use_decl_annotations</em></strong> is a macro that simplifies SAL annotations. We won’t go into detail about this concept, as it’s not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see <span id="id2">[<a class="reference internal" href="#id17" title="Microsoft. Using sal annotations. https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170.">Micd</a>]</span>.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="stdafx-code">
+<div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">HelloWindow/stdafx.h</span><a class="headerlink" href="#stdafx-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;windows.h&gt;</span>
+<span class="w"> </span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;d3d12.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dxgi1_6.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;D3Dcompiler.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;DirectXMath.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;d3dx12.h&quot;</span>
+<span class="w"> </span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;wrl.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;shellapi.h&gt;</span>
+</pre></div>
+</div>
+</div>
+<p><strong>WinMain</strong> is called by the C/C++ runtime startup and takes four parameters. However, we are only interested in the named ones in <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>. <br>
+<strong>hInstance</strong> represents the base virtual address of the executable file loaded into memory. This information is primarily used by the operating system to identify the application and manage some of its resources. <br>
+<strong>nCmdShow</strong> is a flag that indicates whether the main application window is minimized, maximized, or shown normally. We’ll pass this flag to a Windows function that’s responsible for showing windows (we’ll discuss this in more detail in the next section).</p>
+<p>The <strong>D3D12HelloWindow</strong> class is the application class, which defines data and methods specific to the sample.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellowindow-code">
+<div class="code-block-caption"><span class="caption-number">Listing 3 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.h</span><a class="headerlink" href="#d3d12hellowindow-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloWindow</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">D3D12HelloWindow</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnInit</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnRender</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">FrameCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Pipeline objects.</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGISwapChain3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_swapChain</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_device</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandAllocator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandQueue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandQueue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rtvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12PipelineState</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12GraphicsCommandList</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Synchronization objects.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HANDLE</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Fence</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_fence</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT64</span><span class="w"> </span><span class="n">m_fenceValue</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadAssets</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">PopulateCommandList</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>The <strong>DXSample</strong> base class defines data and methods used by all graphics samples.</p>
+<div class="literal-block-wrapper docutils container" id="dxsample-code">
+<div class="code-block-caption"><span class="caption-number">Listing 4 </span><span class="caption-text">HelloWindow/DXSample.h</span><a class="headerlink" href="#dxsample-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DXSample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">DXSample</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">DXSample</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnInit</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnRender</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Samples override the event handlers to handle specific messages.</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnKeyDown</span><span class="p">(</span><span class="n">UINT8</span><span class="w"> </span><span class="cm">/*key*/</span><span class="p">)</span><span class="w">   </span><span class="p">{}</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnKeyUp</span><span class="p">(</span><span class="n">UINT8</span><span class="w"> </span><span class="cm">/*key*/</span><span class="p">)</span><span class="w">     </span><span class="p">{}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Accessors.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="nf">GetWidth</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w">           </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_width</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="nf">GetHeight</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w">          </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_height</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">WCHAR</span><span class="o">*</span><span class="w"> </span><span class="nf">GetTitle</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_title</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ParseCommandLineArgs</span><span class="p">(</span><span class="n">_In_reads_</span><span class="p">(</span><span class="n">argc</span><span class="p">)</span><span class="w"> </span><span class="n">WCHAR</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">GetAssetFullPath</span><span class="p">(</span><span class="n">LPCWSTR</span><span class="w"> </span><span class="n">assetName</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">GetHardwareAdapter</span><span class="p">(</span>
+<span class="w">        </span><span class="n">_In_</span><span class="w"> </span><span class="n">IDXGIFactory1</span><span class="o">*</span><span class="w"> </span><span class="n">pFactory</span><span class="p">,</span>
+<span class="w">        </span><span class="n">_Outptr_result_maybenull_</span><span class="w"> </span><span class="n">IDXGIAdapter1</span><span class="o">**</span><span class="w"> </span><span class="n">ppAdapter</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">requestHighPerformanceAdapter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetCustomWindowText</span><span class="p">(</span><span class="n">LPCWSTR</span><span class="w"> </span><span class="n">text</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Viewport dimensions.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_width</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_height</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Adapter info.</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">m_useWarpDevice</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="c1">// Root assets path.</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">m_assetsPath</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Window title.</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">m_title</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>The <strong>Win32Application</strong> class defines data and methods used by all Windows applications.</p>
+<div class="literal-block-wrapper docutils container" id="win32application-code">
+<div class="code-block-caption"><span class="caption-number">Listing 5 </span><span class="caption-text">HelloWindow/Win32Application.h</span><a class="headerlink" href="#win32application-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Win32Application</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Run</span><span class="p">(</span><span class="n">DXSample</span><span class="o">*</span><span class="w"> </span><span class="n">pSample</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">);</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HWND</span><span class="w"> </span><span class="nf">GetHwnd</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_hwnd</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">LRESULT</span><span class="w"> </span><span class="n">CALLBACK</span><span class="w"> </span><span class="n">WindowProc</span><span class="p">(</span><span class="n">HWND</span><span class="w"> </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">WPARAM</span><span class="w"> </span><span class="n">wParam</span><span class="p">,</span><span class="w"> </span><span class="n">LPARAM</span><span class="w"> </span><span class="n">lParam</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">HWND</span><span class="w"> </span><span class="n">m_hwnd</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s perfectly fine if you don’t understand the meaning of every single class member at this point. The important thing is to focus on comprehending the overall structure and purpose of the classes. In the next section and in later tutorials, I will provide more detailed explanations for each of the class members.</p>
+</div>
+<p>As you might have noticed in <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, the entry point (<strong>WinMain</strong>) creates an instance of the <strong>D3D12HelloWindow</strong> class by calling its constructor.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellowindow-ctor-code">
+<div class="code-block-caption"><span class="caption-number">Listing 6 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#d3d12hellowindow-ctor-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">D3D12HelloWindow</span><span class="o">::</span><span class="n">D3D12HelloWindow</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">DXSample</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_frameIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_rtvDescriptorSize</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The constructor of the <strong>D3D12HelloWindow</strong> class initializes some of the class’s data members to default values and invokes the constructor of its base class (<strong>DXSample</strong>).</p>
+<div class="literal-block-wrapper docutils container" id="dxsample-ctor-code">
+<div class="code-block-caption"><span class="caption-number">Listing 7 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#dxsample-ctor-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">DXSample</span><span class="o">::</span><span class="n">DXSample</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">m_width</span><span class="p">(</span><span class="n">width</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_height</span><span class="p">(</span><span class="n">height</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_title</span><span class="p">(</span><span class="n">name</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_useWarpDevice</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">WCHAR</span><span class="w"> </span><span class="n">assetsPath</span><span class="p">[</span><span class="mi">512</span><span class="p">];</span>
+<span class="w">    </span><span class="n">GetAssetsPath</span><span class="p">(</span><span class="n">assetsPath</span><span class="p">,</span><span class="w"> </span><span class="n">_countof</span><span class="p">(</span><span class="n">assetsPath</span><span class="p">));</span>
+<span class="w">    </span><span class="n">m_assetsPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">assetsPath</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">m_aspectRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">width</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">height</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The constructor of the DXSample cass initializes the sample’s name and the dimensions of the window’s client area, where the rendering will take place.</p>
+<p>The <strong>GetAssetsPath</strong> function returns the absolute path of the executable. This is where the application will search for resource files (shaders, textures, etc.) required to run the sample. However, for this initial sample, we don’t need such resources, so you won’t find anything in the executable directory, except for the executable itself, of course.</p>
+<p>The aspect ratio refers to the proportional relationship between the width and height of the window’s client area.</p>
+<figure class="align-default">
+<img alt="../../_images/win-client-area.png" src="../../_images/win-client-area.png" />
+</figure>
+<p>The client area is the region of a window where drawing is allowed. Technically speaking, it’s the area where the render target is mapped (once the GPU finishes drawing a frame on it). Conceptually, you can consider a render target as a texture that the GPU utilizes for rendering\drawing operations.</p>
+<p>In <a class="reference internal" href="#winmain-code"><span class="std std-numref">Listing 1</span></a>, <strong>Win32Application::Run</strong> is called passing the instance of the <strong>D3D12HelloWindow</strong> class, along with the named parameters of <strong>WinMain</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="run-code">
+<div class="code-block-caption"><span class="caption-number">Listing 8 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#run-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">Win32Application::Run</span><span class="p">(</span><span class="n">DXSample</span><span class="o">*</span><span class="w"> </span><span class="n">pSample</span><span class="p">,</span><span class="w"> </span><span class="n">HINSTANCE</span><span class="w"> </span><span class="n">hInstance</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Parse the command line parameters</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">;</span>
+<span class="w">    </span><span class="n">LPWSTR</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CommandLineToArgvW</span><span class="p">(</span><span class="n">GetCommandLineW</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">argc</span><span class="p">);</span>
+<span class="w">    </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">ParseCommandLineArgs</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span><span class="w"> </span><span class="n">argc</span><span class="p">);</span>
+<span class="w">    </span><span class="n">LocalFree</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Initialize the window class.</span>
+<span class="w">    </span><span class="n">WNDCLASSEX</span><span class="w"> </span><span class="n">windowClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">cbSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">WNDCLASSEX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CS_HREDRAW</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">CS_VREDRAW</span><span class="p">;</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">lpfnWndProc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WindowProc</span><span class="p">;</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">hInstance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hInstance</span><span class="p">;</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">hCursor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadCursor</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">IDC_ARROW</span><span class="p">);</span>
+<span class="w">    </span><span class="n">windowClass</span><span class="p">.</span><span class="n">lpszClassName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sa">L</span><span class="s">&quot;DXSampleClass&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">RegisterClassEx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">windowClass</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">RECT</span><span class="w"> </span><span class="n">windowRect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">GetWidth</span><span class="p">()),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">GetHeight</span><span class="p">())</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">AdjustWindowRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">windowRect</span><span class="p">,</span><span class="w"> </span><span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the window and store a handle to it.</span>
+<span class="w">    </span><span class="n">m_hwnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateWindow</span><span class="p">(</span>
+<span class="w">        </span><span class="n">windowClass</span><span class="p">.</span><span class="n">lpszClassName</span><span class="p">,</span>
+<span class="w">        </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">GetTitle</span><span class="p">(),</span>
+<span class="w">        </span><span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CW_USEDEFAULT</span><span class="p">,</span>
+<span class="w">        </span><span class="n">CW_USEDEFAULT</span><span class="p">,</span>
+<span class="w">        </span><span class="n">windowRect</span><span class="p">.</span><span class="n">right</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">windowRect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span>
+<span class="w">        </span><span class="n">windowRect</span><span class="p">.</span><span class="n">bottom</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">windowRect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span><span class="w">        </span><span class="c1">// We have no parent window.</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span><span class="w">        </span><span class="c1">// We aren&#39;t using menus.</span>
+<span class="w">        </span><span class="n">hInstance</span><span class="p">,</span>
+<span class="w">        </span><span class="n">pSample</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Initialize the sample. OnInit is defined in each child-implementation of DXSample.</span>
+<span class="w">    </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnInit</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ShowWindow</span><span class="p">(</span><span class="n">m_hwnd</span><span class="p">,</span><span class="w"> </span><span class="n">nCmdShow</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Main sample loop.</span>
+<span class="w">    </span><span class="n">MSG</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">message</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WM_QUIT</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Process any messages in the queue.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PeekMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">PM_REMOVE</span><span class="p">))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">TranslateMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">            </span><span class="n">DispatchMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Return this part of the WM_QUIT message to Windows.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="n">wParam</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Creating a window requires an instance of a window class (represented by the <strong>WNDCLASSEX</strong> structure), which defines essential attributes for all windows derived from that class. Here’s a summary of the most important <strong>WNDCLASSEX</strong> fields.</p>
+<ul class="simple">
+<li><p><strong>style</strong> specifies additional informations about the window’s appearance and behavior. For example, <code class="docutils literal notranslate"><span class="pre">CS_HREDRAW</span> <span class="pre">|</span> <span class="pre">CS_VREDRAW</span></code> instructs the OS to redraw the entire window if a resize operation affects the client area’s dimensions.</p></li>
+<li><p><strong>hCursor</strong> indicates the cursor displayed when the mouse hovers over the window’s client area.</p></li>
+<li><p><strong>hInstance</strong> specifies the application to which the window belongs. This information is passed to <strong>WinMain</strong> as the first argument.</p></li>
+<li><p><strong>lpszClassName</strong> specifies the name we want to give to the window class.</p></li>
+<li><p><strong>lpfnWndProc</strong> specifies the address of the window procedure.</p></li>
+</ul>
+<p><strong>RegisterClassEx</strong> registers a window class, allowing us to create multiple windows with the same style, window procedure, and other attributes.</p>
+<p><strong>CreateWindow</strong> creates a window and returns its handle, which is used to identify and manipulate the window. It takes the name of the window class and additional parameters that define the window’s characteristics. For more details, refer to the Microsoft documentation for <strong>CreateWindow</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The application class instance, passed as an argument to <strong>Run</strong>, holds the client area dimensions. However, <strong>CreateWindow</strong> needs the entire window’s size, so we must derive it. <strong>AdjustWindowRect</strong> calculates the window’s dimensions based on the client area size and the window style. <strong>WS_OVERLAPPEDWINDOW</strong> defines a window with a title bar and no menu.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The last parameter of <strong>CreateWindow</strong> allows us to provide a pointer that the operating system (OS) will return in response to a <strong>WM_CREATE</strong> message. This message is sent by the OS to an application immediately after creating a window, which is when <strong>CreateWindow</strong> returns. This allows us to store the instance of <strong>DXSample</strong> for later use (more on this shortly).</p>
+</div>
+<p>Observe that the <strong>OnInit</strong> method is invoked through the <strong>pSample</strong> pointer before showing the window on the screen to the user.</p>
+<br>
+</section>
+<section id="d3d12hellowindow-code-review">
+<h2>D3D12HelloWindow: code review<a class="headerlink" href="#d3d12hellowindow-code-review" title="Link to this heading">#</a></h2>
+<p>The <strong>DXSample::OnInit</strong> method is a virtual function that must be overridden in derived classes. This has been done this in the <strong>D3D12HelloWindow</strong> class. The implementation is shown in <a class="reference internal" href="#oninit-code"><span class="std std-numref">Listing 9</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="oninit-code">
+<div class="code-block-caption"><span class="caption-number">Listing 9 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#oninit-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnInit</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="n">LoadAssets</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The <strong>OnInit</strong> method simply calls <strong>LoadPipeline</strong> and <strong>LoadAssets</strong>. Let’s start examining <strong>LoadPipeline</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="loadpipeline-code">
+<div class="code-block-caption"><span class="caption-number">Listing 10 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#loadpipeline-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the rendering pipeline dependencies.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::LoadPipeline</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">dxgiFactoryFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="cp">#if defined(_DEBUG)</span>
+<span class="w">    </span><span class="c1">// Enable the debug layer (requires the Graphics Tools &quot;optional feature&quot;).</span>
+<span class="w">    </span><span class="c1">// NOTE: Enabling the debug layer after device creation will invalidate the active device.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Debug</span><span class="o">&gt;</span><span class="w"> </span><span class="n">debugController</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">D3D12GetDebugInterface</span><span class="p">(</span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">debugController</span><span class="p">))))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">debugController</span><span class="o">-&gt;</span><span class="n">EnableDebugLayer</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">            </span><span class="c1">// Enable additional debug layers.</span>
+<span class="w">            </span><span class="n">dxgiFactoryFlags</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">DXGI_CREATE_FACTORY_DEBUG</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGIFactory4</span><span class="o">&gt;</span><span class="w"> </span><span class="n">factory</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">CreateDXGIFactory2</span><span class="p">(</span><span class="n">dxgiFactoryFlags</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">factory</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_useWarpDevice</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGIAdapter</span><span class="o">&gt;</span><span class="w"> </span><span class="n">warpAdapter</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">EnumWarpAdapter</span><span class="p">(</span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">warpAdapter</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3D12CreateDevice</span><span class="p">(</span>
+<span class="w">            </span><span class="n">warpAdapter</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span>
+<span class="w">            </span><span class="n">D3D_FEATURE_LEVEL_11_0</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_device</span><span class="p">)</span>
+<span class="w">            </span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGIAdapter1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">hardwareAdapter</span><span class="p">;</span>
+<span class="w">        </span><span class="n">GetHardwareAdapter</span><span class="p">(</span><span class="n">factory</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">hardwareAdapter</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3D12CreateDevice</span><span class="p">(</span>
+<span class="w">            </span><span class="n">hardwareAdapter</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span>
+<span class="w">            </span><span class="n">D3D_FEATURE_LEVEL_11_0</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_device</span><span class="p">)</span>
+<span class="w">            </span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Describe and create the command queue.</span>
+<span class="w">    </span><span class="n">D3D12_COMMAND_QUEUE_DESC</span><span class="w"> </span><span class="n">queueDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="n">queueDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_COMMAND_QUEUE_FLAG_NONE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">queueDesc</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_COMMAND_LIST_TYPE_DIRECT</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommandQueue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">queueDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_commandQueue</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Describe and create the swap chain.</span>
+<span class="w">    </span><span class="n">DXGI_SWAP_CHAIN_DESC1</span><span class="w"> </span><span class="n">swapChainDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="n">swapChainDesc</span><span class="p">.</span><span class="n">BufferCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FrameCount</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swapChainDesc</span><span class="p">.</span><span class="n">Width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_width</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swapChainDesc</span><span class="p">.</span><span class="n">Height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_height</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swapChainDesc</span><span class="p">.</span><span class="n">Format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_R8G8B8A8_UNORM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swapChainDesc</span><span class="p">.</span><span class="n">BufferUsage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_USAGE_RENDER_TARGET_OUTPUT</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swapChainDesc</span><span class="p">.</span><span class="n">SwapEffect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_SWAP_EFFECT_FLIP_DISCARD</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swapChainDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGISwapChain1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">swapChain</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">CreateSwapChainForHwnd</span><span class="p">(</span>
+<span class="w">        </span><span class="n">m_commandQueue</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w">        </span><span class="c1">// Swap chain needs the queue so that it can force a flush on it.</span>
+<span class="w">        </span><span class="n">Win32Application</span><span class="o">::</span><span class="n">GetHwnd</span><span class="p">(),</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">swapChainDesc</span><span class="p">,</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">        </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">swapChain</span>
+<span class="w">        </span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// This sample does not support fullscreen transitions.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">MakeWindowAssociation</span><span class="p">(</span><span class="n">Win32Application</span><span class="o">::</span><span class="n">GetHwnd</span><span class="p">(),</span><span class="w"> </span><span class="n">DXGI_MWA_NO_ALT_ENTER</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">swapChain</span><span class="p">.</span><span class="n">As</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_swapChain</span><span class="p">));</span>
+<span class="w">    </span><span class="n">m_frameIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">GetCurrentBackBufferIndex</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create descriptor heaps.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Describe and create a render target view (RTV) descriptor heap.</span>
+<span class="w">        </span><span class="n">D3D12_DESCRIPTOR_HEAP_DESC</span><span class="w"> </span><span class="n">rtvHeapDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FrameCount</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_RTV</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_FLAG_NONE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateDescriptorHeap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rtvHeapDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_rtvHeap</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">m_rtvDescriptorSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">GetDescriptorHandleIncrementSize</span><span class="p">(</span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_RTV</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create frame resources.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">CD3DX12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">(</span><span class="n">m_rtvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create a RTV for each frame.</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FrameCount</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">GetBuffer</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">n</span><span class="p">])));</span>
+<span class="w">            </span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateRenderTargetView</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">);</span>
+<span class="w">            </span><span class="n">rtvHandle</span><span class="p">.</span><span class="n">Offset</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommandAllocator</span><span class="p">(</span><span class="n">D3D12_COMMAND_LIST_TYPE_DIRECT</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_commandAllocator</span><span class="p">)));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p><strong>LoadPipeline</strong> is responsible for creating some of the objects we need to render (draw) the frames of our sample. Here, for the first time, we meet a method to create a DirectX COM object indirectly: <strong>D3D12GetDebugInterface</strong>. The prototype of this method is as follows:</p>
+<div class="literal-block-wrapper docutils container" id="d3d12getdebuginterface-code">
+<div class="code-block-caption"><span class="caption-number">Listing 11 </span><span class="caption-text">d3d12.h</span><a class="headerlink" href="#d3d12getdebuginterface-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">HRESULT</span><span class="w"> </span><span class="n">WINAPI</span><span class="w"> </span><span class="n">D3D12GetDebugInterface</span><span class="p">(</span><span class="w"> </span><span class="n">_In_</span><span class="w"> </span><span class="n">REFIID</span><span class="w"> </span><span class="n">riid</span><span class="p">,</span><span class="w"> </span><span class="n">_COM_Outptr_opt_</span><span class="w"> </span><span class="kt">void</span><span class="o">**</span><span class="w"> </span><span class="n">ppvDebug</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>The first parameter is the ID of the interface to which we want to get a pointer, while the second parameter is where the function will return the interface pointer to the caller (that is, the address where it will store the address of the COM interface; that’s why the parameter is a pointer to a pointer). In this case, the first parameter is the ID of the <strong>ID3D12Debug</strong> interface. So, <strong>D3D12GetDebugInterface</strong> creates an instance of the COM object that implements this interface and returns the interface pointer in the second parameter. Then, the caller can use it to call functionality implemented by the related COM class. Often, the macro <strong>IID_PPV_ARGS</strong> is used to reduce typos. This macro is defined as:</p>
+<div class="literal-block-wrapper docutils container" id="iid-ppv-args-code">
+<div class="code-block-caption"><span class="caption-number">Listing 12 </span><span class="caption-text">combaseapi.h</span><a class="headerlink" href="#iid-ppv-args-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#define IID_PPV_ARGS(ppType) __uuidof(**(ppType)), IID_PPV_ARGS_Helper(ppType)</span>
+</pre></div>
+</div>
+</div>
+<p>The <strong>__uuidof</strong> operator allows to get IDs of COM interfaces and classes. Usually, we pass the address of a <strong>ComPtr</strong> as an argument to <strong>IID_PPV_ARGS</strong>, so that it must be dereference twice to get the underlying interface pointer, which is used by <strong>__uuidof</strong> to determine the type of the requested object and get the corresponding ID. The helper macro <strong>IID_PPV_ARGS_Helper</strong> simply converts the address of a <strong>ComPtr</strong> to a normal <strong>void</strong>** (take a look at the source code in <em>combaseapi.h</em> if you want to see how it is implemented).</p>
+<p>After getting a pointer to the <strong>ID3D12Debug</strong> interface, we use it to enable the Direct3D debug layer. This layer helps during debugging by showing error and warning messages in the output window of the debugger if any obscure rendering error, validation control or memory leak occurs.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>D3D12GetDebugInterface</strong> must be called before the D3D12 device is created. Calling it after creating the D3D12 device will cause the D3D12 runtime to remove the device. The D3D12 runtime refers to a set of functionalities provided by the Direct3D 12 library on which all Direct3D 12 applications depend at run time in order to run as intended. For example, during some critical calls to the DirectX API, the runtime is assumed to handle parameter validation before handing control to user-mode driver, which can assume the parameters are correct.</p>
+</div>
+<p>The <strong>IDXGIFactory4</strong> interface allows to create some important DXGI objects (for example, adapters and swap chains), as well as to enumerate adapters and outputs. It also allows to manage full-screen transitions. We use <strong>CreateDXGIFactory2</strong> to get a pointer to <strong>IDXGIFactory4</strong> because this method allows to pass a flag indicating we are also interested in enabling an additional layer to be informed of errors and warnings about DXGI (in addition to those related to Direct3D).</p>
+<p>If you have a video card installed on your system, an interface pointer to the related adapter can be obtained by calling the helper function <strong>DXSample::GetHardwareAdapter</strong>. At that point, we can pass it as an argument to <strong>D3D12CreateDevice</strong> to create a device object and get an interface pointer to it. In the context of Direct3D, by device we simply mean a video card, and we use the device object created with <strong>D3D12CreateDevice</strong> to communicate with a specific video card. <strong>D3D_FEATURE_LEVEL_11_0</strong> specifies we are interested in creating a device object for a GPU that supports the basic functionality provided by Direct3D 12.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A feature level is a well-defined set of GPU functionalities. For instance, the 9_1 feature level implements the functionality that was implemented in Microsoft Direct3D 9, while the 11_0 feature level implements the functionality that was implemented in Direct3D 11. Of course, Direct3D 12 also implement the functionality of the earlier versions, adding new ones.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A software adapter (called WARP adapter) could also be installed on your system by default. To get an interface pointer to a WARP adapter you need to call <strong>EnumWarpAdapter</strong>. However, we won’t make use of software adapters in this tutorial series.</p>
+</div>
+<p>Before proceeding with the explanation of the <strong>LoadPipeline</strong> function, let’s see how we can obtain an interface pointer to a hardware adapter by examining the code of the <strong>DXSample::GetHardwareAdapter</strong> method.</p>
+<div class="literal-block-wrapper docutils container" id="gethardwareadapter-code">
+<div class="code-block-caption"><span class="caption-number">Listing 13 </span><span class="caption-text">HelloWindow/DXSample.cpp</span><a class="headerlink" href="#gethardwareadapter-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Helper function for acquiring the first available hardware adapter that supports Direct3D 12.</span>
+<span class="c1">// If no such adapter can be found, *ppAdapter will be set to nullptr.</span>
+<span class="n">_Use_decl_annotations_</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DXSample</span><span class="o">::</span><span class="n">GetHardwareAdapter</span><span class="p">(</span>
+<span class="w">    </span><span class="n">IDXGIFactory1</span><span class="o">*</span><span class="w"> </span><span class="n">pFactory</span><span class="p">,</span>
+<span class="w">    </span><span class="n">IDXGIAdapter1</span><span class="o">**</span><span class="w"> </span><span class="n">ppAdapter</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">requestHighPerformanceAdapter</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="o">*</span><span class="n">ppAdapter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGIAdapter1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">adapter</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGIFactory6</span><span class="o">&gt;</span><span class="w"> </span><span class="n">factory6</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">pFactory</span><span class="o">-&gt;</span><span class="n">QueryInterface</span><span class="p">(</span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">factory6</span><span class="p">))))</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span>
+<span class="w">            </span><span class="n">UINT</span><span class="w"> </span><span class="n">adapterIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">factory6</span><span class="o">-&gt;</span><span class="n">EnumAdapterByGpuPreference</span><span class="p">(</span>
+<span class="w">                </span><span class="n">adapterIndex</span><span class="p">,</span>
+<span class="w">                </span><span class="n">requestHighPerformanceAdapter</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">DXGI_GPU_PREFERENCE_UNSPECIFIED</span><span class="p">,</span>
+<span class="w">                </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">adapter</span><span class="p">)));</span>
+<span class="w">            </span><span class="o">++</span><span class="n">adapterIndex</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">DXGI_ADAPTER_DESC1</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span>
+<span class="w">            </span><span class="n">adapter</span><span class="o">-&gt;</span><span class="n">GetDesc1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">desc</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">DXGI_ADAPTER_FLAG_SOFTWARE</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Don&#39;t select the Basic Render Driver adapter.</span>
+<span class="w">                </span><span class="c1">// If you want a software adapter, pass in &quot;/warp&quot; on the command line.</span>
+<span class="w">                </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">            </span><span class="c1">// Check to see whether the adapter supports Direct3D 12, but don&#39;t create the</span>
+<span class="w">            </span><span class="c1">// actual device yet.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">D3D12CreateDevice</span><span class="p">(</span><span class="n">adapter</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D_FEATURE_LEVEL_11_0</span><span class="p">,</span><span class="w"> </span><span class="n">_uuidof</span><span class="p">(</span><span class="n">ID3D12Device</span><span class="p">),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)))</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">adapter</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">adapterIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">pFactory</span><span class="o">-&gt;</span><span class="n">EnumAdapters1</span><span class="p">(</span><span class="n">adapterIndex</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">adapter</span><span class="p">));</span><span class="w"> </span><span class="o">++</span><span class="n">adapterIndex</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">DXGI_ADAPTER_DESC1</span><span class="w"> </span><span class="n">desc</span><span class="p">;</span>
+<span class="w">            </span><span class="n">adapter</span><span class="o">-&gt;</span><span class="n">GetDesc1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">desc</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">desc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">DXGI_ADAPTER_FLAG_SOFTWARE</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Don&#39;t select the Basic Render Driver adapter.</span>
+<span class="w">                </span><span class="c1">// If you want a software adapter, pass in &quot;/warp&quot; on the command line.</span>
+<span class="w">                </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">            </span><span class="c1">// Check to see whether the adapter supports Direct3D 12, but don&#39;t create the</span>
+<span class="w">            </span><span class="c1">// actual device yet.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SUCCEEDED</span><span class="p">(</span><span class="n">D3D12CreateDevice</span><span class="p">(</span><span class="n">adapter</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D_FEATURE_LEVEL_11_0</span><span class="p">,</span><span class="w"> </span><span class="n">_uuidof</span><span class="p">(</span><span class="n">ID3D12Device</span><span class="p">),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)))</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="o">*</span><span class="n">ppAdapter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">adapter</span><span class="p">.</span><span class="n">Detach</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>We use <strong>QueryInterface</strong> to check if we can obtain a pointer to <strong>IDXGIFactory6</strong> from the pointer to the <strong>IDXGIFactory4</strong> interface we passed as an argument. Observe that this will work only if the related COM object implements both interfaces (<strong>IDXGIFactory4</strong> and <strong>IDXGIFactory6</strong>). In that case, we can loop to get a pointer to <strong>IDXGIAdapter1</strong> by calling <strong>EnumAdapterByGpuPreference</strong>. Otherwise, we must use <strong>EnumAdapters1</strong>. However, regardless of how you obtain it, we aim to skip software adapters. Such information (and much more) can be obtained from the <strong>DXGI_ADAPTER_DESC1</strong> structure returned by <strong>IDXGIAdapter1::GetDesc1</strong> as an output parameter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Typically, interface names ending with a number extend an earlier, well known interface by inheriting from it and adding new functionalities. For example, in the code above we passed <strong>IDXGIFactory4</strong> as an argument to a <strong>IDXGIFactory1</strong> parameter since we are confident that both interfaces implement <strong>QueryInterface</strong>, which is the function we call through the corresponding interface pointer.</p>
+</div>
+<p>Now, we can get back examining <strong>LoadPipeline</strong>.<br>
+We need to create a command queue where to submit command lists which, in turn, will hold the commands we want the GPU execute. Indeed, part of the work of a GPU is to execute commands in command lists consumed from a command queue. In this first sample we have very few commands to send to the GPU because it simply shows a window with a blueish client area. Despite this, we still need a command queue as we need to associate it with the swap chain (behind the scenes the DXGI API records commands to be executed by the GPU; more on this shortly). As illustrated in <a class="reference internal" href="#command-queues"><span class="std std-numref">Fig. 4</span></a> below, there are multiple types of command queues, each of which can hold command lists of a specific type. Then, CPU threads can create command lists of whatever type and insert them in the related command queue.</p>
+<figure class="align-default" id="command-queues">
+<img alt="../../_images/rect3158.png" src="../../_images/rect3158.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">GPU command queues</span><a class="headerlink" href="#command-queues" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Many GPUs have one or more dedicated copy engines, a compute engine, and a 3D engine, each capable of executing specific commands in parallel with the other engines. For this reason, there can be no simple guarantee of the order of execution, hence the need for synchronization mechanisms that allow establishing an execution order, if needed.</p>
+<p>For this sample, we will use a graphics command queue (referred to as the 3D queue in <a class="reference internal" href="#command-queues"><span class="std std-numref">Fig. 4</span></a>) as it is capable of holding direct command lists that, in turn, can include all types of commands. Indeed, a graphics queue can drive all GPU engines; the compute queue can drive the compute and copy engines, and the copy queue can only drive the copy engine.</p>
+<p>To create a swap chain, we need to specify the number of buffers, their size, format, and usage. We’re going to use two buffers of the same size as the window’s client area. That way, the buffers will be mapped to the client area without stretching the image. <br>
+<strong>DXGI_FORMAT_R8G8B8A8_UNORM</strong> indicates the format of the buffers. You can imagine the buffers in the swap chain as grids of (width * height) elements, whose common type is specified by a DXGI_FORMAT value. In this case, we indicate that each element is a 32-bit value composed of four 8-bit unsigned-normalized-integer channels, each in the range <span class="math notranslate nohighlight">\([0/255, 255/255]=[0, 1]\)</span> (that is, each channel can have 256 different values). The four channels are called R, G, B and A to mimic the RGB color model, where a color is defined by the amount of red, green and blue it includes. The channel A (called alpha) is used to control the transparency or the opacity of the color. <br>
+<strong>DXGI_USAGE_RENDER_TARGET_OUTPUT</strong> specifies that the buffers will be used as render targets (the targets of drawing operations executed by the GPU). <br>
+<strong>DXGI_SWAP_EFFECT_FLIP_DISCARD</strong> indicates that we want to use the flip presentation model (developed by Microsoft to provide a faster way to present frames on the screen) and that DXGI can discard the contents of a back buffer after it is presented to the user — this can enable some optimizations. <br>
+<strong>SampleDesc.Count</strong> specifies the number of samples per pixel. It should be always 1 as buffers presented using the flip presentation model don’t support multisampling (you need to explicitly create MSAA render targets and resolve yourself the results from multi samples to a single sample as part of the presentation of the frame; we will see how to implement MSAA in a later tutorial). <br>
+The call to <strong>CreateSwapChainForHwnd</strong> creates the swap chain. It takes the command queue, the window handle that describes where the buffers will be presented and the description of the buffers in the swap chain.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The comment to the first argument of <strong>CreateSwapChainForHwnd</strong> in <a class="reference internal" href="#loadpipeline-code"><span class="std std-numref">Listing 10</span></a> states that the swap chain needs a queue to flush. That’s because, behind the scenes, the DXGI API creates a command list with the commands needed to create the buffers in the swap chain (in GPU memory).</p>
+</div>
+<p>Now, we have a pointer to <strong>IDXGISwapChain1</strong>. The corresponding COM object almost certainly also implements <strong>IDXGISwapChain3</strong>, so we get a pointer to this interface by using the member function <strong>ComPtr::As</strong>. <strong>IDXGISwapChain3</strong> allows to invoke <strong>GetCurrentBackBufferIndex</strong> to get the index of the current back buffer in the swap chain (the buffer we are going to draw on; the render target).</p>
+<p>The call to <strong>IDXGIFactory::MakeWindowAssociation</strong> prevents switching to full-screen mode using the <kbd>Alt</kbd>+<kbd>Enter</kbd> shortcut. We don’t need to provide support for full-screen mode in this sample.</p>
+<p>The next step is to create a descriptor heap, a memory space we can consider as an array of descriptors. A descriptor, as its name implies, it’s a block of data that describes a resource to the GPU (type, format, address and other hardware-specific information) for binding purposes. That is, whenever we need to bind a resource to the rendering pipeline, we pass a descriptor to the GPU to let it know where to find the resource and how to access it.</p>
+<figure class="align-default">
+<img alt="../../_images/rect853.png" src="../../_images/rect853.png" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/rect853b.png" src="../../_images/rect853b.png" />
+</figure>
+<p>But why do we need to create a descriptor heap? Well, many GPUs require that binding information resides in a small size region of memory, which allows the GPU to use less bits to address them (for example, by using byte offsets from a base address). So, the primary purpose of a descriptor heap is to encompass the bulk of memory allocation required for storing descriptors.</p>
+<p>Currently, we have a couple of buffers in the swap chain (allocated in GPU memory) that can be used as render targets. However, whenever we want to create a new frame, we need to bind one of them as render target so that the GPU exactly know where to draw. For this purpose, we need to create a descriptor for each buffer in the swap chain and record a binding command in the command list to specify the current render target to the GPU.</p>
+<p>We will create descriptors and store them in a descriptor heap from our C++ applications. This means the descriptor heap needs to be CPU visible. That is, the related space must be allocated in CPU-visible video memory (a small part of dedicated VRAM) or in system memory (RAM). That’s exactly what <strong>CreateDescriptorHeap</strong> does.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are wondering how GPUs can access descriptors in system memory, the answer is that it is possible through the PCI-e bus. However, as for the descriptor of a render target, the GPU doesn’t even need to do that since the driver implicitly copies this descriptor in the command that binds the render target to the pipeline, so that the GPU can directly read from that command (in the correpsponding command list) the details about the buffer to use as render target.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Differently from render targets, descriptors for texture and other type of resources need to be accessed by the GPU wherever they are in memory. That is, the driver doesn’t copy the descriptors in the binding command (more on this in the next tutorial).</p>
+</div>
+<p>Then, we set the fields of a <strong>D3D12_DESCRIPTOR_HEAP_DESC</strong> structure to specify we want a descriptor heap that will hold two descriptors of type RTV (render target view; descriptor and view are pretty much the same thing in DirectX). That way, <strong>ID3D12Device::CreateDescriptorHeap</strong> creates a descriptor heap that has enough space to contain two RTVs, and returns an interface pointer to such descriptor heap in the last parameter (or more precisely, an interface pointer to the COM object that implements the interface we will use to reference the descriptor heap; I won’t stress on this point anymore).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>A descriptor heap can only hold descriptors of a specific type. We will see other types of descriptors, and the related heaps, starting from the next tutorial.</p>
+</div>
+<p><strong>ID3D12Device::GetDescriptorHandleIncrementSize</strong> returns the size of a descriptor, based on the type of descriptor heap passed as argument. In this case, we want to know the size of RTVs, so we pass a type of descriptor heap capable of containing them. We store this information for later use.</p>
+<p>Once we have the descriptor heap, we need to create the views (RTVs) to the two buffers in the swap chain. <strong>ID3D12DescriptorHeap::GetCPUDescriptorHandleForHeapStart</strong> returns a CPU handle to the first descriptor in the heap, where we are going to store the first RTV.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As mentioned earlier, a descriptor heap must be CPU visible, so we need a CPU descriptor handle that points to a descriptor in a descriptor heap in order to store a view. <br>
+Handles are opaque pointers, meaning that a handle uniquely identifies a resource, but you shouldn’t dereference it as its value only makes sense within a specific context. However, as we will see later in this tutorial, in the context we are working in, CPU descriptor handles returned by <strong>GetCPUDescriptorHandleForHeapStart</strong> are simple CPU virtual addresses, allowing us to use pointer arithmetic to calculate the addresses of other descriptors (see the implementation of <strong>CD3DX12_CPU_DESCRIPTOR_HANDLE::Offset</strong> in <em>d3dx12.h</em>). This confirms that descriptor heaps are allocated in CPU-visible memory. <br>
+GPU descriptor handles also exist. However, we will only use them to reference descriptors in a special descriptor heap (more on this in the next tutorial). Observe that, unlike CPU handles, usually GPU handles are just byte offsets from the start of a descriptor heap, not virtual addresses.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>CD3DX12_CPU_DESCRIPTOR_HANDLE</strong> is a wrapper for the Direct3D 12 structure <strong>CPU_DESCRIPTOR_HANDLE</strong>. In general, types with a name that begin with <code class="docutils literal notranslate"><span class="pre">CD3DX12</span></code> are defined in <em>d3dx12.h</em> and behave like C++ classes around Direct3D 12 structures to simplify their initialization and to provide useful helper functions.</p>
+</div>
+<p><strong>IDXGISwapChain:: GetBuffer</strong> returns (as an output parameter) an interface pointer to the buffer of the swap chain associated with the index passed in the first parameter. In particular, we get a pointer to a <strong>ID3D12Resource</strong> interface, used to reference a wide variety of resources from our C++ application. That is, <strong>ID3D12Resource</strong> provides useful information about the related resource in GPU memory (type, format, dimension, GPU virtual address, etc.), but we cannot directly use it to access a GPU resource from CPU code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>ID3D12Resource</strong> is only an interface implemented by a COM object in system memory: it doesn’t directly reference resources in GPU memory. Even if you have the GPU virtual address of a resource, you can’t access it from your C++ application because it only “understands” addresses of its CPU virtual address space. However, in some cases, we can use <strong>ID3D12Resource</strong> to map the GPU memory space of a resource to the virtual address space of our application in order to make it CPU visible\accessible. More on this in the next tutorial.</p>
+</div>
+<p>With the pointers to the <strong>ID3D12Resource</strong> interfaces that describe the buffers in the swap chain, we can create the related views by calling <strong>ID3D12Device::CreateRenderTargetView</strong>, indicating the descriptor\position in the descriptor heap where we want to store them. To get the handle of the second descriptor in the heap we use <strong>CD3DX12_CPU_DESCRIPTOR_HANDLE::Offset</strong>, which allows to offset a handle to point a different descriptor from the first one. For this purpose, we need to pass the number of descriptors to offset and their size. That’s the reason we stored the size of RTVs.</p>
+<p><strong>ID3D12Device:: CreateCommandAllocator</strong> creates a command allocator. This is essentially a memory manager for a command list, meaning it manages the memory space where a command list stores its commands. You must specify the type of command list the allocator is going to manage. A direct command list can hold all types of commands.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We’ll be recording commands in command lists from our C++ application, so the memory space managed by the allocators must be CPU visible. And indeed, the allocation occurs in memory accessible to both CPU and GPU. This implies that either of them can access the command list, although one of the two must do it through the PCI-e bus (unless you have an integrated GPU, of course; further details will be covered in the next tutorial).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be careful when reusing a command list because the CPU memory space holding the related commands might still be in use, accessed by the GPU. That is, we don’t know when the GPU finishes executing the commands of a command list, at least without a synchronization mechanism between CPU and GPU. We will see how to implement such a mechanism shortly.</p>
+</div>
+<p>Now, let’s examine the code of the <strong>LoadAssets</strong> function, responsible for creating other objects and resources required for rendering the frames of our graphics samples.</p>
+<div class="literal-block-wrapper docutils container" id="hellowindow-loadassets-code">
+<div class="code-block-caption"><span class="caption-number">Listing 14 </span><span class="caption-text">HelloWindow/D3D12HelloWindow.cpp</span><a class="headerlink" href="#hellowindow-loadassets-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::LoadAssets</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Create the command list.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommandList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_COMMAND_LIST_TYPE_DIRECT</span><span class="p">,</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_commandList</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Command lists are created in the recording state, but there is nothing</span>
+<span class="w">    </span><span class="c1">// to record yet. The main loop expects it to be closed, so close it now.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create synchronization objects.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateFence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_FENCE_FLAG_NONE</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_fence</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">m_fenceValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create an event handle to use for frame synchronization.</span>
+<span class="w">        </span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateEvent</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">HRESULT_FROM_WIN32</span><span class="p">(</span><span class="n">GetLastError</span><span class="p">()));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>We first create a direct command list using <strong>ID3D12Device::CreateCommandList</strong>, passing the related command allocator as an argument. A command list is initially created in a state where it is ready to receive commands. We have no commands to record in the list right now, though. Additionally, a command list must be closed when you call <strong>Reset</strong> on it. This is a common operation to perform the first time you use a command list or when you reuse it (often after submitting the command list to draw a previous frame). Therefore, we close the command list now, waiting to call <strong>Reset</strong> on it later.</p>
+<p><strong>ID3D12Device::CreateFence</strong> creates a fence. A fence is a synchronization object that you can insert in a command queue for synchronization purposes. Since a fence is a synchronization object that the GPU encounters during the execution of commands in command lists consumed from a command queue, we also need an event to notify a waiting CPU thread that the GPU reached a fence in the queue (more on this shortly).</p>
+<p>At this point, the initialization stage is complete (that is, the call to <strong>DXSample::OnInit</strong> in <strong>Win32Application::Run</strong> returns, see <a class="reference internal" href="#run-code"><span class="std std-numref">Listing 8</span></a>), and <strong>ShowWindow</strong> is invoked to activate the window and display it at its current size and position. Then, the application can enter the message loop, where <strong>PeekMessage</strong> retrieves a message from the message queue, and stores the related information in the <strong>MSG</strong> structure passed in the first parameter before returning <strong>TRUE</strong> (otherwise it returns <strong>FALSE</strong> to indicate no message was available). <strong>DispatchMessage</strong> dispatches a message to the window procedure. <strong>TranslateMessage</strong> translates virtual-key messages (<strong>WM_KEYDOWN</strong>, <strong>WM_KEYUP</strong>) into character messages (<strong>WM_CHAR</strong>) containing ASCII characters. This allows us to better distinguish the various keys on the keyboard.</p>
+<p>However, remember that <strong>CreateWindow</strong>, before returning, sent a <strong>WM_CREATE</strong> message to the window procedure.</p>
+<div class="literal-block-wrapper docutils container" id="hellowindow-windowproc-code">
+<div class="code-block-caption"><span class="caption-number">Listing 15 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-windowproc-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Main message handler for the sample.</span>
+<span class="n">LRESULT</span><span class="w"> </span><span class="n">CALLBACK</span><span class="w"> </span><span class="n">Win32Application</span><span class="o">::</span><span class="n">WindowProc</span><span class="p">(</span><span class="n">HWND</span><span class="w"> </span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">WPARAM</span><span class="w"> </span><span class="n">wParam</span><span class="p">,</span><span class="w"> </span><span class="n">LPARAM</span><span class="w"> </span><span class="n">lParam</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">DXSample</span><span class="o">*</span><span class="w"> </span><span class="n">pSample</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">DXSample</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">GetWindowLongPtr</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">GWLP_USERDATA</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">WM_CREATE</span><span class="p">:</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Save the DXSample* passed in to CreateWindow.</span>
+<span class="w">            </span><span class="n">LPCREATESTRUCT</span><span class="w"> </span><span class="n">pCreateStruct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">LPCREATESTRUCT</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lParam</span><span class="p">);</span>
+<span class="w">            </span><span class="n">SetWindowLongPtr</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">GWLP_USERDATA</span><span class="p">,</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">LONG_PTR</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pCreateStruct</span><span class="o">-&gt;</span><span class="n">lpCreateParams</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">WM_KEYDOWN</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pSample</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnKeyDown</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">UINT8</span><span class="o">&gt;</span><span class="p">(</span><span class="n">wParam</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">WM_KEYUP</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pSample</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnKeyUp</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">UINT8</span><span class="o">&gt;</span><span class="p">(</span><span class="n">wParam</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">WM_PAINT</span><span class="p">:</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pSample</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnUpdate</span><span class="p">();</span>
+<span class="w">            </span><span class="n">pSample</span><span class="o">-&gt;</span><span class="n">OnRender</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">WM_DESTROY</span><span class="p">:</span>
+<span class="w">        </span><span class="n">PostQuitMessage</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Handle any messages the switch statement didn&#39;t.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DefWindowProc</span><span class="p">(</span><span class="n">hWnd</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">wParam</span><span class="p">,</span><span class="w"> </span><span class="n">lParam</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Observe that we pass a pointer to the instance of the application class as the last parameter to <strong>CreateWindow</strong>. The operating system returns this pointer to us in response to a <strong>WM_CREATE</strong> message, giving us the opportunity to save it for later access. Inside the <strong>WM_CREATE</strong> message handler, <strong>lParam</strong> holds a pointer to <strong>CREATESTRUCT</strong>. The <strong>lpCreateParams</strong> field of this structure contains the last parameter passed to <strong>CreateWindow</strong>. We call <strong>SetWindowLongPtr</strong> to store this information in the user data associated with the window (an additional memory space reserved for the user) and we will retrieve it later using <strong>GetWindowLongPtr</strong>.</p>
+<p>After the user closes the window, a <strong>WM_DESTROY</strong> message is sent to the window procedure of the destroyed window. The <strong>WM_DESTROY</strong> message handler invokes <strong>PostQuitMessage</strong>, which queues a <strong>WM_QUIT</strong> message. This enables us to exit the message loop in <strong>Win32Application::Run</strong> and execute <strong>DXSample::OnDestroy</strong>. This is a pure virtual function overridden by <strong>D3D12HelloWindow::OnDestroy</strong>. This function simply calls <strong>WaitForPreviousFrame</strong>, which waits for the GPU to complete rendering the previous frame (more on this shortly).</p>
+<p>Typically, <strong>WM_PAINT</strong> messages are both sent to the window procedure and posted to the message queue throughout the application’s lifetime. This allows us to consistently call <strong>OnUpdate</strong> and <strong>OnRender</strong> within the <strong>WM_PAINT</strong> message handler. These are pure virtual functions overridden by the <strong>D3D12HelloWindow</strong> class. Since <strong>OnUpdate</strong> doesn’t perform any actions in this sample, let’s proceed directly to examining <strong>OnRender</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="hellowindow-onrender-code">
+<div class="code-block-caption"><span class="caption-number">Listing 16 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-onrender-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Render the scene.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::OnRender</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Record all the commands we need to render the scene into the command list.</span>
+<span class="w">    </span><span class="n">PopulateCommandList</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Execute the command list.</span>
+<span class="w">    </span><span class="n">ID3D12CommandList</span><span class="o">*</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandQueue</span><span class="o">-&gt;</span><span class="n">ExecuteCommandLists</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppCommandLists</span><span class="p">),</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Present the frame.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">Present</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>In <strong>PopulateCommandList</strong>, we record (into the command list) the commands required to render a frame. In this sample, we will simply paint the window’s client area blue. We’ll return to this function shortly.</p>
+<p>As we know, a command queue is a collection of command lists, so we can queue multiple command lists if needed. That’s why we pass an array of command lists to <strong>ID3D12CommandQueue::ExecuteCommandLists</strong>. This function submits the command lists (provided as the second parameter) to the command queue, making them ready for consumption by the GPU.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The GPU start executing the command lists sequentially, preserving the order of submission. However, commands within command lists can be executed in parallel whenever possible.</p>
+</div>
+<p>At this point, it should be clear that we are dealing with two different timelines. The term “timeline” in this context refers to the time when something is executed. For example, creating a command queue, a command list, and a command allocator are operations executed on the CPU timeline because the creation of the related resources occurs at the time of an API call in our C++ application, which is executed by the CPU. Adding commands to a command list is also executed on the CPU timeline, but the execution of those commands belongs to the GPU timeline when the GPU actually consumes command lists from a command queue.</p>
+<p><strong>IDXGISwapChain::Present</strong> allows presenting (to the user, on the screen) the frame just created on the CPU timeline (using the current back buffer as the render target). How does it work? Present operations occur on the graphics queue associated with the swap chain. That is, when you call <strong>Present</strong>, a present operation is recorded in the command queue associated with swap chain during its creation, and a request to present the frame is inserted in a queue called the present queue, waiting for the GPU to execute the commands to draw on the related back buffer. Since this happens only after recording all the commands needed to create the frame, you are sure the GPU reached the present operation in the command queue only at the very end (i.e., after executing all the other previous drawing commands). At that point, the frame associated with the request in the present queue is done, ready to be shown on the screen at the next vertical interval when the swap/flip between the back and present buffers takes place.</p>
+<figure class="align-default" id="id21">
+<img alt="../../_images/rect853d.png" src="../../_images/rect853d.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Presenting frames</span><a class="headerlink" href="#id21" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When you create a frame and present it on the CPU timeline, nothing happens on the related back buffer until the GPU starts executing drawing commands in the related command list.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Present</strong> also updates the index of the current back buffer in the swap chain so that the next frame will be created on the other buffer when it becomes available again as a render target.</p>
+</div>
+<p>Observe that <strong>Present</strong> takes, as its first parameter (called <em>SyncInterval</em>), a value that specifies how to synchronize the presentation of a frame with the vertical blank. For values greater than zero, it indicates the number of vertical intervals the frame waits in the present queue before getting ready to be presented on the screen, enabling v-sync. In this sample, we always pass 1 as an argument to this parameter to specify that we want to wait a single vertical interval. In a later tutorial, we will explore what it means if you pass 0 to this parameter.</p>
+<p>The term “vertical interval” (or vertical blank, depicted as a dashed diagonal line in <a class="reference internal" href="#refresh-op"><span class="std std-numref">Fig. 6</span></a>) refers to the time it takes for the scanning process to restart the refresh of your monitor.</p>
+<figure class="align-default" id="refresh-op">
+<img alt="../../_images/path1143b.png" src="../../_images/path1143b.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Monitor refreshing</span><a class="headerlink" href="#refresh-op" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the images below, you can observe that if the GPU isn’t able to draw on the render target quickly enough, the frames per second (FPS) can decrease by half. If a new frame is not prepared for presentation, the previous one will persist on the screen. That is, no swap occurs between back and front buffers at the next v-sync interval since the GPU has not finished drawing on the back buffer.</p>
+<figure class="align-default">
+<img alt="../../_images/path1143.png" src="../../_images/path1143.png" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/path1143c.png" src="../../_images/path1143c.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To be honest, the presentation of frames on the screen is a bit more intricate than I just explained. The outcome when presenting a frame can vary based on how you configure the swap chain, whether the window is in full-screen mode, or if v-sync is enabled. However, to avoid unnecessary complexity at this stage, we’ll revisit this topic in a later tutorial.</p>
+</div>
+<p>The sample examined in this tutorial uses a single command allocator to manage the memory space where drawing commands for both buffers in the swap chain are recorded. This implies that we need to flush the command queue before recording the commands to create and present a new frame, as all commands are recorded in the same memory space regardless of the frame we are creating — we can’t overwrite commands still in use by the GPU, obviously. This way, CPU and GPU work sequentially: the CPU creates a frame and waits for the GPU to complete it. In other words, we still cannot create frames in advance on the CPU timeline compared to the GPU; in a later tutorial, we will explore how to unleash parallelism between CPU and GPU. For this purpose, <strong>WaitForPreviousFrame</strong> waits for the GPU to finish executing the commands to compose the frame we just created and presented on the CPU timeline.</p>
+<p>However, before moving on to examine the code of <strong>WaitForPreviousFrame</strong>, we still need to review the implementation of the <strong>PopulateCommandList</strong> function.</p>
+<div class="literal-block-wrapper docutils container" id="hellowindow-populatecommandlist-code">
+<div class="code-block-caption"><span class="caption-number">Listing 17 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-populatecommandlist-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::PopulateCommandList</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Command list allocators can only be reset when the associated </span>
+<span class="w">    </span><span class="c1">// command lists have finished execution on the GPU; apps should use </span>
+<span class="w">    </span><span class="c1">// fences to determine GPU execution progress.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// However, when ExecuteCommandList() is called on a particular command </span>
+<span class="w">    </span><span class="c1">// list, that command list can then be reset at any time and must be before </span>
+<span class="w">    </span><span class="c1">// re-recording.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">()));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will be used as a render target.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">CD3DX12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">(</span><span class="n">m_rtvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">(),</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">,</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Record commands.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">clearColor</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ClearRenderTargetView</span><span class="p">(</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">clearColor</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will now be used to present.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>As mentioned above, a command allocator cannot be reused until the GPU has finished executing all the commands in the memory space managed by the allocator. Therefore, we need a fence to track the GPU progress. That’s exactly what <strong>WaitForPreviousFrame</strong> does at the end of <a class="reference internal" href="#hellowindow-onrender-code"><span class="std std-ref"><strong>OnRender</strong></span></a>. This way, we can be sure that whenever we call PopulateCommandexactlyList, we can reuse the command allocator.</p>
+<p>On the other hand, we have no problems reusing the command list (associated with the same command allocator) after calling <strong>ExecuteCommandList</strong>, as we used a fence to ensure there are no pending commands. Thus, we can record new commands without worrying about overwriting pending commands in the memory space managed by the allocator. Alternatively, we can use the same command list but with a different command allocator. In any case, a command list must be reset every time we record new commands, and in turn, a reset needs a closed command list (which we did in <a class="reference internal" href="#hellowindow-loadassets-code"><span class="std std-ref"><strong>LoadAssets</strong></span></a>). <br>
+<strong>ID3D12GraphicsCommandList::Reset</strong> takes the command allocator associated with the command list and, optionally, a pipeline state object (PSO) that sets the state of the rendering pipeline. In this case, <strong>m_pipelineState</strong> holds a null pointer that indicates to set a default pipeline state. We’ll return to the rendering pipeline and its state in the next tutorial.</p>
+<p>Then, we indicate that we are going to use the current back buffer as the render target. We specify this information with a resource state transition. Why do we need to point out a state transition for a resource? Imagine having a buffer you use both for read and write operations. Before starting a read operation, all ongoing write operations need to be completed. State transitions are used to inform the GPU how we intend to use a resource so it can complete some ongoing operations on that resource before starting new ones.</p>
+<p>The only rendering operation recorded for this first example involves cleaning the back buffer with an RGB color provided as an array of floats. In this case, the RGB color is <span class="math notranslate nohighlight">\((0.0, 0.2, 0.4, 1.0)\)</span>, indicating a bluish tint assigned to each element of the back buffer. The last component is 1.0, which indicates a fully opaque color (no transparency).</p>
+<p>Observe how we get a CPU handle to the RTV (Render Target View) of the current back buffer by offsetting the handle to the first RTV in the descriptor heap. For this purpose, we need the index of the current back buffer (<strong>m_frameIndex</strong>) and the size of an RTV (<strong>m_rtvDescriptorSize</strong>).</p>
+<p>The images below demonstrate that, if you modify the code slightly and debug the sample, CPU descriptor handles are simple CPU virtual addresses, while GPU descriptor handles are offsets. Note that, in my case, <strong>m_ rtvDescriptorSize</strong> is 32 bytes (0x20 in hexadecimal), but remember that descriptors hold hardware-specific information, so this can vary from system to system.</p>
+<p>if you change a bit the code and debug the sample, CPU descriptor handles are simple CPU virtual addresses, while GPU descriptor handles are offsets. Note that, in my case, <strong>m_ rtvDescriptorSize</strong> is 32 bytes (0x20 in hexadecimal), but remember that descriptors hold hardware-specific information, so this can vary from system to system.</p>
+<figure class="align-default" id="id22">
+<img alt="../../_images/cpu-gpu-handle2.PNG" src="../../_images/cpu-gpu-handle2.PNG" />
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">First call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id22" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id23">
+<img alt="../../_images/cpu-gpu-handle3.PNG" src="../../_images/cpu-gpu-handle3.PNG" />
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Second call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id23" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id24">
+<img alt="../../_images/cpu-gpu-handle1.PNG" src="../../_images/cpu-gpu-handle1.PNG" />
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Memory regions in the virtual address space of <strong>D3D12HelloWindow</strong></span><a class="headerlink" href="#id24" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>At this point, we have completed the frame creation on the CPU timeline, so we can modify the state of the back buffer to “present”. This indicates that, once this transition command is executed by the GPU, the back buffer is almost ready to be displayed on the screen (the GPU must first execute the corresponding present operation in the command queue).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Please remember that a command list must be closed before submitting it to the command queue.</p>
+</div>
+<p>Now, we can finally review the code of the <strong>WaitForPreviousFrame</strong> function, which is invoked at the end of <a class="reference internal" href="#hellowindow-onrender-code"><span class="std std-ref"><strong>OnRender</strong></span></a>. As previously mentioned, the primary purpose of this method is to flush the command queue.</p>
+<div class="literal-block-wrapper docutils container" id="hellowindow-waitforpreviousframe-code">
+<div class="code-block-caption"><span class="caption-number">Listing 18 </span><span class="caption-text">HelloWindow/Win32Application.cpp</span><a class="headerlink" href="#hellowindow-waitforpreviousframe-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloWindow::WaitForPreviousFrame</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// WAITING FOR THE FRAME TO COMPLETE BEFORE CONTINUING IS NOT BEST PRACTICE.</span>
+<span class="w">    </span><span class="c1">// This is code implemented as such for simplicity. The D3D12HelloFrameBuffering</span>
+<span class="w">    </span><span class="c1">// sample illustrates how to use fences for efficient resource usage and to</span>
+<span class="w">    </span><span class="c1">// maximize GPU utilization.</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Signal and increment the fence value.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">UINT64</span><span class="w"> </span><span class="n">fence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_fenceValue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandQueue</span><span class="o">-&gt;</span><span class="n">Signal</span><span class="p">(</span><span class="n">m_fence</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">fence</span><span class="p">));</span>
+<span class="w">    </span><span class="n">m_fenceValue</span><span class="o">++</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Wait until the previous frame is finished.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fence</span><span class="o">-&gt;</span><span class="n">GetCompletedValue</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">fence</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_fence</span><span class="o">-&gt;</span><span class="n">SetEventOnCompletion</span><span class="p">(</span><span class="n">fence</span><span class="p">,</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">));</span>
+<span class="w">        </span><span class="n">WaitForSingleObject</span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="p">,</span><span class="w"> </span><span class="n">INFINITE</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">m_frameIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">GetCurrentBackBufferIndex</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The comment at the beginning of <a class="reference internal" href="#hellowindow-waitforpreviousframe-code"><span class="std std-numref">Listing 18</span></a> states that you shouldn’t wait for a frame to complete. Indeed, we could start recording commands for the next frame if we had separated command allocators for the two buffers in the swap chain. Unfortunately, this is not the case, so we merely wait for the GPU to complete a frame before creating the next one on the CPU timeline. That way, we are sure the command queue is empty, so that we can reuse the command allocator whenever we call <strong>PopulateCommandList</strong>.</p>
+<p>We store <strong>m_fenceValue</strong> in a local variable. Remember that the value of this member is 1 in the first call to <strong>WaitForPreviousFrame</strong> (look at the implementation of the <a class="reference internal" href="#hellowindow-loadassets-code"><span class="std std-ref"><strong>LoadAssets</strong></span></a> function again).</p>
+<p><strong>ID3D12CommandQueue::Signal</strong> inserts in the command queue a fence with a value equal to the one passed as the second parameter (1, in this case). Then, we increase the value of <strong>m_fenceValue</strong>. At this point, in the command queue, there is the command list we submitted in <a class="reference internal" href="#hellowindow-onrender-code"><span class="std std-ref"><strong>OnRender</strong></span></a>, followed by a fence with value 1.</p>
+<p><strong>ID3D12Fence::GetCompletedValue</strong> returns the value of the last fence met\executed by the GPU in the command queue. If still no fence has been executed, this function returns 0. So, if the GPU hasn’t finished drawing the frame, we wait for <strong>m_fenceEvent</strong> to get signaled. Otherwise, if <strong>GetCompletedValue</strong> returns the fence value passed to <strong>Signal</strong>, we are sure that the GPU finished drawing the frame. A fence is signaled when the GPU meets\executes it on the command queue (that is, the execution of a fence results in a change from a non-signaled to a signaled state of the corresponding event associated with <strong>SetEventOnCompletion</strong>).</p>
+<p>Observe that the call to <strong>IDXGISwapChain::Present</strong>, performed in <a class="reference internal" href="#hellowindow-onrender-code"><span class="std std-ref"><strong>OnRender</strong></span></a> before invoking  <strong>WaitForPreviousFrame</strong>, updates the index of the current back buffer, so here <strong>GetCurrentBackBufferIndex</strong> returns the index of the buffer where to create the next frame. At that point <strong>m_fenceValue</strong> is 2, and a fence with this value will be used to delimit the command list submitted to the command queue to draw the second frame. And so on.</p>
+<br>
+</section>
+<section id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
+<br>
+<div class="admonition-support-this-project admonition">
+<p class="admonition-title">Support this project</p>
+<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
+<figure class="align-center">
+<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../_images/sponsor.png" src="../../_images/sponsor.png" /></a>
+</figure>
+</div>
+<br>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id3">
+<div role="list" class="citation-list">
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Mica</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. About windows. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows">https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows</a>.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Micb</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Dxgi overview. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi">https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi</a>.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Micc</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Programming directx with com. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com">https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com</a>.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Micd</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Using sal annotations. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170">https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170</a>.</p>
+</div>
+</div>
+</div>
+<br>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Tutorials\01-HelloWorld"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hello-world.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hello World</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hello-triangle.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hello Triangle</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-applications">Windows applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#window-procedure">Window Procedure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#messages">Messages</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#component-object-model-com">Component Object Model (COM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directx-graphics-infrastructure-dxgi">DirectX Graphics Infrastructure (DXGI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#framework-overview">Framework overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellowindow-code-review">D3D12HelloWindow: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By P. A. Minerva
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
