@@ -1,6 +1,6 @@
 # Math Primer
 
-These appendices provide basic mathematical background information necessary for understanding essential topics covered in the main tutorial.
+These appendices provide essential mathematical foundations for understanding important topics explored in the main tutorial.
 
 ```{tableofcontents}
 ```
