@@ -404,7 +404,8 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-gpu-parallelism">CPU-GPU parallelism</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">[WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12helloframebuffering-code-review">D3D12HelloFrameBuffering: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
 </ul>
             </nav>
         </div>
@@ -504,8 +505,223 @@ Command lists are the only resource requiring explicit synchronization (using fe
 <p>In conclusion, we can state that by using a different command allocator for each buffer in the swap chain and employing a fence after each command list in the command queue for synchronization purposes, we can create frames in advance on the CPU timeline, unleashing parallelism between the CPU and GPU. However, remember that creating frames too far in advance can result in noticeable present latency. Furthermore, preserving the state of all GPU resources modified during frame creation on the CPU timeline is also essential for correct rendering.</p>
 <br>
 </section>
-<section id="wip">
-<h2>[WIP]<a class="headerlink" href="#wip" title="Link to this heading">#</a></h2>
+<section id="d3d12helloframebuffering-code-review">
+<h2>D3D12HelloFrameBuffering: code review<a class="headerlink" href="#d3d12helloframebuffering-code-review" title="Link to this heading">#</a></h2>
+<p>Now, we are ready to review the code of the sample. Let’s start with the application class.</p>
+<div class="literal-block-wrapper docutils container" id="helloframebuffering-d3d12helloframebuffering-code">
+<div class="code-block-caption"><span class="caption-text">D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.h</span><a class="headerlink" href="#helloframebuffering-d3d12helloframebuffering-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloFrameBuffering</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">D3D12HelloFrameBuffering</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnInit</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnRender</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="c1">// In this sample we overload the meaning of FrameCount to mean both the maximum</span>
+<span class="w">    </span><span class="c1">// number of frames that will be queued to the GPU at a time, as well as the number</span>
+<span class="w">    </span><span class="c1">// of back buffers in the DXGI swap chain. For the majority of applications, this</span>
+<span class="w">    </span><span class="c1">// is convenient and works well. However, there will be certain cases where an</span>
+<span class="w">    </span><span class="c1">// application may want to queue up more frames than there are back buffers</span>
+<span class="w">    </span><span class="c1">// available.</span>
+<span class="w">    </span><span class="c1">// It should be noted that excessive buffering of frames dependent on user input</span>
+<span class="w">    </span><span class="c1">// may result in noticeable latency in your app.</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">FrameCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">        </span><span class="n">XMFLOAT4</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Pipeline objects.</span>
+<span class="w">    </span><span class="n">CD3DX12_VIEWPORT</span><span class="w"> </span><span class="n">m_viewport</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CD3DX12_RECT</span><span class="w"> </span><span class="n">m_scissorRect</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGISwapChain3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_swapChain</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_device</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandAllocator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandAllocators</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandQueue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandQueue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12RootSignature</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rtvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12PipelineState</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12GraphicsCommandList</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// App resources.</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="p">;</span>
+<span class="w">    </span><span class="n">D3D12_VERTEX_BUFFER_VIEW</span><span class="w"> </span><span class="n">m_vertexBufferView</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Synchronization objects.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HANDLE</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Fence</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_fence</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT64</span><span class="w"> </span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadAssets</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">PopulateCommandList</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">MoveToNextFrame</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">WaitForGpu</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>At this point, the comment on the <strong>FrameCount</strong> variable should be clear: if you keep creating frames in advance on the CPU timeline, at some point either the CPU (after the call to <strong>Present</strong>) or the GPU (during the rendering work) will end up waiting for a back buffer to become available again, increasing the present latency. <br>
+In this sample, we need two command allocators because we are going to queue two frames to the GPU before waiting on the CPU timeline. As you know, we can reuse the same command list object, provided that we don’t overwrite the memory holding the corresponding commands if they have not yet been executed by the GPU. <br>
+As explained earlier, we need to preserve GPU resources accessed with write operations during frame creation on the CPU timeline. This is why we also need two different fence values to delimit (in the command queue) the command lists of the two frames we want to queue. This way, we can be notified when the GPU finishes drawing one of them, so that we can resume creating frames on the CPU timeline. <br>
+We will use <strong>WaitForGPU</strong> to flush the command queue. On the other hand, <strong>MoveToNextFrame</strong> only waits until the GPU finishes drawing at least one (the oldest) of the two queued frames. In other words, it checks if we can continue creating frames on the CPU timeline.</p>
+<p>The <strong>LoadPipeline</strong> function now creates two command allocators, so the call to the <strong>CreateCommandAllocator</strong> function has been placed inside a for loop.</p>
+<div class="literal-block-wrapper docutils container" id="helloframebuffering-loadpipeline-code">
+<div class="code-block-caption"><span class="caption-text">D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp</span><a class="headerlink" href="#helloframebuffering-loadpipeline-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the rendering pipeline dependencies.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloFrameBuffering::LoadPipeline</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create frame resources.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">CD3DX12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">(</span><span class="n">m_rtvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create a RTV and a command allocator for each frame.</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FrameCount</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">GetBuffer</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">n</span><span class="p">])));</span>
+<span class="w">            </span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateRenderTargetView</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">);</span>
+<span class="w">            </span><span class="n">rtvHandle</span><span class="p">.</span><span class="n">Offset</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommandAllocator</span><span class="p">(</span><span class="n">D3D12_COMMAND_LIST_TYPE_DIRECT</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_commandAllocators</span><span class="p">[</span><span class="n">n</span><span class="p">])));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Now, let’s see what’s new in <strong>LoadAssets</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="helloframebuffering-loadassets-code">
+<div class="code-block-caption"><span class="caption-text">D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp</span><a class="headerlink" href="#helloframebuffering-loadassets-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloFrameBuffering::LoadAssets</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="w">    </span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create synchronization objects and wait until assets have been uploaded to the GPU.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateFence</span><span class="p">(</span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">],</span><span class="w"> </span><span class="n">D3D12_FENCE_FLAG_NONE</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_fence</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create an event handle to use for frame synchronization.</span>
+<span class="w">        </span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateEvent</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">HRESULT_FROM_WIN32</span><span class="p">(</span><span class="n">GetLastError</span><span class="p">()));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Wait for the command list to execute; we are reusing the same command </span>
+<span class="w">        </span><span class="c1">// list in our main loop but for now, we just want to wait for setup to </span>
+<span class="w">        </span><span class="c1">// complete before continuing.</span>
+<span class="w">        </span><span class="n">WaitForGpu</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>First, we create a fence with a value of 0 ─ <strong>m_fenceValues</strong> is initalized to <code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">0}</span></code> in the constructor of the <strong>D3D12HelloFrameBuffering</strong> class (refer to the complete source code of the sample). Next, we increment the value of the fence used to delimit the command list for the initialization phase. This will allow us to distinguish between different command lists in the command queue. Finally, we create an event and call the <strong>WaitForGpu</strong> function to flush the command queue after the initialization phase.</p>
+<div class="literal-block-wrapper docutils container" id="helloframebuffering-waitforgpu-code">
+<div class="code-block-caption"><span class="caption-text">D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp</span><a class="headerlink" href="#helloframebuffering-waitforgpu-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Wait for pending GPU work to complete.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloFrameBuffering::WaitForGpu</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Schedule a Signal command in the queue.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandQueue</span><span class="o">-&gt;</span><span class="n">Signal</span><span class="p">(</span><span class="n">m_fence</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">]));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Wait until the fence has been processed.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_fence</span><span class="o">-&gt;</span><span class="n">SetEventOnCompletion</span><span class="p">(</span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">],</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">));</span>
+<span class="w">    </span><span class="n">WaitForSingleObjectEx</span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="p">,</span><span class="w"> </span><span class="n">INFINITE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Increment the fence value for the current frame.</span>
+<span class="w">    </span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The implementation of the <strong>WaitForGPU</strong> function is similar to that of the old <strong>WaitForPreviousFrame</strong> function used in previous samples, as its purpose is to flush the command queue. First, we insert into the command queue a fence with a value associated with the command list of the “current frame” (or rather, rendering work, as we will use this function to flush the command queue after the initialization phase). Then, we wait for the GPU to meet and signal this fence. At that point, we are sure there are no commands left to execute in the command queue. Finally, we increment the fence value to delimit the command list of the next frame. <br>
+Observe that we “wasted” the fence value 1 to flush the command queue after the initialization phase. Therefore, we need a new fence value to delimit the first frame. Currently, the first element of the array <strong>m_fenceValues</strong> has a value of 2, which will be used to delimit the command list of the first frame, while the second element of <strong>m_fenceValues</strong> is still 0, and will be used to track the command list of the second frame.</p>
+<p>In <strong>OnRender</strong>, we now use the <strong>MoveToNextFrame</strong> function instead of the older <strong>WaitForPreviousFrame</strong> to synchronize the presentation of the frames created in advance on the CPU timeline.</p>
+<div class="literal-block-wrapper docutils container" id="helloframebuffering-onrender-code">
+<div class="code-block-caption"><span class="caption-text">D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp</span><a class="headerlink" href="#helloframebuffering-onrender-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Render the scene.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloFrameBuffering::OnRender</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Record all the commands we need to render the scene into the command list.</span>
+<span class="w">    </span><span class="n">PopulateCommandList</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Execute the command list.</span>
+<span class="w">    </span><span class="n">ID3D12CommandList</span><span class="o">*</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandQueue</span><span class="o">-&gt;</span><span class="n">ExecuteCommandLists</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppCommandLists</span><span class="p">),</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Present the frame.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">Present</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">MoveToNextFrame</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="helloframebuffering-movetonextframe-code">
+<div class="code-block-caption"><span class="caption-text">D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp</span><a class="headerlink" href="#helloframebuffering-movetonextframe-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Prepare to render the next frame.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloFrameBuffering::MoveToNextFrame</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Schedule a Signal command in the queue.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">UINT64</span><span class="w"> </span><span class="n">currentFenceValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandQueue</span><span class="o">-&gt;</span><span class="n">Signal</span><span class="p">(</span><span class="n">m_fence</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">currentFenceValue</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Update the frame index.</span>
+<span class="w">    </span><span class="n">m_frameIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_swapChain</span><span class="o">-&gt;</span><span class="n">GetCurrentBackBufferIndex</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// If the next frame is not ready to be rendered yet, wait until it is ready.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fence</span><span class="o">-&gt;</span><span class="n">GetCompletedValue</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">])</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_fence</span><span class="o">-&gt;</span><span class="n">SetEventOnCompletion</span><span class="p">(</span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">],</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">));</span>
+<span class="w">        </span><span class="n">WaitForSingleObjectEx</span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="p">,</span><span class="w"> </span><span class="n">INFINITE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Set the fence value for the next frame.</span>
+<span class="w">    </span><span class="n">m_fenceValues</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">currentFenceValue</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>In <strong>MoveToNextFrame</strong>, we first initialize the <strong>currentFenceValue</strong> local variable with the fence value that will delimit the command list of the current frame. Subsequently, we place a fence with that value in the command queue since the command list of the current frame has already been submitted in <strong>OnRender</strong>. <br>
+<strong>GetCurrentBackBufferIndex</strong> returns the index of the back buffer where we will draw the next frame (updated in <strong>OnRender</strong> by the call to <strong>Present</strong>). However, since we are still processing the current frame, we can use this index to get the fence value of the previous frame as well. At this point, using <strong>m_fenceValues[m_frameIndex]</strong>, we obtain the fence value of the frame before the current one, given that we only alternate between two frames/buffers: the current and the previous ones (the next frame will overwrite the previous one, but at that point, we consider it the current frame). <br>
+The <strong>if</strong> block is not entered if the value of the last fence the GPU encountered in the command queue is greater than or equal to the fence value of the previous frame. Indeed, only in that case can we be sure that the GPU has finished drawing the previous frame, allowing us to reuse the related command list and allocator to create the next frame. <br>
+Finally, we set the fence value of the next frame to the incremented fence value of the current frame, ensuring a clear distinction between the two frames we can queue to the GPU. <br>
+Whenever <strong>MoveToNextFrame</strong> returns, we are ready to create another frame on the CPU timeline.</p>
+<p>Above I just explained the theory behind <strong>MoveToNextFrame</strong>. Now, it can be useful to see what happens in practice. <br>
+On the first call to <strong>MoveToNextFrame</strong>, <strong>currentFenceValue</strong> is 2 (to delimit the first frame), while <strong>m_fenceValues[m_frameIndex]</strong> is 0 after the call to <strong>GetCurrentBackBufferIndex</strong> since this is still the fence value of the “previous” frame ─ obviously, there are no frames before the first one, but we haven’t drawn the second frame yet, so we can use its fence value to reference a dummy previous frame. <strong>GetCompletedValue</strong> returns at least 1, as it was the value of the fence the GPU had already encountered when we flushed the command queue by calling <strong>WaitForGPU</strong> in <a class="reference internal" href="#helloframebuffering-loadassets-code"><span class="std std-ref"><strong>LoadAssets</strong></span></a>. Therefore, we won’t enter the <strong>if</strong> block. At the end, we set the fence value of the next frame to the incremented fence value of the current frame (i.e., we set 3 to <strong>m_fenceValues[m_frameIndex]</strong> because the fence value of the current frame is 2). <br>
+On the next call to <strong>MoveToNextFrame</strong>, <strong>currentFenceValue</strong> will be 3, while the fence value of the previous frame will be 2. So, we won’t enter the if block unless <strong>GetCompletedValue</strong> returns a value less than 2, indicating that the GPU has not finished drawing the previous frame yet. And so on.</p>
+<br>
+</section>
+<section id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
+<br>
+<div class="admonition-support-this-project admonition">
+<p class="admonition-title">Support this project</p>
+<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
+<figure class="align-center">
+<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../_images/sponsor.png" src="../../_images/sponsor.png" /></a>
+</figure>
+</div>
+<br>
 </section>
 </section>
 
@@ -566,7 +782,8 @@ Command lists are the only resource requiring explicit synchronization (using fe
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-gpu-parallelism">CPU-GPU parallelism</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">[WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12helloframebuffering-code-review">D3D12HelloFrameBuffering: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
 </ul>
   </nav></div>
 

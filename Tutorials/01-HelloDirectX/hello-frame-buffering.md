@@ -104,4 +104,242 @@ In conclusion, we can state that by using a different command allocator for each
 
 <br>
 
-## [WIP]
+## D3D12HelloFrameBuffering: code review
+
+Now, we are ready to review the code of the sample. Let’s start with the application class.
+
+```{code-block} cpp
+:caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.h
+:name: helloframebuffering-D3D12HelloFrameBuffering-code
+
+class D3D12HelloFrameBuffering : public DXSample
+{
+public:
+    D3D12HelloFrameBuffering(UINT width, UINT height, std::wstring name);
+ 
+    virtual void OnInit();
+    virtual void OnUpdate();
+    virtual void OnRender();
+    virtual void OnDestroy();
+ 
+private:
+    // In this sample we overload the meaning of FrameCount to mean both the maximum
+    // number of frames that will be queued to the GPU at a time, as well as the number
+    // of back buffers in the DXGI swap chain. For the majority of applications, this
+    // is convenient and works well. However, there will be certain cases where an
+    // application may want to queue up more frames than there are back buffers
+    // available.
+    // It should be noted that excessive buffering of frames dependent on user input
+    // may result in noticeable latency in your app.
+    static const UINT FrameCount = 2;
+ 
+    struct Vertex
+    {
+        XMFLOAT3 position;
+        XMFLOAT4 color;
+    };
+ 
+    // Pipeline objects.
+    CD3DX12_VIEWPORT m_viewport;
+    CD3DX12_RECT m_scissorRect;
+    ComPtr<IDXGISwapChain3> m_swapChain;
+    ComPtr<ID3D12Device> m_device;
+    ComPtr<ID3D12Resource> m_renderTargets[FrameCount];
+    ComPtr<ID3D12CommandAllocator> m_commandAllocators[FrameCount];
+    ComPtr<ID3D12CommandQueue> m_commandQueue;
+    ComPtr<ID3D12RootSignature> m_rootSignature;
+    ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
+    ComPtr<ID3D12PipelineState> m_pipelineState;
+    ComPtr<ID3D12GraphicsCommandList> m_commandList;
+    UINT m_rtvDescriptorSize;
+ 
+    // App resources.
+    ComPtr<ID3D12Resource> m_vertexBuffer;
+    D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
+ 
+    // Synchronization objects.
+    UINT m_frameIndex;
+    HANDLE m_fenceEvent;
+    ComPtr<ID3D12Fence> m_fence;
+    UINT64 m_fenceValues[FrameCount];
+ 
+    void LoadPipeline();
+    void LoadAssets();
+    void PopulateCommandList();
+    void MoveToNextFrame();
+    void WaitForGpu();
+};
+```
+
+
+At this point, the comment on the **FrameCount** variable should be clear: if you keep creating frames in advance on the CPU timeline, at some point either the CPU (after the call to **Present**) or the GPU (during the rendering work) will end up waiting for a back buffer to become available again, increasing the present latency. <br>
+In this sample, we need two command allocators because we are going to queue two frames to the GPU before waiting on the CPU timeline. As you know, we can reuse the same command list object, provided that we don't overwrite the memory holding the corresponding commands if they have not yet been executed by the GPU. <br>
+As explained earlier, we need to preserve GPU resources accessed with write operations during frame creation on the CPU timeline. This is why we also need two different fence values to delimit (in the command queue) the command lists of the two frames we want to queue. This way, we can be notified when the GPU finishes drawing one of them, so that we can resume creating frames on the CPU timeline. <br>
+We will use **WaitForGPU** to flush the command queue. On the other hand, **MoveToNextFrame** only waits until the GPU finishes drawing at least one (the oldest) of the two queued frames. In other words, it checks if we can continue creating frames on the CPU timeline.
+
+The **LoadPipeline** function now creates two command allocators, so the call to the **CreateCommandAllocator** function has been placed inside a for loop.
+
+```{code-block} cpp
+:caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp
+:name: helloframebuffering-LoadPipeline-code
+
+// Load the rendering pipeline dependencies.
+void D3D12HelloFrameBuffering::LoadPipeline()
+{
+
+    // ...
+
+ 
+    // Create frame resources.
+    {
+        CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart());
+ 
+        // Create a RTV and a command allocator for each frame.
+        for (UINT n = 0; n < FrameCount; n++)
+        {
+            ThrowIfFailed(m_swapChain->GetBuffer(n, IID_PPV_ARGS(&m_renderTargets[n])));
+            m_device->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle);
+            rtvHandle.Offset(1, m_rtvDescriptorSize);
+ 
+            ThrowIfFailed(m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_commandAllocators[n])));
+        }
+    }
+}
+```
+
+Now, let’s see what's new in **LoadAssets**.
+
+```{code-block} cpp
+:caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp
+:name: helloframebuffering-LoadAssets-code
+
+// Load the sample assets.
+void D3D12HelloFrameBuffering::LoadAssets()
+{
+
+    // ...
+    
+ 
+    // Create synchronization objects and wait until assets have been uploaded to the GPU.
+    {
+        ThrowIfFailed(m_device->CreateFence(m_fenceValues[m_frameIndex], D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence)));
+        m_fenceValues[m_frameIndex]++;
+ 
+        // Create an event handle to use for frame synchronization.
+        m_fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        if (m_fenceEvent == nullptr)
+        {
+            ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
+        }
+ 
+        // Wait for the command list to execute; we are reusing the same command 
+        // list in our main loop but for now, we just want to wait for setup to 
+        // complete before continuing.
+        WaitForGpu();
+    }
+}
+```
+
+First, we create a fence with a value of 0 ─ **m_fenceValues** is initalized to `{0, 0}` in the constructor of the **D3D12HelloFrameBuffering** class (refer to the complete source code of the sample). Next, we increment the value of the fence used to delimit the command list for the initialization phase. This will allow us to distinguish between different command lists in the command queue. Finally, we create an event and call the **WaitForGpu** function to flush the command queue after the initialization phase.
+
+```{code-block} cpp
+:caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp
+:name: helloframebuffering-WaitForGpu-code
+
+// Wait for pending GPU work to complete.
+void D3D12HelloFrameBuffering::WaitForGpu()
+{
+    // Schedule a Signal command in the queue.
+    ThrowIfFailed(m_commandQueue->Signal(m_fence.Get(), m_fenceValues[m_frameIndex]));
+ 
+    // Wait until the fence has been processed.
+    ThrowIfFailed(m_fence->SetEventOnCompletion(m_fenceValues[m_frameIndex], m_fenceEvent));
+    WaitForSingleObjectEx(m_fenceEvent, INFINITE, FALSE);
+ 
+    // Increment the fence value for the current frame.
+    m_fenceValues[m_frameIndex]++;
+}
+```
+
+The implementation of the **WaitForGPU** function is similar to that of the old **WaitForPreviousFrame** function used in previous samples, as its purpose is to flush the command queue. First, we insert into the command queue a fence with a value associated with the command list of the "current frame" (or rather, rendering work, as we will use this function to flush the command queue after the initialization phase). Then, we wait for the GPU to meet and signal this fence. At that point, we are sure there are no commands left to execute in the command queue. Finally, we increment the fence value to delimit the command list of the next frame. <br>
+Observe that we "wasted" the fence value 1 to flush the command queue after the initialization phase. Therefore, we need a new fence value to delimit the first frame. Currently, the first element of the array **m_fenceValues** has a value of 2, which will be used to delimit the command list of the first frame, while the second element of **m_fenceValues** is still 0, and will be used to track the command list of the second frame.
+
+In **OnRender**, we now use the **MoveToNextFrame** function instead of the older **WaitForPreviousFrame** to synchronize the presentation of the frames created in advance on the CPU timeline.
+
+```{code-block} cpp
+:caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp
+:name: helloframebuffering-OnRender-code
+
+// Render the scene.
+void D3D12HelloFrameBuffering::OnRender()
+{
+    // Record all the commands we need to render the scene into the command list.
+    PopulateCommandList();
+ 
+    // Execute the command list.
+    ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
+    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+ 
+    // Present the frame.
+    ThrowIfFailed(m_swapChain->Present(1, 0));
+ 
+    MoveToNextFrame();
+}
+
+```
+
+```{code-block} cpp
+:caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp
+:name: helloframebuffering-MoveToNextFrame-code
+
+// Prepare to render the next frame.
+void D3D12HelloFrameBuffering::MoveToNextFrame()
+{
+    // Schedule a Signal command in the queue.
+    const UINT64 currentFenceValue = m_fenceValues[m_frameIndex];
+    ThrowIfFailed(m_commandQueue->Signal(m_fence.Get(), currentFenceValue));
+ 
+    // Update the frame index.
+    m_frameIndex = m_swapChain->GetCurrentBackBufferIndex();
+ 
+    // If the next frame is not ready to be rendered yet, wait until it is ready.
+    if (m_fence->GetCompletedValue() < m_fenceValues[m_frameIndex])
+    {
+        ThrowIfFailed(m_fence->SetEventOnCompletion(m_fenceValues[m_frameIndex], m_fenceEvent));
+        WaitForSingleObjectEx(m_fenceEvent, INFINITE, FALSE);
+    }
+ 
+    // Set the fence value for the next frame.
+    m_fenceValues[m_frameIndex] = currentFenceValue + 1;
+}
+```
+
+In **MoveToNextFrame**, we first initialize the **currentFenceValue** local variable with the fence value that will delimit the command list of the current frame. Subsequently, we place a fence with that value in the command queue since the command list of the current frame has already been submitted in **OnRender**. <br>
+**GetCurrentBackBufferIndex** returns the index of the back buffer where we will draw the next frame (updated in **OnRender** by the call to **Present**). However, since we are still processing the current frame, we can use this index to get the fence value of the previous frame as well. At this point, using **m_fenceValues[m_frameIndex]**, we obtain the fence value of the frame before the current one, given that we only alternate between two frames/buffers: the current and the previous ones (the next frame will overwrite the previous one, but at that point, we consider it the current frame). <br>
+The **if** block is not entered if the value of the last fence the GPU encountered in the command queue is greater than or equal to the fence value of the previous frame. Indeed, only in that case can we be sure that the GPU has finished drawing the previous frame, allowing us to reuse the related command list and allocator to create the next frame. <br>
+Finally, we set the fence value of the next frame to the incremented fence value of the current frame, ensuring a clear distinction between the two frames we can queue to the GPU. <br>
+Whenever **MoveToNextFrame** returns, we are ready to create another frame on the CPU timeline.
+
+Above I just explained the theory behind **MoveToNextFrame**. Now, it can be useful to see what happens in practice. <br>
+On the first call to **MoveToNextFrame**, **currentFenceValue** is 2 (to delimit the first frame), while **m_fenceValues[m_frameIndex]** is 0 after the call to **GetCurrentBackBufferIndex** since this is still the fence value of the "previous" frame ─ obviously, there are no frames before the first one, but we haven't drawn the second frame yet, so we can use its fence value to reference a dummy previous frame. **GetCompletedValue** returns at least 1, as it was the value of the fence the GPU had already encountered when we flushed the command queue by calling **WaitForGPU** in [**LoadAssets**](helloframebuffering-LoadAssets-code). Therefore, we won't enter the **if** block. At the end, we set the fence value of the next frame to the incremented fence value of the current frame (i.e., we set 3 to **m_fenceValues[m_frameIndex]** because the fence value of the current frame is 2). <br>
+On the next call to **MoveToNextFrame**, **currentFenceValue** will be 3, while the fence value of the previous frame will be 2. So, we won't enter the if block unless **GetCompletedValue** returns a value less than 2, indicating that the GPU has not finished drawing the previous frame yet. And so on.
+
+<br>
+
+## Source Code
+
+[D3D12HelloWorld (DirectX-Graphics-Samples)](https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld)
+
+<br>
+
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
+
+```{figure} ../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
+
+<br>
