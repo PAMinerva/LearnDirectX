@@ -1,0 +1,1530 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello Triangle &#8212; Learn DirectX</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/01-HelloWorld/hello-triangle';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hello Bundles" href="hello-bundles.html" />
+    <link rel="prev" title="Hello Window" href="hello-window.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 This documentation is a work in progress! 🚧</div>
+  </div>
+
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../presentation.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Learn DirectX - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Learn DirectX - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../presentation.html">
+                    Welcome to Learn DirectX
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../00-Intro/intro-and-prerequisites.html">Introduction and Prerequisites</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hello DirectX</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hello-world.html">Hello World</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="hello-window.html">Hello Window</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-bundles.html">Hello Bundles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-cbs.html">Hello Constant Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-texture.html">Hello Texture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-frame-buffering.html">Hello Frame Buffering</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Appendices/01-MathPrimer/math-primer.html">Math Primer</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathPrimer/vectors.html">Vectors</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX/issues/new?title=Issue%20on%20page%20%2FTutorials/01-HelloWorld/hello-triangle.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Tutorials/01-HelloWorld/hello-triangle.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hello Triangle</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct3d-rendering-pipeline-overview">Direct3D rendering pipeline overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources-management">Resources management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory">Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#views-and-descriptors">Views and descriptors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions">Transitions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#root-signature">Root signature</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#root-signature-version">Root signature version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pipeline-state">The Pipeline State</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-input-assembler">The Input Assembler</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meshes">Meshes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vertex-buffer">Vertex buffer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-layout">Input layout</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitive-topologies">Primitive topologies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-buffer">Index buffer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#system-generated-values">System-Generated Values</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vertex-shader">Vertex Shader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-rasterizer">The Rasterizer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#face-culling">Face culling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attribute-interpolation">Attribute interpolation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-shader">Pixel shader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotriangle-code-review">D3D12HelloTriangle: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hello-triangle">
+<h1>Hello Triangle<a class="headerlink" href="#hello-triangle" title="Link to this heading">#</a></h1>
+<br>
+<figure class="align-default">
+<img alt="../../_images/HelloTriangle.png" src="../../_images/HelloTriangle.png" />
+</figure>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This tutorial builds on the previous one (<a class="reference internal" href="hello-window.html"><span class="std std-doc">Hello Window</span></a>), so I highly recommend completing it before going through this tutorial if you have not done so already.</p>
+<p>Here, we will examine a sample (<a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloTriangle</a>) that draws a triangle on the render target. Actually, the code of this sample hardly changes compared to that of <strong>D3D12HelloWindow</strong>. However, there is still a lot to explain. The reason is that this time we will make use of the rendering pipeline to draw something on the render target.</p>
+<p>If you are familiar with video games, you know that the image you see on the screen is only a 2D representation of 3D geometries composed of polygons (most of the time triangles) defined by vertex locations in 3D space.</p>
+<figure class="align-default">
+<img alt="../../_images/polys.jpg" src="../../_images/polys.jpg" />
+</figure>
+<p>It can be stated that the whole art of computer graphics boils down to creating a 2D representation from a 3D scene. Indeed, this is the result of processing 3D geometries through a rendering pipeline, which will be briefly discussed in the next section.</p>
+<p>In the figure below, you can see a 3D scene projected onto a 2D rectangle\window lying on a plane in front of a special viewpoint called the camera. You can think of a 2D projection window as the film of a camera (or the retina of the human eye) that captures the light and allows the creation of a 2D representation from a 3D scene. Eventually, this 2D representation is mapped to the render target, which, in turn, is mapped to the window’s client area.</p>
+<figure class="align-default">
+<img alt="../../_images/3d-scene-2d-repres.png" src="../../_images/3d-scene-2d-repres.png" />
+</figure>
+<p>You can easily guess that only a particular region of the 3D scene should be captured by the camera (that is, we generally won’t capture the whole 3D scene). The extent of the region captured can be controlled in a similar way to how we set the field of view (FOV) of the camera lens when we want to take a picture.  However, in computer graphics, the film is typically positioned in front of the camera lens, not behind.</p>
+<p>Now, we need to define a couple of terms that we will use throughout the rest of this tutorial:</p>
+<p><strong>Monitors</strong> are raster displays, which means the screen can be seen as a two-dimensional grid of small dots called pixels. Each pixel displays a color that is independent of other pixels. When we render a triangle on the screen, we don’t actually render a triangle as one entity. Instead, we illuminate the group of pixels that are covered by the triangle’s area.</p>
+<figure class="align-default">
+<img alt="../../_images/raster-traingle.png" src="../../_images/raster-traingle.png" />
+</figure>
+<p><strong>Textures</strong> are typically 2D digital images composed of small dots called texels that contain various information (e.g., color, distance, direction, etc.). We can also use textures as render targets, essentially treating them like a canvas where we can draw by setting colors to texels. Subsequently, the final image representing a frame, can be mapped to the window’s client area to display the result to the user.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A physical pixel is a square with an area, but its coordinates refer to a specific point (usually, the top-left corner of the pixel). However, GPU calculations and sampling operations often occur at the center of the pixels. When we describe a monitor as a 2D grid of dots, we are actually referring to rows and columns intersecting at pixel coordinates. The same considerations also apply to textures, which can be seen as grids of texels (texture elements) with an area, whose coordinates refer to a specific point within the texel’s area. We will revisit this concept in an upcoming tutorial.</p>
+</div>
+<p>The next section will provide a high-level overview of the graphics pipeline, explaining its role in rendering graphics to a render target.</p>
+<br>
+</section>
+<section id="direct3d-rendering-pipeline-overview">
+<h2>Direct3D rendering pipeline overview<a class="headerlink" href="#direct3d-rendering-pipeline-overview" title="Link to this heading">#</a></h2>
+<p>GPUs are equipped with thousands of programmable cores, which means that they can execute programs in the form of instructions provided by a programmer, much like how CPU cores run C++ applications. As illustrated below, CPUs typically have fewer cores than GPUs. However, GPU cores are smaller and more specialized in processing tasks that can be divided up and processed across many cores. In particular, GPUs use parallelism to execute the same instructions on multiple cores simultaneously, resulting in high-speed processing of vast amounts of data. On the other hand, CPUs excel at executing many sequential instructions on each core to execute multiple tasks on small data really fast.</p>
+<figure class="align-default" id="id1">
+<img alt="../../_images/CPU-vs-GPU.png" src="../../_images/CPU-vs-GPU.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">CPU (on the left) versus GPU (on the right)</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>GPUs that support Direct3D can execute programs on their cores to perform the work of various stages composing a pipeline. Direct3D provides different pipeline types, but we will focus on the rendering pipeline (also called the graphics pipeline) for now. A rendering pipeline defines the steps needed to draw something on the render target. In particular, the following image illustrates the stages of the rendering pipeline used to draw on a render target with the Direct3D API.</p>
+<figure class="align-default" id="rendering-pipeline">
+<img alt="../../_images/rendering-pipeline.png" src="../../_images/rendering-pipeline.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Direct3D rendering pipeline</span><a class="headerlink" href="#rendering-pipeline" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Programmable stages can execute programs (often called shader programs, or simply shaders, with the GPU cores executing them often referred to as shader cores) written by programmers. Configurable stages (the rectangles with gear wheels in <a class="reference internal" href="#rendering-pipeline"><span class="std std-numref">Fig. 11</span></a>) can’t be programmed: they always execute the same code, but you can still configure their state. This means you can’t specify what a configurable stage can do, but you can still specify how it performs its task. For this reason, they are often called fixed-function stages.</p>
+<p>Data flows from input to output through each of the configurable or programmable stages. In other words, each stage consumes the input from the previous stage and provides its output to the next one (which can use it as input).</p>
+<ul class="simple">
+<li><p><strong>Input-Assembler Stage</strong> - The input assembler is responsible for supplying data to the pipeline. This stage takes its input from user-filled buffers in memory that contain arrays of vertices (and often also indices), and from those buffers it assembles primitives (triangles, lines and points) with attached system-generated values (such as a primitive ID, an instance ID, or a vertex ID) to pass to the next stage, vertex by vertex.</p></li>
+<li><p><strong>Vertex Shader Stage</strong> - The vertex shader processes vertices from the input assembler. It usually performs operations such as transformations, skinning, and per-vertex lighting. A vertex shader always takes one vertex as input and return one vertex as output. So, a vertex shader needs to run multiple times to process all the vertices of the primitives assembled by the input assembler.</p></li>
+<li><p><strong>Hull Shader Stage</strong> - The hull shader operates once per patch. A patch is a set of control points whose interpolation defines a piece of curve or surface. You can use this stage with patches from the input assembler. The hull shader can transform input control points into output control points. Also, it can perform other setup for the fixed-function tessellator stage. For example, the hull shader can output tess factors, which are numbers that indicate how much to tessellate, which refers to the primitive density in the surface or curve described by the output patch.</p></li>
+<li><p><strong>Tessellator Stage</strong> - The tessellator is a fixed-function unit whose operation is defined by declarations in the hull shader. That is, the tessellator operates once per patch that is output by the hull shader. The purpose of the tessellator stage is to sample the domain (quad, tri, or line) of the patch by tessellating it. Also, the tess factors generated by the hull shader notify the tessellator how much to tessellate (that is, dividing a geometric shape into smaller, connected primitives) over the domain of the patch.</p></li>
+<li><p><strong>Domain Shader Stage</strong> - The domain shader is invoked once per sample (generated by the tessellator). Each invocation is identified by the coordinates of the sample over the domain of the patch, as well as the output control points produced by the hull shader. The role of the domain shader is to turn the sample coordinates into something tangible (such as, a vertex position in 3D space), which can be sent down the pipeline for further processing.</p></li>
+<li><p><strong>Geometry Shader Stage</strong> - The geometry shader processes entire primitives. That is, its input can be three vertices for a triangle, two vertices for a line, or a single vertex for a point. The geometry shader supports limited geometry amplification and de-amplification. Given an input primitive, the geometry shader can discard the primitive, or emit one or more new primitives.</p></li>
+<li><p><strong>Stream Output Stage</strong> - The stream output is designed for streaming primitive data from the pipeline to memory on its way to the rasterizer. Data can be streamed out and/or passed into the rasterizer. Data streamed out to memory can be recirculated back into the pipeline as input data for the input assembler or read-back from the CPU.</p></li>
+<li><p><strong>Rasterizer Stage</strong> - The rasterizer converts primitives into a raster images (composed of pixels that need to be processed by subsequent stages to be rendered on the screen). It also takes into account the viewport and scissor rectangles (more on this later). As part of the rasterization process, the per-vertex attributes are interpolated to calculate the per-pixel attributes across each primitive (a vertex is essentially a collection of attributes). Additionally, the rasterizer takes into account the viewport and scissor rectangles when performing its task. Further details will be provided in later sections of this tutorial.</p></li>
+<li><p><strong>Pixel Shader Stage</strong> - The pixel shader receives interpolated attributes for every pixel of a rasterized primitive generated by the rasterizer and returns per-pixel data (such as color), such as a color, that can be possibly stored as a texel in the render target; it depends on the last stage of the pipeline. The pixel shader allows to enable sophisticated shading techniques, including per-pixel lighting and post-processing, to enhance the overall visual quality of the rendered image.</p></li>
+<li><p><strong>Output-Merger Stage</strong> - The output merger (OM) stage is the final step for determining which pixels are visible, through depth-stencil testing, and how to eventually blend them with the corresponding texels in the render target. In particular, it is responsible for combining various types of output data (pixel shader returned values, depth, stencil and blend information) with the contents of the render target and depth/stencil buffer to generate the final pipeline result (the final image we want to draw on the render target before showing it on the screen).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Hull Shader, Tessellator and Domain Shader together form the Tessellation stage. They are optional and we won’t use them for a while. The same goes for the Geometry Shader and the Stream Output stage.</p>
+</div>
+<p>As illustrated in the figure above, many stages can take part of their input by reading resources from GPU memory (in addition to the input passed from the previous stage), and some of them can write their output in GPU memory as well. The little squares at the bottom right of some stages represent the slots where descriptors\views are bound. At the left of each stage, you can find a visual description of the task usually performed by the stage. <code class="docutils literal notranslate"><span class="pre">VSMAIN</span></code>, <code class="docutils literal notranslate"><span class="pre">PSMAIN</span></code>, etc., suggest that programmable stages execute shader programs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A descriptor (or view) is a data structure that fully describes a resource to the GPU (type, dimension, GPU virtual address, and other hardware-specific information). This means the size of a descriptor can change from GPU to GPU. Usually, descriptors are bound to the slots of the stages, rather than the actual resources. This way, the GPU can access resources by reading the descriptors bound to the slots used in the shader program being executed.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Binding slots are not physical blocks of memory or registers that a GPU can access to read descriptors. They are simple names (character strings) used to associate descriptors to resource declarations in shader programs. However, since the documentation uses the term “slots” in the context of resource binding, I still opted to represent them in <a class="reference internal" href="#rendering-pipeline"><span class="std std-numref">Fig. 11</span></a> as physical blocks. As described in the previous tutorial, descriptors are stored in a descriptor heap. In the remainder of this tutorial we will see how a GPU accesses descriptors during the execution of a shader program.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even though the documentation does not explicitly distinguish between descriptors and views, it is sometimes helpful to visualize a descriptor as the physical block of memory where to store a view, which can be perceived as an instance of a hardware-specific type (structure) that encapsulates information about a resource.</p>
+</div>
+<p>The depth buffer is a texture associated with the render target (both should be the same size). The depth buffer is used to store depth information that informs us how deep each visible pixel is in the scene. When Direct3D renders 3D primitives to a render target, the output merger stage can use the depth buffer to determine how the pixels of rasterized polygons occlude one another.</p>
+<p>Typically, the stencil buffer is coupled with the depth buffer (that is, both share the same buffer in memory, though using different bits) and stores stencil information to mask pixels. The mask controls whether a pixel is drawn or not on the render target, enabling the creation of specialized effects such as dissolves, decaling, and outlining. We will return to the stencil buffer in a later tutorial.</p>
+<figure class="align-default">
+<img alt="../../_images/depth-buffer.png" src="../../_images/depth-buffer.png" />
+</figure>
+<p>In the illustration above, the 2D projection window lies in the plane identified by the X- and Y-axes. We already know that the projection window is eventually mapped to the render target, so let’s temporarily assume that we are directly drawing on the render target (without passing through the projection window). The Z-axis is used to measure the depth of the pixels (that is, their distance from the XY-plane). As you can see, the texel of the render target will store the pixel color of the yellow square, which occludes the pixel of the red triangle. Indeed, the value stored in the corresponding texel of the depth buffer (that is, at the same position of the texel in the render target) is the depth of the nearest pixel: the one of the yellow square, in this example. So, the pixel of the triangle will be discarded if the depth test is enabled. On the other hand, if the depth test is disabled, the texel of the render target will store the color of the last pixel processed by the pixel shader since it will always overwrite whatever color is stored in that texel. Observe that if blending is enabled, the pixel color is blended with the color stored in the corresponding texel of the render rather than overwriting it.</p>
+<p>The following image shows how a generic programmable stage works.</p>
+<figure class="align-default">
+<img alt="../../_images/programmable-stage.png" src="../../_images/programmable-stage.png" />
+</figure>
+<ul class="simple">
+<li><p><strong>Input Data</strong>: A vertex shader receives its input from the input assembler stage; geometry and pixel shaders receive their inputs from the previous stage. This data typically consists of multiple values, called attributes, that describe various aspects of the geometric data being processed. For example, attributes might include the position or color associated with a vertex, or the texture coordinates for a pixel. Additional inputs include system-value semantics, which are consumable by the first stage in the pipeline to which they are applicable.</p></li>
+<li><p><strong>Output Data</strong>: A shader generate output results to be passed on to the subsequent stage of the pipeline. For a geometry shader, the amount of data output from a single invocation can vary. Semantics also apply to elements of the output data to convey information about the intended use to the next stage. Semantics are required for all elements passed between shader stages.</p></li>
+<li><p><strong>Shader Code</strong>: GPUs can read from memory, perform vector floating point and integer arithmetic operations, or flow control operations. We write shader programs in HLSL (High Level Shader Language), a procedural language similar to C, to instruct the GPU on the operations to execute.</p></li>
+<li><p><strong>Samplers</strong>: Samplers define how to sample and filter textures.</p></li>
+<li><p><strong>Textures</strong>: Textures can be filtered using samplers, or read on a per-texel basis directly with the <strong>Load</strong> intrinsic function.</p></li>
+<li><p><strong>Buffers</strong>: A buffer is a collection of fully typed data grouped into elements (just like an array). Buffers are never filtered, but can be read from memory on a per-element basis.</p></li>
+<li><p><strong>Constant Buffers</strong>: Constant buffers are optimized for shader constant-variables. They are designed for more frequent update from the CPU; therefore, they have additional size, layout, and access restrictions.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>I know! I should elaborate further on semantics. In general, data passed between pipeline stages is completely generic. A semantic is a textual name we can associate to every element in the input data to establish its intended use. You can associate arbitrary strings with no special meaning to elements of the input data as semantics. However, there are several predefined semantics with specific meanings when attached to elements of the input data. For example, <strong>POSITION</strong> and <strong>COLOR</strong>, which are pretty self explanatory. A system-value semantic is simply a semantic that start with “SV_”, and that can be associated with additional data generated and\or consumed by the stages of the pipeline to pass and\or identify info in the input data with a special meaning. For example, pixel shaders can only write to elements associated with the <strong>SV_depth</strong> and <strong>SV_Target</strong> system-value semantics. Don’t worry if it’s not entirely clear at the moment. It’s simpler than it may seem, and practical examples will be provided later in the tutorial, specifically in the final part when we examine the code of the sample.</p>
+</div>
+<p>This section provided only a brief overview of the rendering pipeline, so if this is your first encounter with these concepts, it’s perfectly normal to experience some initial confusion. However, dont worry! We will revisit each of these topics in the following sections and upcoming tutorials to provide detailed explanations.</p>
+<br>
+</section>
+<section id="resources-management">
+<h2>Resources management<a class="headerlink" href="#resources-management" title="Link to this heading">#</a></h2>
+<p>In DirectX, we can create several types of resources through the device object (that is, through a pointer to the <strong>ID3D12Device</strong> interface). While the initial tutorial covered creating a command queue, a command allocator, and a command list, we can also produce different types of buffers (constant, typed, structured, raw) and textures (1D, 2D, 3D), or even arrays of these resources.</p>
+<p>Typically, we call the <strong>ID3D12Device::CreateCommittedResource</strong> method whenever we want to create a buffer or a texture. The arguments passed to <strong>CreateCommittedResource</strong> specify where to allocate memory space, the type of resource to create, its initial state, and a pointer to a memory block that will receive the interface pointer to the created resource for referencing it within our application. With <strong>CreateCommittedResource</strong> we can also create typeless resources if format information is missing. However, when you want the GPU to access a typeless resource, you need to bind a view that fully describes it; otherwise, the GPU might have no idea how to access it.</p>
+<section id="memory">
+<h3>Memory<a class="headerlink" href="#memory" title="Link to this heading">#</a></h3>
+<p>GPUs have access to four types of memory:</p>
+<ul class="simple">
+<li><p><strong>Dedicated video memory</strong>: this is memory reserved\local to the GPU (VRAM). It’s where we allocate most of the resources accessed by the GPU (through the shader programs).</p></li>
+<li><p><strong>Dedicated system memory:</strong> it is a part of the dedicated video memory. It’s allocated at boot time and used by the GPU for internal purposes. That is, we can’t use it to allocate memory from our application.</p></li>
+<li><p><strong>Shared system memory</strong>: this is CPU-visible GPU memory. Usually, it is a small part of the GPU local memory (VRAM) accessible by the CPU through the PCI-e bus, but the GPU can also use CPU system memory (RAM) as GPU memory if needed. Shared system memory is often used as a source in copy operations from shared to dedicated memory (that is, from CPU-accessible memory to GPU local memory) to prevent the GPU from accessing resources in memory via the PCI-e bus. It’s write-combine memory from the CPU point of view, which means that write operations are buffered up and executed in groups when the buffer is full, or when important events occur. This allows to speed up write operations, but read ones should be avoided as write-combine memory is uncached. This means that if you try to read this memory from your CPU application, the buffer that holds the write operations need to be flushed first, which makes reads from write-combine memory slow.</p></li>
+<li><p><strong>CPU system memory</strong>: it’s system memory (RAM) that, like shared system memory, can be accessed from both CPU and GPU. However, CPUs can read from this memory without problems as it is cached. On the other hand, GPUs need to access this memory through the PCI-e bus, which can be a bottleneck compared to the direct memory access of CPUs through the system memory bus.</p></li>
+</ul>
+<figure class="align-default">
+<img alt="../../_images/pci.e-bus.png" src="../../_images/pci.e-bus.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have an integrated graphics card or use a software adapter, there is no distinction between the four memory types mentioned above. In that case, both the CPU and GPU will share the only memory type available: system memory (RAM). This implies that your GPU may have limited and slower memory access.</p>
+</div>
+<p>When the <strong>CreateCommittedResource</strong> function is invoked, we need to specify the type of memory where space should be allocated for the resource we want to create. You can indicate this information in two ways: abstract and custom. In the abstract way, we have three types of memory heaps that allow abstraction from the current hardware.</p>
+<ul class="simple">
+<li><p><strong>Default heap</strong>: memory that resides in dedicated video memory.</p></li>
+<li><p><strong>Upload heap</strong>: memory that resides in shared video memory.</p></li>
+<li><p><strong>Readback heap</strong>: memory that resides in CPU system memory.</p></li>
+</ul>
+<p>Therefore, using the abstract approach, regardless of whether you have a discrete GPU (that is, a dedicated graphics card) or an integrated one, physical memory allocations are hidden from the programmer.</p>
+<p>On the other hand, if you want different allocations based on the type of hardware, you can explore the custom way, which allows you to specify the caching properties and the memory pool where you want to allocate space. However, we won’t delve into the details here, as we will mostly use the abstract way to allocate both CPU-visible and GPU-visible memory in the upcoming tutorials.</p>
+<p>A resource is considered resident in memory when it is accessible by the GPU. Typically, when you create a resource with <strong>CreateCommittedResource</strong>, you allocate an amount of GPU-visible memory large enough to contain the resource. At that point, the resource is resident in memory and remains so until it is destroyed (or explicitly evicted from memory).</p>
+</section>
+<section id="views-and-descriptors">
+<h3>Views and descriptors<a class="headerlink" href="#views-and-descriptors" title="Link to this heading">#</a></h3>
+<p>As mentioned earlier, a resource can be created in a generic format, and a view is an instance of a hardware-specific type that can be bound to the rendering pipeline to fully describe a resource to the GPU. In other words, we use views to bind resources to resource declarations in shader programs (more on this later). We can create a view to a resource with one of the <strong>Create*View</strong> methods. Each of these methods creates a view to a resource from the information passed as an argument, and stores the view in the descriptor passed in the last parameter (as a CPU descriptor handle). Remember that descriptor heaps must be CPU visible because we need to store views in descriptors.</p>
+<p>Since views hold hardware-specific information for different resource types, the size of a view depends both on the hardware and the type of resource described. In the first tutorial, we have seen that to access descriptors in a descriptor heap, we offset CPU or GPU descriptor handle values. This means that not all descriptors can share the same descriptor heap. Also, not all views can be stored in descriptors and must be used directly in copy operations (more on this shortly). Below is a list of all views we can create.</p>
+<ul class="simple">
+<li><p>Constant buffer view (CBV)</p></li>
+<li><p>Unordered access view (UAV)</p></li>
+<li><p>Shader resource view (SRV)</p></li>
+<li><p>Samplers</p></li>
+<li><p>Render Target View (RTV)</p></li>
+<li><p>Depth Stencil View (DSV)</p></li>
+<li><p>Index Buffer View (IBV)</p></li>
+<li><p>Vertex Buffer View (VBV)</p></li>
+<li><p>Stream Output View (SOV)</p></li>
+</ul>
+<p>CBVs are used to describe constant buffers, SRVs are used to describe read-only textures and buffers, and UAVs are used to describe textures and buffers when both read and write access from multiple threads is needed.</p>
+<p>Samplers are not exactly views (you can think of them as self-contained objects). However, samplers are considered views because they are often managed in a similar way (more on this shortly).</p>
+<p>We have already encountered RTVs in the first tutorial. DSVs are used to describe depth-stencil buffers.</p>
+<p>IBVs and VBVs are used to describe index and vertex buffers, respectively.</p>
+<p>SOVs are used to describe stream output buffers (we will cover them in a later tutorial).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CBVs, SRVs, and UAVs are of the same size, allowing them to share the same descriptor heap. <br>
+CBVs, SRVs, UAVs, and samplers can be stored in descriptor heaps allocated in write-combined memory (possibly on CPU-visible GPU local memory) by setting <strong>D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE</strong> as a flag in the <strong>D3D12_DESCRIPTOR_HEAP_DESC</strong> structure passed as an argument to the <strong>CreateDescriptorHeap</strong> function. In this case, we refer to them as shader-visible descriptor heaps, indicating that the GPU needs to access their descriptors. However, samplers cannot share a descriptor heap with CBVs, SRVs, and UAVs, as they require a dedicated descriptor heap. <br>
+On the other hand, RTVs and DSVs must be stored in descriptor heaps allocated in CPU system memory by specifying <strong>D3D12_DESCRIPTOR_HEAP_FLAG_NONE</strong> as a flag in <strong>D3D12_DESCRIPTOR_HEAP_DESC</strong>. That’s why we call them non-shader-visible descriptor heaps to specify that the GPU doesn’t need to access their descriptors (as mentioned in the first tutorial, RTVs are copied in the command list, and the same applies to DSVs). Both RTVs and DSVs need a separate descriptor heap from all other views. CBVs, SRVs, and UAVs can also be stored in non-shader-visible heaps. <br>
+IBVs, VBVs, and SOVs don’t need to be stored in a descriptor (similarly to descriptors directly provided as root arguments, which will be described in more detail later). These descriptors, like RTVs and DSVs, are directly recorded into (copied to) the command list.</p>
+</div>
+</section>
+<section id="transitions">
+<h3>Transitions<a class="headerlink" href="#transitions" title="Link to this heading">#</a></h3>
+<p>Consider a scenario where a command list includes command to both read and write to a resource. While a GPU can execute commands in parallel, it should not start reading the texture until all ongoing write operations have completed to avoid data races.</p>
+<p>In Direct3D 12, we specify the intended use of a resource by transitioning its state. For example, if the GPU is to read a texture, that texture must be in a readable state. The programmer is responsible for recording transition barriers in the command list to inform the GPU about the intended usage of each resource, enabling it to determine which operations can be executed concurrently and which cannot.</p>
+<p>In Direct3D 12, most per-resource state is managed by our application with <strong>ID3D12GraphicsCommandList::ResourceBarrier</strong>. At any given time, a resource is in exactly one state, determined by the <strong>D3D12_RESOURCE_STATES</strong> flag provided to the <strong>ResourceBarrier</strong> function.</p>
+</section>
+<section id="root-signature">
+<span id="root-signature-label"></span><h3>Root signature<a class="headerlink" href="#root-signature" title="Link to this heading">#</a></h3>
+<p>Obviously, GPUs need a way to access resources stored in GPU heaps (default, upload or readback) from shader programs. For example, in HLSL (the language used to write shader programs) you can declare the following variable:</p>
+<div class="literal-block-wrapper docutils container" id="texture2d-example-code">
+<div class="code-block-caption"><span class="caption-number">Listing 19 </span><span class="caption-text">2D texture in shader code</span><a class="headerlink" href="#texture2d-example-code" title="Link to this code">#</a></div>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="kt">Texture2D</span><span class="w"> </span><span class="n">g_texture</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">t0</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>It may seem that <strong>g_texture</strong> is a variable that represents a 2D texture. That’s not entirely wrong, but we can be more precise. The Microsoft documentation states that resources declared in HLSL are bound to virtual registers within logical register spaces:</p>
+<p><strong>t</strong> – for shader resource views (SRV) <br>
+<strong>s</strong> – for samplers <br>
+<strong>u</strong> – for unordered access views (UAV) <br>
+<strong>b</strong> – for constant buffer views (CBV)</p>
+<p>The register attribute specifies that <strong>g_texture</strong> is bound to slot (virtual register) <span class="math notranslate nohighlight">\(0\)</span> of the register space <strong>t</strong>, which is reserved for SRVs. Therefore, this variable allows access to a descriptor that holds an SRV describing a 2D texture. The use of the term “register” is a bit misleading in this case. There are no registers or memory regions behind binding slots. A more appropriate term would have been <strong>linkname</strong>, indicating that a slot name is only used to link descriptors in memory and resource declarations in HLSL. In this case, we are using the string <strong>t0</strong> to bind a descriptor stored in a GPU heap (maybe included in a descriptor heap or in a command list) to a resource declaration in a shader program.</p>
+<p>That said, the image below illustrates the general idea: we can bind descriptors in memory to variables declared in the shader code by associating both a root signature and a shader-visible descriptor heap with the command list. Now, we are elaborating further on this general idea.</p>
+<figure class="align-default">
+<img alt="../../_images/root-signature.png" src="../../_images/root-signature.png" />
+</figure>
+<p>Once the resources and their corresponding descriptors have been created (on the CPU timeline), we can associate a structure called root signature to the command list. The root signature acts like a function signature in C\C++: it describes the types of the input and output parameters. In other words, the root signature defines the data types that the shader programs of all programmable stages should expect both as input and output data through the resource variables declared in the HLSL code (that is, what they need to read and\or write). More specifically, a root signature is an array of root parameters that describe the types of descriptors we wish to bind to the pipeline (or rather, to the resource variables declared in the shader code of the programmable stages of the pipeline), along with the corresponding binding slots (virtual registers), so that it is possible to associate root parameters with variables in HLSL.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Similar to a function signature, a root signature only describes the types of the descriptors. The actual descriptors need to be passed as root arguments to the root parameters by recording specific commands (dedicated to this purpose) in the command list.</p>
+</div>
+<p>There are three types of root parameters:</p>
+<ul class="simple">
+<li><p><strong>Root constants</strong>: 32-bit constants inlined in the root arguments. The size of each root constant in the root signature is 1 DWORD.</p></li>
+<li><p><strong>Root descriptors</strong>: descriptors inlined in the root arguments. Mainly used for descriptors that are frequently accessed and that specifically describes buffers (i.e., not textures). The size of each root descriptor in the root signature is 2 DWORD.</p></li>
+<li><p><strong>Root descriptor tables</strong> (also called <strong>descriptor tables</strong>, or <strong>root tables</strong>): pointers to a set of contiguous descriptors in a shader-visible descriptor heap associated with the command list. The size of each root descriptor table in the root signature is 1 DWORD.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Root constants show up as a constant buffer in the shader programs. This means you still have to define the corresponding type\structure in the shader code (refer to the next note). However, using root constants, you don’t need to create a constant buffer and the related view to be bound to the pipeline, as the constant buffer data is passed to the GPU directly in the root argument. We will return to root constants in a later tutorial.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Root descriptors are not really descriptors. They only take 2 DWORD to store the GPU virtual address of the corresponding resource. That’s why you can only use them for buffers: GPUs need more information to access textures (size, type, format, etc.). As we will see in an upcoming tutorial, if a buffer holds one or more elements of a user defined type, this needs to be fully defined in the HLSL code, so a GPU can access them by only knowing the starting address of the buffer. However, it’s up to the programmer to not access the buffer out of bounds.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Root tables are convenient when you want to bind sets of descriptors to arrays of resources declared in HLSL. A root table just stores a 32-bit value (1 DWORD) representing the byte offset of a set of contiguous descriptors from the start of a shader-visible descriptor heap associated with the command list. Also, a root table allows to bind different types of descriptors, provided that they are contiguous in a descriptor heap.</p>
+</div>
+<p>The figure below is an example of a simple root signature. The root parameter at index 0 is a collection of four root constants (as <strong>float4</strong> is a structure of four <strong>float</strong> of 1 DWORD each). The root parameter at index 3 is a root descriptor that holds the GPU virtual address of a resource in a GPU heap. The root parameters with indices 1 and 2 are root descriptor tables. As you can see, the descriptor table at index 1 is a set of five contiguous descriptors divided into three ranges of descriptors with different types (2 SRVs, 2 CBVs, and 1 UAV). When we pass a root argument by recording the dedicated command in a command list, we must also specify the index of the corresponding root parameter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Binding slots are specified both for root constants and root descriptors. However, for root tables, they are specified at a range level. Additional information will be provided in an upcoming tutorial, when we cover root tables in more detail.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/rs-sample.png" src="../../_images/rs-sample.png" />
+</figure>
+<p>In the figure below, you can see that for root constants, there is no indirection. This means that the shaders can read the values directly from the root arguments passed at command list recording time. For root descriptors, there is a level of indirection, since they contain GPU virtual addresses to resources in GPU heaps. Lastly, with root descriptor tables, there is a double level of indirection, as they hold offsets to descriptors, which in turn hold GPU virtual addresses to resources.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Obviously, increasing the levels of indirection leads to increased complexity (i.e., longer time to access resources). However, it also allows for the efficient management of a larger set of descriptors with different types.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/indirection.png" src="../../_images/indirection.png" />
+</figure>
+<p>Static samplers deserve special mention as they are part of a root signature, but separated from the root parameters. Therefore, they do not have any cost in the size of a root signature. The management of static samplers is implementation-specific. However, some GPUs implicitly store static samplers in a descriptor heap hidden in reserved space, and automatically bind them to the related declarations in the shader code. This is why samplers are considered like other views. There are no downsides to taking advantage of the convenience of static samplers, so use them whenever possible, as you don’t need to explicitly create descriptor heaps and views.</p>
+<p>We must associate a root signature with a command list in order to set up a parameter space where root arguments can be mapped. As noted above, root arguments are passed to root parameters by recording dedicated commands in the command list. When the GPU executes these commands, the root arguments are stored in a root argument space, a memory region near the GPU core registers, so that a GPU can quickly reference them during the execution of a shader program. However, this fast memory region is limited in size. Fortunately, most GPUs can also spill to slower memory regions whenever the fast one is full.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you pass a root argument for a root parameter to draw an object A and then, in the same command list, you pass a different root argument for the same root parameter to draw an object B, the driver may need to copy the whole memory region where the root arguments are stored. However, if the root arguments are split into fast and slow memory regions, the driver can only copy the region of memory where the new root arguments reside. This allows to execute drawing commands in parallel, where each draw references the proper memory region of root arguments.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The maximum size of a root signature is 64 DWORDs. However, this is more a suggestion (rather than a rule) to keep in mind that smaller root signatures allow for the root arguments to be stored exclusively in the fast memory region. The documentation also recommends sorting root parameters (within the root signature) from most frequently changing to least frequently changing. In other words, root parameters that receive different root arguments within the same command list should be placed before root parameters that remain static. This approach provides the driver with a better chance of only copying root arguments to the fast memory region (which is more efficient to access).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Changing the root signature associated with a command list is relatively inexpensive. However, this invalidates the current root arguments, which require re-setting. Unfortunately, this final operation is more expensive, so minimize the number of root signature changes. <br>
+Changing a shader-visible descriptor heap associated with a command list can be expensive, as the GPU must first execute all the pending work that depends on the currently bound shader-visible descriptor heap. Therefore, whenever possible, set a shader-visible descriptor heap once, after creating the command list.</p>
+</div>
+<section id="root-signature-version">
+<h4>Root signature version<a class="headerlink" href="#root-signature-version" title="Link to this heading">#</a></h4>
+<p>Microsoft continuously updates the design of the root signature to enable more hardware optimizations by the drivers.</p>
+<p>Root Signature version 1.0 allows descriptors in a descriptor heap, and\or resources they point at, to be freely changed by applications any time that command lists referencing them are in flight on the GPU. However, this flexibility in changing descriptors and the related resources is paid for with a poor optimization.</p>
+<p>Root version 1.1 lets drivers produce more efficient memory accesses by shaders if they know the promises an application can make about the static nature of descriptors and resources they point to during command list recording and execution. For example, drivers could remove a level of indirection for accessing a descriptor in a heap by converting a descriptor table into a root descriptor if both the descriptor table and the resource it points to are found to be static.</p>
+<p>We can make promises about the static nature of descriptors (in a descriptor heap) and/or data they point to by setting some flags during the creation of the related root descriptor tables. <br>
+Unless otherwise indicated (that is, if no flag is specified), using root signature version 1.1 will set descriptors to be static by default. <br>
+As for the data they point to, it depends on the type of descriptor. CBVs and SRVs data are <strong>DATA_STATIC_WHILE_SET_AT_EXECUTE</strong> by default, which means the driver assumes that the resource pointed to by a descriptor can change up until the command list starts executing and stays unchanged for the rest of the execution. UAVs data are <strong>DATA_VOLATILE</strong> by default, which means the driver assumes the resources pointed to by a descriptor to be editable both during command list recording and execution. <br>
+You can explicitly set a descriptor to <strong>DESCRIPTORS_VOLATILE</strong>, which means the driver assumes descriptors can change during command list recording and stay unchanged for the rest of the execution. <strong>DESCRIPTORS_VOLATILE</strong> and <strong>DATA_VOLATILE</strong> are the only supported behaviors of Root Signature version 1.0. That’s why the driver can’t make assumptions about the static nature of descriptors and data.</p>
+<br>
+</section>
+</section>
+</section>
+<section id="the-pipeline-state">
+<h2>The Pipeline State<a class="headerlink" href="#the-pipeline-state" title="Link to this heading">#</a></h2>
+<p>The pipeline state defines the behavior\setup of every stage in the pipeline when we are going to draw something. We can set the state of both configurable and programmable stages in a single object called the pipeline state object (PSO), which describes most of the state of the pipeline. A PSO is a unified pipeline state object that is immutable after creation (you have to create a new one to define a different pipeline state). A quick summary of the states that can be set in a PSO includes:</p>
+<ul class="simple">
+<li><p>The bytecode for all shader programs (that defines the states of programmable stages).</p></li>
+<li><p>The input vertex format.</p></li>
+<li><p>The primitive topology type (point, line, triangle, patch).</p></li>
+<li><p>The blend state, rasterizer state and depth stencil state.</p></li>
+<li><p>The depth stencil and render target formats, as well as the render target count.</p></li>
+<li><p>Multi-sampling parameters.</p></li>
+<li><p>A streaming output buffer.</p></li>
+<li><p>The root signature.</p></li>
+</ul>
+<p>We will cover each of these points in more detail both later and in upcoming tutorials. <br>
+As mentioned earlier, while most of the pipeline state is configured using a PSO, certain states need to be set directly in the command list. The following list highlights the states that must be configured directly in a command list.</p>
+<ul class="simple">
+<li><p>Resource bindings (vertex and index buffers, render target, depth-stencil buffer, descriptor heaps).</p></li>
+<li><p>Viewport and Scissor rectangles.</p></li>
+<li><p>Blend factors.</p></li>
+<li><p>The depth stencil reference value.</p></li>
+<li><p>The input-assembler primitive topology order and adjacency type (line list, line strip, line strip with adjacency data, etc.).</p></li>
+</ul>
+<p>Regarding the first point, recall that IBVs, VBVs, RTVs, and DSVs are copied into the command list. Also, we can associate a shader-visible descriptor heap to a command list. We will revisit the remaining points both in this tutorial and upcoming ones.</p>
+<p>To set the part of the pipeline state defined within a PSO, we record a dedicated command in the command list with <strong>ID3D12GraphicsCommandList::SetPipelineState</strong>. Alternatively, we can set the same state during the creation or reset of a command list with <strong>ID3D12Device::CreateCommandList</strong> and <strong>ID3D12GraphicsCommandList::Reset</strong>, respectively. The result is the same: a command (in the command list) that sets the pipeline state. Either way, we pass a PSO as an argument. If no PSO is specified in <strong>CreateCommandList</strong>, a default initial state is used. Then, we can use <strong>SetPipelineState</strong> to change the PSO associated to the command list. <br>
+Therefore, all of the pipeline state is recorded in a command list, and none of the pipeline state that was set by previously executed command lists will be inherited. Additional information on pipeline state inheritance will be provided in the next tutorial.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The documentation states that, ideally, the same root signature should be shared by more than one PSO whenever possible. This implies that we should design the root signature to be as general as possible. The last sentence suggests that root signatures could easily become large structures, seemingly in contrast with the earlier emphasis on the need for small root signatures. However, the key is always to find the right balance for the specific application on which we are working.</p>
+</div>
+<p>We set both a PSO and a root signature in the command list so that the GPU can use them to define (most of) the pipeline state and the types of resources to bind to the pipeline (recall that non-PSO states are individually set in the command list). For binding purposes, we may also need to set a couple of shader-visible descriptor heaps to the command list – one for CBVs\SRVs\UAVs and another for dynamic samplers, since samplers cannot share a descriptor heap with other views. This setup allows us to bind sets of descriptors in a descriptor heap through root descriptor tables in the root signature.</p>
+<p>When recording a drawing command in a command list, it’s important that the root signature stored in the PSO associated with (recorded in) the command list matches the one directly associated with the command list. Failure to do so results in undefined behavior. As emphasized earlier, root signatures should be kept as small as possible while still being large enough to be shared by multiple PSOs. This enables switching between PSOs without changing the root signature associated with the command list, which would otherwise invalidate the root arguments.</p>
+<p>We create a PSO with <strong>ID3D12Device::CreateGraphicsPipelineState</strong>,  which requires a <strong>D3D12_GRAPHICS_PIPELINE_STATE_DESC</strong> as a parameter. This structure describes a pipeline state object, meaning that we need to set its fields to define the part of pipeline state within a PSO, such as bytecode of the shaders, root signature, and so on. When we call <strong>CreateGraphicsPipelineState</strong> to create a PSO, the driver compiles the bytecode in machine code executable by the GPU. The driver also uses the root signature inside the PSO to embed the traversal details in the machine code to let the GPU know how to access resources (through the root arguments specified in the command list).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While we won’t delve into the driver’s implementation-specific details regarding the translation of bytecode to GPU machine code, we can shed some light on the traversal details embedded in the machine code. <br>
+Regarding root constants, a plausible implementation might involve loading them directly into registers, allowing the GPU to access the associated values without any additional memory reads during shader execution. <br>
+For root descriptors, an implementation could specify loading GPU virtual addresses for the corresponding resources into registers. In this case, the GPU would need to read from memory to access them, introducing a level of indirection. <br>
+In the case of root tables, an implementation might load the address of the currently bound shader-visible descriptor heap into one register and the byte offset of a set of descriptors into another register. This would require the GPU to read from memory twice – once to obtain a descriptor and a second time to access the related resource, resulting in two levels of indirection. <br>
+At first glance, one might assume that root constants would always be the optimal choice. Unfortunately, GPUs have a limited number of registers, and if you use an excessive number of root constants, the driver might need to spill them to memory, effectively introducing a level of indirection.</p>
+</div>
+<p>At this point, you might question the necessity of specifying the root signature twice — both in the PSO and the command list. In simpler terms, if the root signature in the PSO and the command list must match, couldn’t the command list simply retrieve this information from the associated PSO? The key distinction lies in the purpose of the root signature in each context. The PSO uses the root signature only for compiling the bytecode, while a command list uses the root signature to establish the parameter space, enabling the mapping of root arguments to root parameters. Furthermore, we might set root arguments before binding a PSO to a command list. Consequently, the parameter space must be configured even in the absence of a PSO.</p>
+<p>Once more, don’t be concerned if things seem a bit unclear right now. The upcoming four sections will delve deeply into the pipeline stages used by <strong>D3D12HelloTriangle</strong>, the sample discussed in this tutorial that renders a triangle on the render target. Additionally, in the final section, we’ll review the sample’s source code, offering a practical application of the theoretical concepts discussed thus far. By the end of this tutorial, you’ll have a foundational understanding of the rendering pipeline and how to use it for rendering on the render target.</p>
+<br>
+</section>
+<section id="the-input-assembler">
+<h2>The Input Assembler<a class="headerlink" href="#the-input-assembler" title="Link to this heading">#</a></h2>
+<p>The input assembler is the first stage of the rendering pipeline. It assembles primitives (points, lines, triangles) from a couple of user-defined arrays (known as vertex and index buffers) and passes those primitives to the vertex shader, vertex by vertex. It’s a fixed-function stage, so we can only set up its state. In particular, we need to bind at least an array of vertices (the vertex buffer) and, optionally, an array of indices (the index buffer) that describe, primitive by primitive, one or more meshes we want to render. As we’ll explore in this section, the input assembler requires additional information to execute its task effectively.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The input assembler doesn’t actually assemble primitives from the vertex buffer. It simply passes vertex data to the vertex shader in a specific order, determined by the input assembler state, which is stored both in the PSO and directly in the command list (more on this will be discussed shortly). As a result, the vertex shader will receive and process, one by one, the vertices of each primitive described in the vertex buffer, in the specific order designated by the input assembler. However, remember that GPUs can run the vertex shaders for vertices of multiple primitives simultaneously in parallel.</p>
+</div>
+<section id="meshes">
+<h3>Meshes<a class="headerlink" href="#meshes" title="Link to this heading">#</a></h3>
+<p>A mesh is a geometrical structure composed of polygons\primitives (often triangles) which are defined by their vertices. Regardless of whether it is a complex model made with graphic modeling tools such as 3ds Max or Blender, or a straightforward cube created programmatically, the underlying structure used to represent it in memory is the same: an array of vertices (known as the vertex buffer) that describes, vertex by vertex, the primitives that compose the mesh. Therefore, it is useful to understand what vertices are and how they can be organized in memory as a vertex buffer.</p>
+<figure class="align-default">
+<img alt="../../_images/meshes.png" src="../../_images/meshes.png" />
+</figure>
+</section>
+<section id="vertex-buffer">
+<h3>Vertex buffer<a class="headerlink" href="#vertex-buffer" title="Link to this heading">#</a></h3>
+<p>In computer graphics, a vertex can be considered as a structure whose fields describe important attributes of the vertex, such as position, color, and so on. A vertex buffer is simply a buffer that contains an array (that is, a contiguous collection) of vertices.</p>
+<figure class="align-default">
+<img alt="../../_images/VB.png" src="../../_images/VB.png" />
+</figure>
+<p>Unfortunately, the vertex buffer illustrated in the image above only represents the logical representation from our point of view, which reflects how we expect the input assembler to interpret the vertex buffer. Indeed, if we were to bind an array of vertices without providing additional information, the input assembler would have no clue about how to interpret the data in the buffer. Essentially, the vertex buffer, on its own, is a straightforward collection of contiguous, generic data. This means that the input assembler cannot determine the number of attributes contained in each vertex, or their types, by simply reading from the vertex buffer. This makes it impossible for the input assembler to identify the end of a vertex or the start of a new one in the vertex buffer. Therefore, we must also provide the memory layout of the vertices in the vertex buffer as information to the input assembler. We will discuss this aspect in detail shortly.</p>
+<p>The input assembler has 16 slots (from 0 to 15) where you can bind views to buffers of homogeneous (uniform, similar) attributes. This enables the separation of attributes of vertices into distinct buffers.</p>
+<figure class="align-default">
+<img alt="../../_images/ia-1.jpg" src="../../_images/ia-1.jpg" />
+</figure>
+<p>However, most of the time we will bind a single buffer of heterogeneous (various, mixed) attributes for all vertices: the whole vertex buffer.</p>
+<figure class="align-default">
+<img alt="../../_images/ia-2.jpg" src="../../_images/ia-2.jpg" />
+</figure>
+<p>Separated buffers of homogeneous attributes are useful if you need to only access some of the attributes. In that case, you can get better cache and bandwidth performance with separated buffers of homogeneous attributes, which allows cache lines and registers to only fetch the relevant data. Anyway, we don’t need to worry about these low-level details right now.</p>
+</section>
+<section id="input-layout">
+<span id="input-layout-label"></span><h3>Input layout<a class="headerlink" href="#input-layout" title="Link to this heading">#</a></h3>
+<p>The input layout holds part of the state of the input assembler. In particular, it describes the vertex layout to let the input assembler know how to access the vertex attributes. Also, the input layout specifies, for each vertex attribute, the semantic name (to identify the attribute), a semantic index (to append to the semantic name in case there were more attributes with the same semantic name; that is, to distinguish them from each other), the format, the input slot, the offset (in bytes) from the start of the vertex, and other information. That way, the input assembler knows how to convey vertex attributes to the vertex shader through input registers (more on this shortly).</p>
+</section>
+<section id="primitive-topologies">
+<h3>Primitive topologies<a class="headerlink" href="#primitive-topologies" title="Link to this heading">#</a></h3>
+<p>In order to assemble primitives, the input assembler needs to know their basic type (point, line, triangle or patch) and topology, which allows to define a relationship between the primitives defined in a vertex buffer (connection, adiacency, and so on). We must provide this information, along with other details, to ensure that the input assembler properly interprets the vertex buffer data. The following image shows the main primitive types that the input assembler can generate from the vertex buffer data.</p>
+<figure class="align-default" id="primitive-types">
+<img alt="../../_images/topology.png" src="../../_images/topology.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Primitive types</span><a class="headerlink" href="#primitive-types" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img alt="" src="../../_images/primitive-vertex.png" /></p></td>
+<td><p>Vertex</p></td>
+<td><p>A point in 3D space</p></td>
+</tr>
+<tr class="row-odd"><td><p><img alt="" src="../../_images/primitive-winding-direction.png" /></p></td>
+<td><p>Winding Direction</p></td>
+<td><p>The vertex order when assembling a primitive. Can be clockwise or counterclockwise</p></td>
+</tr>
+<tr class="row-even"><td><p><img alt="" src="../../_images/primitive-leading-vertex.png" /></p></td>
+<td><p>Leading Vertex</p></td>
+<td><p>The first non-adjacent vertex in a primitive that contains per-constant data.</p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<p><strong>Point List</strong> indicates a collection of vertices that are rendered as isolated points. The order of the vertices in the vertex buffer is not important as it describes a set of separated points.</p>
+<p><strong>Line List</strong> indicates a collection of line segments. The two vertices that represent the extremes of each line segment must be contiguous in the vertex buffer.</p>
+<p><strong>Line Strip</strong> indicates a connected series of line segments. In the vertex buffer, the vertices are ordered so that the first vertex represents the starting point of the first segment of the line strip, the second vertex represents both the end point of the first segment and the starting point of the second segment, and so on.</p>
+<p><strong>Triangle List</strong> indicates a series of triangles that make up a mesh. The three vertices of each triangle must be contiguous in the vertex buffer, and in a specific order (clockwise or counterclockwise).</p>
+<p><strong>Triangle Strip</strong> indicates a series of connected triangles that make up a mesh. The three vertices of the i-th triangle in the strip can be determined according to the formula <span class="math notranslate nohighlight">\(\triangle_i=\{i,\quad i+(1+i\%2),\quad i+(2-i\% 2)\}\)</span>. <br>
+As you can see in <a class="reference internal" href="#primitive-types"><span class="std std-numref">Fig. 12</span></a>, this allows to have an invariant winding order (clockwise or counterclockwise) of the vertices of each triangle in the strip.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Adjacent primitives are intended to provide more information about a geometry and are only visible through a geometry shader. We will return to adjacent primitives in a later tutorial.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In general, vertex attributes are interpolated to ensure smooth transitions between adjacent pixels within a primitive (see <a class="reference internal" href="#attribute-interpolation-label"><span class="std std-ref">Attribute interpolation</span></a>). However, it is also possible to “nullify” interpolation (and smooth transitions) by specifying a constant value that is shared by all the vertices of a primitive. In order to assign constant per-primitive vertex attribute values, there must be a way to associate a vertex with a primitive. The vertex in a primitive which supplies its per-primitive constant data is usually defined as the “leading vertex”. A primitive topology can have multiple leading vertices, one for each primitive in the topology – indicated by the arrow starting from the leading vertex in <a class="reference internal" href="#primitive-types"><span class="std std-numref">Fig. 12</span></a>. The leading vertex for an individual primitive in a topology is the first non-adjacent vertex in the primitive. For example, in the triangle strip with adjacency illustrated in <a class="reference internal" href="#primitive-types"><span class="std std-numref">Fig. 12</span></a>, the leading vertices are 0, 2, 4, 6, etc. For the line strip with adjacency, the leading vertices are 1, 2, 3 etc. <br>
+Observe that adjacent primitives have no leading vertex. This means that there is no primitive data associated with adjacent primitives.</p>
+</div>
+</section>
+<section id="index-buffer">
+<h3>Index buffer<a class="headerlink" href="#index-buffer" title="Link to this heading">#</a></h3>
+<p>Consider the following image.</p>
+<figure class="align-default">
+<img alt="../../_images/poly-ib.png" src="../../_images/poly-ib.png" />
+</figure>
+<p>Here, we have a geometry composed of 8 primitives (triangles) and 9 vertices. However, the vertex buffer that describes this geometry as a triangle list contains 24 vertices with lots of repetitions.</p>
+<div class="literal-block-wrapper docutils container" id="vertex-buffer-code">
+<div class="code-block-caption"><span class="caption-number">Listing 20 </span><span class="caption-text">Vertex buffer</span><a class="headerlink" href="#vertex-buffer-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Vertex</span><span class="w"> </span><span class="n">octagon</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v1</span><span class="p">,</span><span class="w"> </span><span class="n">v2</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 0</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v2</span><span class="p">,</span><span class="w"> </span><span class="n">v3</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 1</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v3</span><span class="p">,</span><span class="w"> </span><span class="n">v4</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 2</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v4</span><span class="p">,</span><span class="w"> </span><span class="n">v5</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 3</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v5</span><span class="p">,</span><span class="w"> </span><span class="n">v6</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 4</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v6</span><span class="p">,</span><span class="w"> </span><span class="n">v7</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 5</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v7</span><span class="p">,</span><span class="w"> </span><span class="n">v8</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 6</span>
+<span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v8</span><span class="p">,</span><span class="w"> </span><span class="n">v1</span><span class="w">  </span><span class="c1">// Triangle 7</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>To avoid duplication in the vertex buffer, we can build an index buffer that describes the geometry as a triangle list by picking up vertices in the vertex buffer. For example,</p>
+<div class="literal-block-wrapper docutils container" id="index-buffer-code">
+<div class="code-block-caption"><span class="caption-number">Listing 21 </span><span class="caption-text">Index buffer</span><a class="headerlink" href="#index-buffer-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Vertex</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">v0</span><span class="p">,</span><span class="w"> </span><span class="n">v1</span><span class="p">,</span><span class="w"> </span><span class="n">v2</span><span class="p">,</span><span class="w"> </span><span class="n">v3</span><span class="p">,</span><span class="w"> </span><span class="n">v4</span><span class="p">,</span><span class="w"> </span><span class="n">v5</span><span class="p">,</span><span class="w"> </span><span class="n">v6</span><span class="p">,</span><span class="w"> </span><span class="n">v7</span><span class="p">,</span><span class="w"> </span><span class="n">v8</span><span class="w"> </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="n">UINT</span><span class="w"> </span><span class="n">indexList</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 0</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 1</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 2</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 3</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 4</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 5</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="c1">// Triangle 6</span>
+<span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="c1">// Triangle 7</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>Now, the vertex buffer only contains 9 vertices. Although we have repeated some vertices in the index buffer, it’s important to note that indices are usually stored as short integers (2 bytes), whereas vertices are complex structures that require more memory to be stored. Using an index buffer can help save memory space. However, since the vertex buffer used in this tutorial only contains 3 vertices to describe a triangle, we will not be using an index buffer. Anyway, an index buffer can be bound to the command buffer just like a vertex buffer. However, unlike a vertex buffer, it doesn’t require any additional information to be bound to the pipeline since it only contains integer values (that is, the input assembler knows how to interpret the data from an index buffer).</p>
+</section>
+<section id="system-generated-values">
+<h3>System-Generated Values<a class="headerlink" href="#system-generated-values" title="Link to this heading">#</a></h3>
+<p>In addition to the vertex attributes from the vertex buffer, the input assembler can also pass to the next stages some system-generated values, such as a primitive ID and/or a vertex ID. These values assist subsequent stages in identifying the primitives generated and the vertices processed by the input assembler.</p>
+<br>
+</section>
+</section>
+<section id="vertex-shader">
+<h2>Vertex Shader<a class="headerlink" href="#vertex-shader" title="Link to this heading">#</a></h2>
+<p>The vertex shader processes, one by one, the vertices of the primitives generated by the input assembler. For this purpose, the input assembler outputs vertex attributes to input variables declared in the vertex shader code. These input variables are associated with vertex attributes by using the same semantic names applied to vertex attributes in the input layout (as explained in <a class="reference internal" href="#input-layout-label"><span class="std std-ref">Input layout</span></a>).</p>
+<p>Typically, the vertex shader is responsible for transforming vertices to scale, rotate, or translate a mesh before passing the results to the next stage through output variables, which of course become input variables in that stage.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The image below shows a simplified design of a shader core, as exposed by the shader model, which abstract\hide the hardware details to expose the rendering pipeline to the programmer.</p>
+<figure class="align-default">
+<img alt="../../_images/shader-core.png" src="../../_images/shader-core.png" />
+</figure>
+<p>Binding slots (<strong>s#</strong>, <strong>b#</strong>, <strong>t#</strong> and <strong>u#</strong>) are used to associate resources in memory with variable declarations in the shader code, as discussed in <a class="reference internal" href="#root-signature-label"><span class="std std-ref">Root signature</span></a>.</p>
+<p>128-bit registers are used for input and output data (<strong>v#</strong> and <strong>o#</strong>), and for temporary data (<strong>r#</strong> and <strong>x#</strong>). Each register can be seen as a four 32-bit component vector (that’s why you see arrays of four squares in the image above). For example, a vertex shader can receive the position of a vertex (from the input assembler) in the input register <strong>v0</strong>, and the color in the input register <strong>v1</strong>. Then, it can transform the position using a temporary register and put the result in the output register <strong>o0</strong> to pass the data to the next stage. A shader core also provides shader registers (that are not shown in the illustration above) for constant buffer references (<strong>cb#</strong>), and input and output resource references (<strong>t#</strong> and <strong>u#</strong>). The symbol <strong>#</strong> is used because the number of registers of a certain type depends on the stage\shader type. In this context, a shader core is similar to a CPU core. However, unlike CPU programs, you will hardly write shader code in assembly language. Despite this, looking at the assembly code of shader programs is a crucial task in the optimization process to speed up the execution of your graphics applications. Observe that, as stated above, shader cores are just an abstraction of real hardware to “execute” bytecode instead of actual GPU instructions.</p>
+<p>An important thing to understand is that GPUs have no idea what pipelines, stages, and shader cores are, because they typically have hardware cores with 32-bit registers that execute the same instruction in parallel on scalar data within different threads. This is known as a SIMT (Single Instruction Multiple Threads) architecture. On the other hand, a rendering pipeline runs on shader cores, which provide an abstraction to enable a SIMD (Single Instruction Multiple Data) architecture. This means that each shader core can execute a single instruction on multiple (vector) data within a single thread. Also, a rendering pipeline is required a theoretical sequential processing of the primitives generated by the input assembler. However, in practice this restriction applies only when necessary. That is, a GPU can execute shaders in parallel on its cores for different primitives (in any order) until it needs to perform a task depending on the order of such primitives. We will return to these low-level details in later tutorials.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may wonder why we stated in <a class="reference internal" href="#root-signature-label"><span class="std std-ref">Root signature</span></a> that there are no registers or memory regions behind binding slots (virtual register) despite the existence of <strong>cb#</strong> registers for constant buffers (CBVs) and <strong>t#</strong> registers for shader resource views (SRVs), for example. The essence of that statement is that there are no hardware registers or GPU memory space behind slots. Indeed, remember that shader registers only exist in the context of the shader model, which abstracts real hardware. So, at the end, a slot is just a name used by the GPU for linkage purposes to dispatch resource references or actual data to GPU core registers.</p>
+</div>
+<p>The listing below shows an example of a vertex shader. As you can see, input variables are explicitly declared as parameters of the entry point. However, you have the option to include them within a structure. The same applies to output variables. If you are passing a single variable to the next stage, you can explicitly declare it as the return value of the entry point. However, if multiple output variables are involved, you must use a structure encompassing all the output variables.</p>
+<div class="literal-block-wrapper docutils container" id="vertex-shader-code">
+<div class="code-block-caption"><span class="caption-number">Listing 22 </span><span class="caption-text">Vertex shader</span><a class="headerlink" href="#vertex-shader-code" title="Link to this code">#</a></div>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="n">VSIntput</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">POSITION</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="n">VSOutput</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// data to output to the next stage</span>
+<span class="p">};</span>
+<span class="w"> </span>
+
+<span class="c1">// Explicitly declare the input vars as params of the entry point.</span>
+<span class="c1">// Therefore, the VSIntput struct is useless in this case.</span>
+<span class="n">VSOutput</span><span class="w"> </span><span class="n">VSMain</span><span class="p">(</span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">POSITION</span><span class="p">,</span><span class="w"> </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Use position and color to output the data that the next stage expects as input</span>
+<span class="p">}</span>
+
+<span class="c1">// Equivalent, but it uses the VSIntput struct</span>
+<span class="c1">// VSOutput VSMain( VSIntput )</span>
+<span class="c1">// {</span>
+<span class="c1">//     // use position and color to output data that the next stage expects as input</span>
+<span class="c1">// }</span>
+</pre></div>
+</div>
+</div>
+<p>If no optional stage is used between the vertex shader and the rasterizer, the vertex shader must also compute a 2D representation from the 3D vertex positions passed as input by the input assembler. The rasterizer requires this information that can be passed by the last pre-rasterizer programmable stage by associating the corresponding output variable with the system-value semantic <strong>SV_POSITION</strong>.</p>
+<figure class="align-default">
+<img alt="../../_images/3d-to-2d.png" src="../../_images/3d-to-2d.png" />
+</figure>
+<p>However, there’s no point in providing further details right now, as the sample examined in this tutorial will use a vertex buffer where the vertex positions are already in 2D and projected onto the projection window (more on this in the last section). Also, we don’t need to apply any transformations to the triangle we want to show on the screen. Therefore, the vertex shader used by the sample will operate as a simple pass-through. We will return to transformations and projections in later tutorials.</p>
+<br>
+</section>
+<section id="the-rasterizer">
+<h2>The Rasterizer<a class="headerlink" href="#the-rasterizer" title="Link to this heading">#</a></h2>
+<p>The rasterizer takes vertices of 2D primitives (projected onto the projection window), and passes to the next stage the pixels covered by these 2D representations of the original 3D primitives. For this purpose, the rasterizer first use the viewport to transform the 2D vertex positions to render target positions, so that it can consider them with respect to the space of the render target. At that point, the rasterizer can compute the pixels covered by the 2D primitives so that to each pixel corresponds a texel in the render target at the same location. Then, it uses the scissor to discard the pixels falling outside a rectangular region on the render target. As you can see in the image below, the viewport is represented as a rectangle jut like a scissor, so that we can select a region on the render target where to restrict the drawing operations (more details on the viewport will be provided in a later tutorial). Therefore, the viewport can be seen as a transformation to map\stretch the projection window onto a particular rectangle of the render target. On the other hand, the scissor rectangle can be seen as a filter to discard pixels.</p>
+<figure class="align-default" id="viewport-scissor">
+<img alt="../../_images/viewport-scissor.png" src="../../_images/viewport-scissor.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Viewport and scissor</span><a class="headerlink" href="#viewport-scissor" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The calculation the rasterizer performs to check if a 2D primitive in the render target space covers a pixel is made with respect to itsl center. In other words, a pixel is covered if a primitive covers its center. Additionally, if two or more primitives overlap, the rasterizer generates and passes several pixels for the same texel position in the render target. However, which pixel is actually stored in the render target and how it is stored depends on whether blending, or depth and stencil tests are enabled. Additional details about this topics will be provided in a later tutorial, when we discuss the Output-Merger stage.</p>
+<figure class="align-default">
+<img alt="../../_images/raster-task.png" src="../../_images/raster-task.png" />
+</figure>
+<p>In the image above, light grey and dark grey colors are used for distinguishing between pixels generated for adjacent primitives. For example, in the top center of the figure, only two pixels (the dark grey ones) belong to the upper triangle. Despite the edge shared by the two triangles passes through the center of four pixels, the rasterizer can decide they belong to the lower triangle. Fortunately, we don’t need to know the rules that govern the rasterizer’s decisions. We usually just set the rasterizer state and enjoy the result in the pixel shader.</p>
+<p>Behind the scene the rasterizer always passes to the pixel shader quads of <span class="math notranslate nohighlight">\(2\times 2\)</span> pixels. Therefore, even if a single pixel of a quad is covered by a 2D primitive, the other pixels of the quad will be passed as well, as illustrated in the image below. The reason for this behavior will be explained in another tutorial. However, we can anticipate that all the pixels in a single quad will be processed by pixel shaders executed in parallel, and multiple quads of <span class="math notranslate nohighlight">\(2\times 2\)</span> pixels can generally be processed in parallel.</p>
+<figure class="align-default">
+<img alt="../../_images/pixel-quad.png" src="../../_images/pixel-quad.png" />
+</figure>
+<p>It is worth mentioning that if a pixel is processed by a pixel shader but not covered by a primitive, it will be discarded when attempting to generate per-pixel data to write to the render target (which occurs when a value, such as a color, is returned by the pixel shader).</p>
+<section id="face-culling">
+<h3>Face culling<a class="headerlink" href="#face-culling" title="Link to this heading">#</a></h3>
+<p>If specified in the rasterizer state stored (which is part of the PSO), the rasterizer can selectively pass to the next stage only pixels covered by front or back face triangles. This can optimize the rendering process by eliminating the rendering of faces that are not visible, reducing the number of polygons that need to be processed and rendered.</p>
+<figure class="align-default">
+<img alt="../../_images/front-face-triangle.gif" src="../../_images/front-face-triangle.gif" />
+</figure>
+<p>The front face of a triangle is the face that is oriented towards the normal vector. This vector is perpendicular to the triangle and points away from its front face. The rasterizer receives the vertices of each primitive in a specific order, specified in the input assembler state based on the primitive type and topology, and can determine whether a triangle is back-facing or front-facing by checking the sign of the triangle’s area computed in render target space. In a later tutorial, we will see how to derive a formula to compute the signed area of a triangle and how it can be used to establish whether a triangle is back-facing or front-facing.</p>
+<p>The image below demonstrates the effect of setting the rasterizer state to cull the back face of triangles. In that case, the rasterizer will not generate any pixels for primitives showing their back face. This means that subsequent stages won’t process any pixels for those primitives, and you will see through them as if they were transparent.</p>
+<figure class="align-default">
+<img alt="../../_images/backface-culling.png" src="../../_images/backface-culling.png" />
+</figure>
+</section>
+<section id="attribute-interpolation">
+<span id="attribute-interpolation-label"></span><h3>Attribute interpolation<a class="headerlink" href="#attribute-interpolation" title="Link to this heading">#</a></h3>
+<p>We know that vertex attributes are data associated with vertices, but the rasterizer generates pixels from primitives. This raises a question: what color is a pixel inside a triangle? In other words, given the three vertices of a triangle storing color information, what is the color of a point within the triangle? Fortunately, the rasterizer can calculate this for us by interpolating the attributes of the vertices of a primitive using barycentric coordinates, and adjusting the result to account for the problems that arise when obtaining a 2D representation from a 3D primitive. Don’t worry if the last sentence seemed confusing. The rasterizer is a fixed-function stage, and we can simply welcome the result in the pixel shader without getting too caught up in the low-level details. However, the following image should help to illustrate why the rasterizer needs to fix the interpolation.</p>
+<figure class="align-default">
+<img alt="../../_images/perspective-correction.png" src="../../_images/perspective-correction.png" />
+</figure>
+<p>Consider an oblique line segment in 3D, defined by its two endpoints as vertices that hold both position and color attributes. If one vertex is black and the other is white, the center of the segment in 3D will appear gray. When this segment is projected onto the projection window, it will still appear as a line segment. However, if the rasterizer were to interpolate only the colors of the two projected endpoint vertices, the resulting gray pixel would be positioned at the center of the projected segment, rather than at the point where the center of the 3D segment is projected.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Interpolation also applies to depth values during the rasterization process. In other words, when the rasterizer generates pixels from primitives (e.g., triangles), it not only interpolates attributes like color, texture coordinates, and normals, but it also interpolates depth values.</p>
+</div>
+<br>
+</section>
+</section>
+<section id="pixel-shader">
+<h2>Pixel shader<a class="headerlink" href="#pixel-shader" title="Link to this heading">#</a></h2>
+<p>The pixel shader processes, one by one, the pixels sent by the rasterizer. It takes interpolated attributes as input (using registers <strong>v#</strong>) and produces per-pixel data as output (identified using the system-value semantic <strong>SV_Target</strong>), which can be stored in the render target at the corresponding position (i.e., at the corresponding texel in the render target). The pixel shader is typically used to compute per-pixel lighting and post-processing effects.</p>
+<p>However, the sample examined in this tutorial does not implement per-pixel lighting or any special effects. Rather, it simply uses the interpolated color received by the rasterizer as the per-pixel data returned by the pixel shader.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We are only drawing a single triangle at the center of the window’s client area, which cannot be occluded by any other geometries or meshes. This means that the pixels generated by the rasterizer for this triangle will be the only ones processed by the pixel shader. Furthermore, we will not enable blending, depth testing, or stencil testing in the OM stage. As a result, most of the per-pixel data output by the pixel shader will definitely be stored in the render target, as the corresponding pixels will be covered by the triangle. Regarding the remaining pixels (the discarded ones), as we know, GPUs typically process quads of pixels in parallel. However, pixels that correspond to pixels not covered by primitives but still processed by the pixel shader will be discarded when attempting to generate per-pixel data to write to the render target. Therefore, in the case of our sample, the per-pixel data sent in output by the pixel shader for the pixels in a quad corresponding to pixels not covered by the triangle will be simply discarded.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/ps-quad-process.png" src="../../_images/ps-quad-process.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If blending, depth testing, and stencil testing are disabled in the OM stage, per-pixel data returned by a pixel shader is always stored in the render target, unless the center of the corresponding pixel is not covered by a primitive, in which case the fragment is simply discarded by the fragment shader. <br>
+In this tutorial we won’t directly use the functionalities provided by the OM stage, except for setting the render target as the final output of the rendering pipeline. However, some blending information still needs to be defined in the PSO, at least to specify a bitmask controlling which components\channels of the texels in the render target can be written to (more on this in the next section).</p>
+</div>
+<p>By running the <strong>D3D12HelloTriangle</strong> sample, the one examined in this tutorial, you can verify that the colors of the pixels inside the triangle, as well as those on its edges, are interpolated from the colors associated with the three vertices that describe the triangle in the vertex buffer.</p>
+<figure class="align-default">
+<img alt="../../_images/interpolated-colors.png" src="../../_images/interpolated-colors.png" />
+</figure>
+<br>
+</section>
+<section id="d3d12hellotriangle-code-review">
+<h2>D3D12HelloTriangle: code review<a class="headerlink" href="#d3d12hellotriangle-code-review" title="Link to this heading">#</a></h2>
+<p>We can finally review the code of the sample.<br>
+The application class now includes a root signature, a Pipeline State Object (PSO), a vertex buffer, and both viewport and scissor rectangles. It’s important to note that the comment regarding <strong>ComPtr</strong> highlights the necessity of not releasing COM objects on the CPU timeline before the GPU has finished using the corresponding resources on its timeline.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellotriangle-code">
+<div class="code-block-caption"><span class="caption-number">Listing 23 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.h</span><a class="headerlink" href="#d3d12hellotriangle-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Note that while ComPtr is used to manage the lifetime of resources on the CPU,</span>
+<span class="c1">// it has no understanding of the lifetime of resources on the GPU. Apps must account</span>
+<span class="c1">// for the GPU lifetime of resources to avoid destroying objects that may still be</span>
+<span class="c1">// referenced by the GPU.</span>
+<span class="c1">// An example of this can be found in the class method: OnDestroy().</span>
+<span class="k">using</span><span class="w"> </span><span class="n">Microsoft</span><span class="o">::</span><span class="n">WRL</span><span class="o">::</span><span class="n">ComPtr</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloTriangle</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">D3D12HelloTriangle</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnInit</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnRender</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">FrameCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">        </span><span class="n">XMFLOAT4</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Pipeline objects.</span>
+<span class="w">    </span><span class="n">CD3DX12_VIEWPORT</span><span class="w"> </span><span class="n">m_viewport</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CD3DX12_RECT</span><span class="w"> </span><span class="n">m_scissorRect</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGISwapChain3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_swapChain</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_device</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandAllocator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandQueue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandQueue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12RootSignature</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rtvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12PipelineState</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12GraphicsCommandList</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// App resources.</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="p">;</span>
+<span class="w">    </span><span class="n">D3D12_VERTEX_BUFFER_VIEW</span><span class="w"> </span><span class="n">m_vertexBufferView</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Synchronization objects.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HANDLE</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Fence</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_fence</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT64</span><span class="w"> </span><span class="n">m_fenceValue</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadAssets</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">PopulateCommandList</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>As evident in the constructor of the <strong>D3D12HelloTriangle</strong> class (shown below), we will set the viewport and scissor rectangles to encompass the entire render target. This setup enables drawing on the entire back buffer (without stretching the image), while simultaneously discarding the pixels outside it (as they have no chance to be shown\mapped on the screen). Observe that, in Windows programming, a rectangle is often defined by specifying a starting point and a size.</p>
+<div class="literal-block-wrapper docutils container" id="d3d12hellotriangle-ctor-code">
+<div class="code-block-caption"><span class="caption-number">Listing 24 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#d3d12hellotriangle-ctor-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">D3D12HelloTriangle</span><span class="o">::</span><span class="n">D3D12HelloTriangle</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">DXSample</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_frameIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">m_viewport</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">width</span><span class="p">),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">height</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">m_scissorRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">width</span><span class="p">),</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">LONG</span><span class="o">&gt;</span><span class="p">(</span><span class="n">height</span><span class="p">)),</span>
+<span class="w">    </span><span class="n">m_rtvDescriptorSize</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>While the code of the <strong>LoadPipeline</strong> function remains unchanged from the previous sample (<strong>D3D12HelloWindow</strong>), the <strong>LoadAssets</strong> method introduces several additions, which will be carefully examined one by one.</p>
+<div class="literal-block-wrapper docutils container" id="hellotriangle-loadassets-code">
+<div class="code-block-caption"><span class="caption-number">Listing 25 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#hellotriangle-loadassets-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTriangle::LoadAssets</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Create an empty root signature.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">CD3DX12_ROOT_SIGNATURE_DESC</span><span class="w"> </span><span class="n">rootSignatureDesc</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rootSignatureDesc</span><span class="p">.</span><span class="n">Init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">signature</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3D12SerializeRootSignature</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rootSignatureDesc</span><span class="p">,</span><span class="w"> </span><span class="n">D3D_ROOT_SIGNATURE_VERSION_1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">error</span><span class="p">));</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateRootSignature</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferPointer</span><span class="p">(),</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferSize</span><span class="p">(),</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_rootSignature</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the pipeline state, which includes compiling and loading shaders.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vertexShader</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pixelShader</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="cp">#if defined(_DEBUG)</span>
+<span class="w">        </span><span class="c1">// Enable better shader debugging with the graphics debugging tools.</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">compileFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3DCOMPILE_DEBUG</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">D3DCOMPILE_SKIP_OPTIMIZATION</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">compileFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DCompileFromFile</span><span class="p">(</span><span class="n">GetAssetFullPath</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;shaders.hlsl&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;VSMain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vs_5_0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compileFlags</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vertexShader</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">));</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DCompileFromFile</span><span class="p">(</span><span class="n">GetAssetFullPath</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;shaders.hlsl&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;PSMain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ps_5_0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compileFlags</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pixelShader</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Define the vertex input layout.</span>
+<span class="w">        </span><span class="n">D3D12_INPUT_ELEMENT_DESC</span><span class="w"> </span><span class="n">inputElementDescs</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;POSITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32B32_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;COLOR&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32B32A32_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create the graphics pipeline state object (PSO).</span>
+<span class="w">        </span><span class="n">D3D12_GRAPHICS_PIPELINE_STATE_DESC</span><span class="w"> </span><span class="n">psoDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">InputLayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">inputElementDescs</span><span class="p">,</span><span class="w"> </span><span class="n">_countof</span><span class="p">(</span><span class="n">inputElementDescs</span><span class="p">)</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">pRootSignature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">();</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">VS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">vertexShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">pixelShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RasterizerState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_RASTERIZER_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">BlendState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_BLEND_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">DepthEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">StencilEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UINT_MAX</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PrimitiveTopologyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">NumRenderTargets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RTVFormats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_R8G8B8A8_UNORM</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateGraphicsPipelineState</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psoDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_pipelineState</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the command list.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommandList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_COMMAND_LIST_TYPE_DIRECT</span><span class="p">,</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_commandList</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Command lists are created in the recording state, but there is nothing</span>
+<span class="w">    </span><span class="c1">// to record yet. The main loop expects it to be closed, so close it now.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the vertex buffer.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define the geometry for a triangle.</span>
+<span class="w">        </span><span class="n">Vertex</span><span class="w"> </span><span class="n">triangleVertices</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.25f</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">-0.25f</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">vertexBufferSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">triangleVertices</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Note: using upload heaps to transfer static data like vert buffers is not </span>
+<span class="w">        </span><span class="c1">// recommended. Every time the GPU needs it, the upload heap will be marshalled </span>
+<span class="w">        </span><span class="c1">// over. Please read up on Default Heap usage. An upload heap is used here for </span>
+<span class="w">        </span><span class="c1">// code simplicity and because there are very few verts to actually transfer.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommittedResource</span><span class="p">(</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_HEAP_PROPERTIES</span><span class="p">(</span><span class="n">D3D12_HEAP_TYPE_UPLOAD</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_HEAP_FLAG_NONE</span><span class="p">,</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_DESC</span><span class="o">::</span><span class="n">Buffer</span><span class="p">(</span><span class="n">vertexBufferSize</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_RESOURCE_STATE_GENERIC_READ</span><span class="p">,</span>
+<span class="w">            </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_vertexBuffer</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Copy the triangle data to the vertex buffer.</span>
+<span class="w">        </span><span class="n">UINT8</span><span class="o">*</span><span class="w"> </span><span class="n">pVertexDataBegin</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CD3DX12_RANGE</span><span class="w"> </span><span class="n">readRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">        </span><span class="c1">// We do not intend to read from this resource on the CPU.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">Map</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readRange</span><span class="p">,</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">**&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pVertexDataBegin</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="n">pVertexDataBegin</span><span class="p">,</span><span class="w"> </span><span class="n">triangleVertices</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">triangleVertices</span><span class="p">));</span>
+<span class="w">        </span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">Unmap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Initialize the vertex buffer view.</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">BufferLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">GetGPUVirtualAddress</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">StrideInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">Vertex</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">SizeInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vertexBufferSize</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create synchronization objects and wait until assets have been uploaded to the GPU.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateFence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_FENCE_FLAG_NONE</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_fence</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">m_fenceValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create an event handle to use for frame synchronization.</span>
+<span class="w">        </span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateEvent</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">HRESULT_FROM_WIN32</span><span class="p">(</span><span class="n">GetLastError</span><span class="p">()));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Wait for the command list to execute; we are reusing the same command </span>
+<span class="w">        </span><span class="c1">// list in our main loop but for now, we just want to wait for setup to </span>
+<span class="w">        </span><span class="c1">// complete before continuing.</span>
+<span class="w">        </span><span class="n">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Firstly, we create an empty root signature (with no root parameters and static samplers) as the shader programs used by this sample don’t need to access any GPU memory resources (we will review the shader code at the end of the tutorial). We use the <strong>CD3DX12_ROOT_SIGNATURE_DESC</strong> structure, and its <strong>Init</strong> helper function, to specify root parameters, static samplers and flags. <br>
+The flag <strong>D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</strong> specifies we want to use the input assembler as a stage of the pipeline (indeed, we can also render without it, but we won’t cover the details here as it goes beyond the scope of this tutorial). On some GPUs, omitting this flag can save an additional DWORD in the root argument space to store our root arguments. Omit this flag if the input assembler is not required, though the optimization is minor.</p>
+<p>We create a serialized version of the root signature by calling <strong>D3D12SerializeRootSignature</strong>. This generates a memory blob of the root signature, which can then be used to create the root signature object using the <strong>CreateRootSignature</strong> function. The serialized version could be stored in a file on disk for quick loading, eliminating the need to recreate it each time. To store the serialized version in memory we use a pointer to a <strong>ID3DBlob</strong> interface. This interface is used to hold generic byte arrays called memory blob (whether it be object code or a simple vertex array; it’s up to the programmer to cast data to the correct type) that can be easily stored to disk using the <strong>D3DWriteBlobToFile</strong> function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Root signatures can also be defined directly within shader code. In this case, the shader code and the root signature are compiled together into the same memory blob.</p>
+</div>
+<p>In the <strong>D3D12HelloTriangle</strong> sample, we employ the root signature version 1.0, as specified by the second argument passed to <strong>D3D12SerializeRootSignature</strong>. In subsequent tutorials, we will switch to version 1.1. As a general rule, it’s always advisable to use the most recent root signature version unless you have a valid reason to use an older version.</p>
+<p>Then, we compile the shaders with <strong>D3DcompileFromFile</strong> to get the bytecode of each shader program as a memory blob. In this case,  we are using a vertex shader and a pixel shader as the only two programmable stages of the rendering pipeline to render a triangle on the screen. The <strong>D3DcompileFromFile</strong> function takes the path to the file containing the shader code (written in HLSL language), the entry point of the program, a shader target (specified as a string), some flags (as a bit field), and the address of the <strong>ID3DBlob</strong> interface pointer that the function will use to store the bytecode. It’s worth noting that you can have the code for multiple shaders (e.g., both vertex and pixel shaders) stored in a single file on disk.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Typically, a shader target is a string that identifies a specific shader model. The High-Level Shading Language (HLSL) is employed to program in the context of a shader model, which defines the architecture and capabilities of the shader cores and exposes the rendering pipeline to the programmer. Each shader model builds on the capabilities of the model before it, implementing more functionality with fewer restrictions. Consequently, by utilizing the latest shader models, developers can write more feature-rich shader programs in HLSL.</p>
+</div>
+<p>As mentioned earlier, the input layout is used to define part of the input assembler state. In this case, we specify that each vertex in the vertex buffer has two elements\attributes: position and color. <strong>POSITION</strong> and <strong>COLOR</strong> are the string used as semantic names in the input layout,  allowing the vertex shader to use the corresponding attributes through the input variables marked with the same semantic names (we will review the shader code at the end of the tutorial). Since we don’t have multiple attributes using the same semantic name, the semantic index is set to zero for both position and color. The format of the position attribute is an array of three 32-bit floating-point values (representing the x-, y-, and z-coordinates), while the format of the color attribute is an array of four 32-bit floats to store the corresponding RGBA values. <br>
+We have a single vertex buffer that contains the three vertices describing a triangle (i.e., we won’t use separate vertex buffers for each attribute), so we set zero as the binding slot for both position and color attributes. We set zero as byte offset from the start of the vertex structure for the position attribute, which is the first one. On the other hand, we set 12 for the byte offset of the second attribute (the color) as it follows the position attribute, which is an array of 3 <strong>float</strong>s (a <strong>float</strong> is a 4 bytes, so <span class="math notranslate nohighlight">\(3 * 4 = 12\)</span>). <strong>D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA</strong> specifies the attribute is per-vertex data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On the other hand, <strong>D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA</strong> specifies that the attribute is per-instance data. Indeed, you can draw more instances of the same mesh\geometry with a single draw command, in which case the last field of the corresponding<strong>D3D12_INPUT_ELEMENT_DESC</strong> structure specifies the number of instances to draw using the same per-instance data before advancing in the per-instance buffer by one element. We’ll cover instancing in a later tutorial.</p>
+</div>
+<p>Then, we create a PSO with <strong>CreateGraphicsPipelineState</strong>. <br>
+In addition to the input layout just created, we specify that the triangle will be used as the basic type to describe primitives in the vertex buffer. Together, these two pieces of information don’t cover the whole input assembler state, though. We still need to set the topology in the command list (more on this shortly). <br>
+We also set the root signature, the bytecode (for vertex and pixel shaders) and the format of the render target (sometimes it can be different from the format of the buffers in the swap chain; for example, when you want to draw on a different texture in order to implement some off-screen rendering techniques). <br>
+We set a default blend state, which disable blending, while enabling writing to all components\channels of the texels in the render target. This means that the per-pixel data returned by a pixel shader won’t be blended with the corresponding texel data in the render target but will simply be stored as it is. <br>
+Also, we disable depth and stencil tests as we have a single triangle that can’t be occluded. Blending information, depth and stencil tests, and the specification of a render target are all part of the output-merger stage, which will be covered in more detail in a later tutorial. <br>
+We set a default state for the rasterizer stage as well. This indicates we are interested in pixels covered only by front-face triangles, whose vertices are in clockwise order. <br>
+<strong>D3D12_GRAPHICS_PIPELINE_STATE_DESC::SampleMask</strong> is a bitmask controlling which samples are used to generate a final pixel during multisampling. Although we won’t use multiple samples per pixel for a while, we’ll still set it to 0xFFFFFFFF, indicating all of them, regardless of their number. <br>
+During the creation of a command list, we can pass a PSO as an argument to set the pipeline state. In this case, we pass the PSO just created as an argument to <strong>CreateCommandList</strong>.</p>
+<p>To create the vertex buffer, we first use the <strong>Vertex</strong> structure defined in the application class to build an array of vertices. Ineed, in this case, the vertex buffer is an array of only 3 vertices specified in clockwise order, with position and color as vertex attributes (in accordance with the input layout). As you may notice, the last coordinate of the position (the z-coordinate) is <span class="math notranslate nohighlight">\(0.0\)</span> for all three vertices. This means the triangle lies in the XY-plane, where also lies the projection window. This presents a significant advantage as we already have a 2D representation of the triangle, and we only need to ensure that it is within the projection window’s boundaries.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In a later tutorial we will see that a projected primitive is inside the 2D projection window (in front of the camera) as long as the x- and y-coordinates of its vertex positions are in the range <span class="math notranslate nohighlight">\([−1, +1]\)</span>, while the z-coordinate is in the range <span class="math notranslate nohighlight">\([0, 1]\)</span>. As you can see in the definition of the array of vertices, that’s exactly the case of our triangle, which will be rendered for sure.</p>
+</div>
+<p>Once the array of vertices is ready, we must transfer it to a GPU heap for use as a vertex buffer by the input assembler. <strong>ID3D12Device::CreateCommittedResource</strong> serves a dual purpose, creating a resource while also allocating sufficient GPU heap memory space to accommodate the entire resource. As discussed earlier, there are three types of GPU heaps where memory space can be allocated:</p>
+<ul class="simple">
+<li><p><strong>D3D12_HEAP_TYPE_DEFAULT</strong> specifies the default heap. This heap type experiences the most bandwidth for the GPU, but cannot provide CPU access.</p></li>
+<li><p><strong>D3D12_HEAP_TYPE_UPLOAD</strong> specifies the upload heap. This heap type has CPU access optimized for write operations, but might not experience the maximum amount of bandwidth for the GPU. Resources in this heap must be created with <strong>D3D12_RESOURCE_STATE_GENERIC_READ</strong> and cannot be changed away from this. Typical usages for upload heaps are:</p>
+<ul>
+<li><p>Initializing resources in a default heap with data from the CPU.</p></li>
+<li><p>Uploading dynamic data in a constant buffer that is read, repeatedly, for each vertex or pixel.</p></li>
+</ul>
+</li>
+<li><p><strong>D3D12_HEAP_TYPE_READBACK</strong> Specifies the readback heap. This heap type has CPU access optimized for reading data back from the CPU, but does not experience the maximum amount of bandwidth for the GPU.</p></li>
+<li><p><strong>D3D12_HEAP_TYPE_CUSTOM</strong> Specifies a custom heap. The application may specify the memory pool and CPU cache properties directly. To do so, the application is expected to understand the adapter architecture to make the right choice.</p></li>
+</ul>
+<p>Based on the definitions above, we should allocate memory space on the upload heap to write the vertex array from our application, and then use that memory space to initialize memory allocated on the default heap for use as the vertex buffer. This approach is recommended because, once the vertex buffer is initialized, we no longer need to access it from the CPU to modify the vertices (in this case, the vertex buffer is considered static). However, for the sake of simplicity, in this sample we will directly employ the vertex array in the upload heap as the vertex buffer. This means the GPU might access the vertex buffer through the PCI-e bus, which is slower. We will explore the use of other heaps in later tutorials.</p>
+<p><strong>ID3D12Resource::Map</strong> maps a GPU resource to the virtual address space of our C++ (CPU) application. It returns (as an output parameter) a pointer to the CPU-visible GPU heap memory where the resource is stored (so it only works for resources stored on upload and readback heaps). <br>
+In Direct3D, resource access occurs at a subresource granularity. In other words, a subresource is the smallest resource we can access in memory, except for tiled resources (which we will delve into in later tutorials). In this case, we use zero as an argument for the first parameter of <strong>Map</strong> to indicate that we want to map the entire vertex buffer — a simple resource with no subresources or a single subresource encompassing the entire resource; either interpretation is valid. <strong>Map</strong> also takes a pointer to a <strong>D3D12_RANGE</strong> structure as a parameter that describes the region of memory that the CPU might read. Since the resource is stored in the upload heap, which is write-combine memory, we shouldn’t read it from the CPU. Therefore, we initialize the range to <span class="math notranslate nohighlight">\([0,\ 0]\)</span> to specify that the CPU won’t read any data from the mapped resource (passing a null pointer instead would indicate the entire resource). The last parameter of <strong>Map</strong> is a pointer to a memory block that will receive the CPU virtual address of the mapped resource, as mentioned earlier.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pointer returned through the last parameter is never offset by any values in the <strong>D3D12_RANGE</strong> structure. This means that <strong>ID3D12Resource::Map</strong> always maps starting from the beginning of the specified subresource for writing purposes.</p>
+</div>
+<p>We use <strong>memcpy</strong> to copy the array of vertices to the CPU-mapped version of the vertex buffer (recall that we can do this as the upload heap is accessible by the CPU). Then, we invoke <strong>ID3D12Resource::Unmap</strong> to unmap the vertex buffer from the virtual address space of our application (as we don’t need it anymore).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to create a vertex buffer view, we need the address and size of the vertex buffer, as well as the size in bytes of each vertex (StrideInBytes field) to inform the input assembler when it is accessing a new vertex\entry in the vertex buffer. Remember that vertex buffer views are not stored in descriptors as they are recorded in (copied to) a command list when we want to bind them to the input assembler.</p>
+</div>
+<p>Lastly, we create a fence and call <strong>WaitForPreviousFrame</strong> at the end of <strong>LoadAssets</strong>. However, we don’t really need it here, as there is nothing in the command list right now. We will revisit this concept in a later tutorial.</p>
+<p>Now, we can review the code of the <strong>PopulateCommandList</strong> function.</p>
+<div class="literal-block-wrapper docutils container" id="hellotriangle-populatecommandlist-code">
+<div class="code-block-caption"><span class="caption-number">Listing 26 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#hellotriangle-populatecommandlist-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTriangle::PopulateCommandList</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Command list allocators can only be reset when the associated </span>
+<span class="w">    </span><span class="c1">// command lists have finished execution on the GPU; apps should use </span>
+<span class="w">    </span><span class="c1">// fences to determine GPU execution progress.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// However, when ExecuteCommandList() is called on a particular command </span>
+<span class="w">    </span><span class="c1">// list, that command list can then be reset at any time and must be before </span>
+<span class="w">    </span><span class="c1">// re-recording.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">()));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Set necessary state.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootSignature</span><span class="p">(</span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetViewports</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_viewport</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetScissorRects</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_scissorRect</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will be used as a render target.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">CD3DX12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">(</span><span class="n">m_rtvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">(),</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">,</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">OMSetRenderTargets</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Record commands.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">clearColor</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ClearRenderTargetView</span><span class="p">(</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">clearColor</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetPrimitiveTopology</span><span class="p">(</span><span class="n">D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetVertexBuffers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_vertexBufferView</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">DrawInstanced</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will now be used to present.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>In resetting the command list, we pass the PSO as an argument to set the pipeline state. Remember that if you pass a null pointer, a default pipeline state will be set, and we want to prevent this behavior as we have a custom PSO to set.</p>
+<p>Next, we associate the root signature with the command list using <strong>SetGraphicsRootSignature</strong> to set up the parameter space.</p>
+<p>We need to record some commands in the command list to set the pipeline states outside the PSO. <br>
+To complete the input assembler state, we bind the vertex buffer view using IASetVertexBuffers and set the topology with IASetPrimitiveTopology. In this case, we set TRIANGLELIST as we have a single triangle described with 3 contiguous vertices in the vertex buffer, in clockwise order. <br>
+The rasterizer state is completed by setting the viewport and scissor rectangles, which are the same size as the render target so that we can draw on the whole back buffer. <br>
+To complete the output-merger state, we call <strong>OMSetRenderTargets</strong>, which binds the current render target as the final output of the rendering pipeline.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some rendering techniques require writing different per-pixel data to different render targets. To avoid restarting the rendering pipeline each time we need to write to a different render target, Direct3D allows writing to multiple render targets simultaneously (we can select the render target to store a value in the shader code with <strong>SV_Target</strong>[n], where <em>n</em> is the index of the render target). This is why <strong>OMSetRenderTargets</strong> takes the number of render targets as the first parameter and an array of render targets as the second parameter. It also explains why we need to pass arrays of viewport and scissor rectangles to <strong>RSSetViewports</strong> and <strong>RSSetScissorRects</strong>, respectively. <br>
+The third parameter of <strong>OMSetRenderTargets</strong> is a boolean that specifies whether the handle passed as an argument to the second parameter is a pointer to a contiguous range of RTVs in a descriptor heap. In this case, we pass <strong>FALSE</strong>, indicating that the handle is the first of an array of handles to descriptors. In our case, it’s okay to pass <strong>FALSE</strong>, as we only have a handle to the RTV we want to bind. We will delve into these advanced topics in later tutorials.</p>
+</div>
+<p><strong>ID3D12GraphicsCommandList::DrawInstanced</strong>  instructs the GPU to draw one or more instances of a mesh. In this case, we will draw a single triangle. When the GPU executes this command, the rendering pipeline starts working. The first parameter of <strong>DrawInstanced</strong> is the number of vertices to draw per instance (that is, it is the number of vertices that make up the primitives of the mesh in the vertex buffer, so it’s also the number of times the vertex shader will be executed per instance; remember that the vertex shader processes the primitives one vertex at a time). The remaining parameters will be explained in a later tutorial.</p>
+<p>To conclude this section, let’s take a look at the shader code.</p>
+<div class="literal-block-wrapper docutils container" id="hellotriangle-shader-code">
+<div class="code-block-caption"><span class="caption-number">Listing 27 </span><span class="caption-text">HelloTriangle/shaders.hlsl</span><a class="headerlink" href="#hellotriangle-shader-code" title="Link to this code">#</a></div>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="n">PSInput</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_POSITION</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="w"> </span>
+
+
+<span class="n">PSInput</span><span class="w"> </span><span class="n">VSMain</span><span class="p">(</span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">POSITION</span><span class="p">,</span><span class="w"> </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PSInput</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">PSMain</span><span class="p">(</span><span class="n">PSInput</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_TARGET</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">color</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The <strong>PSInput</strong> structure declares both the output of the vertex shader and the (interpolated) input the pixel shader expects from the rasterizer. It is possible to have a single structure for both shaders as the per-pixel attributes are a simple interpolation of the per-vertex attributes (that is, we have the same type and number of attributes both per-vertex and per-pixel). <br>
+The system-value semantic <strong>SV_POSITION</strong> identifies a special position both in the output of the vertex shader and in the input of the pixel shader. In the context of a vertex shader, this semantic specifies the 2D representation of a 3D vertex position (recall that the rasterizer expects a 2D representation of 3D primitives). In the context of a pixel shader, <strong>SV_POSITION</strong> specifies the pixel position of the pixel currently processed (offset by 0.5 to get the position of its center). In other words, it identifies the render target coordinates of the pixel; remember that the pixel shader processes pixels related to texels in the render target, so the rasterizer can easily compute this value. However, the pixel position is rarely used in the pixel shader unless you need to implement some advanced rendering techniques. <br>
+The semantic <strong>COLOR</strong> is used to simply convey the color attribute of the vertices from the input assembler (remember how we built the vertex buffer and set up the input layout) up to the pixel shader, where it is returned as the per-pixel data to store in the render target (at the same position of the currently processed pixel).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may wonder why we need to use a <strong>float4</strong> to describe a position in the <strong>PSInput</strong> structure if we defined it as an array of three <strong>float</strong>s in the vertex buffer (for the x-, y- and z-coordinates). Actually, you can use a <strong>float3</strong> as the first input parameter (position) for the entry point of the vertex shader. However, you can’t change the type of the position field in the <strong>PSInput</strong> structure. We will see why in an upcoming tutorial.</p>
+</div>
+<p>The vertex shader specified within the PSO is executed for each vertex of the primitives generated by the input assembler. In this case, we have a vertex buffer containing just three vertices (red, green, and blue) that represent a single triangle. Therefore, the vertex shader runs three times (almost certainly in parallel). The vertex shader can perform a wide range of tasks, but it is typically used to obtain a sort of 2D representation of the 3D primitives that constitute the meshes in a 3D scene. Actually, we already have a 2D representation of the triangle we wish to render on the screen, so we’ll use the vertex shader as a straightforward pass-through to transfer data from the input assembler to the rasterizer. In accordance with the input layout, the entry point of the vertex shader is <strong>VSMain</strong>. The input layout also defines the semantics employed to transmit the vertex attributes so, in the vertex shader, we associate the same semantics to the input parameters of <strong>VSMain</strong> to indicate where we want to receive the corresponding attributes from the input assembler. Observe that we might have also defined a <strong>VSInput</strong> structure to pass position and color as parameters to <strong>VSMain</strong>, similar to how we pass a <strong>PSInput</strong> structure to <strong>PSMain</strong>.</p>
+<p>The rasterizer identifies the pixels occupied by the projected, 2D primitives (passed by the last pre-rasterizer shader through the <strong>SV_POSITION</strong> semantic) and then interpolates output vertex attributes (in this case color and position) for those pixels in order to convey the result to the pixel shader. Pixels covered by primitives outside the projection window are discarded to prevent the pixel shader from wasting time processing pixels that won’t be displayed on the screen. Remember that, in this case, the viewport and scissor are the same size as the render target, ensuring that the triangle will be rendered across the entire back buffer.</p>
+<p>The pixel shader processes, one by one, the pixels covered by the projected, 2D primitives processed by the rasterizer. In this case, we don’t need to perform any specific tasks or tests in the pixel shader, so we simply return the interpolated color as the per-pixel data to store in the render target at the corresponding position (that is, in the texel associated with the currently processed pixel). If you run the sample, you will notice that the colors of the pixels inside the triangle, and along its edges, are interpolated from the colors associated with the three vertices in the vertex buffer. Remember that the system-value semantic <strong>SV_TARGET</strong> is used to identify the output value returned by the pixel shader as the per-pixel data that could be stored in the render target. When you have a pixel shader that return a single value as the per-pixel data, you can specify <strong>SV_TARGET</strong> for that value after the pixel shader’s entry point, followed by a colon symbol. In this case, the per-pixel data will be stored for sure as we haven’t enabled blending, depth or stencil testing in the output merger stage.</p>
+<div class="tip admonition">
+<p class="admonition-title">Try</p>
+<p>Execute the sample and try resizing the window. What happens? The triangle gets stretched because we have a swap chain with two buffers of <span class="math notranslate nohighlight">\(1280\times 720\)</span>, while the window no longer matches the same size. You can mitigate the problem by resizing the window to a dimension with an aspect ratio similar to <span class="math notranslate nohighlight">\(1280/720\)</span>. However, we will ultimately fix this problem in a later tutorial.</p>
+</div>
+<br>
+</section>
+<section id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
+<br>
+<div class="admonition-support-this-project admonition">
+<p class="admonition-title">Support this project</p>
+<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
+<figure class="align-center">
+<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../_images/sponsor.png" src="../../_images/sponsor.png" /></a>
+</figure>
+</div>
+<br>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Tutorials\01-HelloWorld"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hello-window.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hello Window</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hello-bundles.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hello Bundles</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct3d-rendering-pipeline-overview">Direct3D rendering pipeline overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources-management">Resources management</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory">Memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#views-and-descriptors">Views and descriptors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transitions">Transitions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#root-signature">Root signature</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#root-signature-version">Root signature version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pipeline-state">The Pipeline State</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-input-assembler">The Input Assembler</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meshes">Meshes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vertex-buffer">Vertex buffer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-layout">Input layout</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitive-topologies">Primitive topologies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#index-buffer">Index buffer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#system-generated-values">System-Generated Values</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vertex-shader">Vertex Shader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-rasterizer">The Rasterizer</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#face-culling">Face culling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attribute-interpolation">Attribute interpolation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixel-shader">Pixel shader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotriangle-code-review">D3D12HelloTriangle: code review</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By P. A. Minerva
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

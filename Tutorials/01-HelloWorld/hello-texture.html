@@ -1,0 +1,1327 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello Texture &#8212; Learn DirectX</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/01-HelloWorld/hello-texture';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hello Frame Buffering" href="hello-frame-buffering.html" />
+    <link rel="prev" title="Hello Constant Buffers" href="hello-cbs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 This documentation is a work in progress! 🚧</div>
+  </div>
+
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../presentation.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Learn DirectX - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Learn DirectX - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../presentation.html">
+                    Welcome to Learn DirectX
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../00-Intro/intro-and-prerequisites.html">Introduction and Prerequisites</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hello DirectX</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hello-world.html">Hello World</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="hello-window.html">Hello Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-triangle.html">Hello Triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-bundles.html">Hello Bundles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-cbs.html">Hello Constant Buffers</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Texture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-frame-buffering.html">Hello Frame Buffering</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Appendices/01-MathPrimer/math-primer.html">Math Primer</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathPrimer/vectors.html">Vectors</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX/issues/new?title=Issue%20on%20page%20%2FTutorials/01-HelloWorld/hello-texture.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Tutorials/01-HelloWorld/hello-texture.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hello Texture</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#textures">Textures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-textures">1D Textures</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#d-texture-arrays">1D Texture arrays</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-textures-and-2d-texture-arrays">2D Textures and 2D Texture arrays</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texel-coordinate-system">Texel Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texture-coordinate-system">Texture Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling">Sampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#magnification">Magnification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minification">Minification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-modes">Addressing Modes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap">Wrap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror">Mirror</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clamp">Clamp</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#border">Border</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotextures-code-review">D3D12HelloTextures: code review</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hello-texture">
+<h1>Hello Texture<a class="headerlink" href="#hello-texture" title="Link to this heading">#</a></h1>
+<br>
+<figure class="align-default">
+<img alt="../../_images/HelloTexture.png" src="../../_images/HelloTexture.png" />
+</figure>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Up to this point, we have used per-vertex attributes to provide color information for our triangles rendered on the screen. This approach involves associating a color with each vertex of the triangle, allowing the rasterizer to interpolate colors for internal fragments. While this method offers a straightforward way to fill 3D primitives with colors, the visual effect may lack realism.</p>
+<p>The goal of this tutorial is to learn how to enhance the level of detail and realism in our meshes by mapping 2D textures onto 3D geometries. To achieve this, we need to switch from setting colors per-vertex to setting colors per-fragment. The upcoming sections will guide you through the necessary steps to make this transition.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Typically, textures are created by graphic artists and provided as assets for use in our graphics applications. However, for the sake of simplicity, in this tutorial we will manually create (i.e., programmatically generated in the source code) a basic texture that exhibits a checkerboard pattern.</p>
+</div>
+<p>Before delving into the code of the sample, it’s crucial to grasp some fundamental theory behind texture mapping. Texture mapping is a technique that allows us to apply an image or pattern onto a 3D mesh, enhancing its visual appearance and adding fine-grained details. With texture mapping, we can achieve more realistic and visually appealing renderings.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Part of the theory illustrated in the following sections draws from the official Microsoft documentation. In particular, <span id="id1">[<a class="reference internal" href="#id19" title="Microsoft. Introduction to textures in direct3d 11. https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-textures-intro.">Mica</a>]</span> and <span id="id2">[<a class="reference internal" href="#id20" title="Microsoft. Texture addressing modes (direct3d 9). https://learn.microsoft.com/en-us/windows/win32/direct3d9/texture-addressing-modes.">Micb</a>]</span> are used as references.</p>
+</div>
+<br>
+</section>
+<section id="textures">
+<h2>Textures<a class="headerlink" href="#textures" title="Link to this heading">#</a></h2>
+<p>A texture is a resource that can be thought of as an array of contiguous texels (texture elements) stored in memory. Texels are the smallest units of a texture that can be read or written to. When a shader reads a texture, samplers can be used to filter accesses to the texels of the texture. Each texel contains 1 to 4 components (also called channels), arranged in one of the DXGI formats defined by the <strong>DXGI_FORMAT</strong> enumeration. For example, <strong>DXGI_FORMAT_R8G8B8A8_UNORM</strong> specifies that every texel is a 32-bit value composed of four 8-bit unsigned-normalized-integer channels. This means that the value of each channel is in the range <span class="math notranslate nohighlight">\([0/255, 255/255]=[0, 1]\)</span>; that is, each channel can represent 256 different values (that’s the actual meaning of unsigned-normalized-integer).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Textures are commonly created by graphic artists and supplied in JPEG or PNG format, which are two of the most widely used image file formats. However, to employ these files in DirectX applications, we need additional code or an external library (such as <a class="reference external" href="https://github.com/microsoft/DirectXTK12">DirectXTK12</a>) to transform the image data into a supported DXGI format before creating the actual texture resource. <br>
+As an alternative, graphic artists or programmers can convert the image data into a supported DXGI format and store the (compressed or uncrompressed) result in a specialized container file. These container files, such as DDS (DirectDraw Surface), encapsulate the texture type and data, along with additional information like format, dimensions, and mipmap levels. This approach ensures optimal performance for runtime usage and supports a variety of texture resource types and formats (1D, 2D, volume maps, cubemaps, mipmap levels, texture arrays, cubemap arrays, block compressed formats, etc.). More details on texture containers will be provided in a later tutorial.</p>
+</div>
+<section id="d-textures">
+<h3>1D Textures<a class="headerlink" href="#d-textures" title="Link to this heading">#</a></h3>
+<p>A 1D texture, in its simplest form, can be visualized as an array of contiguous texels in memory. In this case, the texture data can be addressed with a single coordinate (<em>s</em> in the image below).</p>
+<figure class="align-default">
+<img alt="../../_images/1d-tex.png" src="../../_images/1d-tex.png" />
+</figure>
+<p>Adding more complexity, we can also create a 1D texture with mipmap levels, as shown in the following image.</p>
+<figure class="align-default">
+<img alt="../../_images/1d-tex-mips.png" src="../../_images/1d-tex-mips.png" />
+</figure>
+<p>Just think of it as a single resource that is made up of three subresources. Mipmaps play a crucial role in texture sampling and filtering by providing smaller versions of the original image. The highest level, known as level 0, include the original image and holds the finest level of detail. As we move down the hierarchy, each subsequent level contains a progressively smaller mipmap with reduced details.</p>
+<p>For a 1D texture with mipmaps, the smallest level contains a mipmap composed of one texel. Mipmaps are generated by halving the size of the previous level, rounding up to the nearest even integer, until we get a mipmap of a single texel. For example, the illustration above shows a <span class="math notranslate nohighlight">\(5\times 1\)</span> texture whose next lower mipmap is a <span class="math notranslate nohighlight">\(2\times 1\)</span> texture, whose next (and last) mipmap is a <span class="math notranslate nohighlight">\(1\times 1\)</span> sized texture.</p>
+<p>To facilitate identification and retrieval of specific subresources during geometry rendering based on camera distance, each level is assigned an index, commonly referred to as LOD (level-of-detail). This LOD index serves as a useful tool for accessing the appropriate mipmap level when required.</p>
+<section id="d-texture-arrays">
+<h4>1D Texture arrays<a class="headerlink" href="#d-texture-arrays" title="Link to this heading">#</a></h4>
+<p>Direct3D also supports arrays of textures. An array of 1D textures looks conceptually like the following illustration.</p>
+<figure class="align-default">
+<img alt="../../_images/1d-tex-array-mip.png" src="../../_images/1d-tex-array-mip.png" />
+</figure>
+<p>The above texture array contains three textures, each containing three mipmaps. So, you can also consider it as a single resource that is made up of nine subresources.</p>
+<figure class="align-default">
+<img alt="../../_images/1d-subresources.png" src="../../_images/1d-subresources.png" />
+</figure>
+<p>Typically, texture array include homogeneous elements. This means that all textures in the array must have the same format, size, and number of mipmap levels. The size of a texture array is set to the dimension of the topmost mipmap level. For example, the size of the texture array illustrated above is 5 because the topmost mipmap of each texture includes five texels.</p>
+</section>
+</section>
+<section id="d-textures-and-2d-texture-arrays">
+<h3>2D Textures and 2D Texture arrays<a class="headerlink" href="#d-textures-and-2d-texture-arrays" title="Link to this heading">#</a></h3>
+<p>A 2D Texture can be conceptually visualized as a 2D grid of texels — although it is physically stored as an array of contiguous texels, just like 1D textures. This grid-like (logical) arrangement facilitates addressing individual texels using two coordinates (<em>s</em> and <em>t</em> in the image below), enabling efficient access and manipulation of texels within the texture. Similar to 1D textures, 2D textures may contain mipmap levels. An example of 2D texture resource (with mipmaps) is illustrated in the following image.</p>
+<figure class="align-default">
+<img alt="../../_images/2d-tex.png" src="../../_images/2d-tex.png" />
+</figure>
+<p>The texture above has a <span class="math notranslate nohighlight">\(3\times 5\)</span> mipmap at the topmost level, along with two other smaller mipmaps at lower levels.</p>
+<p>A 2D texture array resource is a homogeneous array of 2D textures; that is, each texture has the same data format and dimensions (including mipmap levels). It has a similar layout as the 1D texture array, except that the textures now contain 2D data, as shown in the following illustration.</p>
+<figure class="align-default">
+<img alt="../../_images/2d-tex-array.png" src="../../_images/2d-tex-array.png" />
+</figure>
+<p>The array texture illustrated above contains three textures, each with a <span class="math notranslate nohighlight">\(3\times 5\)</span> mipmap at the topmost level, and with two additional smaller mipmaps at lower levels. So, you can also consider it as a single resource made up of nine subresources.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>3D textures exist as well, but we’ll leave the discussion of 3D textures for a subsequent tutorial.</p>
+</div>
+<br>
+</section>
+</section>
+<section id="texel-coordinate-system">
+<h2>Texel Coordinate System<a class="headerlink" href="#texel-coordinate-system" title="Link to this heading">#</a></h2>
+<p>The texel coordinate system has its origin at the top-left corner of the texture, as shown in the following diagram. Texel coordinates <span class="math notranslate nohighlight">\((s,t)\)</span> are typically continuous, but texels are usually located at integer locations (discrete coordinates). In this space, texel centers are offset by <span class="math notranslate nohighlight">\((0.5, 0.5)\)</span> (half-integer locations). Normalized coordinates in the following illustration below contribute to a better understanding of the relationship between the texel and texture coordinate systems (explained in more detail in the subsequent sections).</p>
+<figure class="align-default">
+<img alt="../../_images/texel-coord.png" src="../../_images/texel-coord.png" />
+</figure>
+<br>
+</section>
+<section id="texture-coordinate-system">
+<h2>Texture Coordinate System<a class="headerlink" href="#texture-coordinate-system" title="Link to this heading">#</a></h2>
+<p>As stated in the previous section, each texel in a texture can be specified by its integer texel coordinates. However, in order to map texels onto primitives, Direct3D requires a uniform address range. That is, it uses a generic addressing scheme in which each component of all texel addresses <span class="math notranslate nohighlight">\((s,t)\)</span> is normalized to be within the range <span class="math notranslate nohighlight">\([0.0,\ 1.0]\)</span>.</p>
+<figure class="align-default">
+<img alt="../../_images/texture-coord.png" src="../../_images/texture-coord.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Technically, Direct3D can actually process texture coordinates outside the range <span class="math notranslate nohighlight">\([0, 1]\)</span>. The way it handles these coordinates depends on the parameters you set for texture addressing (more on this shortly).</p>
+</div>
+<p>With texture coordinates, we can address texels without knowing the size of a texture. For example, in the following illustration, we can select the central texel in the last row for two different textures by using the texture coordinates <span class="math notranslate nohighlight">\((0.5, 1.0)\)</span>.</p>
+<figure class="align-default">
+<img alt="../../_images/texture-coord2.png" src="../../_images/texture-coord2.png" />
+</figure>
+<p>Applying a texture to a 3D primitive involves mapping texel coordinates to the vertices of the primitive. However, how can we map 2D texel coordinates to 3D positions? One way to do that is through a technique called UV mapping, which conceptually involves unwrapping the 3D mesh onto the unit square <span class="math notranslate nohighlight">\([0,1]\times [0,1]\)</span> that defines the texture coordinate system. This process is similar to unwrapping a Christmas chocolate on a table, as illustrated below.</p>
+<figure class="align-default">
+<img alt="../../_images/tex-unwrap.jpg" src="../../_images/tex-unwrap.jpg" />
+</figure>
+<p>UV mapping allows vertex positions to be associated with texture coordinates within the unit square defined above. This ends up allowing us to determine which texel from the texture will be mapped to a specific vertex position. We’ll demonstrate this soon with a straightforward example.</p>
+<figure class="align-default">
+<img alt="../../_images/texture2texel.png" src="../../_images/texture2texel.png" />
+</figure>
+<p>Here, for the sake of semplicity, we will consider a single triangle that is mapped to take the whole unit square of texture coordinate system.</p>
+<figure class="align-default">
+<img alt="../../_images/triangle-unwrap.png" src="../../_images/triangle-unwrap.png" />
+</figure>
+<p>By associating (using vertex attributes in the definition of the corresponding vertex buffer) the texture coordinates <span class="math notranslate nohighlight">\((0.5, 0)\)</span>, <span class="math notranslate nohighlight">\((1, 1)\)</span> and <span class="math notranslate nohighlight">\((0, 1)\)</span> respectively with the vertices <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span>, <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_3\)</span> of a triangle in 3D space, we establish a connection between vertex positions and texture coordinates. To obtain the integer texel coordinates that allow us to select a texel from the texture, we can multiply each component of the texture coordinates by the corresponding dimension of the texture, minus 1, and round the result by simply truncating the fractional part.</p>
+<p>For example, if we have an <span class="math notranslate nohighlight">\(8\times 4\)</span> texture, the vertex <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> in the figure above would be paired with the integer texel coordinates <span class="math notranslate nohighlight">\(\big(⌊(0.5∗(8-1))⌋,\ ⌊(0.0∗(4-1))⌋\big)=(3,0)\)</span>. This way, we associated the vertex position <span class="math notranslate nohighlight">\(\mathbf{v}_1\)</span> with the fourth texel of the first row of the texture. The same goes for the vertices <span class="math notranslate nohighlight">\(\mathbf{v}_2\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_3\)</span>, which would be associated respectively with the last and first texels of the last row. Eventually, we established a connection between vertices and texels.</p>
+<p>This association between vertices and texels allows us to enhance the level of detail and realism in our rendering. How? Well, first of all, it should be noted that associating vertices with texels practically means that we must declare the texture coordinates as a vertex attribute to associate them with vertex positions in 3D space. When the rasterizer interpolates the texture coordinates of a pixel, we can use the result in the shader code to select a texel from a texture as the per-pixel color (more on this shortly). This means that instead of having an interpolated color for each pixel within a primitive, we now have a color selected from a texture that represents a real material. This allows us to select a color per-pixel rather than per-vertex, leading to an higher level of detail and realism.</p>
+<br>
+</section>
+<section id="sampling">
+<h2>Sampling<a class="headerlink" href="#sampling" title="Link to this heading">#</a></h2>
+<p>In the context of texture mapping, sampling refers to the process of retrieving data from a texture using a sampler, which allows to look up texel values from their texture coordinates.</p>
+<p>In theory, it would be possible to associate vertex positions in the vertex buffer with texture coordinates that always translate to integer texel coordinates. However, even in that case, the rasterizer will likely emit pixels with interpolated texture coordinates that do not translate to integer texel coordinates.</p>
+<figure class="align-default">
+<img alt="../../_images/sampling.png" src="../../_images/sampling.png" />
+</figure>
+<p>For example, consider the generic interpolated texture coordinates <span class="math notranslate nohighlight">\((u, v)\)</span> which translate to the texel coordinates <span class="math notranslate nohighlight">\((s, t) = (82.12, 74.38)\)</span> as shown in the illustration above. Now, a question arises: which texel should be selected in this case? To address this issue, we require a sampler that, among its various properties, specifies a filter for texel selection.</p>
+<p>There are three filters available for texel selection: point, linear and anisotropic (we will cover the anisotropic filter in a later tutorial).</p>
+<p><strong>Point filtering</strong> means that the selected texel is the nearest one, computed by simply truncating the fractional part from texel coordinates. So, in the case illustrated above, the selected texel will be the one with texel coordinates <span class="math notranslate nohighlight">\((82,74)\)</span>. That is, the one with center in <span class="math notranslate nohighlight">\(\mathbf{c}_4\)</span>.</p>
+<p><strong>Linear filtering</strong> means that we select the four nearest texels to interpolate their values. In this case, it is preferable to consider the centers of the texels for the texel selection. The reason for this is that the calculation of the four texels is computed by simply dropping the fractional part and increasing the components of the texel coordinates, that is: <span class="math notranslate nohighlight">\((⌊x⌋,\ ⌊y⌋)\)</span>, <span class="math notranslate nohighlight">\((⌊x⌋+1,\ ⌊y⌋)\)</span>, <span class="math notranslate nohighlight">\((⌊x⌋,\ ⌊y⌋+1)\)</span> and <span class="math notranslate nohighlight">\((⌊x⌋+1,\ ⌊y⌋+1)\)</span>. That way, if we were to use the texel coordinates in this calculation, we might not select the nearest texels. For example, in the case illustrated above, the four selected texels would range from <span class="math notranslate nohighlight">\((82, 74)\)</span> to <span class="math notranslate nohighlight">\((83, 75)\)</span>, which are not the nearest ones. The nearest texels actually range from <span class="math notranslate nohighlight">\((81, 73)\)</span> to <span class="math notranslate nohighlight">\((82, 74)\)</span>. So how can we select them? We need to convert the texel coordinates to consider their location relative to the coordinate system formed by the four nearest texel centers. This can be done by subtracting <span class="math notranslate nohighlight">\(0.5\)</span> from both components of the texel coordinates. For example, <span class="math notranslate nohighlight">\((82.12, 74.38)–(0.5, 0.5)=(81.62, 73.88)\)</span>. This way, the nearest texels range exactly from <span class="math notranslate nohighlight">\((81, 73)\)</span> to <span class="math notranslate nohighlight">\((82,74)\)</span>. Now, retaining only the fractional parts we have that <span class="math notranslate nohighlight">\((81.62, 73.88)\)</span> converts to <span class="math notranslate nohighlight">\((0.62, 0.88)\)</span>. That’s the exact location of texel coordinates <span class="math notranslate nohighlight">\((s, t)\)</span> in the <span class="math notranslate nohighlight">\([0,1]\times [0,1]\)</span> square formed by the four nearest texel centers. Eventually, we can interpolate their values as follows:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{c}_A=38\\%\)</span> of <span class="math notranslate nohighlight">\(\mathbf{c}_1+62\\%\)</span> of <span class="math notranslate nohighlight">\(\mathbf{c}_2\)</span> <br>
+<span class="math notranslate nohighlight">\(\mathbf{c}_B=38\\%\)</span> of <span class="math notranslate nohighlight">\(\mathbf{c}_3+62\\%\)</span> of <span class="math notranslate nohighlight">\(\mathbf{c}_4\)</span> <br>
+<span class="math notranslate nohighlight">\(\mathbf{C}=12\\%\)</span> of <span class="math notranslate nohighlight">\(\mathbf{c}_A+78%\)</span> of <span class="math notranslate nohighlight">\(\mathbf{c}_B\)</span></p>
+<p>This way, we obtain a color <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> starting from the interpolated texel coordinates provided by the rasterizer. Observe that we linearly interpolated between the horizontal texels in the <span class="math notranslate nohighlight">\(4\times 4\)</span> block of nearest texels using the fractional part that corresponds to the <em>s</em>-coordinate, and then we linearly interpolated the results (<span class="math notranslate nohighlight">\(\mathbf{c}_A\)</span> and <span class="math notranslate nohighlight">\(\mathbf{c}_B\)</span>) vertically using the fractional part that corresponds to the <em>t</em>-coordinate. In other words, we performed a bilinear interpolation. Additional information on linear and bilinear interpolation will be provided as an appendix in a later tutorial.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The mapping from texture coordinates to the color returned by a texture fetch instruction in a shader program is an operation automatically performed by the GPU and is transparent to the programmer, who only needs to specify a filter in a sampler. However, knowing the low-level details can prove to be beneficial in the future.</p>
+</div>
+<section id="magnification">
+<h3>Magnification<a class="headerlink" href="#magnification" title="Link to this heading">#</a></h3>
+<p>Using a point filter can lead to ugly visual effects (artifacts) during magnification. <br>
+Imagine zooming in on a 3D textured mesh until it covers an area of <span class="math notranslate nohighlight">\(1024\times 1024\)</span> pixels on your screen. What happens if the texture of this mesh is, for example, <span class="math notranslate nohighlight">\(64\times 64\)</span>? Well, that means that we have approximately <span class="math notranslate nohighlight">\(1024/64=16\)</span> pixels for each texel, as shown in the following illustration.</p>
+<figure class="align-default">
+<img alt="../../_images/magnification.png" src="../../_images/magnification.png" />
+</figure>
+<p>Now, imagine that pixels on your screen were stickers you can shoot straight at the surface of a mesh. This means that, in the case illustrated above, you need to shoot about 16 pixels to cover a single texel. The distortion of the texel may depend on the shape of the mesh and the viewing angle, but we can ignore that for now. What’s important here is that, if we move from a pixel to the next one on the screen, we don’t necessarily move from a texel to another in the texture. That means that the texture coordinates of many pixels will be mapped to the same texel (i.e., to its integer texel coordinates).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Another way to think about it is this: if you zoom in on a 3D textured mesh, then big triangles will likely be projected onto the projection window. Since interpolation is performed by the rasterizer using barycentric coordinates (more on this in a later tutorial), texture coordinates of adjacent fragments won’t change much. Therefore, if the texture is small, many pixels will fall into the same texel area after being converted from texture to texel coordinates.</p>
+</div>
+<p>Visually, this can lead to a blocky effect, as shown in the following illustration (on the left), where many pixels display the same color sampled from the same texel.</p>
+<figure class="align-default">
+<img alt="../../_images/point-linear.png" src="../../_images/point-linear.png" />
+</figure>
+<p>You can mitigate this problem by using a linear filter (the result is shown in the image above, on the right). That way, we don’t select the same texel, but rather we interpolate between four texels in the <span class="math notranslate nohighlight">\(3\times 3\)</span> block surrounding it. That is, the interpolated texture coordinates of a pixel translate to texel coordinates within four texel centers that can vary, as shown in the illustration below. This results in a smoother transition between texels and can improve the visual quality of magnified textures.</p>
+<figure class="align-default">
+<img alt="../../_images/linear-filter-block.png" src="../../_images/linear-filter-block.png" />
+</figure>
+</section>
+<section id="minification">
+<h3>Minification<a class="headerlink" href="#minification" title="Link to this heading">#</a></h3>
+<p>It’s also interesting to consider what happens, using a point filter, during minification, when you zoom out to expand the viewing area. Imagine shooting a pixel straight at a mesh that, this time, is far away from the camera. Now, a single pixel can cover lots of texels.</p>
+<figure class="align-default">
+<img alt="../../_images/minification.png" src="../../_images/minification.png" />
+</figure>
+<p>As we know, the color of a pixel depends on the selected texel, calculated from the interpolated texture coordinates associated with the pixel. If we have lots of texels mapped to a single pixel, then the selected texel can randomly vary from a frame to another, even if the mesh moves only slightly (less than a pixel). For example, in the case illustrated above, moving the primitive to the right or left by half a pixel would change approximately half of the texels covered by the pixel. This means that the texture coordinates of the pixel can be mapped to different texels (integer texel coordinates) during this little movement. This can lead to display flickering caused by pixels that rapidly change their color. Using a linear filter can help mitigate this issue, but it doesn’t completely solve it since the four nearest texels can also change rapidly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Another way to think about it is this: if you zoom out until a textured mesh is far away from the camera, then small triangles will likely be projected onto the projection window. Since interpolation is performed by the rasterizer using barycentric coordinates (more on this in a later tutorial), texture coordinates of adjacent pixels will likely differ significantly from each other. At that point, if the texture is big enough, adjacent pixels can select distant texels in the texture. This means that if a mesh moves slightly (less than a pixel), the interpolated texture coordinates can vary enough to selected different texels for the same pixel on the screen, leading to display flickering.</p>
+</div>
+<p>Fortunately, mipmap levels provide a way to select the texture that best matches the area covered by the mesh on the screen, allowing for a mapping as close to 1:1 as possible between pixels and texels. This can help reduce artifacts caused by minification. For this purpose, in a sampler we can also specify a filter for mipmap selection (in addition to the one for texel selection). A point filter (for mipmap selection) selects the mipmap whose texels are closest in size to screen pixels, while a linear filter selects the two mipmaps that provide the best match. From these two mipmaps, two texels (one from each mipmap) are sampled using the filter for texel selection. These two texels are then interpolated to return the final result (color or other data).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do you recall our discussion about how blocks of <span class="math notranslate nohighlight">\(2\times 2\)</span> pixels are processed in parallel by the pixel shader? Well, this allows the GPU to calculate the change in interpolated texture coordinates of a pixel relative to its companion pixels in the block. As a result, a LOD index can be computed from this information to select the most appropriate mipmap level. Further details on this topic will be provided in a later tutorial.</p>
+</div>
+<br>
+</section>
+</section>
+<section id="addressing-modes">
+<h2>Addressing Modes<a class="headerlink" href="#addressing-modes" title="Link to this heading">#</a></h2>
+<p>Typically, the <em>u</em> and <em>v</em> components of texture coordinates range from <span class="math notranslate nohighlight">\(0.0\)</span> to <span class="math notranslate nohighlight">\(1.0\)</span>. However, extending beyond this range can create unique texturing effects. To control how the Direct3D will handle texture coordinates outside of the range, we can set a texture addressing mode for each component. For example, you can set the texture addressing mode so that a texture is tiled across a primitive. For this purpose, Direct3D only need to find a way to map texture coordinates outside the unit square back to <span class="math notranslate nohighlight">\([0.0, 1.0]\)</span>. There are various methods to restrict coordinates in a specific range.</p>
+<p>In this section we will only focus on the <em>u</em>-coordinate, but the same applies to the <em>v</em>-coordinate. Additionally, we will assume that we want to draw a quad consisting of two triangles. The vertex positions of the first triangle, <span class="math notranslate nohighlight">\(\triangle_1=(v0, v1, v2)\)</span>, are associated with texture coordinates of <span class="math notranslate nohighlight">\((0.0, 0.0)\)</span>, <span class="math notranslate nohighlight">\((3.0, 0.0)\)</span> and <span class="math notranslate nohighlight">\((0.0, 3.0)\)</span> respectively, while the positions of the second triangle, <span class="math notranslate nohighlight">\(\triangle_2=(v1, v3, v2)\)</span>, are associated with texture coordinates of <span class="math notranslate nohighlight">\((3.0, 0.0)\)</span>, <span class="math notranslate nohighlight">\((3.0, 3.0)\)</span> and <span class="math notranslate nohighlight">\((0.0, 3.0)\)</span>. The vertices are in clockwise order. The following illustration shows the quad in a <span class="math notranslate nohighlight">\([0,3]\times [0,3]\)</span> square, which extends the <span class="math notranslate nohighlight">\([0,1]\times [0,1]\)</span> square representing the usual texture space.</p>
+<figure class="align-default">
+<img alt="../../_images/quad-triangles.png" src="../../_images/quad-triangles.png" />
+</figure>
+<section id="wrap">
+<h3>Wrap<a class="headerlink" href="#wrap" title="Link to this heading">#</a></h3>
+<p>This addressing mode repeats the texture on every integer junction by using the following function to transform the <em>u</em>-coordinate.</p>
+<p><span class="math notranslate nohighlight">\(\text{wrap}(u) = u – \text{floor}(u)\)</span></p>
+<p>So, in our example, setting the addressing mode to “Wrap” for both the <em>u</em>- and <em>v</em>-coordinates results in the texture being applied three times in both the <em>u</em> and <em>v</em> directions, as shown in the following illustration. The reason is that when, for example, the interpolated texture coordinate <em>u</em> is <span class="math notranslate nohighlight">\(3.0\)</span>, <span class="math notranslate nohighlight">\(\text{wrap}(3.0)\)</span> returns <span class="math notranslate nohighlight">\(1.0\)</span>. The same happens when <em>u</em> is <span class="math notranslate nohighlight">\(2.0\)</span> and (obviously) <span class="math notranslate nohighlight">\(1.0\)</span>.</p>
+<figure class="align-default">
+<img alt="../../_images/wrap-mode.png" src="../../_images/wrap-mode.png" />
+</figure>
+</section>
+<section id="mirror">
+<h3>Mirror<a class="headerlink" href="#mirror" title="Link to this heading">#</a></h3>
+<p>This addressing mode mirrors and repeats the texture at every integer boundary by using the following function to transform the <em>u</em>-coordinate.</p>
+<p><span class="math notranslate nohighlight">\(\text{mirror}(u)=
+\begin{cases}
+u-\text{floor}(u), &amp; \text{floor}(u) \% 2=0 \\ 
+\text{floor}(u+1)-u, &amp; \text{floor}(u) \% 2=1
+\end{cases}\)</span></p>
+<p>Setting the texture addressing mode to “Mirror” results in the texture being applied three times in both the <em>u</em> and <em>v</em> directions. Observe that every other row and column that it is applied to is a mirror image of the preceding row or column, as shown in the following illustration. The reason is that when, for example, the interpolated texture coordinate <em>u</em> is <span class="math notranslate nohighlight">\(3.0\)</span>, <span class="math notranslate nohighlight">\(\text{mirror}(3.0)\)</span> returns <span class="math notranslate nohighlight">\(1.0\)</span> while when <em>u</em> is <span class="math notranslate nohighlight">\(2.0\)</span> it returns <span class="math notranslate nohighlight">\(0.0\)</span>.</p>
+<figure class="align-default">
+<img alt="../../_images/mirror-mode.png" src="../../_images/mirror-mode.png" />
+</figure>
+</section>
+<section id="clamp">
+<h3>Clamp<a class="headerlink" href="#clamp" title="Link to this heading">#</a></h3>
+<p>This addressing mode clamps the <em>u</em>-component of the texture coordinate to the <span class="math notranslate nohighlight">\([0.0,\ 1.0]\)</span> range by using the following function.</p>
+<p><span class="math notranslate nohighlight">\(\text{clamp}(u) = \text{max}(\text{min}(u, 1),  0)\)</span></p>
+<p>Setting the texture addressing mode to “Clamp” applies the texture once, then smears the color of edge texels. In the following illustration the edges of the texture are delimited with a light grey square.</p>
+<figure class="align-default">
+<img alt="../../_images/clamp-mode.png" src="../../_images/clamp-mode.png" />
+</figure>
+</section>
+<section id="border">
+<h3>Border<a class="headerlink" href="#border" title="Link to this heading">#</a></h3>
+<p>Setting the texture addressing mode to “Border” means we want to use an arbitrary color, known as the border color, for any texture coordinates outside the range of <span class="math notranslate nohighlight">\(0.0\)</span> through <span class="math notranslate nohighlight">\(1.0\)</span>, inclusive. We can set the border color in the sampler.  The following illustration shows a texture (on the left), and its mapping to our quad (on the right) when a red border color is specified in the sampler.</p>
+<figure class="align-default">
+<img alt="../../_images/border-mode.png" src="../../_images/border-mode.png" />
+</figure>
+<br>
+</section>
+</section>
+<section id="d3d12hellotextures-code-review">
+<h2>D3D12HelloTextures: code review<a class="headerlink" href="#d3d12hellotextures-code-review" title="Link to this heading">#</a></h2>
+<p>In this section, we will review the code of a sample that draws a textured triangle. The image below shows the texture we will map to this basic mesh. The texture presents a classic checkerboard pattern, alternating between black and white squares. As mentioned earlier in this tutorial, textures are typically created by graphic artists. However, in this case, the pattern of the texture is regular enough to be manually generated.</p>
+<figure class="align-default">
+<img alt="../../_images/checkboard-tex.png" src="../../_images/checkboard-tex.png" />
+</figure>
+<section id="c">
+<h3>C++<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
+<p>As usual, let’s start from the application class.</p>
+<div class="literal-block-wrapper docutils container" id="hellotexture-d3d12hellotexture-code">
+<div class="code-block-caption"><span class="caption-number">Listing 39 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.h</span><a class="headerlink" href="#hellotexture-d3d12hellotexture-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloTexture</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">D3D12HelloTexture</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnInit</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnRender</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">FrameCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">TextureWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">TextureHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">TexturePixelSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">    </span><span class="c1">// The number of bytes used to represent a pixel\texel in the texture.</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">        </span><span class="n">XMFLOAT2</span><span class="w"> </span><span class="n">uv</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Pipeline objects.</span>
+<span class="w">    </span><span class="n">CD3DX12_VIEWPORT</span><span class="w"> </span><span class="n">m_viewport</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CD3DX12_RECT</span><span class="w"> </span><span class="n">m_scissorRect</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGISwapChain3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_swapChain</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_device</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandAllocator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandQueue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandQueue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12RootSignature</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rtvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_srvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12PipelineState</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12GraphicsCommandList</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// App resources.</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="p">;</span>
+<span class="w">    </span><span class="n">D3D12_VERTEX_BUFFER_VIEW</span><span class="w"> </span><span class="n">m_vertexBufferView</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_texture</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Synchronization objects.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HANDLE</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Fence</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_fence</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT64</span><span class="w"> </span><span class="n">m_fenceValue</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadAssets</span><span class="p">();</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">UINT8</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GenerateTextureData</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">PopulateCommandList</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>We will use a texture of <span class="math notranslate nohighlight">\(256\times 256\)</span> texels, where the size of each texel is 4 bytes. We will use this information to determine the amount of GPU heap space to allocate for the texture. <br>
+The Vertex structure (that describe the elements of the vertex buffer) now uses texture coordinates (rather than a color) as a vertex attribute. That way, we can go from selecting a color per-vertex to selecting a color per-pixel, increasing the level of detail and realism. <br>
+We will use the <strong>m_texture</strong> variable to reference the texture from our C++ application, and <strong>m_srvHeap</strong> to create a descriptor heap that will hold a view to the texture.</p>
+<p><strong>GenerateTextureData</strong> is the method that procedurally generates the checkerboard texture data, texel by texel.</p>
+<div class="literal-block-wrapper docutils container" id="hellotexture-generatetexturedata-code">
+<div class="code-block-caption"><span class="caption-number">Listing 40 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-generatetexturedata-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Generate a simple black and white checkerboard texture.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">UINT8</span><span class="o">&gt;</span><span class="w"> </span><span class="n">D3D12HelloTexture</span><span class="o">::</span><span class="n">GenerateTextureData</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">rowPitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextureWidth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TexturePixelSize</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">cellPitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rowPitch</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">        </span><span class="c1">// The width of a cell in the checkerboard texture.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">cellHeight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextureWidth</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">   </span><span class="c1">// The height of a cell in the checkerboard texture.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">textureSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rowPitch</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TextureHeight</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">UINT8</span><span class="o">&gt;</span><span class="w"> </span><span class="n">data</span><span class="p">(</span><span class="n">textureSize</span><span class="p">);</span>
+<span class="w">    </span><span class="n">UINT8</span><span class="o">*</span><span class="w"> </span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">textureSize</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">TexturePixelSize</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">rowPitch</span><span class="p">;</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">rowPitch</span><span class="p">;</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">cellPitch</span><span class="p">;</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">cellHeight</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">;</span><span class="w">        </span><span class="c1">// R</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">;</span><span class="w">    </span><span class="c1">// G</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">;</span><span class="w">    </span><span class="c1">// B</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w">    </span><span class="c1">// A</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w">        </span><span class="c1">// R</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w">    </span><span class="c1">// G</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w">    </span><span class="c1">// B</span>
+<span class="w">            </span><span class="n">pData</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w">    </span><span class="c1">// A</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The <strong>rowPitch</strong> variable represents the byte size of a texture row, calculated as <code class="docutils literal notranslate"><span class="pre">TextureWidth</span> <span class="pre">*</span> <span class="pre">TexturePixelSize</span></code> <span class="math notranslate nohighlight">\((256∗4=1024)\)</span>. The <strong>cellPitch</strong> variable represents the width of a checkerboard cell in bytes, calculated as <code class="docutils literal notranslate"><span class="pre">rowPitch</span> <span class="pre">&gt;&gt;</span> <span class="pre">3</span></code> <span class="math notranslate nohighlight">\((1024/8=128)\)</span>. This means that each row has 8 cells, where each cell includes <span class="math notranslate nohighlight">\((128/4)= 32\)</span> texels. The height of each cell is calculated as <code class="docutils literal notranslate"><span class="pre">TextureWidth</span> <span class="pre">&gt;&gt;</span> <span class="pre">3</span></code> <span class="math notranslate nohighlight">\((256/8=32)\)</span>, which means each cell includes 32 texels as well. Observe that the cell height is measured in texels, not bytes like the cell width. This is because we will use the local variable <em>j</em> to count the texels of a cell vertically while the local variable <em>i</em> to count the bytes of a cell horizontally. These two variables, along with the loop counter <em>n</em>, play a crucial role in alternating between black and white cells. In partcular, for each texel, the function sets the RGBA values to either 0x00 or 0xFF depending on whether <code class="docutils literal notranslate"><span class="pre">(i</span> <span class="pre">%</span> <span class="pre">2</span> <span class="pre">==</span> <span class="pre">j</span> <span class="pre">%</span> <span class="pre">2)</span></code>. This creates a checkerboard pattern with black and white cells.</p>
+<p>Now, let’s take a look at the <strong>LoadPipeline</strong> function.</p>
+<div class="literal-block-wrapper docutils container" id="hellotexture-loadpipeline-code">
+<div class="code-block-caption"><span class="caption-number">Listing 41 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-loadpipeline-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the rendering pipeline dependencies.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTexture::LoadPipeline</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create descriptor heaps.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Describe and create a render target view (RTV) descriptor heap.</span>
+<span class="w">        </span><span class="n">D3D12_DESCRIPTOR_HEAP_DESC</span><span class="w"> </span><span class="n">rtvHeapDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FrameCount</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_RTV</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_FLAG_NONE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateDescriptorHeap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rtvHeapDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_rtvHeap</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create a shader resource view (SRV) heap for the texture.</span>
+<span class="w">        </span><span class="n">D3D12_DESCRIPTOR_HEAP_DESC</span><span class="w"> </span><span class="n">srvHeapDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">srvHeapDesc</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">srvHeapDesc</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</span><span class="p">;</span>
+<span class="w">        </span><span class="n">srvHeapDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateDescriptorHeap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">srvHeapDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_srvHeap</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">m_rtvDescriptorSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">GetDescriptorHandleIncrementSize</span><span class="p">(</span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_RTV</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>We need a descriptor heap to hold the SRV we are about to create as a view for the texture. This is not much different from what we have seen in <a class="reference internal" href="hello-cbs.html"><span class="std std-doc">Hello Constant Buffers</span></a> (we simply renamed <strong>m_cbvHeap</strong> to <strong>m_srvHeap</strong>). Remember that a descriptor heap of type <strong>D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</strong> can hold both CBVs and SRVs.</p>
+<p>The <strong>LoadAssets</strong> function has grown considerably in this sample, but there’s no need to worry. We will carefully review all the code in detail.</p>
+<div class="literal-block-wrapper docutils container" id="hellotexture-loadassets-code">
+<div class="code-block-caption"><span class="caption-number">Listing 42 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-loadassets-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTexture::LoadAssets</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Create the root signature.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">D3D12_FEATURE_DATA_ROOT_SIGNATURE</span><span class="w"> </span><span class="n">featureData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// This is the highest version the sample supports. If CheckFeatureSupport succeeds, the HighestVersion returned will not be greater than this.</span>
+<span class="w">        </span><span class="n">featureData</span><span class="p">.</span><span class="n">HighestVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D_ROOT_SIGNATURE_VERSION_1_1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CheckFeatureSupport</span><span class="p">(</span><span class="n">D3D12_FEATURE_ROOT_SIGNATURE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">featureData</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">featureData</span><span class="p">))))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">featureData</span><span class="p">.</span><span class="n">HighestVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D_ROOT_SIGNATURE_VERSION_1_0</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">CD3DX12_DESCRIPTOR_RANGE1</span><span class="w"> </span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">Init</span><span class="p">(</span><span class="n">D3D12_DESCRIPTOR_RANGE_TYPE_SRV</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">CD3DX12_ROOT_PARAMETER1</span><span class="w"> </span><span class="n">rootParameters</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="n">rootParameters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">InitAsDescriptorTable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">D3D12_SHADER_VISIBILITY_PIXEL</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">D3D12_STATIC_SAMPLER_DESC</span><span class="w"> </span><span class="n">sampler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">Filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_FILTER_MIN_MAG_MIP_POINT</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">AddressU</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_TEXTURE_ADDRESS_MODE_BORDER</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">AddressV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_TEXTURE_ADDRESS_MODE_BORDER</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">AddressW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_TEXTURE_ADDRESS_MODE_BORDER</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">MipLODBias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">MaxAnisotropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">ComparisonFunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_COMPARISON_FUNC_NEVER</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">BorderColor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">MinLOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">MaxLOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_FLOAT32_MAX</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">ShaderRegister</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">RegisterSpace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">sampler</span><span class="p">.</span><span class="n">ShaderVisibility</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_SHADER_VISIBILITY_PIXEL</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC</span><span class="w"> </span><span class="n">rootSignatureDesc</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rootSignatureDesc</span><span class="p">.</span><span class="n">Init_1_1</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">rootParameters</span><span class="p">),</span><span class="w"> </span><span class="n">rootParameters</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sampler</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">signature</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DX12SerializeVersionedRootSignature</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rootSignatureDesc</span><span class="p">,</span><span class="w"> </span><span class="n">featureData</span><span class="p">.</span><span class="n">HighestVersion</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">error</span><span class="p">));</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateRootSignature</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferPointer</span><span class="p">(),</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferSize</span><span class="p">(),</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_rootSignature</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the pipeline state, which includes compiling and loading shaders.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vertexShader</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pixelShader</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="cp">#if defined(_DEBUG)</span>
+<span class="w">        </span><span class="c1">// Enable better shader debugging with the graphics debugging tools.</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">compileFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3DCOMPILE_DEBUG</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">D3DCOMPILE_SKIP_OPTIMIZATION</span><span class="p">;</span>
+<span class="cp">#else</span>
+<span class="w">        </span><span class="n">UINT</span><span class="w"> </span><span class="n">compileFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="cp">#endif</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DCompileFromFile</span><span class="p">(</span><span class="n">GetAssetFullPath</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;shaders.hlsl&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;VSMain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vs_5_0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compileFlags</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vertexShader</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">));</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DCompileFromFile</span><span class="p">(</span><span class="n">GetAssetFullPath</span><span class="p">(</span><span class="sa">L</span><span class="s">&quot;shaders.hlsl&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;PSMain&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ps_5_0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">compileFlags</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pixelShader</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Define the vertex input layout.</span>
+<span class="w">        </span><span class="n">D3D12_INPUT_ELEMENT_DESC</span><span class="w"> </span><span class="n">inputElementDescs</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;POSITION&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32B32_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;TEXCOORD&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">DXGI_FORMAT_R32G32_FLOAT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create the graphics pipeline state object (PSO).</span>
+<span class="w">        </span><span class="n">D3D12_GRAPHICS_PIPELINE_STATE_DESC</span><span class="w"> </span><span class="n">psoDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">InputLayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">inputElementDescs</span><span class="p">,</span><span class="w"> </span><span class="n">_countof</span><span class="p">(</span><span class="n">inputElementDescs</span><span class="p">)</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">pRootSignature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">();</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">VS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">vertexShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">pixelShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RasterizerState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_RASTERIZER_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">BlendState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_BLEND_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">DepthEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">StencilEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UINT_MAX</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PrimitiveTopologyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">NumRenderTargets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RTVFormats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_R8G8B8A8_UNORM</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateGraphicsPipelineState</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psoDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_pipelineState</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the command list.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommandList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_COMMAND_LIST_TYPE_DIRECT</span><span class="p">,</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_commandList</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the vertex buffer.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Define the geometry for a triangle.</span>
+<span class="w">        </span><span class="n">Vertex</span><span class="w"> </span><span class="n">triangleVertices</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.25f</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">-0.25f</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.25f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_aspectRatio</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">vertexBufferSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">triangleVertices</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Note: using upload heaps to transfer static data like vert buffers is not </span>
+<span class="w">        </span><span class="c1">// recommended. Every time the GPU needs it, the upload heap will be marshalled </span>
+<span class="w">        </span><span class="c1">// over. Please read up on Default Heap usage. An upload heap is used here for </span>
+<span class="w">        </span><span class="c1">// code simplicity and because there are very few verts to actually transfer.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommittedResource</span><span class="p">(</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_HEAP_PROPERTIES</span><span class="p">(</span><span class="n">D3D12_HEAP_TYPE_UPLOAD</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_HEAP_FLAG_NONE</span><span class="p">,</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_DESC</span><span class="o">::</span><span class="n">Buffer</span><span class="p">(</span><span class="n">vertexBufferSize</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_RESOURCE_STATE_GENERIC_READ</span><span class="p">,</span>
+<span class="w">            </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_vertexBuffer</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Copy the triangle data to the vertex buffer.</span>
+<span class="w">        </span><span class="n">UINT8</span><span class="o">*</span><span class="w"> </span><span class="n">pVertexDataBegin</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CD3DX12_RANGE</span><span class="w"> </span><span class="n">readRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">        </span><span class="c1">// We do not intend to read from this resource on the CPU.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">Map</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readRange</span><span class="p">,</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">**&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pVertexDataBegin</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="n">pVertexDataBegin</span><span class="p">,</span><span class="w"> </span><span class="n">triangleVertices</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">triangleVertices</span><span class="p">));</span>
+<span class="w">        </span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">Unmap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Initialize the vertex buffer view.</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">BufferLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="o">-&gt;</span><span class="n">GetGPUVirtualAddress</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">StrideInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">Vertex</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_vertexBufferView</span><span class="p">.</span><span class="n">SizeInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vertexBufferSize</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Note: ComPtr&#39;s are CPU objects but this resource needs to stay in scope until</span>
+<span class="w">    </span><span class="c1">// the command list that references it has finished executing on the GPU.</span>
+<span class="w">    </span><span class="c1">// We will flush the GPU at the end of this method to ensure the resource is not</span>
+<span class="w">    </span><span class="c1">// prematurely destroyed.</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">textureUploadHeap</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the texture.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Describe and create a Texture2D.</span>
+<span class="w">        </span><span class="n">D3D12_RESOURCE_DESC</span><span class="w"> </span><span class="n">textureDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">MipLevels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">Format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_R8G8B8A8_UNORM</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">Width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextureWidth</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">Height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextureHeight</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_RESOURCE_FLAG_NONE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">DepthOrArraySize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Quality</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">Dimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_RESOURCE_DIMENSION_TEXTURE2D</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommittedResource</span><span class="p">(</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_HEAP_PROPERTIES</span><span class="p">(</span><span class="n">D3D12_HEAP_TYPE_DEFAULT</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_HEAP_FLAG_NONE</span><span class="p">,</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">textureDesc</span><span class="p">,</span>
+<span class="w">            </span><span class="n">D3D12_RESOURCE_STATE_COPY_DEST</span><span class="p">,</span>
+<span class="w">            </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_texture</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">UINT64</span><span class="w"> </span><span class="n">uploadBufferSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetRequiredIntermediateSize</span><span class="p">(</span><span class="n">m_texture</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create the GPU upload buffer.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommittedResource</span><span class="p">(</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_HEAP_PROPERTIES</span><span class="p">(</span><span class="n">D3D12_HEAP_TYPE_UPLOAD</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_HEAP_FLAG_NONE</span><span class="p">,</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_DESC</span><span class="o">::</span><span class="n">Buffer</span><span class="p">(</span><span class="n">uploadBufferSize</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_RESOURCE_STATE_GENERIC_READ</span><span class="p">,</span>
+<span class="w">            </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">textureUploadHeap</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Copy data to the intermediate upload heap and then schedule a copy </span>
+<span class="w">        </span><span class="c1">// from the upload heap to the Texture2D.</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">UINT8</span><span class="o">&gt;</span><span class="w"> </span><span class="n">texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GenerateTextureData</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">D3D12_SUBRESOURCE_DATA</span><span class="w"> </span><span class="n">textureData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">textureData</span><span class="p">.</span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">texture</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">        </span><span class="n">textureData</span><span class="p">.</span><span class="n">RowPitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TextureWidth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TexturePixelSize</span><span class="p">;</span>
+<span class="w">        </span><span class="n">textureData</span><span class="p">.</span><span class="n">SlicePitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">textureData</span><span class="p">.</span><span class="n">RowPitch</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TextureHeight</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">UpdateSubresources</span><span class="p">(</span><span class="n">m_commandList</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_texture</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">textureUploadHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">textureData</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_texture</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_COPY_DEST</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create a SRV for the texture.</span>
+<span class="w">        </span><span class="n">D3D12_SHADER_RESOURCE_VIEW_DESC</span><span class="w"> </span><span class="n">srvDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">srvDesc</span><span class="p">.</span><span class="n">Shader4ComponentMapping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING</span><span class="p">;</span>
+<span class="w">        </span><span class="n">srvDesc</span><span class="p">.</span><span class="n">Format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">textureDesc</span><span class="p">.</span><span class="n">Format</span><span class="p">;</span>
+<span class="w">        </span><span class="n">srvDesc</span><span class="p">.</span><span class="n">ViewDimension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_SRV_DIMENSION_TEXTURE2D</span><span class="p">;</span>
+<span class="w">        </span><span class="n">srvDesc</span><span class="p">.</span><span class="n">Texture2D</span><span class="p">.</span><span class="n">MipLevels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateShaderResourceView</span><span class="p">(</span><span class="n">m_texture</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">srvDesc</span><span class="p">,</span><span class="w"> </span><span class="n">m_srvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Close the command list and execute it to begin the initial GPU setup.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="w">    </span><span class="n">ID3D12CommandList</span><span class="o">*</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandQueue</span><span class="o">-&gt;</span><span class="n">ExecuteCommandLists</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppCommandLists</span><span class="p">),</span><span class="w"> </span><span class="n">ppCommandLists</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create synchronization objects and wait until assets have been uploaded to the GPU.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateFence</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_FENCE_FLAG_NONE</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_fence</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">m_fenceValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Create an event handle to use for frame synchronization.</span>
+<span class="w">        </span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateEvent</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fenceEvent</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">HRESULT_FROM_WIN32</span><span class="p">(</span><span class="n">GetLastError</span><span class="p">()));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Wait for the command list to execute; we are reusing the same command </span>
+<span class="w">        </span><span class="c1">// list in our main loop but for now, we just want to wait for setup to </span>
+<span class="w">        </span><span class="c1">// complete before continuing.</span>
+<span class="w">        </span><span class="n">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The root signature includes a single root parameter: a descriptor table with a range of a single descriptor (for the SRV that describes the texture). The shader visibility is used to prevent broadcasting the root table to all shader cores, since we will only use the SRV from the pixel shader to select a texel from the checkerboard texture (as the per-pixel data to store in the render target). Also, setting root arguments for individual shader stages allows the use of the same binding name across different stages. For example, an SRV binding of <code class="docutils literal notranslate"><span class="pre">t0,</span> <span class="pre">SHADER_VISIBILITY_VERTEX</span></code> and another SRV binding of <code class="docutils literal notranslate"><span class="pre">t0,</span> <span class="pre">SHADER_VISIBILITY_PIXEL</span></code> would be valid. However, if the visibility setting were <code class="docutils literal notranslate"><span class="pre">t0,</span> <span class="pre">SHADER_VISIBILITY_ALL</span></code> for one of the bindings, the root signature would be invalid. That is, if you want each shader to see different textures bound to the same virtual register, the application can define two root parameters using the same slot (for example <code class="docutils literal notranslate"><span class="pre">t0</span></code>) with distinct visibilities (e.g., <code class="docutils literal notranslate"><span class="pre">VISIBILITY_VERTEX</span></code> and <code class="docutils literal notranslate"><span class="pre">VISIBILITY_PIXEL</span></code>). On the other hand, if all shaders are intended to access the same texture, the application can define a single root signature binding to <code class="docutils literal notranslate"><span class="pre">t0,</span> <span class="pre">VISIBILITY_ALL</span></code>. <br>
+In the third parameter of <strong>CD3DX12_DESCRIPTOR_RANGE1::Init</strong>, we specify that the view will be bound to slot 0 reserved for SRVs. Consequently, in this case, we are binding to the virtual register <strong>t0</strong>.</p>
+<p>We won’t make use of dynamic samplers. As mentioned in <a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>, static samplers are part of the root signature but do not contribute to the 64 DWORD limit. In defining the static sampler used by <strong>D3D12HelloTextures</strong>, we specify <strong>D3D12_FILTER_MIN_MAG_MIP_POINT</strong> as a filter, indicating the use of a point filter for both texel and mipmap selection. <br>
+The texture addressing mode is set to Border, with transparent black as the border color (essentially denoting a transparent color, where the alpha channel is set to 1.0). Observe static samplers impose some limitations on the border colors that can be specified. However, this is not a concern at the moment. <br>
+Within the static sampler, we also define the shader visibility (pixel shader) and the slot where we intend to bind it (slot 0 reserved for samplers, thus we will bind it to the virtual register <strong>s0</strong>). The remaining fields that can be configured for a static sampler are not essential for our current purpose.</p>
+<p>In the input layout, we inform the input assembler that the second element\attribute refer to texture coordinates. To this purpose, <strong>DXGI_FORMAT_R32G32_FLOAT</strong> indicates the vertex attribute consists of two 32-bit floating-point values. We mark it with the semantic name <strong>TEXTURE</strong>.</p>
+<p>In the vertex buffer, , we pair each vertex position with the associated texture coordinates, as illustrated in the final image of the “Texture Coordinate System” section.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At this point, we are ready to create the texture. However, before delving into the details, it’s worthwhile to understand the meaning of the comment associated with the <strong>textureUploadHeap</strong> variable. The comment emphasizes that a local variable must remain in scope until the command list that references the corresponding resource has completed executing on the GPU. This is crucial because, while we can successfully create resources on GPU heaps from our C++ application, we only receive interface pointers to COM objects to reference them. So, when does a resource actually get destroyed? The answer is surprisingly simple: when our application no longer has any references to it. Thus, if <strong>textureUploadHeap</strong> were to go out of scope, the destructor of <strong>ComPtr</strong> would call <strong>Release</strong> on the underlying pointer to the <strong>ID3D12Resource</strong> interface. If we had no other references to the resource from our application, the associated physical memory could be reclaimed. However, if this occurs before a command referencing the resource is executed in a command list, undesirable consequences may arise. Fortunately, at the end of the <strong>LoadAssets</strong> function, we call <strong>WaitForPreviousFrame</strong>, which halts execution until all commands in the command list have been executed. This ensures that the GPU has processed all commands referencing the resource by the time we exit <strong>LoadAssets</strong>, permitting <strong>textureUploadHeap</strong> to go out of scope without any issues.</p>
+</div>
+<p>To create the checkerboard texture and allocate the corresponding memory space, we initialize a <strong>D3D12_RESOURCE_DESC</strong> structure with the required information. We desire a 2D texture of <span class="math notranslate nohighlight">\(256\times 256\)</span> texels including a single mipmap level (the texture itself), where each texel is a 32-bit value composed of four 8-bit unsigned-normalized integer channels. This can be specified by setting <strong>DXGI_FORMAT_R8G8B8A8_UNORM</strong> as the texture format. <strong>DepthOrArraySize</strong> indicates the number of textures (for texture arrays) or the depth (for 3D textures). In this case, we aim for a single 2D texture, so we set this field to 1. You can ignore <strong>SampleDesc.Count</strong> and <strong>SampleDesc.Quality</strong> for now. <br>
+In the subsequent call to <strong>CreateCommittedResource</strong>, we allocate sufficient memory space on the default heap to accommodate the texture. However, we need to initialize this memory location with the checkerboard texture data residing in system memory. Therefore, we must allocate additional memory space of the same size on the upload heap to load the texture data created by <strong>GenerateTextureData</strong>, and then copy it to the memory space allocated on the default heap (remember that we cannot directly access the default heap from the CPU). Note that the resource on the default heap is created with <strong>D3D12_RESOURCE_STATE_COPY_DEST</strong>, signifying that this resource will be used as the destination of a copy operation. On the other hand, the resource on the upload heap is created with <strong>D3D12_RESOURCE_STATE_GENERIC_READ</strong>, indicating that we can upload data from the CPU and read it from the GPU, enabling us to employ this resource as the source of a copy operation. Once we copy the texture data from the upload to the default heap (more on this shortly), we no longer require the resource on the upload heap, so <strong>textureUploadHeap</strong> can go out of scope as mentioned earlier.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You might be wondering why we used <strong>GetRequiredIntermediateSize</strong> to determine the amount of memory space to allocate on the upload heap. Well, the intermediate resource on the upload heap is only used to store the texture data. In other words, we don’t need to create another texture; a buffer is more than enough. Accordingly, <strong>CD3DX12_RESOURCE_DESC::Buffer</strong> is employed to create a <strong>D3D12_RESOURCE_DESC</strong> that describes a buffer. <strong>GetRequiredIntermediateSize</strong> takes an <strong>ID3DResource</strong> to compute the amount of memory used by that specific resource. This enables us to pass the texture on the default heap as an argument to calculate the necessary memory size to allocate on the upload heap.</p>
+</div>
+<p>We have already examined how <strong>GenerateTextureData</strong> generates the checkerboard texture data. We employ this data to initialize the only subresource that constitutes the texture applied to the triangle displayed on the screen (remember that we access resources in memory at a subresource granularity). <strong>RowPitch</strong> represents the byte size of a row of the subresource, while <strong>SlicePitch</strong> is the byte size of the entire subresource (at least for 2D subresources; for 3D subresources, it is the byte size of the depth). <br>
+<strong>UpdateSubresources</strong> is a helper function defined in <em>d3dx12.h</em>. It maps a set of subresources from the upload heap to the virtual address space of our C++ application in order to initialize them with subresource data stored in system memory. Subsequently, it records a copy operation on the command list to copy the subresource data from the subresources on the upload heap to the related subresources on the default heap. In this case we have a texture with a single subresource: the texture itself (without additional mipmap levels).</p>
+<p>We record (with a command in the command list) a resource state transition to indicate to the GPU that we intend to read the texture on the default heap from the pixel shader. Observe that a (sub)resource must be in <strong>D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE</strong> before being accessed by the pixel shader via an SRV. Otherwise, if the resource is used with a shader other than the pixel shader, you would need to specify a transition to <strong>D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE</strong>. This distinction between resources accessed by the pixel shader and other shaders can enable some optimizations. For example, a state transition from <strong>D3D12_RESOURCE_STATE_RENDER_TARGET</strong> to <strong>D3D12_RESOURCE_STATE_NON_PIXEL_SHADER</strong> will halt all subsequent shader execution until the render target data is resolved (written). In contrast, transitioning to <strong>D3D12_RESOURCE_STATE_PIXEL_SHADER</strong> will only block subsequent pixel shader execution, allowing the vertex processing pipeline to run concurrently with render target resolve.</p>
+<p>At this point, we can create the view for the texture. To achieve this, a <strong>D3D12_SHADER_RESOURCE_VIEW_DESC</strong> structure is initialized to specify some important information. <br>
+<strong>Shader4ComponentMapping</strong> specifies a mapping for texel components\channels. It enable a remapping from components of the texels in the texture to components of the vector returned as a result of reading a texel through the corresponding view. The options for each return component are: a component (specified in the range <span class="math notranslate nohighlight">\([0..3]\)</span>) from the SRV fetch result or force 0 or 1. In other words, you can map a channel value in the texel to another channel in the returned result, or set it to 0 or 1, whenever you read a texture by using the corresponding view. The default 1:1 mapping can be specified with <strong>D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING</strong>, indicating you want component 0 as the first return component, component 1 as the second return component, component 2 as the third return component, component 3 as the fourth return component. <br>
+<strong>CreateShaderResourceView</strong> creates the SRV and specifies to put it in the first descriptor of <strong>m_srvHeap</strong>. .</p>
+<p>Now, the call to <strong>WaitForPreviousFrame</strong> at the end of <strong>LoadAssets</strong> starts to make sense, since we implicitly recorded commands in the command list with the call to <strong>UpdateSubresources</strong>. It’s a good practice to flush the command queue at the end of the initialization phase before starting to record commands in <strong>OnRender</strong> (called by the message handler of <strong>WM_PAINT</strong>). At that point,  we no longer require <strong>textureUploadHeap</strong>, since the GPU has executed the copy operation from the upload heap to the default heap. Therefore, we can exit <strong>LoadAssets</strong> without any concerns about the scope of the <strong>textureUploadHeap</strong> variable.</p>
+<p>In <strong>PopulateCommandList</strong>, we pass the GPU handle of the SRV stored in <strong>m_srvHeap</strong> as root argument for the root table in the root signature. Remember that root tables take byte offsets as root arguments, and indeed a GPU descriptor handle is essentially a byte offset from the start of a descriptor heap. Then, we record a draw command (<strong>DrawInstanced</strong>) to draw the triangle.  The rest of the code is analogous to that examined in previous tutorials.</p>
+<div class="literal-block-wrapper docutils container" id="hellotexture-populatecommandlist-code">
+<div class="code-block-caption"><span class="caption-number">Listing 43 </span><span class="caption-text">HelloTexture/D3D12HelloTexture.cpp</span><a class="headerlink" href="#hellotexture-populatecommandlist-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTexture::PopulateCommandList</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// ... </span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Set necessary state.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootSignature</span><span class="p">(</span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+
+<span class="w">    </span><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_srvHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetDescriptorHeaps</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppHeaps</span><span class="p">),</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootDescriptorTable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">m_srvHeap</span><span class="o">-&gt;</span><span class="n">GetGPUDescriptorHandleForHeapStart</span><span class="p">());</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetViewports</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_viewport</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetScissorRects</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_scissorRect</span><span class="p">);</span><span class="w"> </span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will be used as a render target.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">CD3DX12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">(</span><span class="n">m_rtvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">(),</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">,</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">OMSetRenderTargets</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Record commands.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">clearColor</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ClearRenderTargetView</span><span class="p">(</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">clearColor</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetPrimitiveTopology</span><span class="p">(</span><span class="n">D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetVertexBuffers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_vertexBufferView</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">DrawInstanced</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will now be used to present.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="hlsl">
+<h3>HLSL<a class="headerlink" href="#hlsl" title="Link to this heading">#</a></h3>
+<p>Now, let’s see what happens in the shader code.</p>
+<div class="literal-block-wrapper docutils container" id="hellotexture-shader-code">
+<div class="code-block-caption"><span class="caption-number">Listing 44 </span><span class="caption-text">HelloTexture/shaders.hlsl</span><a class="headerlink" href="#hellotexture-shader-code" title="Link to this code">#</a></div>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="n">PSInput</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_POSITION</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float2</span><span class="w"> </span><span class="n">uv</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TEXCOORD</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="w"> </span>
+
+<span class="kt">Texture2D</span><span class="w"> </span><span class="n">g_texture</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">t0</span><span class="p">);</span>
+<span class="kt">SamplerState</span><span class="w"> </span><span class="n">g_sampler</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">s0</span><span class="p">);</span>
+
+
+<span class="w"> </span>
+<span class="n">PSInput</span><span class="w"> </span><span class="n">VSMain</span><span class="p">(</span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">POSITION</span><span class="p">,</span><span class="w"> </span><span class="kt">float4</span><span class="w"> </span><span class="n">uv</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TEXCOORD</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PSInput</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">uv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uv</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="w"> </span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">PSMain</span><span class="p">(</span><span class="n">PSInput</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_TARGET</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">g_texture</span><span class="p">.</span><span class="n">Sample</span><span class="p">(</span><span class="n">g_sampler</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">uv</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>The shader code reflects the fact that the SRV that describes the checkerboard texture is bound to <strong>t0</strong>, while the sampler is bound to <strong>s0</strong>. Also, the <strong>PSInput</strong> structure now includes the texture coordinates (instead of a color) associated with each vertex position.</p>
+<p>In the vertex shader, we simply pass the vertex data to the rasterizer, which interpolates it and subsequently passes the result to the pixel shader.</p>
+<p>In the pixel shader, we sample the checkerboard texture using the sampler object bound to <strong>s0</strong> and the interpolated texture coordinates. Then, we return the sampled texel as the per-pixel color to be stored in the render target.</p>
+<br>
+</section>
+</section>
+<section id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
+<br>
+<div class="admonition-support-this-project admonition">
+<p class="admonition-title">Support this project</p>
+<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
+<figure class="align-center">
+<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../_images/sponsor.png" src="../../_images/sponsor.png" /></a>
+</figure>
+</div>
+<br>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id3">
+<div role="list" class="citation-list">
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Mica</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Introduction to textures in direct3d 11. <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-textures-intro">https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-textures-intro</a>.</p>
+</div>
+<div class="citation" id="id20" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Micb</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Texture addressing modes (direct3d 9). <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/direct3d9/texture-addressing-modes">https://learn.microsoft.com/en-us/windows/win32/direct3d9/texture-addressing-modes</a>.</p>
+</div>
+</div>
+</div>
+<br>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Tutorials\01-HelloWorld"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hello-cbs.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hello Constant Buffers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hello-frame-buffering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hello Frame Buffering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#textures">Textures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-textures">1D Textures</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#d-texture-arrays">1D Texture arrays</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-textures-and-2d-texture-arrays">2D Textures and 2D Texture arrays</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texel-coordinate-system">Texel Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texture-coordinate-system">Texture Coordinate System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling">Sampling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#magnification">Magnification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minification">Minification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-modes">Addressing Modes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap">Wrap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror">Mirror</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clamp">Clamp</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#border">Border</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12hellotextures-code-review">D3D12HelloTextures: code review</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By P. A. Minerva
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

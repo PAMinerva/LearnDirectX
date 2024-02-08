@@ -1,0 +1,1033 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello Constant Buffers &#8212; Learn DirectX</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/01-HelloWorld/hello-cbs';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hello Texture" href="hello-texture.html" />
+    <link rel="prev" title="Hello Bundles" href="hello-bundles.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 This documentation is a work in progress! 🚧</div>
+  </div>
+
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../presentation.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Learn DirectX - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Learn DirectX - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../presentation.html">
+                    Welcome to Learn DirectX
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../00-Intro/intro-and-prerequisites.html">Introduction and Prerequisites</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hello DirectX</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hello-world.html">Hello World</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="hello-window.html">Hello Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-triangle.html">Hello Triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-bundles.html">Hello Bundles</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hello Constant Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-texture.html">Hello Texture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello-frame-buffering.html">Hello Frame Buffering</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Appendices/01-MathPrimer/math-primer.html">Math Primer</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathPrimer/vectors.html">Vectors</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX/issues/new?title=Issue%20on%20page%20%2FTutorials/01-HelloWorld/hello-cbs.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Tutorials/01-HelloWorld/hello-cbs.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hello Constant Buffers</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-buffers">Constant buffers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12helloconstbuffers-code-review">D3D12HelloConstBuffers: code review</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hello-constant-buffers">
+<h1>Hello Constant Buffers<a class="headerlink" href="#hello-constant-buffers" title="Link to this heading">#</a></h1>
+<br>
+<figure class="align-default">
+<img alt="../../_images/HelloConstBuffers.gif" src="../../_images/HelloConstBuffers.gif" />
+</figure>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The sample we will review in this tutorial (<a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloConstBuffers</a>) makes use of a constant buffer to pass data from CPU to GPU (that is, from CPU system memory allocated and used by our C++ app to a GPU-visible heap), so that the shader programs can access the corresponding constant buffer data.</p>
+<p>As you know, shaders receive input data from previous stages, but they can also access resources stored in GPU heaps with the assistance of root signatures. We delved into some of the theoretical aspects in <a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>. Now, it’s time to put root signatures into practice.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You might still be wondering why we need to transfer data from the CPU to the GPU. Well, there are several reasons for doing so. For instance, in the sample examined in this tutorial, we will transfer data to reposition a triangle over time. This enables us to simulate a simple animation, as illustrated in the image above.</p>
+</div>
+<br>
+</section>
+<section id="constant-buffers">
+<h2>Constant buffers<a class="headerlink" href="#constant-buffers" title="Link to this heading">#</a></h2>
+<p>Constant buffers are specially optimized for constant-variable usage, ensuring low-latency access and enabling frequent updates from the CPU. Consequently, they come with additional size, layout, and access restrictions. While the phrase “constant variables updated from the CPU” might seem contradictory, consider that even constant variables require initialization. In this context, “update” refers to the process of initializing a constant buffer with data that will remain constant throughout the execution of the shader programs that access it.</p>
+<p>Each constant buffer can hold up to 4096 constants, where each constant comprises a maximum of four 32-bit values. Constant buffers must adhere to a 256-byte alignment constraint (meaning the starting address must be a multiple of 256). To fulfill this requirement, the simplest approach is to create constant buffers with sizes divisible by 256 bytes. This allows you to allocate space for an entire array of constant buffers on GPU heaps without concerns about alignment. In fact, <strong>CreateCommittedResource</strong> typically reserves memory space on GPU heaps with 4KB or 64KB alignment, which are both divisible by 256 bytes.</p>
+<p>Declaring a constant buffer closely resembles declaring a structure in C\C++. However, unlike C\C++, we cannot allocate GPU memory space simply by defining a constant buffer instance within shader code. Constant buffers in HLSL can only be declared and referenced through their respective views. Typically, we first define a CPU version of the constant buffer (from our C++ application) to store temporary data during frame creation on the CPU timeline. Subsequently, we allocate sufficient GPU memory space on the upload heap to accommodate the constant buffer data. Then, this memory can be mapped to the virtual address space of our C++ application, given that the upload heap is CPU-visible memory. Therefore, we can use the CPU-side constant buffer (stored in system memory) as a source and the memory-mapped constant buffer as a destination for a copy operation to initialize the constant buffer on the upload heap. If the need arises to update the constant buffer data from the CPU timeline, we use a root signature to bind a view to the constant buffer on the upload heap. At that point, the shader code can access the constant buffer through the corresponding view bound to the slot (virtual register) associated with the declaration of the constant buffer in HLSL. As we will see in the next section, this is essentially what the <strong>D3D12HelloConstBuffers</strong> sample does to both initialize and update the triangle position over time.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When dealing with static constant buffer data, the common approach is to use the constant buffer residing on the upload heap as the source for a copy operation to update its counterpart on the default heap. This strategy enhances performance by allowing the GPU to directly access the constant buffer’s data stored in GPU memory, eliminating the need to incur PCI-e bus overhead in accessing it from system memory. We will delve into this topic in a subsequent tutorial.</p>
+</div>
+<br>
+</section>
+<section id="d3d12helloconstbuffers-code-review">
+<h2>D3D12HelloConstBuffers: code review<a class="headerlink" href="#d3d12helloconstbuffers-code-review" title="Link to this heading">#</a></h2>
+<section id="hlsl">
+<h3>HLSL<a class="headerlink" href="#hlsl" title="Link to this heading">#</a></h3>
+<p>Let’s start with the shader code.</p>
+<div class="literal-block-wrapper docutils container" id="hellocbs-shader-code">
+<div class="code-block-caption"><span class="caption-number">Listing 33 </span><span class="caption-text">HelloConstBuffers/shaders.hlsl</span><a class="headerlink" href="#hellocbs-shader-code" title="Link to this code">#</a></div>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="k">cbuffer</span><span class="w"> </span><span class="n">SceneConstantBuffer</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">register</span><span class="p">(</span><span class="n">b0</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span><span class="w">       </span><span class="c1">// 4 x 4 = 16 bytes</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">padding</span><span class="p">[</span><span class="mi">15</span><span class="p">];</span><span class="w">  </span><span class="c1">// 15 x (4 x 4) = 240 bytes</span>
+<span class="p">};</span><span class="w">                       </span><span class="c1">// Total = 256 bytes</span>
+<span class="w"> </span>
+<span class="k">struct</span><span class="w"> </span><span class="n">PSInput</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_POSITION</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="w"> </span>
+<span class="n">PSInput</span><span class="w"> </span><span class="n">VSMain</span><span class="p">(</span><span class="kt">float4</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">POSITION</span><span class="p">,</span><span class="w"> </span><span class="kt">float4</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">COLOR</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PSInput</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">position</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
+<span class="w">    </span><span class="n">result</span><span class="p">.</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="w"> </span>
+
+
+<span class="kt">float4</span><span class="w"> </span><span class="n">PSMain</span><span class="p">(</span><span class="n">PSInput</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SV_TARGET</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">color</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>In HLSL, the keyword <strong>cbuffer</strong> is used to declare a constant buffer, while <strong>register</strong> is employed to specify the virtual register (link name) where we aim to bind the corresponding constant buffer view. In this case, we intend to use slot 0 reserved for constant buffer views, thus we will bind to the virtual register <strong>b0</strong>. The first field of <strong>SceneConstantBuffer</strong> (the constant buffer defined in <a class="reference internal" href="#hellocbs-shader-code"><span class="std std-numref">Listing 33</span></a>) represents the <strong>offset</strong> we’ll use to translate the vertex positions. The second field is employed to <strong>pad</strong> the structure so that the constant buffer is 256 bytes in size and aligns to a 256-byte boundary.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In HLSL, you do not need to explicitly pad constant buffers to 256 bytes, as this is handled implicitly (it is minimum hardware allocation size). Moreover, observe that the scope and visibility of the fields within a constant buffer are extern to the structure, similar to enumerator constants in a C enumeration.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this tutorial, we will bind the view that describes the constant buffer through a root table in the root signature. However, we could also have passed a CBV to a root descriptor, which is simply a GPU virtual addresses pointing to the associated resource. In both cases, no information regarding the data’s organization in memory is provided. This is why the definition of a constant buffer in HLSL is crucial for the GPU to properly access the related constant buffer data.</p>
+</div>
+</section>
+<section id="c">
+<h3>C++<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
+<p>Now, let’s delve into the C++ code of the sample, starting from the application class.</p>
+<div class="literal-block-wrapper docutils container" id="hellocbs-d3d12helloconstbuffers-code">
+<div class="code-block-caption"><span class="caption-number">Listing 34 </span><span class="caption-text">HelloConstBuffers/D3D12HelloConstBuffers.h</span><a class="headerlink" href="#hellocbs-d3d12helloconstbuffers-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">D3D12HelloConstBuffers</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">DXSample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">D3D12HelloConstBuffers</span><span class="p">(</span><span class="n">UINT</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">wstring</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnInit</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnRender</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">();</span>
+<span class="w"> </span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">FrameCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">Vertex</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">position</span><span class="p">;</span>
+<span class="w">        </span><span class="n">XMFLOAT4</span><span class="w"> </span><span class="n">color</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SceneConstantBuffer</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">XMFLOAT4</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">padding</span><span class="p">[</span><span class="mi">60</span><span class="p">];</span><span class="w"> </span><span class="c1">// Padding so the constant buffer is 256-byte aligned.</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">((</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SceneConstantBuffer</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">256</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Constant Buffer size must be 256-byte aligned&quot;</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Pipeline objects.</span>
+<span class="w">    </span><span class="n">CD3DX12_VIEWPORT</span><span class="w"> </span><span class="n">m_viewport</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CD3DX12_RECT</span><span class="w"> </span><span class="n">m_scissorRect</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">IDXGISwapChain3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_swapChain</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Device</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_device</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">FrameCount</span><span class="p">];</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandAllocator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandAllocator</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12CommandQueue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandQueue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12RootSignature</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_rtvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12DescriptorHeap</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_cbvHeap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12PipelineState</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12GraphicsCommandList</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_commandList</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// App resources.</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vertexBuffer</span><span class="p">;</span>
+<span class="w">    </span><span class="n">D3D12_VERTEX_BUFFER_VIEW</span><span class="w"> </span><span class="n">m_vertexBufferView</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Resource</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_constantBuffer</span><span class="p">;</span>
+<span class="w">    </span><span class="n">SceneConstantBuffer</span><span class="w"> </span><span class="n">m_constantBufferData</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT8</span><span class="o">*</span><span class="w"> </span><span class="n">m_pCbvDataBegin</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Synchronization objects.</span>
+<span class="w">    </span><span class="n">UINT</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">;</span>
+<span class="w">    </span><span class="n">HANDLE</span><span class="w"> </span><span class="n">m_fenceEvent</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3D12Fence</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_fence</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT64</span><span class="w"> </span><span class="n">m_fenceValue</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadPipeline</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">LoadAssets</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">PopulateCommandList</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">WaitForPreviousFrame</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<p>We must define a structure similar to the constant buffer in the shader code, as we need an instance where to store the results of our calculations on the constant buffer data that will be used to initialize\update the constant buffer on the upload heap. However, in this case we explicitly need to pad\extend the structure to 256 bytes as this is not handled automatically for us.</p>
+<p>The transference of data between CPU memory and GPU heaps is a straightforward bit stream. This can pose a challenge as C++ and HLSL adhere to distinct rules for data packing. HLSL packs data into 4-byte boundaries, provided that it doesn’t cross a 16-byte boundary. As we know, a shader register is the basic unit to store data in shader cores. A shader register is composed of four 32-bit components (16 bytes in total). Now, consider having the following C++ structure definition:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">S</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">mu</span><span class="p">;</span>
+<span class="w">    </span><span class="n">XMFLOAT2</span><span class="w"> </span><span class="n">mv</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mw</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>and a similar definition in HLSL</p>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="k">cbuffer</span><span class="w"> </span><span class="n">S</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float3</span><span class="w"> </span><span class="n">u</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float2</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>In C++, we would have the following layout of data in memory for the <strong>S</strong> structure.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mu</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">mv</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">mv</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">mw</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+<p>Since data transfer between CPU and GPU is a straightforward bit stream, the <strong>S</strong> structure would be loaded into shader registers in the following manner:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Register1</span><span class="p">:</span> <span class="p">(</span><span class="n">mu</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">mv</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Register2</span><span class="p">:</span> <span class="p">(</span><span class="n">mv</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">mw</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">empty</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, the components of the vectors <strong>mu</strong>, <strong>mv</strong> and <strong>mw</strong> are packed into the 4-byte components of the two registers, but the field <strong>mv</strong> is split between them. However, the rules of HLSL state that data is packed so that it can’t cross a 16-byte boundary (that is, the size of a register). Therefore, we always must define C++ structures with the HLSL packing rules in mind. For example, a more suitable C++ definition for the <strong>S</strong> structure would be:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">S</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">XMFLOAT3</span><span class="w"> </span><span class="n">mu</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">pack</span><span class="p">;</span>
+<span class="w">    </span><span class="n">XMFLOAT2</span><span class="w"> </span><span class="n">mv</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mw</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>so that in HLSL we avoid splitting data between shader registers.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Register1</span><span class="p">:</span> <span class="p">(</span><span class="n">mu</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">mu</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">pack</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Register2</span><span class="p">:</span> <span class="p">(</span><span class="n">mv</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">mv</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">mw</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We can have more than a field\vector in the same shader register. Indeed, as you can see above, <strong>mv</strong> and <strong>mw</strong> are packed in the same shader register since they don’t cross its 16-byte boundary.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The HLSL packing rules also apply to both input and output parameters of the shader programs, with the exception of vertex shader input parameters. Since the input assembler cannot unpack data, it simply delivers each vertex attribute in a separate input register. This explains why we can use both <strong>float3</strong> and <strong>float4</strong> for the first parameter of <strong>VSMain</strong> (<strong>position</strong>), as pointed out in <a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>. Indeed, either way, the next parameter (<strong>color</strong>) will be passed in the next input register. Nevertheless, this doesn’t fully explain why a <strong>float4</strong> is required for the position field in the <strong>PSInput</strong> structure. We will revisit this in a later tutorial.</p>
+</div>
+<p>The constant buffer used by the <strong>D3D12HelloConstBuffers</strong> sample is a resource accessed by the vertex shader, so we need to specify it with a root parameter in a root signature. In this case, we will opt for a root table that includes a range of a single descriptor: a CBV (Constant Buffer View) that describes the constant buffer to the GPU. For this purpose, the application class introduces an additional descriptor heap (<strong>m_cbvHeap</strong>) as we cannot re-use <strong>m_rtvHeap</strong>, that holds the descriptors of the two render targets; recall that RTVs and CBVs may have different size, so they can’t share the same descriptor heap. Also, in the application class, you can find the following new private members:</p>
+<ul class="simple">
+<li><p><strong>m_constantBuffer</strong> is the object we can use from our C++ application to reference the constant buffer residing in the upload heap. We will use it to map the constant buffer to the virtual address space of our C++ application.</p></li>
+<li><p><strong>m_pCbvDataBegin</strong> is the starting address where the constant buffer (from the upload heap) will be mapped (to the virtual address space of our C++ application).</p></li>
+<li><p><strong>m_constantBufferData</strong> is an instance of the constant buffer structure defined in the application class. It is where we will temporarily store the constant buffer data we will copy to the memory mapped constant buffer. This approach enables us to initialize the constant buffer on the upload heap since the physical memory that holds the constant buffer is the same.</p></li>
+</ul>
+<p>Now, let’s take a brief look at the <strong>LoadPipeline</strong> function to see what’s new.</p>
+<div class="literal-block-wrapper docutils container" id="hellocbs-loadpipeline-code">
+<div class="code-block-caption"><span class="caption-number">Listing 35 </span><span class="caption-text">HelloConstBuffers/D3D12HelloConstBuffers.cpp</span><a class="headerlink" href="#hellocbs-loadpipeline-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the rendering pipeline dependencies.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloConstBuffers::LoadPipeline</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create descriptor heaps.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Describe and create a render target view (RTV) descriptor heap.</span>
+<span class="w">        </span><span class="n">D3D12_DESCRIPTOR_HEAP_DESC</span><span class="w"> </span><span class="n">rtvHeapDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FrameCount</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_RTV</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rtvHeapDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_FLAG_NONE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateDescriptorHeap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rtvHeapDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_rtvHeap</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">m_rtvDescriptorSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">GetDescriptorHandleIncrementSize</span><span class="p">(</span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_RTV</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create a constant buffer view (CBV) descriptor heap.</span>
+<span class="w">        </span><span class="c1">// Flags indicate that this descriptor heap can be bound to the pipeline </span>
+<span class="w">        </span><span class="c1">// and that descriptors contained in it can be referenced by a root table.</span>
+<span class="w">        </span><span class="n">D3D12_DESCRIPTOR_HEAP_DESC</span><span class="w"> </span><span class="n">cbvHeapDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">cbvHeapDesc</span><span class="p">.</span><span class="n">NumDescriptors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cbvHeapDesc</span><span class="p">.</span><span class="n">Flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cbvHeapDesc</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateDescriptorHeap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cbvHeapDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_cbvHeap</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w">    </span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Here, we create the two descriptor heaps we need in this sample: one for the two RTVs that describe the buffers in the swap chain and the other for the CBV that describes the constant buffer used by the vertex shader. Observe that we set the <strong>D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE</strong> flag to specify that <strong>m_cbvHeap</strong> will be a shader-visible descriptor heap associated with the command list. This allows the GPU to access the related descriptors through a byte offset passed as a root argument to a root table in the root signature, as explained in <a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Descriptor heaps created without specifying the flag <strong>D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE</strong> allow applications the flexibility to stage descriptors in CPU system memory before copying them to a shader visible descriptor heap, as a convenience if required. However, it is perfectly acceptable for applications to directly create descriptors into shader-visible descriptor heaps, without the need for staging anything on the CPU side.</p>
+</div>
+<p>Now, let’s review the code of the <strong>LoadAssets</strong> function.</p>
+<div class="literal-block-wrapper docutils container" id="hellocbs-loadassets-code">
+<div class="code-block-caption"><span class="caption-number">Listing 36 </span><span class="caption-text">HelloConstBuffers/D3D12HelloConstBuffers.cpp</span><a class="headerlink" href="#hellocbs-loadassets-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Load the sample assets.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloConstBuffers::LoadAssets</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Create a root signature consisting of a descriptor table with a single CBV.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">D3D12_FEATURE_DATA_ROOT_SIGNATURE</span><span class="w"> </span><span class="n">featureData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// This is the highest version the sample supports. If CheckFeatureSupport succeeds, the HighestVersion returned will not be greater than this.</span>
+<span class="w">        </span><span class="n">featureData</span><span class="p">.</span><span class="n">HighestVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D_ROOT_SIGNATURE_VERSION_1_1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">FAILED</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CheckFeatureSupport</span><span class="p">(</span><span class="n">D3D12_FEATURE_ROOT_SIGNATURE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">featureData</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">featureData</span><span class="p">))))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">featureData</span><span class="p">.</span><span class="n">HighestVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D_ROOT_SIGNATURE_VERSION_1_0</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">CD3DX12_DESCRIPTOR_RANGE1</span><span class="w"> </span><span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="n">CD3DX12_ROOT_PARAMETER1</span><span class="w"> </span><span class="n">rootParameters</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">Init</span><span class="p">(</span><span class="n">D3D12_DESCRIPTOR_RANGE_TYPE_CBV</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rootParameters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">InitAsDescriptorTable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">D3D12_SHADER_VISIBILITY_VERTEX</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Allow input layout and deny uneccessary access to certain pipeline stages.</span>
+<span class="w">        </span><span class="n">D3D12_ROOT_SIGNATURE_FLAGS</span><span class="w"> </span><span class="n">rootSignatureFlags</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT</span><span class="w"> </span><span class="o">|</span>
+<span class="w">            </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS</span><span class="w"> </span><span class="o">|</span>
+<span class="w">            </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS</span><span class="w"> </span><span class="o">|</span>
+<span class="w">            </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS</span><span class="w"> </span><span class="o">|</span>
+<span class="w">            </span><span class="n">D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC</span><span class="w"> </span><span class="n">rootSignatureDesc</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rootSignatureDesc</span><span class="p">.</span><span class="n">Init_1_1</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">rootParameters</span><span class="p">),</span><span class="w"> </span><span class="n">rootParameters</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="n">rootSignatureFlags</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">signature</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ComPtr</span><span class="o">&lt;</span><span class="n">ID3DBlob</span><span class="o">&gt;</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">D3DX12SerializeVersionedRootSignature</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rootSignatureDesc</span><span class="p">,</span><span class="w"> </span><span class="n">featureData</span><span class="p">.</span><span class="n">HighestVersion</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">error</span><span class="p">));</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateRootSignature</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferPointer</span><span class="p">(),</span><span class="w"> </span><span class="n">signature</span><span class="o">-&gt;</span><span class="n">GetBufferSize</span><span class="p">(),</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_rootSignature</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the pipeline state, which includes compiling and loading shaders.</span>
+<span class="w">    </span><span class="p">{</span>
+
+<span class="w">        </span><span class="c1">// ...</span>
+
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create the graphics pipeline state object (PSO).</span>
+<span class="w">        </span><span class="n">D3D12_GRAPHICS_PIPELINE_STATE_DESC</span><span class="w"> </span><span class="n">psoDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">InputLayout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">inputElementDescs</span><span class="p">,</span><span class="w"> </span><span class="n">_countof</span><span class="p">(</span><span class="n">inputElementDescs</span><span class="p">)</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">pRootSignature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">();</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">VS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">vertexShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_SHADER_BYTECODE</span><span class="p">(</span><span class="n">pixelShader</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RasterizerState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_RASTERIZER_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">BlendState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CD3DX12_BLEND_DESC</span><span class="p">(</span><span class="n">D3D12_DEFAULT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">DepthEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">DepthStencilState</span><span class="p">.</span><span class="n">StencilEnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UINT_MAX</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">PrimitiveTopologyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">NumRenderTargets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">RTVFormats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DXGI_FORMAT_R8G8B8A8_UNORM</span><span class="p">;</span>
+<span class="w">        </span><span class="n">psoDesc</span><span class="p">.</span><span class="n">SampleDesc</span><span class="p">.</span><span class="n">Count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateGraphicsPipelineState</span><span class="p">(</span><span class="o">&amp;</span><span class="n">psoDesc</span><span class="p">,</span><span class="w"> </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_pipelineState</span><span class="p">)));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the command list. </span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the vertex buffer.    </span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create the constant buffer.</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">UINT</span><span class="w"> </span><span class="n">constantBufferSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">SceneConstantBuffer</span><span class="p">);</span><span class="w">    </span><span class="c1">// CB size is required to be 256-byte aligned.</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateCommittedResource</span><span class="p">(</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_HEAP_PROPERTIES</span><span class="p">(</span><span class="n">D3D12_HEAP_TYPE_UPLOAD</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_HEAP_FLAG_NONE</span><span class="p">,</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_DESC</span><span class="o">::</span><span class="n">Buffer</span><span class="p">(</span><span class="n">constantBufferSize</span><span class="p">),</span>
+<span class="w">            </span><span class="n">D3D12_RESOURCE_STATE_GENERIC_READ</span><span class="p">,</span>
+<span class="w">            </span><span class="k">nullptr</span><span class="p">,</span>
+<span class="w">            </span><span class="n">IID_PPV_ARGS</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_constantBuffer</span><span class="p">)));</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Describe and create a constant buffer view.</span>
+<span class="w">        </span><span class="n">D3D12_CONSTANT_BUFFER_VIEW_DESC</span><span class="w"> </span><span class="n">cbvDesc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">cbvDesc</span><span class="p">.</span><span class="n">BufferLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_constantBuffer</span><span class="o">-&gt;</span><span class="n">GetGPUVirtualAddress</span><span class="p">();</span>
+<span class="w">        </span><span class="n">cbvDesc</span><span class="p">.</span><span class="n">SizeInBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">constantBufferSize</span><span class="p">;</span>
+<span class="w">        </span><span class="n">m_device</span><span class="o">-&gt;</span><span class="n">CreateConstantBufferView</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cbvDesc</span><span class="p">,</span><span class="w"> </span><span class="n">m_cbvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">        </span><span class="c1">// Map and initialize the constant buffer. We don&#39;t unmap this until the</span>
+<span class="w">        </span><span class="c1">// app closes. Keeping things mapped for the lifetime of the resource is okay.</span>
+<span class="w">        </span><span class="n">CD3DX12_RANGE</span><span class="w"> </span><span class="n">readRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">        </span><span class="c1">// We do not intend to read from this resource on the CPU.</span>
+<span class="w">        </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_constantBuffer</span><span class="o">-&gt;</span><span class="n">Map</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">readRange</span><span class="p">,</span><span class="w"> </span><span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">**&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_pCbvDataBegin</span><span class="p">)));</span>
+<span class="w">        </span><span class="n">memcpy</span><span class="p">(</span><span class="n">m_pCbvDataBegin</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_constantBufferData</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">m_constantBufferData</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Create synchronization objects and wait until assets have been uploaded to the GPU.</span>
+
+<span class="w">    </span><span class="c1">// ...</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>We first check the highest root signature version available on the system (1.0 and 1.1 are the only versions available at the time of this writing). <strong>CheckFeatureSupport</strong> retrieves information about the features that are supported by the current graphics driver. The first parameter is a constant describing the feature(s) that we want to query for support. The second parameter is a pointer to a data structure whose type depends on the value passed as the first parameter. The second parameter is used both as an input and output parameter to pass\receive information to\from <strong>CheckFeatureSupport</strong>. The third parameter is the size of the structure passed in the second parameter.</p>
+<p>Then, we create the root signature. The only root parameter is a descriptor table including a range of a single descriptor: the CBV that describes the constant buffer we are going to use in the vertex shader. <br>
+<strong>CD3DX12_DESCRIPTOR_RANGE1</strong> is a helper structure to enable easy initialization of a <strong>D3D12_DESCRIPTOR_RANGE1</strong> structure, which describes a descriptor range despite the root signature version used (that is, it allows to specify the volatility of both descriptors and data). <br>
+<strong>CD3DX12_ROOT_PARAMETER1</strong> is a helper structure to enable easy initialization of a <strong>D3D12_ROOT_PARAMETER1</strong> structure, which allow to describe a descriptor table despite the root signature version used (that is, as a collection of <strong>D3D12_DESCRIPTOR_RANGE1</strong>). <br>
+<strong>CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC</strong> is a helper structure to enable easy initialization of a <strong>D3D12_VERSIONED_ROOT_SIGNATURE_DESC</strong> structure, which describe root signatures of any version (that is, root signatures that can hold root parameters of both <strong>D3D12_ROOT_PARAMETER</strong> and <strong>D3D12_ROOT_PARAMETER1</strong>).</p>
+<p><strong>CD3DX12_DESCRIPTOR_RANGE1::Init</strong> takes five parameters. <br>
+The first parameter specifies the type of descriptor range, while the second parameter indicates the number of descriptors in the range. In this case, we have a range with a single CBV. <br>
+The third parameter specifies the slot where we want to start binding the descriptors in the range. In this case, we specify 0, so that the only constant buffer view we have in the range will be bound to the virtual register <strong>b0</strong>. <br>
+The fourth parameter is the register space. This is nothing more than a way to help uniquely identify a bind point without overlapping with others. For now, you can simply pass 0. We’ll revisit register space in a subsequent tutorial. <br>
+The flag <strong>D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC</strong> specifies that both descriptors and data they reference are static. That is, once we set the root table as a root argument in the command list, we guarantee the driver that both the descriptors in the range and the data they reference won’t change until the GPU finishes the execution of the command list. This maximizes the potential for driver optimization.</p>
+<p><strong>CD3DX12_ROOT_PARAMETER1:: InitAsDescriptorTable</strong> takes the number of ranges in the descriptor table, the array of ranges and the shader visibility. This last parameter specifies which shaders need to access the root table. On some hardware, there can be a performance gain from only making descriptors visible to the shaders that actually require them.</p>
+<p>During the creation of the root signature, we can pass a flag the specifies which shaders we want to deny access to the root signature. In this case, we deny access to most of the stages except the vertex shader, which needs to access the constant buffer view in the root signature. Denying access to shaders that don’t need the root signature to access resources can save the hardware some work. That is, for example, if the <strong>D3D12_SHADER_VISIBILITY_ALL</strong> flag has been set to broadcast the root parameters to all shader stages, denying access can overrule this and save the hardware some work. Additionally, if the shader is so simple that no resource accessible through the root signature is needed, then denying access can also be beneficial to optimize performance.</p>
+<p><strong>D3DX12SerializeVersionedRootSignature</strong> helps serialize a root signature of any version that can be passed to <strong>ID3D12Device::CreateRootSignature</strong>.</p>
+<p>After creating the root signature, PSO, command list and vertex buffer, then we create the constant buffer. <br>
+First, we allocate memory space on the upload heap, as we need to update the constant buffer from the CPU timeline. Then, we use the GPU virtual address of the constant buffer and its size to create the related CBV, which will be stored in the first descriptor of <strong>m_cbvHeap</strong>. <br>
+We map the constant buffer to the virtual address space of our C++ application so that we can use the CPU memory-mapped version to initialize the constant buffer on the upload heap. As the comment states, keeping things mapped for the lifetime of the resource is okay. The resource will be automatically unmapped when we close the application. We use <strong>memcpy</strong> to copy the constant buffer data (<strong>m_constantBufferData</strong>) to the CPU memory-mapped constant buffer. This way, we initialize\update the constant buffer on the upload heap as well, since both are backed by the same physical memory. If you examine the complete code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloConstBuffers</a> sample, you can see that <strong>m_constantBufferData</strong> is default initialized in the constructor of the application class, so the constant buffer fields will be all zero at first.</p>
+<p>Now, let’s take a look at the <strong>PopulateCommandList</strong> function.</p>
+<div class="literal-block-wrapper docutils container" id="hellocbs-populatecommandlist-code">
+<div class="code-block-caption"><span class="caption-number">Listing 37 </span><span class="caption-text">HelloConstBuffers/D3D12HelloConstBuffers.cpp</span><a class="headerlink" href="#hellocbs-populatecommandlist-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Fill the command list with all the render commands and dependent state.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloConstBuffers::PopulateCommandList</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Command list allocators can only be reset when the associated </span>
+<span class="w">    </span><span class="c1">// command lists have finished execution on the GPU; apps should use </span>
+<span class="w">    </span><span class="c1">// fences to determine GPU execution progress.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// However, when ExecuteCommandList() is called on a particular command </span>
+<span class="w">    </span><span class="c1">// list, that command list can then be reset at any time and must be before </span>
+<span class="w">    </span><span class="c1">// re-recording.</span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">(</span><span class="n">m_commandAllocator</span><span class="p">.</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pipelineState</span><span class="p">.</span><span class="n">Get</span><span class="p">()));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Set necessary state.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootSignature</span><span class="p">(</span><span class="n">m_rootSignature</span><span class="p">.</span><span class="n">Get</span><span class="p">());</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ID3D12DescriptorHeap</span><span class="o">*</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_cbvHeap</span><span class="p">.</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetDescriptorHeaps</span><span class="p">(</span><span class="n">_countof</span><span class="p">(</span><span class="n">ppHeaps</span><span class="p">),</span><span class="w"> </span><span class="n">ppHeaps</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">SetGraphicsRootDescriptorTable</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">m_cbvHeap</span><span class="o">-&gt;</span><span class="n">GetGPUDescriptorHandleForHeapStart</span><span class="p">());</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetViewports</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_viewport</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">RSSetScissorRects</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_scissorRect</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will be used as a render target.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">CD3DX12_CPU_DESCRIPTOR_HANDLE</span><span class="w"> </span><span class="n">rtvHandle</span><span class="p">(</span><span class="n">m_rtvHeap</span><span class="o">-&gt;</span><span class="n">GetCPUDescriptorHandleForHeapStart</span><span class="p">(),</span><span class="w"> </span><span class="n">m_frameIndex</span><span class="p">,</span><span class="w"> </span><span class="n">m_rtvDescriptorSize</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">OMSetRenderTargets</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Record commands.</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">clearColor</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.2f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ClearRenderTargetView</span><span class="p">(</span><span class="n">rtvHandle</span><span class="p">,</span><span class="w"> </span><span class="n">clearColor</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetPrimitiveTopology</span><span class="p">(</span><span class="n">D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">IASetVertexBuffers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_vertexBufferView</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">DrawInstanced</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="c1">// Indicate that the back buffer will now be used to present.</span>
+<span class="w">    </span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">ResourceBarrier</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">CD3DX12_RESOURCE_BARRIER</span><span class="o">::</span><span class="n">Transition</span><span class="p">(</span><span class="n">m_renderTargets</span><span class="p">[</span><span class="n">m_frameIndex</span><span class="p">].</span><span class="n">Get</span><span class="p">(),</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_RENDER_TARGET</span><span class="p">,</span><span class="w"> </span><span class="n">D3D12_RESOURCE_STATE_PRESENT</span><span class="p">));</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">ThrowIfFailed</span><span class="p">(</span><span class="n">m_commandList</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p><strong>ID3D12GraphicsCommandList::SetDescriptorHeaps</strong> changes the currently bound descriptor heaps that are associated with a command list. At any given time, no more than one combined CBV/SRV/UAV heap and one sampler heap can be bound. Whenever there is at least one shader that accesses a resource through a descriptor within a descriptor table’s range, the corresponding descriptor heap must be bound to the command list. In this case, we only set <strong>m_cbvHeap</strong> as the shader-visible descriptor heap, as we won’t be using dynamic samplers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The descriptor table state is undefined at the beginning of a command list, as well as after changing the associated descriptor heaps. Once a descriptor heap is set for a command list, subsequent calls to define descriptor tables will reference the current descriptor heap.</p>
+</div>
+<p>By calling <strong>ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable</strong>, we set a descriptor table within the graphics root signature (that is, we pass a root table to a root parameter). The first parameter is the index of the root parameter in the root signature we want to set. The second parameter is a GPU handle (i.e., a byte offset) to the first descriptor within the first range among the ones included in the descriptor table.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A descriptor table “knows” both the number of ranges and the number of descriptors each range contains. Therefore, we can simply pass a GPU handle to the first descriptor of the first range as second argument to <strong>SetGraphicsRootDescriptorTable</strong>. The only requirement is that the descriptors in each range of the descriptor table are contiguous in the descriptor heap (as shown in the figure below). While it is feasible to have non-contiguous ranges of descriptors, we’ll delve into this topic in a later tutorial.</p>
+</div>
+<figure class="align-default">
+<img alt="../../_images/root-table.png" src="../../_images/root-table.png" />
+</figure>
+<p>At this point, when <strong>DrawInstanced</strong> is executed by the GPU, the vertex shader can read the constant buffer since the related view is bound to the slot <strong>b0</strong>, as specified in <strong>CD3DX12_ROOT_PARAMETER1:: InitAsDescriptorTable</strong>. However, there is a problem we need to solve: we initialized the members of the constant buffer to zero, so we won’t see any animation. Therefore, we need to constantly update the constant buffer data over time to see any effect on the screen. If you recall our discussion in <a class="reference internal" href="hello-window.html"><span class="std std-doc">Hello Window</span></a>, the window procedure keeps processing <strong>WM_PAINT</strong> messages sent directly to it, or posted to the message queue. That way, we can call both <strong>OnUpdate</strong> and <strong>OnRender</strong> in the <strong>WM_PAINT</strong> message handler to render updated geometries on the screen. Until now, the call to <strong>OnUpdate</strong> was a mere formality since it was an empty function. Now, we can finally implement and use it to modify the constant buffer data over time.</p>
+<div class="literal-block-wrapper docutils container" id="hellocbs-onupdate-code">
+<div class="code-block-caption"><span class="caption-number">Listing 38 </span><span class="caption-text">HelloConstBuffers/D3D12HelloConstBuffers.cpp</span><a class="headerlink" href="#hellocbs-onupdate-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Update frame-based values.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloConstBuffers::OnUpdate</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">translationSpeed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.015f</span><span class="p">;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">offsetBounds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.25f</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">m_constantBufferData</span><span class="p">.</span><span class="n">offset</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">translationSpeed</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_constantBufferData</span><span class="p">.</span><span class="n">offset</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">offsetBounds</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_constantBufferData</span><span class="p">.</span><span class="n">offset</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">offsetBounds</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">m_pCbvDataBegin</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">m_constantBufferData</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">m_constantBufferData</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>Here, we update the constant buffer data stored in the constant buffer variable (<strong>m_constantBufferData</strong>) declared in the application class. Then, we copy this data to the memory mapped constant buffer (<strong>m_pCbvDataBegin</strong>). This also updates the constant buffer on the upload heap (<strong>m_constantBuffer</strong>) as both are backed by the same physical memory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As stated in <a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>, a primitive is rendered on the screen as long as the x- and y-coordinates are in the range <span class="math notranslate nohighlight">\([−1, +1]\)</span>. In <a class="reference internal" href="#hellocbs-onupdate-code"><span class="std std-ref"><strong>OnUpdate</strong></span></a> we restrict both these coordinates within the interval <span class="math notranslate nohighlight">\([−1.25, +1.25]\)</span> so that the triangle exits one side and enter the other one without disappearing.</p>
+</div>
+<br>
+</section>
+</section>
+<section id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWorld (DirectX-Graphics-Samples)</a></p>
+<br>
+<div class="admonition-support-this-project admonition">
+<p class="admonition-title">Support this project</p>
+<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
+<figure class="align-center">
+<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../_images/sponsor.png" src="../../_images/sponsor.png" /></a>
+</figure>
+</div>
+<br>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Tutorials\01-HelloWorld"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hello-bundles.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hello Bundles</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hello-texture.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hello Texture</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-buffers">Constant buffers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d3d12helloconstbuffers-code-review">D3D12HelloConstBuffers: code review</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#source-code">Source Code</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By P. A. Minerva
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
