@@ -115,7 +115,7 @@ void D3D12HelloTriangle::PopulateCommandList()
 }
 ```
 
-We call this function whenever the window needs repainting. As a result, the GPU always ends up executing the same commands. Let’s explore the possibility of building up a bundle by grouping some of these commands. **SetGraphicsRootSignature**, **IASetPrimitiveTopology**, **IASetVertexBuffers** and **DrawInstanced** can be used in a bundle, while **RSSetViewports**, **RSSetScissorRects**, **ResourceBarrier**, and **OMSetRenderTargets** cannot (as stated in the previous section).
+We call this function whenever the window needs repainting. As a result, the GPU always ends up executing the same commands. Let's explore the possibility of building up a bundle by grouping some of these commands. **SetGraphicsRootSignature**, **IASetPrimitiveTopology**, **IASetVertexBuffers** and **DrawInstanced** can be used in a bundle, while **RSSetViewports**, **RSSetScissorRects**, **ResourceBarrier**, and **OMSetRenderTargets** cannot (as stated in the previous section).
 
 At this point, we can finally take a look at the code of the **D3D12HelloBundles** sample.<br>
 In the application class, we declare a bundle (as a **ID3D12GraphicsCommandList**), along with the related allocator.

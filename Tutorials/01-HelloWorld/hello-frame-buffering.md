@@ -47,7 +47,7 @@ By specifying the flag **DXGI_SWAP_EFFECT_FLIP_DISCARD** during swap chain creat
 ```{figure} images/06/dwm-composition.png
 ```
 
-Let’s use a practical example to explain in more detail what happens in the **D3D12HelloFrameBuffering** sample under the conditions outlined above, where the flip model is used with a swap chain that includes two buffers for rendering in an application running in windowed mode. This will also allow us to illustrate how to unlock parallelism between CPU and GPU. For convenience, we'll refer to the two buffers in the swap chain as A and B.
+Let's use a practical example to explain in more detail what happens in the **D3D12HelloFrameBuffering** sample under the conditions outlined above, where the flip model is used with a swap chain that includes two buffers for rendering in an application running in windowed mode. This will also allow us to illustrate how to unlock parallelism between CPU and GPU. For convenience, we'll refer to the two buffers in the swap chain as A and B.
 
 As soon as we start the application, the commands to draw the very first frame on buffer A are recorded in a command list. Then, **ExecuteCommandLists** and **Present** are invoked to send the command list to the command queue and insert the first frame into the present queue, respectively. As a consequence, a present operation is also added to the command queue after the command list.
 
@@ -86,7 +86,7 @@ Command lists are the only resource requiring explicit synchronization (using fe
 ```
 
 ```{important}
-The note above refers to resource synchronization during presentation and rendering. However, during frame creation on the CPU timeline, we still need to preserve\synchronize all the GPU resources (buffers, descriptors, synchronization objects, etc.) that our application accesses with write operations to create a frame. For this purpose, we can, for example, provide multiple copies of those resources (one for each frame we want to create in advance on the CPU timeline). This way, frame creation won’t interfere with other pending frames in GPU queues because resources that will be used on the GPU timeline to render pending frames are preserved during the creation of new frames on the CPU timeline that access the same resources.
+The note above refers to resource synchronization during presentation and rendering. However, during frame creation on the CPU timeline, we still need to preserve\synchronize all the GPU resources (buffers, descriptors, synchronization objects, etc.) that our application accesses with write operations to create a frame. For this purpose, we can, for example, provide multiple copies of those resources (one for each frame we want to create in advance on the CPU timeline). This way, frame creation won't interfere with other pending frames in GPU queues because resources that will be used on the GPU timeline to render pending frames are preserved during the creation of new frames on the CPU timeline that access the same resources.
 ```
 
 Coming back to our example, we can start creating a new frame on the CPU timeline (the third, with buffer A as the render target) once the fence gets signaled the first time. Indeed, at that point, we can be sure that the GPU has finished executing the command list for the first frame, which also used buffer A. Observe that, if the first frame in the present queue hasn't been displayed yet, the subsequent call to **Present** (used to present the third frame) will block until the first frame is retired from the present queue. In this scenario, it is possible to have two frames in the present queue (both the first using buffer A and the second using buffer B). If the GPU is fast enough to complete both of them before the next vertical blank, the DWM will select the second frame (the last completed one) while the first one is immediately retired from the present queue. Since the GPU has undoubtedly executed the command lists of both the first two frames, we would eventually be able to create the third frame on the CPU timeline with A as the render target and present it. Indeed, once the first frame becomes retired, the **Present** waiting on the CPU timeline can unblock to queue the third frame, and the GPU can execute the corresponding command list. After this third frame becomes queued, the second one can be retired from the present queue. And so on.
@@ -106,7 +106,7 @@ In conclusion, we can state that by using a different command allocator for each
 
 ## D3D12HelloFrameBuffering: code review
 
-Now, we are ready to review the code of the sample. Let’s start with the application class.
+Now, we are ready to review the code of the sample. Let's start with the application class.
 
 ```{code-block} cpp
 :caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.h
@@ -207,7 +207,7 @@ void D3D12HelloFrameBuffering::LoadPipeline()
 }
 ```
 
-Now, let’s see what's new in **LoadAssets**.
+Now, let's see what's new in **LoadAssets**.
 
 ```{code-block} cpp
 :caption: D3D12HelloFrameBuffering/D3D12HelloFrameBuffering.cpp
