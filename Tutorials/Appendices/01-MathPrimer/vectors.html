@@ -65,6 +65,8 @@ const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/Appendices/01-MathPrimer/vectors';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -409,6 +411,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinate-systems">Coordinate systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-coordinate-system">1D Coordinate system</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">[WIP]</a></li>
 </ul>
             </nav>
@@ -423,6 +427,22 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="vectors">
 <h1>Vectors<a class="headerlink" href="#vectors" title="Link to this heading">#</a></h1>
+<section id="coordinate-systems">
+<h2>Coordinate systems<a class="headerlink" href="#coordinate-systems" title="Link to this heading">#</a></h2>
+<p>A coordinate system, also known as a reference frame (or simply frame), is a fundamental concept in mathematics and geometry. It provides a way to uniquely determine a position in space by using one or more numbers called coordinates.</p>
+<p>To define a coordinate system, three key components are needed: an origin, a unit of measurement, and a positive direction. The origin is a reference point from which all positions are measured. The unit of measurement determines the scale or size of each coordinate value. The positive direction indicates how the coordinates increase from the origin.</p>
+<p>By using a coordinate system, we can bridge the gap between geometry and numerical problems. Geometrical problems involving positions, distances, angles, and shapes can be translated into numerical problems by assigning coordinates to the geometric elements. Similarly, numerical problems can be visualized and understood geometrically by mapping the numbers that represent points and other geometric entities onto a coordinate system.</p>
+<br>
+</section>
+<section id="d-coordinate-system">
+<h2>1D Coordinate system<a class="headerlink" href="#d-coordinate-system" title="Link to this heading">#</a></h2>
+<p>A 1D coordinate system is a reference frame that operates along a single dimension, typically represented by a straight line (but it can also be a curve). In a 1D coordinate system, an origin point is typically defined as a reference point for the line. This origin point serves as the starting point from which positions are measured. Additionally, it is necessary to establish a unit of measurement that determines the scale or increment used to quantify distances or positions along the line, and a positive direction indicating the way in which values increase from the origin. In this type of coordinate system, a position <span class="math notranslate nohighlight">\(\mathbf{P}\)</span> on a line (or curve) can be determined with a single number (coordinate) <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<figure class="align-default">
+<img alt="../../../_images/1D-coord-system.png" src="../../../_images/1D-coord-system.png" />
+</figure>
+<p>For instance, in the line illustrated above, <span class="math notranslate nohighlight">\(x=3\)</span> specifies that the position <span class="math notranslate nohighlight">\(\mathbf{P}\)</span> is <span class="math notranslate nohighlight">\(3\)</span> units away from the origin <span class="math notranslate nohighlight">\(\mathbf{O}\)</span> in the positive direction along the line. This approach assigns a unique coordinate to each point\position on the line, and every real number representing the coordinate of a distinct point on the line. Therefore, the coordinate of a point <span class="math notranslate nohighlight">\(\mathbf{P}\)</span> is defined as the signed distance between the origin <span class="math notranslate nohighlight">\(\mathbf{O}\)</span> and the point.</p>
+<br>
+</section>
 <section id="wip">
 <h2>[WIP]<a class="headerlink" href="#wip" title="Link to this heading">#</a></h2>
 </section>
@@ -483,6 +503,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinate-systems">Coordinate systems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-coordinate-system">1D Coordinate system</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wip">[WIP]</a></li>
 </ul>
   </nav></div>
