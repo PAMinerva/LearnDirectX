@@ -959,7 +959,7 @@ void D3D12HelloWindow::OnRender()
 
 In **PopulateCommandList**, we record (into the command list) the commands required to render a frame. In this sample, we will simply paint the window's client area blue. We'll return to this function shortly.
 
-As we know, a command queue is a collection of command lists, so we can queue multiple command lists if needed. That’s why we pass an array of command lists to **ID3D12CommandQueue::ExecuteCommandLists**. This function submits the command lists (provided as the second parameter) to the command queue, making them ready for consumption by the GPU. 
+As we know, a command queue is a collection of command lists, so we can queue multiple command lists if needed. That's why we pass an array of command lists to **ID3D12CommandQueue::ExecuteCommandLists**. This function submits the command lists (provided as the second parameter) to the command queue, making them ready for consumption by the GPU. 
 
 ```{important}
 The GPU start executing the command lists sequentially, preserving the order of submission. However, commands within command lists can be executed in parallel whenever possible.
@@ -1102,13 +1102,13 @@ void D3D12HelloWindow::WaitForPreviousFrame()
 }
 ```
 
-The comment at the beginning of {numref}`hellowindow-WaitForPreviousFrame-code` states that you shouldn’t wait for a frame to complete. Indeed, we could start recording commands for the next frame if we had separated command allocators for the two buffers in the swap chain. Unfortunately, this is not the case, so we merely wait for the GPU to complete a frame before creating the next one on the CPU timeline. That way, we are sure the command queue is empty, so that we can reuse the command allocator whenever we call **PopulateCommandList**.
+The comment at the beginning of {numref}`hellowindow-WaitForPreviousFrame-code` states that you shouldn't wait for a frame to complete. Indeed, we could start recording commands for the next frame if we had separated command allocators for the two buffers in the swap chain. Unfortunately, this is not the case, so we merely wait for the GPU to complete a frame before creating the next one on the CPU timeline. That way, we are sure the command queue is empty, so that we can reuse the command allocator whenever we call **PopulateCommandList**.
 
 We store **m_fenceValue** in a local variable. Remember that the value of this member is 1 in the first call to **WaitForPreviousFrame** (look at the implementation of the [**LoadAssets**](hellowindow-loadassets-code) function again).
 
 **ID3D12CommandQueue::Signal** inserts in the command queue a fence with a value equal to the one passed as the second parameter (1, in this case). Then, we increase the value of **m_fenceValue**. At this point, in the command queue, there is the command list we submitted in [**OnRender**](hellowindow-OnRender-code), followed by a fence with value 1.
 
-**ID3D12Fence::GetCompletedValue** returns the value of the last fence met\executed by the GPU in the command queue. If still no fence has been executed, this function returns 0. So, if the GPU hasn’t finished drawing the frame, we wait for **m_fenceEvent** to get signaled. Otherwise, if **GetCompletedValue** returns the fence value passed to **Signal**, we are sure that the GPU finished drawing the frame. A fence is signaled when the GPU meets\executes it on the command queue (that is, the execution of a fence results in a change from a non-signaled to a signaled state of the corresponding event associated with **SetEventOnCompletion**).
+**ID3D12Fence::GetCompletedValue** returns the value of the last fence met\executed by the GPU in the command queue. If still no fence has been executed, this function returns 0. So, if the GPU hasn't finished drawing the frame, we wait for **m_fenceEvent** to get signaled. Otherwise, if **GetCompletedValue** returns the fence value passed to **Signal**, we are sure that the GPU finished drawing the frame. A fence is signaled when the GPU meets\executes it on the command queue (that is, the execution of a fence results in a change from a non-signaled to a signaled state of the corresponding event associated with **SetEventOnCompletion**).
 
 Observe that the call to **IDXGISwapChain::Present**, performed in [**OnRender**](hellowindow-OnRender-code) before invoking  **WaitForPreviousFrame**, updates the index of the current back buffer, so here **GetCurrentBackBufferIndex** returns the index of the buffer where to create the next frame. At that point **m_fenceValue** is 2, and a fence with this value will be used to delimit the command list submitted to the command queue to draw the second frame. And so on.
 
