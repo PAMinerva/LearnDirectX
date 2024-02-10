@@ -73,4 +73,4 @@ A single point can have multiple polar coordinate representations due to the per
 ```{figure} images/01/polar-coord.png
 ```
 
-### [WIP]
+### Cylindrical and spherical coordinate systems [WIP]
