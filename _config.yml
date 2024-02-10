@@ -32,6 +32,7 @@ repository:
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
 html:
   announcement: 🚧 This documentation is a work in progress! 🚧
+  favicon: favicon.png
   use_issues_button: true
   use_repository_button: true
 
