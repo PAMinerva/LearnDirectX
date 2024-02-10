@@ -21,6 +21,6 @@ parts:
 
 - caption: Appendices
   chapters:
-  - file: Tutorials/Appendices/01-MathPrimer/math-primer
+  - file: Tutorials/Appendices/01-MathBasics/math-basics
     sections:
-    - file: Tutorials/Appendices/01-MathPrimer/vectors
+    - file: Tutorials/Appendices/01-MathBasics/vectors
