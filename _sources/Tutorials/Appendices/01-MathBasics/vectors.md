@@ -66,11 +66,35 @@ A point $\mathbf{P}$ is identified by its polar coordinates, $(r,\theta)$, where
 - $r$: Represents the distance from the origin to point P. This distance is also called the radius.
 - $θ$: Represents the angle between the polar axis and the line segment connecting the origin and point P. This angle is usually measured in degrees or radians ($2\pi$ radians =$360°$).
 
+```{figure} images/01/polar-coord.png
+```
+
 ```{note}
 A single point can have multiple polar coordinate representations due to the periodicity of angles. For example, $(r,\theta)$ and $(r,\theta + 2\pi)$ represent the same point. Be aware of this when working with polar, cylindrical or spherical coordinates.
 ```
 
-```{figure} images/01/polar-coord.png
+
+### Cylindrical and spherical coordinate systems 
+
+Extending polar coordinates, we can add an extra y-coordinate to specify the height from the plane containing origin and polar axis. This way, we can locate all points on a cylinder in three dimensions, hence the name "cylindrical coordinates" represented by the triple $(r, y, \theta)$.
+
+```{figure} images/01/cylindrical-coord.png
 ```
 
-### Cylindrical and spherical coordinate systems [WIP]
+Build upon cylindrical coordinates, we can obtain spherical coordinates by converting the height $y$ into and angle $\varphi$ within the range $[0, 180°]$. This gives us the triple $(r, \varphi, \theta)$, which identifies all points on a sphere. The following illustration shows the conversion between spherical and Cartesian coordinates. Observe that the angle $\varphi$ is measured from the upward direction.
+
+```{figure} images/01/cartesian2spherical.png
+```
+
+
+### Homogeneous coordinate system
+
+In homogeneous coordinates, a point in a plane can be represented by a triple $(x, y, z)$. By dividing each coordinate by the z-coordinate, we can obtain the corresponding Cartesian coordinates: $(x/z,\ y/z,\ z/z)$. Obviously, this approach introduces an additional coordinate, even though typically only two coordinates are used to specify a point in a two-dimensional space. Nevertheless, homogeneous coordinates enable us to express various transformations, such as scaling, rotation, and translation, in a simple and consistent way using matrices.
+
+```{note}
+It's worth noting that after performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates $(x, y, z)$, we can also express them as $(x, y, z, 1)$. In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.
+```
+
+<br>
+
+## Vectors [WIP]

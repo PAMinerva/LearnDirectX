@@ -416,9 +416,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-coordinate-system">1D Coordinate system</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cartesian-coordinate-system">Cartesian coordinate system</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polar-coordinate-system">Polar coordinate system</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylindrical-and-spherical-coordinate-systems-wip">Cylindrical and spherical coordinate systems [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylindrical-and-spherical-coordinate-systems">Cylindrical and spherical coordinate systems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinate-system">Homogeneous coordinate system</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-wip">Vectors [WIP]</a></li>
 </ul>
             </nav>
         </div>
@@ -485,17 +487,37 @@ document.write(`
 <li><p><span class="math notranslate nohighlight">\(r\)</span>: Represents the distance from the origin to point P. This distance is also called the radius.</p></li>
 <li><p><span class="math notranslate nohighlight">\(θ\)</span>: Represents the angle between the polar axis and the line segment connecting the origin and point P. This angle is usually measured in degrees or radians (<span class="math notranslate nohighlight">\(2\pi\)</span> radians =<span class="math notranslate nohighlight">\(360°\)</span>).</p></li>
 </ul>
+<figure class="align-default">
+<img alt="../../../_images/polar-coord.png" src="../../../_images/polar-coord.png" />
+</figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>A single point can have multiple polar coordinate representations due to the periodicity of angles. For example, <span class="math notranslate nohighlight">\((r,\theta)\)</span> and <span class="math notranslate nohighlight">\((r,\theta + 2\pi)\)</span> represent the same point. Be aware of this when working with polar, cylindrical or spherical coordinates.</p>
 </div>
+</section>
+<section id="cylindrical-and-spherical-coordinate-systems">
+<h3>Cylindrical and spherical coordinate systems<a class="headerlink" href="#cylindrical-and-spherical-coordinate-systems" title="Link to this heading">#</a></h3>
+<p>Extending polar coordinates, we can add an extra y-coordinate to specify the height from the plane containing origin and polar axis. This way, we can locate all points on a cylinder in three dimensions, hence the name “cylindrical coordinates” represented by the triple <span class="math notranslate nohighlight">\((r, y, \theta)\)</span>.</p>
 <figure class="align-default">
-<img alt="../../../_images/polar-coord.png" src="../../../_images/polar-coord.png" />
+<img alt="../../../_images/cylindrical-coord.png" src="../../../_images/cylindrical-coord.png" />
+</figure>
+<p>Build upon cylindrical coordinates, we can obtain spherical coordinates by converting the height <span class="math notranslate nohighlight">\(y\)</span> into and angle <span class="math notranslate nohighlight">\(\varphi\)</span> within the range <span class="math notranslate nohighlight">\([0, 180°]\)</span>. This gives us the triple <span class="math notranslate nohighlight">\((r, \varphi, \theta)\)</span>, which identifies all points on a sphere. The following illustration shows the conversion between spherical and Cartesian coordinates. Observe that the angle <span class="math notranslate nohighlight">\(\varphi\)</span> is measured from the upward direction.</p>
+<figure class="align-default">
+<img alt="../../../_images/cartesian2spherical.png" src="../../../_images/cartesian2spherical.png" />
 </figure>
 </section>
-<section id="cylindrical-and-spherical-coordinate-systems-wip">
-<h3>Cylindrical and spherical coordinate systems [WIP]<a class="headerlink" href="#cylindrical-and-spherical-coordinate-systems-wip" title="Link to this heading">#</a></h3>
+<section id="homogeneous-coordinate-system">
+<h3>Homogeneous coordinate system<a class="headerlink" href="#homogeneous-coordinate-system" title="Link to this heading">#</a></h3>
+<p>In homogeneous coordinates, a point in a plane can be represented by a triple <span class="math notranslate nohighlight">\((x, y, z)\)</span>. By dividing each coordinate by the z-coordinate, we can obtain the corresponding Cartesian coordinates: <span class="math notranslate nohighlight">\((x/z,\ y/z,\ z/z)\)</span>. Obviously, this approach introduces an additional coordinate, even though typically only two coordinates are used to specify a point in a two-dimensional space. Nevertheless, homogeneous coordinates enable us to express various transformations, such as scaling, rotation, and translation, in a simple and consistent way using matrices.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s worth noting that after performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates <span class="math notranslate nohighlight">\((x, y, z)\)</span>, we can also express them as <span class="math notranslate nohighlight">\((x, y, z, 1)\)</span>. In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.</p>
+</div>
+<br>
 </section>
+</section>
+<section id="vectors-wip">
+<h2>Vectors [WIP]<a class="headerlink" href="#vectors-wip" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -558,9 +580,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-coordinate-system">1D Coordinate system</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cartesian-coordinate-system">Cartesian coordinate system</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polar-coordinate-system">Polar coordinate system</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylindrical-and-spherical-coordinate-systems-wip">Cylindrical and spherical coordinate systems [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylindrical-and-spherical-coordinate-systems">Cylindrical and spherical coordinate systems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinate-system">Homogeneous coordinate system</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-wip">Vectors [WIP]</a></li>
 </ul>
   </nav></div>
 
