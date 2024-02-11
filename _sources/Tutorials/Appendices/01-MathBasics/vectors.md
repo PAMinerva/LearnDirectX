@@ -92,7 +92,7 @@ Build upon cylindrical coordinates, we can obtain spherical coordinates by conve
 In homogeneous coordinates, a point in a plane can be represented by a triple $(x, y, z)$. By dividing each coordinate by the z-coordinate, we can obtain the corresponding Cartesian coordinates: $(x/z,\ y/z,\ z/z)$. Obviously, this approach introduces an additional coordinate, even though typically only two coordinates are used to specify a point in a two-dimensional space. Nevertheless, homogeneous coordinates enable us to express various transformations, such as scaling, rotation, and translation, in a simple and consistent way using matrices.
 
 ```{note}
-It's worth noting that after performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates $(x, y, z)$, we can also express them as $(x, y, z, 1)$. In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.
+After performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates $(x, y, z)$, we can also express them as $(x, y, z, 1)$. In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.
 ```
 
 <br>
