@@ -98,3 +98,7 @@ After performing the division to obtain the Cartesian coordinates, the last coor
 <br>
 
 ## Vectors [WIP]
+
+
+
+<br>
