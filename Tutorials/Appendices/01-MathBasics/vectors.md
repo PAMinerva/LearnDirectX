@@ -91,14 +91,48 @@ Build upon cylindrical coordinates, we can obtain spherical coordinates by conve
 
 In homogeneous coordinates, a point in a plane can be represented by a triple $(x, y, z)$. By dividing each coordinate by the z-coordinate, we can obtain the corresponding Cartesian coordinates: $(x/z,\ y/z,\ z/z)$. Obviously, this approach introduces an additional coordinate, even though typically only two coordinates are used to specify a point in a two-dimensional space. Nevertheless, homogeneous coordinates enable us to express various transformations, such as scaling, rotation, and translation, in a simple and consistent way using matrices.
 
+```{important}
+In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.
+```
+
 ```{note}
-After performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates $(x, y, z)$, we can also express them as $(x, y, z, 1)$. In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.
+After performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates $(x, y, z)$, we can also express them as $(x, y, z, 1)$.
 ```
 
 <br>
 
-## Vectors [WIP]
+## Vectors
+
+Vectors are mathematical objects that represent quantities with both magnitude and direction. They are used in many fields, including physics and computer graphics. For example, vectors can be used to specify the position and displacement of objects, as well as their speed. They can also describe the direction and intensity of forces acting on objects or light rays emitted by a light source, as well as surface normals.
 
 
+### Definition
+
+Geometrically, a vector can be visualized as an arrow. The length of the arrow represents the magnitude or size of the vector, while the direction in which the arrow points indicates the direction of the vector.
+
+```{figure} images/01/geo-vector.png
+```
+
+When working with vectors for numerical computation on a computer, the geometric definition provided above is not as important, although. Fortunately, we can express vectors numerically using tuples, which are finite sequences of numbers. To establish this numerical representation, we need to bind vectors to the origin of a Cartesian coordinate system. In other words, we translate a vector while maintaining its magnitude and direction until its starting point aligns with the origin.
+
+```{figure} images/01/num-vector.png
+```
+
+At that point, we can use the coordinates $(x, y)$ of the head of a generic vector $\mathbf{v}$ in a 2D Cartesian system as the numerical representation of the vector in that system. That is, we can write $\mathbf{v}=(x, y)$, with $x$ and $y$ called components of the vector. Similarly, for a vector $\mathbf{v}$ in a 3D Cartesian system, the numerical representation would be $(x, y, z)$. Then, we can use $\mathbf{v}$ to specify a point in a frame (maybe to set the position of an object, or a target location for movement).
+
+```{figure} images/01/vector-point.png
+```
+
+When only magnitude and direction of a vector matter, then the point of application is of no importance, and the vector is called **free vector**. On the other hand, a vector bound to the origin of a system is called **bound vector**. The numerical representation of a bound vector is only valid in the system where it is bound. If the same free vector is bound to different systems, its numerical representation will change accordingly.
+
+```{figure} images/01/vector-free-bound.png
+```
+
+```{important}
+This is an important point to remember: if you define a vector numerically, its coordinates are relative to a specific reference frame. Therefore, we can conclude that two vectors $\mathbf{u}=(u_x, u_y, u_z)$ and $\mathbf{v}=(v_x, v_y, v_z)$ are equal only if $u_x=v_x$, $u_y=v_y$ and $u_z=v_z$. In other words, they have equal coordinates if bound to the origin of the same frame.
+```
+
+
+### Basic operations [WIP]
 
 <br>

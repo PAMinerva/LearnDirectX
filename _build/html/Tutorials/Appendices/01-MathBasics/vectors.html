@@ -420,7 +420,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinate-system">Homogeneous coordinate system</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-wip">Vectors [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Vectors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-operations-wip">Basic operations [WIP]</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -509,16 +513,47 @@ document.write(`
 <section id="homogeneous-coordinate-system">
 <h3>Homogeneous coordinate system<a class="headerlink" href="#homogeneous-coordinate-system" title="Link to this heading">#</a></h3>
 <p>In homogeneous coordinates, a point in a plane can be represented by a triple <span class="math notranslate nohighlight">\((x, y, z)\)</span>. By dividing each coordinate by the z-coordinate, we can obtain the corresponding Cartesian coordinates: <span class="math notranslate nohighlight">\((x/z,\ y/z,\ z/z)\)</span>. Obviously, this approach introduces an additional coordinate, even though typically only two coordinates are used to specify a point in a two-dimensional space. Nevertheless, homogeneous coordinates enable us to express various transformations, such as scaling, rotation, and translation, in a simple and consistent way using matrices.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>After performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates <span class="math notranslate nohighlight">\((x, y, z)\)</span>, we can also express them as <span class="math notranslate nohighlight">\((x, y, z, 1)\)</span>. In general, a homogeneous coordinate system is a frame where only the ratios of the coordinates are significant, rather than their actual values.</p>
+<p>After performing the division to obtain the Cartesian coordinates, the last coordinate will always be 1. This concept extends to three-dimensional spaces as well. Therefore, if we have the 3D Cartesian coordinates <span class="math notranslate nohighlight">\((x, y, z)\)</span>, we can also express them as <span class="math notranslate nohighlight">\((x, y, z, 1)\)</span>.</p>
 </div>
 <br>
 </section>
 </section>
-<section id="vectors-wip">
-<h2>Vectors [WIP]<a class="headerlink" href="#vectors-wip" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h2>Vectors<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Vectors are mathematical objects that represent quantities with both magnitude and direction. They are used in many fields, including physics and computer graphics. For example, vectors can be used to specify the position and displacement of objects, as well as their speed. They can also describe the direction and intensity of forces acting on objects or light rays emitted by a light source, as well as surface normals.</p>
+<section id="definition">
+<h3>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h3>
+<p>Geometrically, a vector can be visualized as an arrow. The length of the arrow represents the magnitude or size of the vector, while the direction in which the arrow points indicates the direction of the vector.</p>
+<figure class="align-default">
+<img alt="../../../_images/geo-vector.png" src="../../../_images/geo-vector.png" />
+</figure>
+<p>When working with vectors for numerical computation on a computer, the geometric definition provided above is not as important, although. Fortunately, we can express vectors numerically using tuples, which are finite sequences of numbers. To establish this numerical representation, we need to bind vectors to the origin of a Cartesian coordinate system. In other words, we translate a vector while maintaining its magnitude and direction until its starting point aligns with the origin.</p>
+<figure class="align-default">
+<img alt="../../../_images/num-vector.png" src="../../../_images/num-vector.png" />
+</figure>
+<p>At that point, we can use the coordinates <span class="math notranslate nohighlight">\((x, y)\)</span> of the head of a generic vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in a 2D Cartesian system as the numerical representation of the vector in that system. That is, we can write <span class="math notranslate nohighlight">\(\mathbf{v}=(x, y)\)</span>, with <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> called components of the vector. Similarly, for a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> in a 3D Cartesian system, the numerical representation would be <span class="math notranslate nohighlight">\((x, y, z)\)</span>. Then, we can use <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> to specify a point in a frame (maybe to set the position of an object, or a target location for movement).</p>
+<figure class="align-default">
+<img alt="../../../_images/vector-point.png" src="../../../_images/vector-point.png" />
+</figure>
+<p>When only magnitude and direction of a vector matter, then the point of application is of no importance, and the vector is called <strong>free vector</strong>. On the other hand, a vector bound to the origin of a system is called <strong>bound vector</strong>. The numerical representation of a bound vector is only valid in the system where it is bound. If the same free vector is bound to different systems, its numerical representation will change accordingly.</p>
+<figure class="align-default">
+<img alt="../../../_images/vector-free-bound.png" src="../../../_images/vector-free-bound.png" />
+</figure>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This is an important point to remember: if you define a vector numerically, its coordinates are relative to a specific reference frame. Therefore, we can conclude that two vectors <span class="math notranslate nohighlight">\(\mathbf{u}=(u_x, u_y, u_z)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}=(v_x, v_y, v_z)\)</span> are equal only if <span class="math notranslate nohighlight">\(u_x=v_x\)</span>, <span class="math notranslate nohighlight">\(u_y=v_y\)</span> and <span class="math notranslate nohighlight">\(u_z=v_z\)</span>. In other words, they have equal coordinates if bound to the origin of the same frame.</p>
+</div>
+</section>
+<section id="basic-operations-wip">
+<h3>Basic operations [WIP]<a class="headerlink" href="#basic-operations-wip" title="Link to this heading">#</a></h3>
 <br>
+</section>
 </section>
 </section>
 
@@ -585,7 +620,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinate-system">Homogeneous coordinate system</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-wip">Vectors [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Vectors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-operations-wip">Basic operations [WIP]</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
