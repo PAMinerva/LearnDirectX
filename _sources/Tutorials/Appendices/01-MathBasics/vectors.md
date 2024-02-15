@@ -203,7 +203,7 @@ We can verify that $\hat{\mathbf{v}}$ is a unit vector by computing its length.
 
 $$\displaystyle|\hat{\mathbf{v}}|=\sqrt{\left(\frac{x}{|\mathbf{v}|}\right)^2+\left(\frac{y}{|\mathbf{v}|}\right)^2+\left(\frac{z}{|\mathbf{v}|}\right)^2}=\frac{\sqrt{x^2+y^2+z^2}}{\sqrt{|\mathbf{v}|^2}}=\frac{|\mathbf{v}|}{|\mathbf{v}|}=1$$
 
-Three significant unit vectors are: $\mathbf{i}=(1,0,0)$, $\mathbf{j}=(0,1,0)$ and $\mathbf{k}=(0,0,1)$. These vectors have unit lengths and align with the x-, y-, and z-axes, respectively, in a 3D Cartesian coordinate system. They are commonly referred to as the standard basis vectors of a coordinate system.
+Three significant unit vectors are: $\mathbf{i}=(1,0,0)$, $\mathbf{j}=(0,1,0)$ and $\mathbf{k}=(0,0,1)$. These vectors have unit lengths and align with the x-, y-, and z-axes, respectively, in a 3D Cartesian coordinate system. They are commonly referred to as the **standard basis vectors** of a coordinate system.
 
 ```{figure} images/01/basis-vectors.png
 ```
@@ -225,7 +225,7 @@ Below are some of the properties of the dot product:
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | Commutative               | $\mathbf{u}\cdot\mathbf{v}=\mathbf{v}\cdot\mathbf{u}$                                                                                   |
 | Distributive              | $(\mathbf{u}+\mathbf{v})\cdot\mathbf{w}=\mathbf{w}\cdot(\mathbf{u}+\mathbf{v})=(\mathbf{w}\cdot\mathbf{u})+(\mathbf{w}\cdot\mathbf{v})$ |
-| Square of a vector length | $\|\mathbf{v}\|^2=v_x^2+v_y^2+v_z^2=\mathbf{v}\cdot\mathbf{v}$                                                                          |
+| Square of a vector length | $\|\mathbf{v}\| ^2=v_x^2+v_y^2+v_z^2=\mathbf{v}\cdot\mathbf{v}$                                                                         |
 
 The associative property doesn't apply because $\mathbf{w}\cdot(\mathbf{u}\cdot\mathbf{v})$ is not defined. Indeed, the dot product is defined as an operation between two vectors, but $(\mathbf{u}\cdot\mathbf{v})$ yields a scalar value.
 
@@ -243,154 +243,119 @@ $$
  \mathbf{u}\cdot \mathbf{v} &= |\mathbf{u}| |\mathbf{v}|\cos{\theta} \end{align*}
 $$
 
-From equation $\eqref{eq:Avectors1}$ we can derive other properties. For example,
+From equation $\eqref{eq:Avectors1}$, we can derive other properties. For example,
 
 - If $(\mathbf{u}\cdot\mathbf{v}) = 0$ then the angle $\theta$ between $\mathbf{u}$ and $\mathbf{v}$ is $90°$ (that is, they are orthogonal: $\mathbf{u}\ \bot\ \mathbf{v}$)
 - If $(\mathbf{u}\cdot\mathbf{v}) > 0$ then the angle $\theta$ between $\mathbf{u}$ and $\mathbf{v}$ is less than $90°$
 - If $(\mathbf{u}\cdot\mathbf{v}) < 0$ then the angle $\theta$ between $\mathbf{u}$ and $\mathbf{v}$ is greater than $90°$
 
-<br>
+To conclude this section, we will prove the law of cosines: $c^2=a^2+b^2-2ab\cos{\theta}$.
 
-To conclude this section, we will prove the law of cosines $c^2=a^2+b^2-2ab\cos{\theta}$.
+````{admonition} proof
+:class: dropdown
 
-<br>
+Let $\mathbf{a}$ be the vector from $C$ to $B$, $\mathbf{b}$ the vector from $C$ to $A$, and $\mathbf{c}$ the vector from $A$ to $B$.
 
->Let $\mathbf{a}$ be the vector from $C$ to $B$, $\mathbf{b}$ the vector from $C$ to $A$, and $\mathbf{c}$ the vector from $A$ to $B$.
->
-><br>
->
->![Image](images/A/01/law-cosines.png)
->
-><br>
->
->We have that 
->
->$\mathbf{c}=\mathbf{a}-\mathbf{b}\quad$ (subtration of two vectors)
->
->Squaring both sides and simplifying
->
->$\|\mathbf{c}\|^2=\|\mathbf{a}-\mathbf{b}\|^2$
->
->$\|\mathbf{c}\|^2=(\mathbf{a}-\mathbf{b})\cdot (\mathbf{a}-\mathbf{b})\quad\quad\quad\quad\quad\quad\quad\quad$ (square of a vector length)
->
->$\|\mathbf{c}\|^2=\|\mathbf{a}\|^2+\|\mathbf{b}\|^2-2\ \mathbf{a}\cdot\mathbf{b}\quad\quad\quad\quad\quad\quad\quad$ (distributive law of the dot product)
->
->$\|\mathbf{c}\|^2=\|\mathbf{a}\|^2+\|\mathbf{b}\|^2-2\|\mathbf{a}\|\|\mathbf{b}\| \cos{\theta}\quad\quad\quad\quad$ (equation (1))
+```{figure} images/01/law-cosines.png
+```
 
-<br>
+We have that 
+
+$\begin{align*}&\mathbf{c}=\mathbf{a}-\mathbf{b} && \text{(subtration of two vectors)}\end{align*}$
+
+Squaring both sides and simplifying
+
+$|\mathbf{c}|^2=|\mathbf{a}-\mathbf{b}|^2$
+
+$
+\begin{align*}
+&|\mathbf{c}|^2=(\mathbf{a}-\mathbf{b})\cdot (\mathbf{a}-\mathbf{b}) && \text{(square of a vector length)} \\
+&|\mathbf{c}|^2=|\mathbf{a}|^2+|\mathbf{b}|^2-2\ \mathbf{a}\cdot\mathbf{b} && \text{(distributive law of the dot product)} \\
+&|\mathbf{c}|^2=|\mathbf{a}|^2+|\mathbf{b}|^2-2|\mathbf{a}||\mathbf{b} | \cos{\theta} && \text{(from equation \eqref{eq:Avectors1})}
+\end{align*}
+$
+````
 
 ##### Orthogonal projection
 
 The orthogonal projection of a vector $\mathbf{v}$ onto another vector $\mathbf{n}$ is defined as the vector $\text{proj}_\mathbf{n}(\mathbf{v})$. Consider the following illustration.
 
-<br>
+```{figure} images/01/vector-proj.png
+```
 
-![Image](images/A/01/vector-proj.png)
+From trigonometry, we know that, in a right triangle, the cosine of an angle equals the ratio between the length of the adjacent side and the length of the hypotenuse. Therefore, we can calculate the length of the adjacent side by multiplying the length of the hypotenuse by the cosine of the angle between the adjacent side and the hypotenuse. Considering the image above, we have that $|\text{adj}|=|\text{proj}_\mathbf{n}(\mathbf{v})|$ and $|\text{hyp}|=|\mathbf{v}|$. So, if $\mathbf{n}$ is a unit vector, then we can write
 
-<br>
+$$\text{proj}_\mathbf{n}(\mathbf{v})=(|\mathbf{v}|\cos{\theta})\mathbf{n}=(|\mathbf{v}|1\cos{\theta})\mathbf{n}=(|\mathbf{v}||\mathbf{n}|\cos{\theta})\mathbf{n}=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$$
 
-From trigonometry, we know that in a right triangle, the cosine of an angle is equal to the ratio of the length of the adjacent side to the length of the hypotenuse. Therefore, we can calculate the length of the adjacent side by multiplying the length of the hypotenuse by the cosine of the angle between the adjacent side and the hypotenuse. Considering the illustration above, we have that $\|\text{adj}\|=\|\text{proj}_\mathbf{n}(\mathbf{v})\|$ and $\|\text{hyp}\|=\|\mathbf{v}\|$. So, if $\mathbf{n}$ is a unit vector, then we can write
+with $(\mathbf{v}\cdot\mathbf{n})$ signed length of the projection, and $\mathbf{n}$ that indicates its direction. This means that $(\mathbf{v}\cdot\mathbf{n})$ can invert the direction of projection if $\theta > 90°$. Anyway, this gives us a geometrical interpretation of the dot product, at least if $\mathbf{n}$ is a unit vector. If that's not the case, we can always normalize $\mathbf{n}$ to make it unit length. Then, we can replace $\mathbf{n}$ with its normalized version $\mathbf{n}/|\mathbf{n}|$, giving us the more general formula
 
-<br>
+$$\text{proj}_\mathbf{n}(\mathbf{v})=\left(\mathbf{v}\cdot\displaystyle\frac{\mathbf{n}}{|\mathbf{n}|}\right)\displaystyle\frac{\mathbf{n}}{|\mathbf{n}|}=\displaystyle\frac{(\mathbf{v}\cdot\mathbf{n})}{|\mathbf{n}|^2}\mathbf{n}$$
 
-$\text{proj}_\mathbf{n}(\mathbf{v})=(\|\mathbf{v}\|\cos{\theta})\mathbf{n}=(\|\mathbf{v}\|1\cos{\theta})\mathbf{n}=(\|\mathbf{v}\|\|\mathbf{n}\|\cos{\theta})\mathbf{n}=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$
+Thanks to the concept of orthogonal projection, we can express any bound vector $\mathbf{v}$ as the sum of its projections onto the standard basis vectors as follows:
 
-<br>
-
-with $(\mathbf{v}\cdot\mathbf{n})$ signed length of the projection, and $\mathbf{n}$ that indicates its direction. This means that $(\mathbf{v}\cdot\mathbf{n})$ can invert the direction of projection if $\theta > 90°$. Anyway, this gives us a geometrical interpretation of the dot product, at least if $\mathbf{n}$ is a unit vector. If that's not the case, we can always normalize $\mathbf{n}$ to make it unit length. Then, we can replace $\mathbf{n}$ with its normalized version $\mathbf{n}/\|\mathbf{n}\|$, giving us the more general formula
-
-<br>
-
-$\text{proj}_\mathbf{n}(\mathbf{v})=\left(\mathbf{v}\cdot\displaystyle\frac{\mathbf{n}}{\|\mathbf{n}\|}\right)\displaystyle\frac{\mathbf{n}}{\|\mathbf{n}\|}=\displaystyle\frac{(\mathbf{v}\cdot\mathbf{n})}{\|\mathbf{n}\|^2}\mathbf{n}$
-
-<br>
-
-Thanks to the concept of orthogonal projection, we can express any bound vector $\mathbf{v}$ as the sum of its projections onto the standard basis vectors.
-
-<br>
-
-$\mathbf{v}=(\mathbf{v}\cdot\mathbf{i})\mathbf{i}+(\mathbf{v}\cdot\mathbf{j})\mathbf{j}+(\mathbf{v}\cdot\mathbf{k})\mathbf{k}=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}=x(1, 0, 0)+y(0, 1, 0)+z(0, 0, 1)=(x, y, z)$
-
-<br>
+$$\mathbf{v}=(\mathbf{v}\cdot\mathbf{i})\mathbf{i}+(\mathbf{v}\cdot\mathbf{j})\mathbf{j}+(\mathbf{v}\cdot\mathbf{k})\mathbf{k}=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}=x(1, 0, 0)+y(0, 1, 0)+z(0, 0, 1)=(x, y, z)$$
 
 Indeed, we have
 
-<br>
-
-$(\mathbf{v}\cdot\mathbf{i})=(x, y, z)\cdot(1, 0, 0)=x$ <br>
-$(\mathbf{v}\cdot\mathbf{j})=(x, y, z)\cdot(0, 1, 0)=y$ <br>
-$(\mathbf{v}\cdot\mathbf{k})=(x, y, z)\cdot(0, 0, 1)=z$
-
-<br>
+$$
+\begin{flalign}
+&(\mathbf{v}\cdot\mathbf{i})&=(x, y, z)\cdot(1, 0, 0)&=x \\
+&(\mathbf{v}\cdot\mathbf{j})&=(x, y, z)\cdot(0, 1, 0)&=y \\
+&(\mathbf{v}\cdot\mathbf{k})&=(x, y, z)\cdot(0, 0, 1)&=z
+\end{flalign}
+$$
 
 Also, note that $(x\mathbf{i}+z\mathbf{k})$ is the projection of $\mathbf{v}$ onto the xz-plane, so that we can sum this projection with $y\mathbf{j}$ to get $\mathbf{v}$.
 
-<br>
+```{figure} images/01/vector-proj2.png
+```
 
-![Image](images/A/01/vector-proj2.png)
+```{note}
+You can also see it as a sum of scaled vectors: we scale $\mathbf{i}$, $\mathbf{j}$ and $\mathbf{k}$ with the corresponding components of $\mathbf{v}$. Indeed, the diagonal of the parallelogram defined by $x\mathbf{i}$ and $z\mathbf{k}$ is $(x\mathbf{i}+z\mathbf{k})$, while $\mathbf{v}$ is the diagonal of the parallelogram defined by $(x\mathbf{i}+z\mathbf{k})$ and $y\mathbf{j}$, that is $\ x\mathbf{i}+z\mathbf{k}+y\mathbf{j}$.
+```
 
-<br>
+As mentioned earlier, you can express every vector as a sequence of three steps\translations: starting from the origin of the frame, we move $x$ units along the x-axis. Then, from that position, we move $y$ units in the y-axis direction, and finally, you move $z$ units in the z-axis direction. This is why we refer to $\mathbf{i}$, $\mathbf{j}$, and $\mathbf{k}$ as basis vectors: any bound vector in a frame can be expressed as a combination of these three unit vectors, with the components of the vector acting as coefficients.
 
-You can also see it as a sum of scaled vectors: we scale $\mathbf{i}$, $\mathbf{j}$ and $\mathbf{k}$ with the corresponding components of $\mathbf{v}$. Indeed, the diagonal of the parallelogram defined by $x\mathbf{i}$ and $z\mathbf{k}$ is $(x\mathbf{i}+z\mathbf{k})$. Then, $\mathbf{v}$ is the diagonal of the parallelogram defined by $(x\mathbf{i}+z\mathbf{k})$ and $y\mathbf{j}$, that is $\ x\mathbf{i}+z\mathbf{k}+y\mathbf{j}$.<br>
-Remember that you can also see it as a sequence of three translations: starting from the origin of the frame, we move $x$ units along the x-axis. Then, from that position, we move $y$ units in the y-axis direction, and finally, you move $z$ units in the z-axis direction. This is why we refer to $\mathbf{i}$, $\mathbf{j}$, and $\mathbf{k}$ as basis vectors: any bound vector in a frame can be expressed as a combination of these three unit vectors, with the components of the vector acting as coefficients.<br>
-As stated earlier, the components of a bound vector represent the coordinates of its arrowhead within the frame. This allows us to uniquely identify all points within a frame using vectors. However, we still need a way to distinguish between vectors and points, as they are not interchangeable. For vectors, only their direction and magnitude matter, making the point of application irrelevant. On the other hand, points uniquely represent a location and only make sense when bound to the origin of a frame. Subtracting points yields a vector that specifies the movement from one point to another, while adding a point and a vector gives a vector that specifies how to move a point to a different location. However, unlike vectors, adding two points does not have a meaningful interpretation - geometrically it's the diagonal of a parallelogram, but this interpretation is not particularly useful or relevant when working with points. <br>
+The components of a bound vector represent the coordinates of its arrowhead within the frame. This allows us to uniquely identify all points within a frame using vector notation. However, we still need a way to distinguish between vectors and points, as they are not interchangeable. For vectors, only their direction and magnitude matter, making the point of application irrelevant. On the other hand, points uniquely represent a location and only make sense when bound to the origin of a frame. Subtracting points yields a vector that specifies the movement from one point to another, while adding a point and a vector gives a vector that specifies how to move a point to a different location. However, unlike vectors, adding two points does not have a meaningful interpretation ─ geometrically it's the diagonal of a parallelogram, but this interpretation is not particularly useful or relevant when working with points.
+
 In summary, consider vectors as free vectors and points as bound vectors. When working with a generic vector $\mathbf{v}=(x, y, z)$, it is crucial to determine whether it represents a point or a vector to use it appropriately. The distinction between points and vectors will be further explored in a later tutorial.
 
-<br>
 
 ##### Gram-Schmidt Orthogonalization
 
-A computer cannot exactly represent all the elements in the infinite set of real numbers because it uses a finite number of bits to store values in memory. This means we have to settle for a good approximation. The downside is that, if you need to perform many calculations with approximate values, the outcome could differ significantly from the exact result. For example, a set of vectors $\\{\mathbf{v_0},\dots,\mathbf{v_{n-1}}\\}$ is called orthonormal if they are all unit vectors and orthogonal to each other. However, due to numerical precision issues, we might start off with an orthonormal set that gradually becomes un-orthonormal after some calculations. Fortunately, there are methods available to orthogonalize a set of vectors to restore its orthonormality. While our primary focus will be on the 3D case, it is often helpful to start by examining the simpler 2D case.
+A computer cannot exactly represent all elements in the infinite set of real numbers because it uses a finite number of bits to store values in memory. This means that we must to settle for good approximations. The downside is that, if you need to perform many calculations with approximate values, the outcome could differ significantly from the exact result. For example, a set of vectors $\{\mathbf{v_0},\dots,\mathbf{v_{n-1}}\}$ is called **orthonormal** if they are all unit vectors and orthogonal to each other. However, due to numerical precision issues, we might start off with an orthonormal set that gradually becomes un-orthonormal after some transformations. Fortunately, there are methods available to orthogonalize a set of vectors to restore its orthonormality. While our primary focus will be on the 3D case, it is often helpful to start by examining the simpler 2D case.
 
-Suppose we have an initial set of vectors $\{\mathbf{v_0},\mathbf{v_1}\}$ that is not orthonormal, and we want to orthogonalize it to obtain an orthonormal set $\{\mathbf{w_0},\mathbf{w_1}\}$. To begin the orthogonalization process, we can set $\mathbf{w_0}=\mathbf{v_0}$, as we can always assume one of the vectors in the set is already acceptable. Next, we aim to make $\mathbf{v_1}$ orthogonal to $\mathbf{w_0}$. This can be achieved by subtracting from $\mathbf{v_1}$ its projection onto $\mathbf{w_0}$. By doing so, we obtain a new vector $\mathbf{w_1}$ that is orthogonal to $\mathbf{w_0}$. Indeed, in the following illustration you can verify that
+Suppose we have an initial set of vectors $\{\mathbf{v_0},\mathbf{v_1}\}$ that is not orthonormal, and we want to orthogonalize it to obtain an orthonormal set $\{\mathbf{w_0},\mathbf{w_1}\}$. To begin the orthogonalization process, we can set $\mathbf{w_0}=\mathbf{v_0}$, as we can always assume one of the vectors in the set is already acceptable. Next, we aim to make $\mathbf{v_1}$ orthogonal to $\mathbf{w_0}$. This can be achieved by subtracting from $\mathbf{v_1}$ its projection onto $\mathbf{w_0}$. By doing so, we obtain a new vector $\mathbf{w_1}$ that is orthogonal to $\mathbf{w_0}$. Indeed, in the following illustration, you can verify that
 
-<br>
+$$\mathbf{v_1}=\mathbf{w_1}+\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})$$
 
-$\mathbf{v_1}=\mathbf{w_1}+\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})$
-
-<br>
-
-![Image](images/A/01/2D-Gram-Schmidt.png)
-
-<br>
+```{figure} images/01/2D-Gram-Schmidt.png
+```
 
 So, we have that
 
 <br>
 
-$\mathbf{w_1}=\mathbf{v_1}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})$
+$$\mathbf{w_1}=\mathbf{v_1}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})$$
 
 <br>
 
-where $\ \text{proj}_{\mathbf{w_0}}(\mathbf{v_1})=\displaystyle\frac{\mathbf{v_1}\cdot\mathbf{w_0}}{\|\mathbf{w_0}\|^2}\mathbf{w_0}$
-
-<br>
+where $\ \text{proj}_{\mathbf{w_0}}(\mathbf{v_1})=\displaystyle\frac{\mathbf{v_1}\cdot\mathbf{w_0}}{|\mathbf{w_0}|^2}\mathbf{w_0}$
 
 To prove that $\mathbf{w_0}$ and $\mathbf{w_1}$ are orthogonal to each other, we can first observe that a projection is orthogonal if the direction of projection forms a right angle $(90°)$ with the vector we project onto (see the dashed line in the illustration above). Also, we know that the sum of two vectors is the diagonal of the parallelogram with sides the two vectors. In this case we obtain a rectangle since we just established that an angle of the parallelogram with diagonal $v_1$ is $90°$. So, we verified that $\mathbf{w_0}$ and $\mathbf{w_1}$ are orthogonal: $\mathbf{w_0}\ \bot\ \mathbf{w_1}$.
 
+In the 3D case, we introduce a third vector $\mathbf{v_2}$ that we need to modify in order to make it orthogonal to both $\mathbf{w_0}$ and $\mathbf{w_1}$. As before, we start by setting $\mathbf{w_0}=\mathbf{v_0}$, and we can still use the method of subtracting the projection of $\mathbf{v_1}$ onto $\mathbf{w_0}$ to compute $\mathbf{w_1}$. This is possible because we can consider $\mathbf{v_0}$ and $\mathbf{v_1}$ as lying in the same plane, thereby reducing the problem to the 2D case. To calculate $\mathbf{w_2}$, we proceed similarly. We subtract the projection of $\mathbf{v_2}$ onto $\mathbf{w_0}$ from $\mathbf{v_2}$, obtaining an intermediate vector. Then, we can subtract the projection of $\mathbf{v_2}$ onto $\mathbf{w_1}$ from this intermediate vector. By doing this, we ensure that the resultant vector $\mathbf{w_2}$ is orthogonal to both $\mathbf{w_0}$ and $\mathbf{w_1}$.
 
-In the 3D case, we introduce a third vector $\mathbf{v_2}$ that we need to modify in order to make it orthogonal to both $\mathbf{w_0}$ and $\mathbf{w_1}$. As before, we start by setting $\mathbf{w_0}=\mathbf{v_0}$, and we can still use the method of subtracting the projection of $\mathbf{v_1}$ onto $\mathbf{w_0}$ to compute $\mathbf{w_1}$. This is possible because we can consider $\mathbf{v_0}$ and $\mathbf{v_1}$ as lying in the same plane, thereby reducing the problem to the 2D case. <br>
-To calculate $\mathbf{w_2}$, we proceed similarly. We subtract the projection of $\mathbf{v_2}$ onto $\mathbf{w_0}$ from $\mathbf{v_2}$, obtaining an intermediate vector. Then, we can subtract the projection of $\mathbf{v_2}$ onto $\mathbf{w_1}$ from this intermediate vector. By doing this, we ensure that the resultant vector $\mathbf{w_2}$ is orthogonal to both $\mathbf{w_0}$ and $\mathbf{w_1}$.
+$$\mathbf{w_2}=\mathbf{v_2}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_2}) -\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})$$
 
-<br>
+Consider the illustration below. If we subtract $\text{proj}\_{\mathbf{w_0}}(\mathbf{v_2})$ from $\mathbf{v_2}$ the resultant vector is orthogonal to $\mathbf{w_0}$ and lies in the YZ-plane. Then, if we subtract $\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})$ from this intermediate vector, we get $\mathbf{w_2}$, which is orthogonal to both $\mathbf{w_0}$ and $\mathbf{w_1}$.
 
-$\mathbf{w_2}=\mathbf{v_2}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_2}) -\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})$
-
-<br>
-
-Consider the following illustration. If we subtract $\text{proj}\_{\mathbf{w_0}}(\mathbf{v_2})$ from $\mathbf{v_2}$ the resultant vector is orthogonal to $\mathbf{w_0}$ and lies in the YZ-plane. Then, if we subtract $\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})$ from this intermediate vector, we get $\mathbf{w_2}$, which is orthogonal to both $\mathbf{w_0}$ and $\mathbf{w_1}$.
-
-<br>
-
-![Image](images/A/01/3D-Gram-Schmidt.png)
-
-<br>
+```{figure} images/01/3D-Gram-Schmidt.png
+```
 
 The final step in the process of orthogonalization is to normalize the vectors $\mathbf{w_0}$, $\mathbf{w_1}$, and $\mathbf{w_2}$ to obtain an orthonormal set.
 
-<br>
 
-
-[WIP]
+#### Cross product [WIP]
 
 <br>

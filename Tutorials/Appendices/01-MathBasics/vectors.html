@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/proof.css?v=ca93fcec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -435,6 +436,7 @@ document.write(`
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#gram-schmidt-orthogonalization">Gram-Schmidt Orthogonalization</a></li>
 </ul>
 </li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product-wip">Cross product [WIP]</a></li>
 </ul>
 </li>
 </ul>
@@ -642,7 +644,7 @@ document.write(`
 <p>We can verify that <span class="math notranslate nohighlight">\(\hat{\mathbf{v}}\)</span> is a unit vector by computing its length.</p>
 <div class="math notranslate nohighlight">
 \[\displaystyle|\hat{\mathbf{v}}|=\sqrt{\left(\frac{x}{|\mathbf{v}|}\right)^2+\left(\frac{y}{|\mathbf{v}|}\right)^2+\left(\frac{z}{|\mathbf{v}|}\right)^2}=\frac{\sqrt{x^2+y^2+z^2}}{\sqrt{|\mathbf{v}|^2}}=\frac{|\mathbf{v}|}{|\mathbf{v}|}=1\]</div>
-<p>Three significant unit vectors are: <span class="math notranslate nohighlight">\(\mathbf{i}=(1,0,0)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}=(0,1,0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{k}=(0,0,1)\)</span>. These vectors have unit lengths and align with the x-, y-, and z-axes, respectively, in a 3D Cartesian coordinate system. They are commonly referred to as the standard basis vectors of a coordinate system.</p>
+<p>Three significant unit vectors are: <span class="math notranslate nohighlight">\(\mathbf{i}=(1,0,0)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}=(0,1,0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{k}=(0,0,1)\)</span>. These vectors have unit lengths and align with the x-, y-, and z-axes, respectively, in a 3D Cartesian coordinate system. They are commonly referred to as the <strong>standard basis vectors</strong> of a coordinate system.</p>
 <figure class="align-default">
 <img alt="../../../_images/basis-vectors.png" src="../../../_images/basis-vectors.png" />
 </figure>
@@ -671,7 +673,7 @@ document.write(`
 <td><p><span class="math notranslate nohighlight">\((\mathbf{u}+\mathbf{v})\cdot\mathbf{w}=\mathbf{w}\cdot(\mathbf{u}+\mathbf{v})=(\mathbf{w}\cdot\mathbf{u})+(\mathbf{w}\cdot\mathbf{v})\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p>Square of a vector length</p></td>
-<td><p><span class="math notranslate nohighlight">\(|\mathbf{v}|^2=v_x^2+v_y^2+v_z^2=\mathbf{v}\cdot\mathbf{v}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(|\mathbf{v}| ^2=v_x^2+v_y^2+v_z^2=\mathbf{v}\cdot\mathbf{v}\)</span></p></td>
 </tr>
 </tbody>
 </table>
@@ -688,94 +690,97 @@ document.write(`
 \mathbf{u} \cdot\mathbf{u} -2(\mathbf{u} \cdot \mathbf{v}) + \mathbf{v} \cdot \mathbf{v} &amp;= \mathbf{u} \cdot \mathbf{u} + \mathbf{v} \cdot \mathbf{v} - 2|\mathbf{u}| |\mathbf{v}|\cos{\theta} \\
  \mathbf{u}\cdot \mathbf{v} &amp;= |\mathbf{u}| |\mathbf{v}|\cos{\theta} \end{align*}
 \end{split}\]</div>
-<p>From equation <span class="math notranslate nohighlight">\(\eqref{eq:Avectors1}\)</span> we can derive other properties. For example,</p>
+<p>From equation <span class="math notranslate nohighlight">\(\eqref{eq:Avectors1}\)</span>, we can derive other properties. For example,</p>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\((\mathbf{u}\cdot\mathbf{v}) = 0\)</span> then the angle <span class="math notranslate nohighlight">\(\theta\)</span> between <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is <span class="math notranslate nohighlight">\(90°\)</span> (that is, they are orthogonal: <span class="math notranslate nohighlight">\(\mathbf{u}\ \bot\ \mathbf{v}\)</span>)</p></li>
 <li><p>If <span class="math notranslate nohighlight">\((\mathbf{u}\cdot\mathbf{v}) &gt; 0\)</span> then the angle <span class="math notranslate nohighlight">\(\theta\)</span> between <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is less than <span class="math notranslate nohighlight">\(90°\)</span></p></li>
 <li><p>If <span class="math notranslate nohighlight">\((\mathbf{u}\cdot\mathbf{v}) &lt; 0\)</span> then the angle <span class="math notranslate nohighlight">\(\theta\)</span> between <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is greater than <span class="math notranslate nohighlight">\(90°\)</span></p></li>
 </ul>
-<br>
-<p>To conclude this section, we will prove the law of cosines <span class="math notranslate nohighlight">\(c^2=a^2+b^2-2ab\cos{\theta}\)</span>.</p>
-<br>
-<blockquote>
-<div><p>Let <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> be the vector from <span class="math notranslate nohighlight">\(C\)</span> to <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> the vector from <span class="math notranslate nohighlight">\(C\)</span> to <span class="math notranslate nohighlight">\(A\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> the vector from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<br>
-<p><img alt="Image" src="Tutorials/Appendices/01-MathBasics/images/A/01/law-cosines.png" /></p>
-<br>
+<p>To conclude this section, we will prove the law of cosines: <span class="math notranslate nohighlight">\(c^2=a^2+b^2-2ab\cos{\theta}\)</span>.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">proof</p>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> be the vector from <span class="math notranslate nohighlight">\(C\)</span> to <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> the vector from <span class="math notranslate nohighlight">\(C\)</span> to <span class="math notranslate nohighlight">\(A\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> the vector from <span class="math notranslate nohighlight">\(A\)</span> to <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<figure class="align-default">
+<img alt="../../../_images/law-cosines.png" src="../../../_images/law-cosines.png" />
+</figure>
 <p>We have that</p>
-<p><span class="math notranslate nohighlight">\(\mathbf{c}=\mathbf{a}-\mathbf{b}\quad\)</span> (subtration of two vectors)</p>
+<p><span class="math notranslate nohighlight">\(\begin{align*}&amp;\mathbf{c}=\mathbf{a}-\mathbf{b} &amp;&amp; \text{(subtration of two vectors)}\end{align*}\)</span></p>
 <p>Squaring both sides and simplifying</p>
-<p><span class="math notranslate nohighlight">\(\|\mathbf{c}\|^2=\|\mathbf{a}-\mathbf{b}\|^2\)</span></p>
-<p><span class="math notranslate nohighlight">\(\|\mathbf{c}\|^2=(\mathbf{a}-\mathbf{b})\cdot (\mathbf{a}-\mathbf{b})\quad\quad\quad\quad\quad\quad\quad\quad\)</span> (square of a vector length)</p>
-<p><span class="math notranslate nohighlight">\(\|\mathbf{c}\|^2=\|\mathbf{a}\|^2+\|\mathbf{b}\|^2-2\ \mathbf{a}\cdot\mathbf{b}\quad\quad\quad\quad\quad\quad\quad\)</span> (distributive law of the dot product)</p>
-<p><span class="math notranslate nohighlight">\(\|\mathbf{c}\|^2=\|\mathbf{a}\|^2+\|\mathbf{b}\|^2-2\|\mathbf{a}\|\|\mathbf{b}\| \cos{\theta}\quad\quad\quad\quad\)</span> (equation (1))</p>
-</div></blockquote>
-<br>
+<p><span class="math notranslate nohighlight">\(|\mathbf{c}|^2=|\mathbf{a}-\mathbf{b}|^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(
+\begin{align*}
+&amp;|\mathbf{c}|^2=(\mathbf{a}-\mathbf{b})\cdot (\mathbf{a}-\mathbf{b}) &amp;&amp; \text{(square of a vector length)} \\
+&amp;|\mathbf{c}|^2=|\mathbf{a}|^2+|\mathbf{b}|^2-2\ \mathbf{a}\cdot\mathbf{b} &amp;&amp; \text{(distributive law of the dot product)} \\
+&amp;|\mathbf{c}|^2=|\mathbf{a}|^2+|\mathbf{b}|^2-2|\mathbf{a}||\mathbf{b} | \cos{\theta} &amp;&amp; \text{(from equation \eqref{eq:Avectors1})}
+\end{align*}
+\)</span></p>
+</div>
 </section>
 <section id="orthogonal-projection">
 <h5>Orthogonal projection<a class="headerlink" href="#orthogonal-projection" title="Link to this heading">#</a></h5>
 <p>The orthogonal projection of a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto another vector <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is defined as the vector <span class="math notranslate nohighlight">\(\text{proj}_\mathbf{n}(\mathbf{v})\)</span>. Consider the following illustration.</p>
-<br>
-<p><img alt="Image" src="Tutorials/Appendices/01-MathBasics/images/A/01/vector-proj.png" /></p>
-<br>
-<p>From trigonometry, we know that in a right triangle, the cosine of an angle is equal to the ratio of the length of the adjacent side to the length of the hypotenuse. Therefore, we can calculate the length of the adjacent side by multiplying the length of the hypotenuse by the cosine of the angle between the adjacent side and the hypotenuse. Considering the illustration above, we have that <span class="math notranslate nohighlight">\(\|\text{adj}\|=\|\text{proj}_\mathbf{n}(\mathbf{v})\|\)</span> and <span class="math notranslate nohighlight">\(\|\text{hyp}\|=\|\mathbf{v}\|\)</span>. So, if <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is a unit vector, then we can write</p>
-<br>
-<p><span class="math notranslate nohighlight">\(\text{proj}_\mathbf{n}(\mathbf{v})=(\|\mathbf{v}\|\cos{\theta})\mathbf{n}=(\|\mathbf{v}\|1\cos{\theta})\mathbf{n}=(\|\mathbf{v}\|\|\mathbf{n}\|\cos{\theta})\mathbf{n}=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}\)</span></p>
-<br>
-<p>with <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\)</span> signed length of the projection, and <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> that indicates its direction. This means that <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\)</span> can invert the direction of projection if <span class="math notranslate nohighlight">\(\theta &gt; 90°\)</span>. Anyway, this gives us a geometrical interpretation of the dot product, at least if <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is a unit vector. If that’s not the case, we can always normalize <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> to make it unit length. Then, we can replace <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> with its normalized version <span class="math notranslate nohighlight">\(\mathbf{n}/\|\mathbf{n}\|\)</span>, giving us the more general formula</p>
-<br>
-<p><span class="math notranslate nohighlight">\(\text{proj}_\mathbf{n}(\mathbf{v})=\left(\mathbf{v}\cdot\displaystyle\frac{\mathbf{n}}{\|\mathbf{n}\|}\right)\displaystyle\frac{\mathbf{n}}{\|\mathbf{n}\|}=\displaystyle\frac{(\mathbf{v}\cdot\mathbf{n})}{\|\mathbf{n}\|^2}\mathbf{n}\)</span></p>
-<br>
-<p>Thanks to the concept of orthogonal projection, we can express any bound vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as the sum of its projections onto the standard basis vectors.</p>
-<br>
-<p><span class="math notranslate nohighlight">\(\mathbf{v}=(\mathbf{v}\cdot\mathbf{i})\mathbf{i}+(\mathbf{v}\cdot\mathbf{j})\mathbf{j}+(\mathbf{v}\cdot\mathbf{k})\mathbf{k}=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}=x(1, 0, 0)+y(0, 1, 0)+z(0, 0, 1)=(x, y, z)\)</span></p>
-<br>
+<figure class="align-default">
+<img alt="../../../_images/vector-proj.png" src="../../../_images/vector-proj.png" />
+</figure>
+<p>From trigonometry, we know that, in a right triangle, the cosine of an angle equals the ratio between the length of the adjacent side and the length of the hypotenuse. Therefore, we can calculate the length of the adjacent side by multiplying the length of the hypotenuse by the cosine of the angle between the adjacent side and the hypotenuse. Considering the image above, we have that <span class="math notranslate nohighlight">\(|\text{adj}|=|\text{proj}_\mathbf{n}(\mathbf{v})|\)</span> and <span class="math notranslate nohighlight">\(|\text{hyp}|=|\mathbf{v}|\)</span>. So, if <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is a unit vector, then we can write</p>
+<div class="math notranslate nohighlight">
+\[\text{proj}_\mathbf{n}(\mathbf{v})=(|\mathbf{v}|\cos{\theta})\mathbf{n}=(|\mathbf{v}|1\cos{\theta})\mathbf{n}=(|\mathbf{v}||\mathbf{n}|\cos{\theta})\mathbf{n}=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}\]</div>
+<p>with <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\)</span> signed length of the projection, and <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> that indicates its direction. This means that <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\)</span> can invert the direction of projection if <span class="math notranslate nohighlight">\(\theta &gt; 90°\)</span>. Anyway, this gives us a geometrical interpretation of the dot product, at least if <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is a unit vector. If that’s not the case, we can always normalize <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> to make it unit length. Then, we can replace <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> with its normalized version <span class="math notranslate nohighlight">\(\mathbf{n}/|\mathbf{n}|\)</span>, giving us the more general formula</p>
+<div class="math notranslate nohighlight">
+\[\text{proj}_\mathbf{n}(\mathbf{v})=\left(\mathbf{v}\cdot\displaystyle\frac{\mathbf{n}}{|\mathbf{n}|}\right)\displaystyle\frac{\mathbf{n}}{|\mathbf{n}|}=\displaystyle\frac{(\mathbf{v}\cdot\mathbf{n})}{|\mathbf{n}|^2}\mathbf{n}\]</div>
+<p>Thanks to the concept of orthogonal projection, we can express any bound vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as the sum of its projections onto the standard basis vectors as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{v}=(\mathbf{v}\cdot\mathbf{i})\mathbf{i}+(\mathbf{v}\cdot\mathbf{j})\mathbf{j}+(\mathbf{v}\cdot\mathbf{k})\mathbf{k}=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}=x(1, 0, 0)+y(0, 1, 0)+z(0, 0, 1)=(x, y, z)\]</div>
 <p>Indeed, we have</p>
-<br>
-<p><span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{i})=(x, y, z)\cdot(1, 0, 0)=x\)</span> <br>
-<span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{j})=(x, y, z)\cdot(0, 1, 0)=y\)</span> <br>
-<span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{k})=(x, y, z)\cdot(0, 0, 1)=z\)</span></p>
-<br>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{flalign}
+&amp;(\mathbf{v}\cdot\mathbf{i})&amp;=(x, y, z)\cdot(1, 0, 0)&amp;=x \\
+&amp;(\mathbf{v}\cdot\mathbf{j})&amp;=(x, y, z)\cdot(0, 1, 0)&amp;=y \\
+&amp;(\mathbf{v}\cdot\mathbf{k})&amp;=(x, y, z)\cdot(0, 0, 1)&amp;=z
+\end{flalign}
+\end{split}\]</div>
 <p>Also, note that <span class="math notranslate nohighlight">\((x\mathbf{i}+z\mathbf{k})\)</span> is the projection of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto the xz-plane, so that we can sum this projection with <span class="math notranslate nohighlight">\(y\mathbf{j}\)</span> to get <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>.</p>
-<br>
-<p><img alt="Image" src="Tutorials/Appendices/01-MathBasics/images/A/01/vector-proj2.png" /></p>
-<br>
-<p>You can also see it as a sum of scaled vectors: we scale <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> with the corresponding components of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. Indeed, the diagonal of the parallelogram defined by <span class="math notranslate nohighlight">\(x\mathbf{i}\)</span> and <span class="math notranslate nohighlight">\(z\mathbf{k}\)</span> is <span class="math notranslate nohighlight">\((x\mathbf{i}+z\mathbf{k})\)</span>. Then, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is the diagonal of the parallelogram defined by <span class="math notranslate nohighlight">\((x\mathbf{i}+z\mathbf{k})\)</span> and <span class="math notranslate nohighlight">\(y\mathbf{j}\)</span>, that is <span class="math notranslate nohighlight">\(\ x\mathbf{i}+z\mathbf{k}+y\mathbf{j}\)</span>.<br>
-Remember that you can also see it as a sequence of three translations: starting from the origin of the frame, we move <span class="math notranslate nohighlight">\(x\)</span> units along the x-axis. Then, from that position, we move <span class="math notranslate nohighlight">\(y\)</span> units in the y-axis direction, and finally, you move <span class="math notranslate nohighlight">\(z\)</span> units in the z-axis direction. This is why we refer to <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as basis vectors: any bound vector in a frame can be expressed as a combination of these three unit vectors, with the components of the vector acting as coefficients.<br>
-As stated earlier, the components of a bound vector represent the coordinates of its arrowhead within the frame. This allows us to uniquely identify all points within a frame using vectors. However, we still need a way to distinguish between vectors and points, as they are not interchangeable. For vectors, only their direction and magnitude matter, making the point of application irrelevant. On the other hand, points uniquely represent a location and only make sense when bound to the origin of a frame. Subtracting points yields a vector that specifies the movement from one point to another, while adding a point and a vector gives a vector that specifies how to move a point to a different location. However, unlike vectors, adding two points does not have a meaningful interpretation - geometrically it’s the diagonal of a parallelogram, but this interpretation is not particularly useful or relevant when working with points. <br>
-In summary, consider vectors as free vectors and points as bound vectors. When working with a generic vector <span class="math notranslate nohighlight">\(\mathbf{v}=(x, y, z)\)</span>, it is crucial to determine whether it represents a point or a vector to use it appropriately. The distinction between points and vectors will be further explored in a later tutorial.</p>
-<br>
+<figure class="align-default">
+<img alt="../../../_images/vector-proj2.png" src="../../../_images/vector-proj2.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also see it as a sum of scaled vectors: we scale <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> with the corresponding components of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. Indeed, the diagonal of the parallelogram defined by <span class="math notranslate nohighlight">\(x\mathbf{i}\)</span> and <span class="math notranslate nohighlight">\(z\mathbf{k}\)</span> is <span class="math notranslate nohighlight">\((x\mathbf{i}+z\mathbf{k})\)</span>, while <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is the diagonal of the parallelogram defined by <span class="math notranslate nohighlight">\((x\mathbf{i}+z\mathbf{k})\)</span> and <span class="math notranslate nohighlight">\(y\mathbf{j}\)</span>, that is <span class="math notranslate nohighlight">\(\ x\mathbf{i}+z\mathbf{k}+y\mathbf{j}\)</span>.</p>
+</div>
+<p>As mentioned earlier, you can express every vector as a sequence of three steps\translations: starting from the origin of the frame, we move <span class="math notranslate nohighlight">\(x\)</span> units along the x-axis. Then, from that position, we move <span class="math notranslate nohighlight">\(y\)</span> units in the y-axis direction, and finally, you move <span class="math notranslate nohighlight">\(z\)</span> units in the z-axis direction. This is why we refer to <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as basis vectors: any bound vector in a frame can be expressed as a combination of these three unit vectors, with the components of the vector acting as coefficients.</p>
+<p>The components of a bound vector represent the coordinates of its arrowhead within the frame. This allows us to uniquely identify all points within a frame using vector notation. However, we still need a way to distinguish between vectors and points, as they are not interchangeable. For vectors, only their direction and magnitude matter, making the point of application irrelevant. On the other hand, points uniquely represent a location and only make sense when bound to the origin of a frame. Subtracting points yields a vector that specifies the movement from one point to another, while adding a point and a vector gives a vector that specifies how to move a point to a different location. However, unlike vectors, adding two points does not have a meaningful interpretation ─ geometrically it’s the diagonal of a parallelogram, but this interpretation is not particularly useful or relevant when working with points.</p>
+<p>In summary, consider vectors as free vectors and points as bound vectors. When working with a generic vector <span class="math notranslate nohighlight">\(\mathbf{v}=(x, y, z)\)</span>, it is crucial to determine whether it represents a point or a vector to use it appropriately. The distinction between points and vectors will be further explored in a later tutorial.</p>
 </section>
 <section id="gram-schmidt-orthogonalization">
 <h5>Gram-Schmidt Orthogonalization<a class="headerlink" href="#gram-schmidt-orthogonalization" title="Link to this heading">#</a></h5>
-<p>A computer cannot exactly represent all the elements in the infinite set of real numbers because it uses a finite number of bits to store values in memory. This means we have to settle for a good approximation. The downside is that, if you need to perform many calculations with approximate values, the outcome could differ significantly from the exact result. For example, a set of vectors <span class="math notranslate nohighlight">\(\\{\mathbf{v_0},\dots,\mathbf{v_{n-1}}\\}\)</span> is called orthonormal if they are all unit vectors and orthogonal to each other. However, due to numerical precision issues, we might start off with an orthonormal set that gradually becomes un-orthonormal after some calculations. Fortunately, there are methods available to orthogonalize a set of vectors to restore its orthonormality. While our primary focus will be on the 3D case, it is often helpful to start by examining the simpler 2D case.</p>
-<p>Suppose we have an initial set of vectors <span class="math notranslate nohighlight">\(\{\mathbf{v_0},\mathbf{v_1}\}\)</span> that is not orthonormal, and we want to orthogonalize it to obtain an orthonormal set <span class="math notranslate nohighlight">\(\{\mathbf{w_0},\mathbf{w_1}\}\)</span>. To begin the orthogonalization process, we can set <span class="math notranslate nohighlight">\(\mathbf{w_0}=\mathbf{v_0}\)</span>, as we can always assume one of the vectors in the set is already acceptable. Next, we aim to make <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>. This can be achieved by subtracting from <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> its projection onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>. By doing so, we obtain a new vector <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> that is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>. Indeed, in the following illustration you can verify that</p>
-<br>
-<p><span class="math notranslate nohighlight">\(\mathbf{v_1}=\mathbf{w_1}+\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})\)</span></p>
-<br>
-<p><img alt="Image" src="Tutorials/Appendices/01-MathBasics/images/A/01/2D-Gram-Schmidt.png" /></p>
-<br>
+<p>A computer cannot exactly represent all elements in the infinite set of real numbers because it uses a finite number of bits to store values in memory. This means that we must to settle for good approximations. The downside is that, if you need to perform many calculations with approximate values, the outcome could differ significantly from the exact result. For example, a set of vectors <span class="math notranslate nohighlight">\(\{\mathbf{v_0},\dots,\mathbf{v_{n-1}}\}\)</span> is called <strong>orthonormal</strong> if they are all unit vectors and orthogonal to each other. However, due to numerical precision issues, we might start off with an orthonormal set that gradually becomes un-orthonormal after some transformations. Fortunately, there are methods available to orthogonalize a set of vectors to restore its orthonormality. While our primary focus will be on the 3D case, it is often helpful to start by examining the simpler 2D case.</p>
+<p>Suppose we have an initial set of vectors <span class="math notranslate nohighlight">\(\{\mathbf{v_0},\mathbf{v_1}\}\)</span> that is not orthonormal, and we want to orthogonalize it to obtain an orthonormal set <span class="math notranslate nohighlight">\(\{\mathbf{w_0},\mathbf{w_1}\}\)</span>. To begin the orthogonalization process, we can set <span class="math notranslate nohighlight">\(\mathbf{w_0}=\mathbf{v_0}\)</span>, as we can always assume one of the vectors in the set is already acceptable. Next, we aim to make <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>. This can be achieved by subtracting from <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> its projection onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>. By doing so, we obtain a new vector <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> that is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>. Indeed, in the following illustration, you can verify that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{v_1}=\mathbf{w_1}+\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})\]</div>
+<figure class="align-default">
+<img alt="../../../_images/2D-Gram-Schmidt.png" src="../../../_images/2D-Gram-Schmidt.png" />
+</figure>
 <p>So, we have that</p>
 <br>
-<p><span class="math notranslate nohighlight">\(\mathbf{w_1}=\mathbf{v_1}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})\)</span></p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w_1}=\mathbf{v_1}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})\]</div>
 <br>
-<p>where <span class="math notranslate nohighlight">\(\ \text{proj}_{\mathbf{w_0}}(\mathbf{v_1})=\displaystyle\frac{\mathbf{v_1}\cdot\mathbf{w_0}}{\|\mathbf{w_0}\|^2}\mathbf{w_0}\)</span></p>
-<br>
+<p>where <span class="math notranslate nohighlight">\(\ \text{proj}_{\mathbf{w_0}}(\mathbf{v_1})=\displaystyle\frac{\mathbf{v_1}\cdot\mathbf{w_0}}{|\mathbf{w_0}|^2}\mathbf{w_0}\)</span></p>
 <p>To prove that <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> are orthogonal to each other, we can first observe that a projection is orthogonal if the direction of projection forms a right angle <span class="math notranslate nohighlight">\((90°)\)</span> with the vector we project onto (see the dashed line in the illustration above). Also, we know that the sum of two vectors is the diagonal of the parallelogram with sides the two vectors. In this case we obtain a rectangle since we just established that an angle of the parallelogram with diagonal <span class="math notranslate nohighlight">\(v_1\)</span> is <span class="math notranslate nohighlight">\(90°\)</span>. So, we verified that <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> are orthogonal: <span class="math notranslate nohighlight">\(\mathbf{w_0}\ \bot\ \mathbf{w_1}\)</span>.</p>
-<p>In the 3D case, we introduce a third vector <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> that we need to modify in order to make it orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>. As before, we start by setting <span class="math notranslate nohighlight">\(\mathbf{w_0}=\mathbf{v_0}\)</span>, and we can still use the method of subtracting the projection of <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> to compute <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>. This is possible because we can consider <span class="math notranslate nohighlight">\(\mathbf{v_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> as lying in the same plane, thereby reducing the problem to the 2D case. <br>
-To calculate <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span>, we proceed similarly. We subtract the projection of <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> from <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span>, obtaining an intermediate vector. Then, we can subtract the projection of <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> from this intermediate vector. By doing this, we ensure that the resultant vector <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span> is orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>.</p>
-<br>
-<p><span class="math notranslate nohighlight">\(\mathbf{w_2}=\mathbf{v_2}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_2}) -\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})\)</span></p>
-<br>
-<p>Consider the following illustration. If we subtract <span class="math notranslate nohighlight">\(\text{proj}\_{\mathbf{w_0}}(\mathbf{v_2})\)</span> from <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> the resultant vector is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and lies in the YZ-plane. Then, if we subtract <span class="math notranslate nohighlight">\(\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})\)</span> from this intermediate vector, we get <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span>, which is orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>.</p>
-<br>
-<p><img alt="Image" src="Tutorials/Appendices/01-MathBasics/images/A/01/3D-Gram-Schmidt.png" /></p>
-<br>
+<p>In the 3D case, we introduce a third vector <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> that we need to modify in order to make it orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>. As before, we start by setting <span class="math notranslate nohighlight">\(\mathbf{w_0}=\mathbf{v_0}\)</span>, and we can still use the method of subtracting the projection of <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> to compute <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>. This is possible because we can consider <span class="math notranslate nohighlight">\(\mathbf{v_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> as lying in the same plane, thereby reducing the problem to the 2D case. To calculate <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span>, we proceed similarly. We subtract the projection of <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> from <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span>, obtaining an intermediate vector. Then, we can subtract the projection of <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> from this intermediate vector. By doing this, we ensure that the resultant vector <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span> is orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w_2}=\mathbf{v_2}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_2}) -\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})\]</div>
+<p>Consider the illustration below. If we subtract <span class="math notranslate nohighlight">\(\text{proj}\_{\mathbf{w_0}}(\mathbf{v_2})\)</span> from <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> the resultant vector is orthogonal to <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and lies in the YZ-plane. Then, if we subtract <span class="math notranslate nohighlight">\(\text{proj}\_{\mathbf{w_1}}(\mathbf{v_2})\)</span> from this intermediate vector, we get <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span>, which is orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>.</p>
+<figure class="align-default">
+<img alt="../../../_images/3D-Gram-Schmidt.png" src="../../../_images/3D-Gram-Schmidt.png" />
+</figure>
 <p>The final step in the process of orthogonalization is to normalize the vectors <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span> to obtain an orthonormal set.</p>
-<br>
-<p>[WIP]</p>
-<br>
 </section>
+</section>
+<section id="cross-product-wip">
+<h4>Cross product [WIP]<a class="headerlink" href="#cross-product-wip" title="Link to this heading">#</a></h4>
+<br>
 </section>
 </section>
 </section>
@@ -859,6 +864,7 @@ To calculate <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span>,
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#gram-schmidt-orthogonalization">Gram-Schmidt Orthogonalization</a></li>
 </ul>
 </li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product-wip">Cross product [WIP]</a></li>
 </ul>
 </li>
 </ul>
