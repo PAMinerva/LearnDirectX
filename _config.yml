@@ -41,3 +41,5 @@ exclude_patterns: [README.md]
 sphinx:
   config:
     html_theme: sphinx_book_theme
+  extra_extensions:
+    - sphinx_proof
