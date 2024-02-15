@@ -285,7 +285,7 @@ The orthogonal projection of a vector $\mathbf{v}$ onto another vector $\mathbf{
 ```{figure} images/01/vector-proj.png
 ```
 
-From trigonometry, we know that, in a right triangle, the cosine of an angle equals the ratio between the length of the adjacent side and the length of the hypotenuse. Therefore, we can calculate the length of the adjacent side by multiplying the length of the hypotenuse by the cosine of the angle between the adjacent side and the hypotenuse. Considering the image above, we have that $|\text{adj}|=|\text{proj}_\mathbf{n}(\mathbf{v})|$ and $|\text{hyp}|=|\mathbf{v}|$. So, if $\mathbf{n}$ is a unit vector, then we can write
+From trigonometry, we know that, in a right triangle, the cosine of an angle equals the ratio between the length of the adjacent side and the length of the hypotenuse. Therefore, we can calculate the length of the adjacent side by multiplying the length of the hypotenuse by the cosine of the angle between the adjacent side and the hypotenuse. Considering the image above, we have that $|\text{adj}|=|\text{proj}_\mathbf{n}(\mathbf{v})|$ and $|\text{hyp}|=|\mathbf{v}|$. So, if $\mathbf{n}$ is a unit vector, we can write
 
 $$\text{proj}_\mathbf{n}(\mathbf{v})=(|\mathbf{v}|\cos{\theta})\mathbf{n}=(|\mathbf{v}|1\cos{\theta})\mathbf{n}=(|\mathbf{v}||\mathbf{n}|\cos{\theta})\mathbf{n}=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$$
 
