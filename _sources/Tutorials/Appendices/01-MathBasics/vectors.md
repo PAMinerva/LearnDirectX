@@ -251,7 +251,7 @@ From equation $\eqref{eq:Avectors1}$, we can derive other properties. For exampl
 
 To conclude this section, we will prove the law of cosines: $c^2=a^2+b^2-2ab\cos{\theta}$.
 
-````{admonition} proof
+````{admonition} Proof
 :class: dropdown
 
 Let $\mathbf{a}$ be the vector from $C$ to $B$, $\mathbf{b}$ the vector from $C$ to $A$, and $\mathbf{c}$ the vector from $A$ to $B$.
