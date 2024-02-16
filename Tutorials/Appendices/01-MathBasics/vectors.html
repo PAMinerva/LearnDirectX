@@ -436,9 +436,11 @@ document.write(`
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#gram-schmidt-orthogonalization">Gram-Schmidt Orthogonalization</a></li>
 </ul>
 </li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product-wip">Cross product [WIP]</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product">Cross product</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scalar-and-vector-triple-product">Scalar and vector triple product</a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-in-directx-wip">Vectors in DirectX [WIP]</a></li>
 </ul>
 </li>
 </ul>
@@ -779,10 +781,118 @@ document.write(`
 <p>The final step in the process of orthogonalization is to normalize the vectors <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span> to obtain an orthonormal set.</p>
 </section>
 </section>
-<section id="cross-product-wip">
-<h4>Cross product [WIP]<a class="headerlink" href="#cross-product-wip" title="Link to this heading">#</a></h4>
+<section id="cross-product">
+<h4>Cross product<a class="headerlink" href="#cross-product" title="Link to this heading">#</a></h4>
+<p>This type of multiplication, also known as the vector product, differs from the dot product by resulting in a vector instead of a scalar. It’s defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=\mathbf{u}\times\mathbf{v}=(u_y v_z-u_z v_y,\ u_z v_x-u_x v_z,\ u_x v_y-u_y v_x)\]</div>
+<p>A way to remember this formula is to notice that the first component of the vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> is missing the subscript <span class="math notranslate nohighlight">\(x\)</span>, the second component is missing the subscript <span class="math notranslate nohighlight">\(y\)</span>, and the third component is missing the subscript <span class="math notranslate nohighlight">\(z\)</span>. The trick works by using the subscripts <span class="math notranslate nohighlight">\(\{x,y,z\}\)</span> as a circular sequence. For example, in the first component of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> we exclude the subscript <span class="math notranslate nohighlight">\(x\)</span>, so we start with <span class="math notranslate nohighlight">\(y\)</span> and <span class="math notranslate nohighlight">\(z\)</span> in the minuend, inverting the subscripts in the subtrahend. In the second component we exclude the subscript <span class="math notranslate nohighlight">\(y\)</span>, so we start with <span class="math notranslate nohighlight">\(z\)</span> and <span class="math notranslate nohighlight">\(x\)</span> in the minuend, inverting the subscripts in the subtrahend. You can easily conclude that the third component starts with <span class="math notranslate nohighlight">\(x\)</span>, followed by <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We can also use matrices to calculate the cross product. For example, the cross product <span class="math notranslate nohighlight">\(\mathbf{u}\times\mathbf{v}\)</span> is equal to the determinant of the <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix with <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as elements of the first row, and the components of the two vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as elements of the other two rows.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{flalign}
+\mathbf{w}=\mathbf{u}\times\mathbf{v}&amp;=\left\lvert\matrix{\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \cr u_x &amp; u_y &amp; u_z \cr v_x &amp; v_y &amp; v_z}\right\rvert \\ \\
+&amp;=(u_y v_z-u_z v_y)\mathbf{i}-(u_x v_z-u_z v_x)\mathbf{j}+(u_x v_y-u_y v_x)\mathbf{k} \\
+&amp;=(u_y v_z-u_z v_y,\ u_z v_x-u_x v_z,\ u_x v_y-u_y v_x)
+\end{flalign}
+\end{split}\]</div>
+<p>Also, the cross product can be computed multiplying a matrix by a column.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\mathbf{w}=\mathbf{u}\times\mathbf{v}&amp;=\left\lbrack\matrix{0&amp;-u_z&amp;u_y \cr u_z&amp;0&amp;-u_x \cr -u_y&amp;u_x&amp;0}\right\rbrack\left\lbrack\matrix{v_x\cr v_y\cr v_z}\right\rbrack \\ \\
+&amp;=(u_yv_z-u_zv_y,\ u_zv_x-u_xv_z,\ u_xv_y-u_yv_x)
+\end{align*}
+\end{split}\]</div>
+</div>
+<p>We will cover matrices in the next appendix, where we will show that the determinant of a matrix is related to the concept of hypervolume (that is, length in 1D, area in 2D, and volume in 3D). However, in this section we can use the information provided in the box note above to find something interesting. We know that two vectors always lie in a plane, and that to calculate the area of a parallelogram we multiply its base times the height. Then, we are supposed to find a similar formula for the cross product because, to compute it, we can use the determinant of a matrix, which is related to the concept of hypervolume (area in the 2D case). Indeed, we can also write the cross product as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=\mathbf{u}\times\mathbf{v}=\mathbf{n}|\mathbf{u}||\mathbf{v}|\sin{\theta}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> unit vector indicating the direction of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>, and with <span class="math notranslate nohighlight">\(|\mathbf{u}||\mathbf{v}|\sin{\theta}\)</span> indicating the length of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. The vector <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is often called normal, which means it is orthogonal to the surface it refers to (in this case, the plane defined by <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>). Now, we need to find a connection between the above formula and the area <span class="math notranslate nohighlight">\(A_p\)</span> of the parallelogram with sides <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. Consider the following illustration.</p>
+<figure class="align-default">
+<img alt="../../../_images/cross-product.png" src="../../../_images/cross-product.png" />
+</figure>
+<p>We know that <span class="math notranslate nohighlight">\(A_p=b\times h\)</span>, so we should have something like</p>
+<div class="math notranslate nohighlight">
+\[A_p=|\mathbf{w}|=|\mathbf{u}\times\mathbf{v}|=|\mathbf{u}||\mathbf{v}|\sin{\theta}\]</div>
+<p>since <span class="math notranslate nohighlight">\(|\mathbf{n}|=1\)</span> and the area of a parallelogram is a scalar value, so that we must consider the length of the cross product. As you can see in the illustration above, we have <span class="math notranslate nohighlight">\(|\mathbf{v}|=b\)</span> and <span class="math notranslate nohighlight">\(|\mathbf{u}|\sin{\theta}=h\)</span>. So, it’s <span class="math notranslate nohighlight">\(A_p=|\mathbf{w}|=|\mathbf{u}\times\mathbf{v}|\)</span> as expected. We just found a geometric representation of the length of the cross product.</p>
+<p>As just stated above, the vector <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is orthogonal to the plane defined by <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. So, the resultant vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> of the cross product is orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as well. Ok, but we have two sides that <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> could aim at. Which side is the right one? In left-handed systems, it’s the one that makes <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> a left-handed system. While we don’t have a formal definition yet to establish if a set of three vectors composes a left-handed system, you can still identify the correct side.This is the side where <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> “sees” the first operand (in this case <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>) rotate clockwise toward the second operand <span class="math notranslate nohighlight">\((\mathbf{v})\)</span> with an angle of rotation <span class="math notranslate nohighlight">\(θ\)</span> in <span class="math notranslate nohighlight">\([0, \pi]\)</span>. Alternatively, you can also use your left hand: align your fingers with the direction of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, curl them towards <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, and your thumb will point in the direction of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>.; this is called the left-hand-thumb rule. <br>
+In right-handed systems, the correct side is the one that makes <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> a right-handed system.</p>
+<figure class="align-default">
+<img alt="../../../_images/cross-product2.png" src="../../../_images/cross-product2.png" />
+</figure>
+<p>The commutative property doesn’t apply <span class="math notranslate nohighlight">\((\mathbf{u}\times\mathbf{v}\ne\mathbf{v}\times\mathbf{u})\)</span> as if you swap the vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> the direction of <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> changes as well (you can check it with the left-hand-thumb rule). However, you can easily verify that the following equivalence is true.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{u}\times\mathbf{v}=-(\mathbf{v}\times\mathbf{u})\]</div>
+<p>And we also have that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{flalign}
+&amp;\mathbf{i}\ &amp;\times\ &amp;\mathbf{j} &amp;=\ &amp;\mathbf{k} \\
+&amp;\mathbf{j}\ &amp;\times\ &amp;\mathbf{k} &amp;=\ &amp;\mathbf{i} \\
+&amp;\mathbf{k}\ &amp;\times\ &amp;\mathbf{i} &amp;=\ &amp;\mathbf{j} \\
+&amp;\mathbf{j}\ &amp;\times\ &amp;\mathbf{i} &amp;=\ &amp;\mathbf{-k} \\
+&amp;\mathbf{k}\ &amp;\times\ &amp;\mathbf{j} &amp;=\ &amp;\mathbf{-i} \\
+&amp;\mathbf{i}\ &amp;\times\ &amp;\mathbf{k} &amp;=\ &amp;\mathbf{-j} \\
+&amp;\mathbf{i}\ &amp;\times\ &amp;\mathbf{i} &amp;=\ &amp;\mathbf{0} \\
+&amp;\mathbf{j}\ &amp;\times\ &amp;\mathbf{j} &amp;=\ &amp;\mathbf{0} \\
+&amp;\mathbf{k}\ &amp;\times\ &amp;\mathbf{k} &amp;=\ &amp;\mathbf{0}
+&amp;\end{flalign} 
+\end{split}\]</div>
+<p>A way to remember the above equivalences is to consider the unit vectors <span class="math notranslate nohighlight">\(\{\mathbf{i},\mathbf{j},\mathbf{k}\}\)</span> as a circular sequence. If you cross multiply a vector by the next one, you get the third vector with a positive sign. Otherwise, you get a negative sign. Observe that if you cross multiply a vector by itself the result is the zero vector (or null vector, where all components are zero and the direction is undefined) as you can’t build a parallelogram with two equal vectors ─ you get a segment, so the area is zero.</p>
+</section>
+<section id="scalar-and-vector-triple-product">
+<h4>Scalar and vector triple product<a class="headerlink" href="#scalar-and-vector-triple-product" title="Link to this heading">#</a></h4>
+<p>The scalar triple product is nothing really new, as it simply combines the dot product and the cross product. It is defined as:</p>
+<div class="math notranslate nohighlight">
+\[V=\mathbf{u}\cdot(\mathbf{v}\times\mathbf{w})\]</div>
+<p>where <span class="math notranslate nohighlight">\(V\)</span> represents the volume of the parallelepiped formed by the bound vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. Consider the following illustration.</p>
+<figure class="align-default">
+<img alt="../../../_images/triple-product.png" src="../../../_images/triple-product.png" />
+</figure>
+<p>As you know, the length of the cross product is the area of a parallelogram. Also, the volume of a parallelepiped is <span class="math notranslate nohighlight">\(V=b\times h\)</span>. Therefore, in order to compute the volume of the parallelepiped illustrated above, we can to write</p>
+<div class="math notranslate nohighlight">
+\[V=|\mathbf{u}| |\mathbf{v}\times\mathbf{w}|\cos{\theta}\]</div>
+<p>with <span class="math notranslate nohighlight">\(|\mathbf{v}\times\mathbf{w}|=b\)</span> and <span class="math notranslate nohighlight">\(|\mathbf{u}|\cos{\theta}=h\)</span>.<br>
+From equation <span class="math notranslate nohighlight">\((1)\)</span> we can also write it as</p>
+<div class="math notranslate nohighlight">
+\[V=\mathbf{u}\cdot (\mathbf{v}\times\mathbf{w})\]</div>
+<p>which is the scalar triple product. If you expand it you have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{flalign}
+\mathbf{u}\cdot(\mathbf{v}\times\mathbf{w})&amp;=\mathbf{u}\cdot(v_yw_z-v_zw_y, v_zw_x-v_xw_z, v_xw_y-v_yw_x) \\
+&amp;=u_x v_y w_z - u_x v_z w_y + u_y v_z w_x - u_y v_x w_z + u_z v_x w_y - u_z v_y w_x
+\end{flalign}
+\end{split}\]</div>
+<p>which is exactly the determinant of the <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix with <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> as columns, or rows. The upcoming appendix on matrices will provide further details of this result and illustrate how the scalar triple product can be used to determine if a set of three vectors forms a right-handed system. In brief, if the triple scalar product of three bound vectors defined in a right-handed system is positive, then they form a right-hand system.</p>
+<p>We conclude this section pointing out that a vector triple product <span class="math notranslate nohighlight">\(\mathbf{a}\times(\mathbf{b}\times \mathbf{c})\)</span> also exists. However, we will only demonstrate the following identity, called the BAC-CAB identity.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{a}\times(\mathbf{b}\times\mathbf{c})=\mathbf{b}(\mathbf{a}\cdot\mathbf{c})-\mathbf{c}(\mathbf{a}\cdot\mathbf{b})\]</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Proof</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{flalign}
+\mathbf{a}\times (\mathbf{b}\times\mathbf{c})&amp;=(a_x, a_y, a_z)\times [(b_x, b_y, b_z)\times (c_x, c_y, c_z)] \\
+&amp;=(a_x,\, a_y,\, a_z)\times (b_yc_z-b_zc_y,\; b_zc_x-b_xc_z,\; b_xc_y-b_yc_x) \\
+&amp;=\big({\color{#FF6666}{a_y (b_xc_y-b_yc_x)-a_z (b_zc_x-b_xc_z)}},\\ &amp;\quad\quad\quad\quad{\color{#44FF66}{a_z (b_yc_z-b_zc_y)-a_x\ (b_xc_y-b_yc_x)}},\\ &amp;\quad\quad\quad\quad\quad\quad{\color{#44AAFF}{a_x (b_zc_x-b_xc_z)-a_y(b_yc_z-b_zc_y)}}\big)
+\end{flalign}
+\end{split}\]</div>
+<p>Below, you can observe that the first component of <span class="math notranslate nohighlight">\(\mathbf{b}(\mathbf{a}\cdot\mathbf{c})-\mathbf{c}(\mathbf{a}\cdot\mathbf{b})\)</span> (the one highlighted in red) is equivalent to the first component of <span class="math notranslate nohighlight">\(\mathbf{a}\times(\mathbf{b}\times\mathbf{c})\)</span></p>
+<p><span class="math notranslate nohighlight">\((\mathbf{b}(\mathbf{a}\cdot\mathbf{c})-\mathbf{c}(\mathbf{a}\cdot\mathbf{b}))_x = b_x (a_xc_x+a_yc_y+a_zc_z)-c_x (a_xb_x+a_yb_y+a_zb_z)=\)</span></p>
+<p><span class="math notranslate nohighlight">\(a_xb_xc_x+a_yb_xc_y+a_zb_xc_z-a_xb_xc_x-a_yb_yc_x-a_zb_zc_x=\)</span></p>
+<p><span class="math notranslate nohighlight">\({\color{#FF6666}{a_y (b_xc_y-b_yc_x)-a_z (b_zc_x-b_xc_z)}}\)</span></p>
+<p>The same applies to the other two components.</p>
+</div>
 <br>
 </section>
+</section>
+<section id="vectors-in-directx-wip">
+<h3>Vectors in DirectX [WIP]<a class="headerlink" href="#vectors-in-directx-wip" title="Link to this heading">#</a></h3>
+<br>
 </section>
 </section>
 </section>
@@ -865,9 +975,11 @@ document.write(`
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#gram-schmidt-orthogonalization">Gram-Schmidt Orthogonalization</a></li>
 </ul>
 </li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product-wip">Cross product [WIP]</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-product">Cross product</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scalar-and-vector-triple-product">Scalar and vector triple product</a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-in-directx-wip">Vectors in DirectX [WIP]</a></li>
 </ul>
 </li>
 </ul>

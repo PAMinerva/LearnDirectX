@@ -358,6 +358,138 @@ Consider the illustration below. If we subtract $\text{proj}\_{\mathbf{w_0}}(\ma
 The final step in the process of orthogonalization is to normalize the vectors $\mathbf{w_0}$, $\mathbf{w_1}$, and $\mathbf{w_2}$ to obtain an orthonormal set.
 
 
-#### Cross product [WIP]
+#### Cross product 
+
+This type of multiplication, also known as the vector product, differs from the dot product by resulting in a vector instead of a scalar. It's defined as follows:
+
+$$\mathbf{w}=\mathbf{u}\times\mathbf{v}=(u_y v_z-u_z v_y,\ u_z v_x-u_x v_z,\ u_x v_y-u_y v_x)$$
+
+A way to remember this formula is to notice that the first component of the vector $\mathbf{w}$ is missing the subscript $x$, the second component is missing the subscript $y$, and the third component is missing the subscript $z$. The trick works by using the subscripts $\{x,y,z\}$ as a circular sequence. For example, in the first component of $\mathbf{w}$ we exclude the subscript $x$, so we start with $y$ and $z$ in the minuend, inverting the subscripts in the subtrahend. In the second component we exclude the subscript $y$, so we start with $z$ and $x$ in the minuend, inverting the subscripts in the subtrahend. You can easily conclude that the third component starts with $x$, followed by $y$.
+
+```{note}
+We can also use matrices to calculate the cross product. For example, the cross product $\mathbf{u}\times\mathbf{v}$ is equal to the determinant of the $3\times 3$ matrix with $\mathbf{i}$, $\mathbf{j}$ and $\mathbf{k}$ as elements of the first row, and the components of the two vectors $\mathbf{u}$ and $\mathbf{v}$ as elements of the other two rows.
+
+$$
+\begin{flalign}
+\mathbf{w}=\mathbf{u}\times\mathbf{v}&=\left\lvert\matrix{\mathbf{i} & \mathbf{j} & \mathbf{k} \cr u_x & u_y & u_z \cr v_x & v_y & v_z}\right\rvert \\ \\
+&=(u_y v_z-u_z v_y)\mathbf{i}-(u_x v_z-u_z v_x)\mathbf{j}+(u_x v_y-u_y v_x)\mathbf{k} \\
+&=(u_y v_z-u_z v_y,\ u_z v_x-u_x v_z,\ u_x v_y-u_y v_x)
+\end{flalign}
+$$
+
+Also, the cross product can be computed multiplying a matrix by a column.
+
+$$
+\begin{align*}
+\mathbf{w}=\mathbf{u}\times\mathbf{v}&=\left\lbrack\matrix{0&-u_z&u_y \cr u_z&0&-u_x \cr -u_y&u_x&0}\right\rbrack\left\lbrack\matrix{v_x\cr v_y\cr v_z}\right\rbrack \\ \\
+&=(u_yv_z-u_zv_y,\ u_zv_x-u_xv_z,\ u_xv_y-u_yv_x)
+\end{align*}
+$$
+```
+
+We will cover matrices in the next appendix, where we will show that the determinant of a matrix is related to the concept of hypervolume (that is, length in 1D, area in 2D, and volume in 3D). However, in this section we can use the information provided in the box note above to find something interesting. We know that two vectors always lie in a plane, and that to calculate the area of a parallelogram we multiply its base times the height. Then, we are supposed to find a similar formula for the cross product because, to compute it, we can use the determinant of a matrix, which is related to the concept of hypervolume (area in the 2D case). Indeed, we can also write the cross product as follows:
+
+$$\mathbf{w}=\mathbf{u}\times\mathbf{v}=\mathbf{n}|\mathbf{u}||\mathbf{v}|\sin{\theta}$$
+
+with $\mathbf{n}$ unit vector indicating the direction of $\mathbf{w}$, and with $|\mathbf{u}||\mathbf{v}|\sin{\theta}$ indicating the length of $\mathbf{w}$. The vector $\mathbf{n}$ is often called normal, which means it is orthogonal to the surface it refers to (in this case, the plane defined by $\mathbf{u}$ and $\mathbf{v}$). Now, we need to find a connection between the above formula and the area $A_p$ of the parallelogram with sides $\mathbf{u}$ and $\mathbf{v}$. Consider the following illustration.
+
+```{figure} images/01/cross-product.png
+```
+
+We know that $A_p=b\times h$, so we should have something like
+
+$$A_p=|\mathbf{w}|=|\mathbf{u}\times\mathbf{v}|=|\mathbf{u}||\mathbf{v}|\sin{\theta}$$
+
+since $|\mathbf{n}|=1$ and the area of a parallelogram is a scalar value, so that we must consider the length of the cross product. As you can see in the illustration above, we have $|\mathbf{v}|=b$ and $|\mathbf{u}|\sin{\theta}=h$. So, it's $A_p=|\mathbf{w}|=|\mathbf{u}\times\mathbf{v}|$ as expected. We just found a geometric representation of the length of the cross product.
+
+As just stated above, the vector $\mathbf{n}$ is orthogonal to the plane defined by $\mathbf{u}$ and $\mathbf{v}$. So, the resultant vector $\mathbf{w}$ of the cross product is orthogonal to both $\mathbf{u}$ and $\mathbf{v}$ as well. Ok, but we have two sides that $\mathbf{w}$ could aim at. Which side is the right one? In left-handed systems, it's the one that makes $\mathbf{u}$, $\mathbf{v}$ and $\mathbf{w}$ a left-handed system. While we don't have a formal definition yet to establish if a set of three vectors composes a left-handed system, you can still identify the correct side.This is the side where $\mathbf{w}$ "sees" the first operand (in this case $\mathbf{u}$) rotate clockwise toward the second operand $(\mathbf{v})$ with an angle of rotation $θ$ in $[0, \pi]$. Alternatively, you can also use your left hand: align your fingers with the direction of $\mathbf{u}$, curl them towards $\mathbf{v}$, and your thumb will point in the direction of $\mathbf{w}$.; this is called the left-hand-thumb rule. <br>
+In right-handed systems, the correct side is the one that makes $\mathbf{u}$, $\mathbf{v}$ and $\mathbf{w}$ a right-handed system.
+
+```{figure} images/01/cross-product2.png
+```
+
+The commutative property doesn't apply $(\mathbf{u}\times\mathbf{v}\ne\mathbf{v}\times\mathbf{u})$ as if you swap the vectors $\mathbf{u}$ and $\mathbf{v}$ the direction of $\mathbf{w}$ changes as well (you can check it with the left-hand-thumb rule). However, you can easily verify that the following equivalence is true.
+
+$$\mathbf{u}\times\mathbf{v}=-(\mathbf{v}\times\mathbf{u})$$
+
+And we also have that
+
+$$
+\begin{flalign}
+&\mathbf{i}\ &\times\ &\mathbf{j} &=\ &\mathbf{k} \\
+&\mathbf{j}\ &\times\ &\mathbf{k} &=\ &\mathbf{i} \\
+&\mathbf{k}\ &\times\ &\mathbf{i} &=\ &\mathbf{j} \\
+&\mathbf{j}\ &\times\ &\mathbf{i} &=\ &\mathbf{-k} \\
+&\mathbf{k}\ &\times\ &\mathbf{j} &=\ &\mathbf{-i} \\
+&\mathbf{i}\ &\times\ &\mathbf{k} &=\ &\mathbf{-j} \\
+&\mathbf{i}\ &\times\ &\mathbf{i} &=\ &\mathbf{0} \\
+&\mathbf{j}\ &\times\ &\mathbf{j} &=\ &\mathbf{0} \\
+&\mathbf{k}\ &\times\ &\mathbf{k} &=\ &\mathbf{0}
+&\end{flalign} 
+$$
+
+A way to remember the above equivalences is to consider the unit vectors $\{\mathbf{i},\mathbf{j},\mathbf{k}\}$ as a circular sequence. If you cross multiply a vector by the next one, you get the third vector with a positive sign. Otherwise, you get a negative sign. Observe that if you cross multiply a vector by itself the result is the zero vector (or null vector, where all components are zero and the direction is undefined) as you can't build a parallelogram with two equal vectors ─ you get a segment, so the area is zero.
+
+
+#### Scalar and vector triple product
+
+The scalar triple product is nothing really new, as it simply combines the dot product and the cross product. It is defined as:
+
+$$V=\mathbf{u}\cdot(\mathbf{v}\times\mathbf{w})$$
+
+where $V$ represents the volume of the parallelepiped formed by the bound vectors $\mathbf{u}$, $\mathbf{v}$, and $\mathbf{w}$. Consider the following illustration.
+
+```{figure} images/01/triple-product.png
+```
+
+As you know, the length of the cross product is the area of a parallelogram. Also, the volume of a parallelepiped is $V=b\times h$. Therefore, in order to compute the volume of the parallelepiped illustrated above, we can to write
+
+$$V=|\mathbf{u}| |\mathbf{v}\times\mathbf{w}|\cos{\theta}$$
+
+with $|\mathbf{v}\times\mathbf{w}|=b$ and $|\mathbf{u}|\cos{\theta}=h$.<br>
+From equation $(1)$ we can also write it as
+
+$$V=\mathbf{u}\cdot (\mathbf{v}\times\mathbf{w})$$
+
+which is the scalar triple product. If you expand it you have
+
+$$
+\begin{flalign}
+\mathbf{u}\cdot(\mathbf{v}\times\mathbf{w})&=\mathbf{u}\cdot(v_yw_z-v_zw_y, v_zw_x-v_xw_z, v_xw_y-v_yw_x) \\
+&=u_x v_y w_z - u_x v_z w_y + u_y v_z w_x - u_y v_x w_z + u_z v_x w_y - u_z v_y w_x
+\end{flalign}
+$$
+
+which is exactly the determinant of the $3\times 3$ matrix with $\mathbf{u}$, $\mathbf{v}$ and $\mathbf{w}$ as columns, or rows. The upcoming appendix on matrices will provide further details of this result and illustrate how the scalar triple product can be used to determine if a set of three vectors forms a right-handed system. In brief, if the triple scalar product of three bound vectors defined in a right-handed system is positive, then they form a right-hand system.
+
+We conclude this section pointing out that a vector triple product $\mathbf{a}\times(\mathbf{b}\times \mathbf{c})$ also exists. However, we will only demonstrate the following identity, called the BAC-CAB identity.
+
+$$\mathbf{a}\times(\mathbf{b}\times\mathbf{c})=\mathbf{b}(\mathbf{a}\cdot\mathbf{c})-\mathbf{c}(\mathbf{a}\cdot\mathbf{b})$$
+
+```{admonition} Proof
+:class: dropdown
+
+$$
+\begin{flalign}
+\mathbf{a}\times (\mathbf{b}\times\mathbf{c})&=(a_x, a_y, a_z)\times [(b_x, b_y, b_z)\times (c_x, c_y, c_z)] \\
+&=(a_x,\, a_y,\, a_z)\times (b_yc_z-b_zc_y,\; b_zc_x-b_xc_z,\; b_xc_y-b_yc_x) \\
+&=\big({\color{#FF6666}{a_y (b_xc_y-b_yc_x)-a_z (b_zc_x-b_xc_z)}},\\ &\quad\quad\quad\quad{\color{#44FF66}{a_z (b_yc_z-b_zc_y)-a_x\ (b_xc_y-b_yc_x)}},\\ &\quad\quad\quad\quad\quad\quad{\color{#44AAFF}{a_x (b_zc_x-b_xc_z)-a_y(b_yc_z-b_zc_y)}}\big)
+\end{flalign}
+$$
+
+Below, you can observe that the first component of $\mathbf{b}(\mathbf{a}\cdot\mathbf{c})-\mathbf{c}(\mathbf{a}\cdot\mathbf{b})$ (the one highlighted in red) is equivalent to the first component of $\mathbf{a}\times(\mathbf{b}\times\mathbf{c})$
+
+$(\mathbf{b}(\mathbf{a}\cdot\mathbf{c})-\mathbf{c}(\mathbf{a}\cdot\mathbf{b}))_x = b_x (a_xc_x+a_yc_y+a_zc_z)-c_x (a_xb_x+a_yb_y+a_zb_z)=$
+
+$a_xb_xc_x+a_yb_xc_y+a_zb_xc_z-a_xb_xc_x-a_yb_yc_x-a_zb_zc_x=$
+
+${\color{#FF6666}{a_y (b_xc_y-b_yc_x)-a_z (b_zc_x-b_xc_z)}}$
+
+The same applies to the other two components.
+```
+
+<br>
+
+### Vectors in DirectX [WIP]
 
 <br>
