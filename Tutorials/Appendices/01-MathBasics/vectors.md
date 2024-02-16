@@ -490,6 +490,6 @@ The same applies to the other two components.
 
 <br>
 
-### Vectors in DirectX [WIP]
+## Vectors in DirectX [WIP]
 
 <br>
