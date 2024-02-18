@@ -944,11 +944,8 @@ From equation <span class="math notranslate nohighlight">\((1)\)</span> we can a
 <section id="c">
 <h3>C++<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
 <p>Using vectors in C++ is not as straightforward as in HLSL because there are no built-in types available. However, the <strong>XMVECTOR</strong> type, defined in the <em>DirectXMath.h</em> header file provided by the DirectX math API (DirectXMath), allows us to create variables that map to 128-bit CPU registers.</p>
-<div class="literal-block-wrapper docutils container" id="vectors-xmvector-code">
-<div class="code-block-caption"><span class="caption-number">Listing 51 </span><span class="caption-text">DirectXMath.h</span><a class="headerlink" href="#vectors-xmvector-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kr">__m128</span><span class="w"> </span><span class="n">XMVECTOR</span><span class="p">;</span>
 </pre></div>
-</div>
 </div>
 <p>In other words, a <strong>__m128</strong> variable is backed by a memory region of 128 bits that the compiler can use as a source\destination to load\store data in\from XMM[0-7] registers, which are used in SIMD instructions. SIMD (single instruction multiple data) allows us to perform more operations with a single instruction.</p>
 <p>To better understand how SIMD works, it’s useful to consider a practical example. <br>
@@ -1016,8 +1013,6 @@ First, it is worth noting that in DirectX, using vectors with four components is
 </pre></div>
 </div>
 <p>While these predefined types eliminate alignment concerns, they cannot be directly used in SIMD operations since they don’t map to XMM registers; they are simple C++ structure definitions. Therefore, for vector calculations, ensure conversion to <strong>XMVECTOR</strong> before proceeding. DirectXMath conveniently offers helper functions to facilitate the conversion from <strong>XMFLOAT</strong> to <strong>XMVECTOR</strong>,</p>
-<div class="literal-block-wrapper docutils container" id="xmfloats-xmvector-code">
-<div class="code-block-caption"><span class="caption-number">Listing 53 </span><span class="caption-text">DirectXMath.h</span><a class="headerlink" href="#xmfloats-xmvector-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">XMVECTOR</span><span class="w"> </span><span class="nf">XMLoadFloat2</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT2</span><span class="o">*</span><span class="w"> </span><span class="n">pSource</span><span class="p">);</span>
 <span class="w"> </span>
 <span class="n">XMVECTOR</span><span class="w"> </span><span class="nf">XMLoadFloat3</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT3</span><span class="o">*</span><span class="w"> </span><span class="n">pSource</span><span class="p">);</span>
@@ -1025,17 +1020,13 @@ First, it is worth noting that in DirectX, using vectors with four components is
 <span class="n">XMVECTOR</span><span class="w"> </span><span class="nf">XMLoadFloat4</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT4</span><span class="o">*</span><span class="w"> </span><span class="n">pSource</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
 <p>and back from <strong>XMVECTOR</strong> to <strong>XMFLOAT</strong> (similar functions are defined for <strong>XMINT</strong> as well).</p>
-<div class="literal-block-wrapper docutils container" id="xmvector-xmfloats-code">
-<div class="code-block-caption"><span class="caption-number">Listing 54 </span><span class="caption-text">DirectXMath.h</span><a class="headerlink" href="#xmvector-xmfloats-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">XMStoreFloat2</span><span class="p">(</span><span class="n">XMFLOAT2</span><span class="o">*</span><span class="w"> </span><span class="n">pDestination</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w">  </span><span class="n">V</span><span class="p">);</span>
 <span class="w"> </span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">XMStoreFloat3</span><span class="p">(</span><span class="n">XMFLOAT3</span><span class="o">*</span><span class="w"> </span><span class="n">pDestination</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w">  </span><span class="n">V</span><span class="p">);</span>
 <span class="w"> </span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">XMStoreFloat4</span><span class="p">(</span><span class="n">XMFLOAT4</span><span class="o">*</span><span class="w"> </span><span class="n">pDestination</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w">  </span><span class="n">V</span><span class="p">);</span>
 </pre></div>
-</div>
 </div>
 <p>When declaring function parameters that accept one or more <strong>XMVECTOR</strong>s, follow these guidelines:</p>
 <ul class="simple">
@@ -1052,8 +1043,6 @@ First, it is worth noting that in DirectX, using vectors with four components is
 </div>
 <p>As mentioned earlier, <strong>XMVECTOR</strong> is merely an alias for <strong>__m128</strong>, which corresponds to a type that maps to XMM registers. Consequently, using <strong>XMVECTOR</strong>s to operate on vectors without using SIMD instructions is not recommended. Therefore, DirectXMath provides various helper functions utilizing SIMD instructions for both initializing and working with <strong>XMVECTOR</strong>s. We’ll explore most of these functions in the upcoming tutorials.</p>
 <p>For declaring vectorized constants (<code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">**XMVECTOR</span></code>), use <strong>XMVECTORF32</strong> for floating-point values and <strong>XMVECTORU32</strong> (or <strong>XMVECTORI32</strong>) for integer values. These types, defined as the union of a <strong>XMVECTOR</strong> and an array, enable convenient initialization syntax and let the compiler use SIMD instructions for other operations.</p>
-<div class="literal-block-wrapper docutils container" id="xmvectorf32-code">
-<div class="code-block-caption"><span class="caption-number">Listing 55 </span><span class="caption-text">DirectXMath.h</span><a class="headerlink" href="#xmvectorf32-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">__declspec</span><span class="p">(</span><span class="n">align</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">XMVECTORF32</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="k">union</span>
@@ -1069,7 +1058,6 @@ First, it is worth noting that in DirectX, using vectors with four components is
 <span class="w"> </span>
 <span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">XMVECTORF32</span><span class="w"> </span><span class="n">vZero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">};</span>
 </pre></div>
-</div>
 </div>
 <br>
 <div class="admonition-support-this-project admonition">
