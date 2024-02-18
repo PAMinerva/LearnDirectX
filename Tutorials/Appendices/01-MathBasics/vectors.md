@@ -173,16 +173,26 @@ Geometrically, this is equivalent to scaling a vector, which is why real numbers
 
 Here are some of the properties of vector addition and scalar multiplication:
 
-|                         |                                                                                                                      |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Commutative (vector)    | $\mathbf{u}+\mathbf{v}=\mathbf{v}+\mathbf{u}$                                                                        |
-| Associative (vector)    | $(\mathbf{u}+\mathbf{v})+\mathbf{w}=\mathbf{u}+(\mathbf{v}+\mathbf{w})$                                              |
-| Additive Identity       | $\mathbf{v}+\mathbf{0}=\mathbf{v}$  (where $\mathbf{0}$ is the zero (or null) vector, whose components are all zero) |
-| Distributive (vector)   | $k(\mathbf{u}+\mathbf{v})=k\mathbf{u}+k\mathbf{v}$                                                                   |
-| Distributive (scalar)   | $(k+t)\mathbf{v}=k\mathbf{v}+t\mathbf{v}$                                                                            |
-| Associative (scalar)    | $k(t\mathbf{v})=(kt)\mathbf{v}$                                                                                      |
-| Multiplicative Identity | $1\mathbf{v}=\mathbf{v}$   (where $k=1$ is a scalar)                                                                 |
+```{list-table}
+:header-rows: 1
 
+* - Name
+  - Property
+* - Commutative (vector)
+  - $\mathbf{u}+\mathbf{v}=\mathbf{v}+\mathbf{u}$
+* - Associative (vector)
+  - $(\mathbf{u}+\mathbf{v})+\mathbf{w}=\mathbf{u}+(\mathbf{v}+\mathbf{w})$
+* - Additive Identity
+  - $\mathbf{v}+\mathbf{0}=\mathbf{v}$  (where $\mathbf{0}$ is the zero (or null) vector, whose components are all zero)
+* - Distributive (vector)
+  - $k(\mathbf{u}+\mathbf{v})=k\mathbf{u}+k\mathbf{v}$
+* - Distributive (scalar)
+  - $(k+t)\mathbf{v}=k\mathbf{v}+t\mathbf{v}$
+* - Associative (scalar)
+  - $k(t\mathbf{v})=(kt)\mathbf{v}$
+* - Multiplicative Identity
+  - $1\mathbf{v}=\mathbf{v}$   (where $k=1$ is a scalar)
+```
 
 ##### Length of a vector
 
