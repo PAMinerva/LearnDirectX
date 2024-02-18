@@ -556,8 +556,6 @@ float4 w = float4(vec1, 5.0);   // w = (1.0f, 2.0f, 3.0f, 5.0f)
 Using vectors in C++ is not as straightforward as in HLSL because there are no built-in types available. However, the **XMVECTOR** type, defined in the *DirectXMath.h* header file provided by the DirectX math API (DirectXMath), allows us to create variables that map to 128-bit CPU registers.
 
 ```{code-block} cpp
-:caption: DirectXMath.h
-:name: vectors-xmvector-code
 
 typedef __m128 XMVECTOR;
 ```
@@ -638,8 +636,6 @@ struct XMINT4
 While these predefined types eliminate alignment concerns, they cannot be directly used in SIMD operations since they don't map to XMM registers; they are simple C++ structure definitions. Therefore, for vector calculations, ensure conversion to **XMVECTOR** before proceeding. DirectXMath conveniently offers helper functions to facilitate the conversion from **XMFLOAT** to **XMVECTOR**,
 
 ```{code-block} cpp
-:caption: DirectXMath.h
-:name: xmfloats-xmvector-code
 
 XMVECTOR XMLoadFloat2(const XMFLOAT2* pSource);
  
@@ -651,8 +647,6 @@ XMVECTOR XMLoadFloat4(const XMFLOAT4* pSource);
 and back from **XMVECTOR** to **XMFLOAT** (similar functions are defined for **XMINT** as well).
 
 ```{code-block} cpp
-:caption: DirectXMath.h
-:name: xmvector-xmfloats-code
 
 void XMStoreFloat2(XMFLOAT2* pDestination, FXMVECTOR  V);
  
@@ -680,8 +674,6 @@ As mentioned earlier, **XMVECTOR** is merely an alias for **__m128**, which corr
 For declaring vectorized constants (`const **XMVECTOR`), use **XMVECTORF32** for floating-point values and **XMVECTORU32** (or **XMVECTORI32**) for integer values. These types, defined as the union of a **XMVECTOR** and an array, enable convenient initialization syntax and let the compiler use SIMD instructions for other operations.
 
 ```{code-block} cpp
-:caption: DirectXMath.h
-:name: XMVECTORF32-code
 
 __declspec(align(16)) struct XMVECTORF32
 {
