@@ -1,5 +1,9 @@
 # Vectors
 
+Before delving into the core presentation on vectors, it is crucial to establish a foundational understanding of coordinate systems.
+
+<br>
+
 ## Coordinate systems
 
 A coordinate system, often referred to as a reference frame (or simply as a frame or system for brevity), is a fundamental concept in mathematics and geometry. It provides a way to uniquely determine a position in space by using one or more numbers called coordinates.
