@@ -221,11 +221,18 @@ In essence, the dot product of two vectors is obtained by summing the products o
 
 Below are some of the properties of the dot product:
 
-|                           |                                                                                                                                         |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Commutative               | $\mathbf{u}\cdot\mathbf{v}=\mathbf{v}\cdot\mathbf{u}$                                                                                   |
-| Distributive              | $(\mathbf{u}+\mathbf{v})\cdot\mathbf{w}=\mathbf{w}\cdot(\mathbf{u}+\mathbf{v})=(\mathbf{w}\cdot\mathbf{u})+(\mathbf{w}\cdot\mathbf{v})$ |
-| Square of a vector length | $\|\mathbf{v}\| ^2=v_x^2+v_y^2+v_z^2=\mathbf{v}\cdot\mathbf{v}$                                                                         |
+```{list-table}
+:header-rows: 1
+
+* - Name
+  - Property
+* - Commutative
+  - $\mathbf{u}\cdot\mathbf{v}=\mathbf{v}\cdot\mathbf{u}$
+* - Distributive
+  - $(\mathbf{u}+\mathbf{v})\cdot\mathbf{w}=\mathbf{w}\cdot(\mathbf{u}+\mathbf{v})=(\mathbf{w}\cdot\mathbf{u})+(\mathbf{w}\cdot\mathbf{v})$
+* - Square of a vector length
+  - $\|\mathbf{v}\| ^2=v_x^2+v_y^2+v_z^2=\mathbf{v}\cdot\mathbf{v}$
+```
 
 <br>
 
