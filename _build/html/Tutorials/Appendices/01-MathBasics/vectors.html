@@ -442,7 +442,11 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-in-directx-wip">Vectors in DirectX [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-in-directx">Vectors in DirectX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -707,16 +711,18 @@ document.write(`
 <img alt="../../../_images/law-cosines.png" src="../../../_images/law-cosines.png" />
 </figure>
 <p>We have that</p>
-<p><span class="math notranslate nohighlight">\(\begin{align*}&amp;\mathbf{c}=\mathbf{a}-\mathbf{b} &amp;&amp; \text{(subtration of two vectors)}\end{align*}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{align*}&amp;\mathbf{c}=\mathbf{a}-\mathbf{b} &amp;&amp; \text{(subtration of two vectors)}\end{align*}\]</div>
 <p>Squaring both sides and simplifying</p>
-<p><span class="math notranslate nohighlight">\(|\mathbf{c}|^2=|\mathbf{a}-\mathbf{b}|^2\)</span></p>
-<p><span class="math notranslate nohighlight">\(
+<div class="math notranslate nohighlight">
+\[\begin{split}
 \begin{align*}
+&amp;|\mathbf{c}|^2=|\mathbf{a}-\mathbf{b}|^2 \\
 &amp;|\mathbf{c}|^2=(\mathbf{a}-\mathbf{b})\cdot (\mathbf{a}-\mathbf{b}) &amp;&amp; \text{(square of a vector length)} \\
 &amp;|\mathbf{c}|^2=|\mathbf{a}|^2+|\mathbf{b}|^2-2\ \mathbf{a}\cdot\mathbf{b} &amp;&amp; \text{(distributive law of the dot product)} \\
 &amp;|\mathbf{c}|^2=|\mathbf{a}|^2+|\mathbf{b}|^2-2|\mathbf{a}||\mathbf{b} | \cos{\theta} &amp;&amp; \text{(from equation \eqref{eq:Avectors1})}
 \end{align*}
-\)</span></p>
+\end{split}\]</div>
 </div>
 </section>
 <section id="orthogonal-projection">
@@ -896,9 +902,165 @@ From equation <span class="math notranslate nohighlight">\((1)\)</span> we can a
 </section>
 </section>
 </section>
-<section id="vectors-in-directx-wip">
-<h2>Vectors in DirectX [WIP]<a class="headerlink" href="#vectors-in-directx-wip" title="Link to this heading">#</a></h2>
+<section id="vectors-in-directx">
+<h2>Vectors in DirectX<a class="headerlink" href="#vectors-in-directx" title="Link to this heading">#</a></h2>
+<p>Vectors play a crucial role in computer graphics, making them a fundamental tool to use in DirectX applications as well. They are widely used in both C++ and in HLSL.</p>
+<section id="hlsl">
+<h3>HLSL<a class="headerlink" href="#hlsl" title="Link to this heading">#</a></h3>
+<p>In HLSL, vectors of two, three and four floating-point components are represented by the built-in types <strong>float2</strong>, <strong>float3</strong> and <strong>float4</strong>, respectively. For vectors of signed integers, we use <strong>int2</strong>, <strong>int3</strong> and <strong>int4</strong> ─ the unsigned version can be specified by replacing the prefix <strong>i</strong> with <strong>u</strong>. Alternatively, we can use the keyword <strong>vector</strong> to declare vectors by using a template syntax to specify number and type of the components.</p>
+<p>The shader model defines 128-bit shader core registers to hold both integer and floating-point vectors to perform SIMD operations (more on this shortly).</p>
+<p>The components of a vector can be accessed using the subscript operator, [ ], to provide array indexing. Alternatively, one of the following naming sets can be used:</p>
+<ul class="simple">
+<li><p>The position set:  <span class="math notranslate nohighlight">\(\ x,y,z,w\)</span><br></p></li>
+<li><p>The color set: <span class="math notranslate nohighlight">\(\ r,g,b,a\)</span></p></li>
+</ul>
+<p>Specifying one or more vector components is called swizzling. For example:</p>
 <br>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="kt">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iVector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                             </span><span class="c1">// int iVector = 1;</span>
+<span class="kt">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dVector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">};</span><span class="w">      </span><span class="c1">// float4 dVector = { 0.2, 0.3, 0.4, 0.5 };  </span>
+<span class="w">  </span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w">         </span><span class="c1">// f0 = 1.0f</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="n">g</span><span class="p">;</span><span class="w">         </span><span class="c1">// f1 = 2.0f</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w">        </span><span class="c1">// f2 = 3.0f</span>
+<span class="n">u</span><span class="p">.</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">4.0f</span><span class="p">;</span><span class="w">             </span><span class="c1">// u = (1.0f, 2.0f, 3.0f, 4.0f)</span>
+<span class="w"> </span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="kt">float3</span><span class="w"> </span><span class="n">vec1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">xyz</span><span class="p">;</span><span class="w">            </span><span class="c1">// vec1 = (1.0f, 2.0f, 3.0f)</span>
+<span class="kt">float2</span><span class="w"> </span><span class="n">vec2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">rb</span><span class="p">;</span><span class="w">             </span><span class="c1">// vec2 = (1.0f, 3.0f)</span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">vec3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">zzxy</span><span class="p">;</span><span class="w">           </span><span class="c1">// vec3 = (3.0f, 3.0f, 1.0f, 2.0f)</span>
+<span class="n">vec3</span><span class="p">.</span><span class="n">wxyz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec3</span><span class="p">;</span><span class="w">               </span><span class="c1">// vec3 = (3.0f, 1.0f, 2.0f, 3.0f)</span>
+<span class="n">vec3</span><span class="p">.</span><span class="n">yw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec1</span><span class="p">.</span><span class="n">zz</span><span class="p">;</span><span class="w">              </span><span class="c1">// vec3 = (3.0f, 3.0f, 2.0f, 3.0f)</span>
+<span class="w"> </span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">float4</span><span class="p">(</span><span class="n">vec1</span><span class="p">,</span><span class="w"> </span><span class="mf">5.0</span><span class="p">);</span><span class="w">   </span><span class="c1">// w = (1.0f, 2.0f, 3.0f, 5.0f)</span>
+</pre></div>
+</div>
+</section>
+<section id="c">
+<h3>C++<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
+<p>Using vectors in C++ is not as straightforward as in HLSL because there are no built-in types available. However, the <strong>XMVECTOR</strong> type, defined in the <em>DirectXMath.h</em> header file provided by the DirectX math API (DirectXMath), allows us to create variables that map to 128-bit CPU registers.</p>
+<div class="literal-block-wrapper docutils container" id="vectors-xmvector-code">
+<div class="code-block-caption"><span class="caption-text">DirectXMath.h</span><a class="headerlink" href="#vectors-xmvector-code" title="Link to this code">#</a></div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kr">__m128</span><span class="w"> </span><span class="n">XMVECTOR</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<p>That is, a variable of type <strong>__m128</strong> is backed by a memory region of 128 bits that the compiler can use as a source\destination to load\store data in\from XMM[0-7] registers, which are used in SIMD instructions. SIMD (single instruction multiple data) allows us to perform more operations with a single instruction. To better understand how SIMD works, it’s useful to consider a practical example. First, it is worth noting that in DirectX it is common to use vectors of four components, where each of them is a 4-byte floating point or integer value.</p>
+<blockquote>
+<div><p>You may wonder why we have vectors of four components if we mostly work in 3D space (where only 3 coordinates are needed). Well, as we will see in a later tutorial, at some point we will introduce an extra coordinate to distinguish between free vectors and bound vectors. That is, we will work in a special homogeneous coordinate system to use both points and vectors.</p>
+</div></blockquote>
+<p>Now consider the following sum of vectors, which means four sums of the corresponding components.</p>
+<br>
+<p><span class="math notranslate nohighlight">\(\mathbf{u}+\mathbf{v}=(u_x+v_x,\ u_y+v_y,\ u_z+v_z,\ u_w+v_w)\)</span></p>
+<br>
+<p>With SIMD we can perform the four sums in a single instruction. In general, the math API of DirectX, called DirectXMath, takes advantage of SIMD to let the CPU perform four operations (OPs) in a single instruction. That is, DirectXMath can use SIMD instructions to perform the same operation on the corresponding components of a couple of <strong>XMVECTOR</strong>s used as operands\sources, as shown in the following illustration.</p>
+<br>
+<p><img alt="Image" src="Tutorials/Appendices/01-MathBasics/images/A/01/SIMD.jpg" /></p>
+<br>
+<p>The only problem is that <strong>__m128</strong> variables need to be aligned on 16-byte boundaries in memory. That’s not really an issue if you declare a global or local variable of this type because the compiler will automatically align them. Problems arise when you use a <strong>XMVECTOR</strong> (which is an alias for <strong>__m128</strong>) as a member of a structure or a class, where the C++ packing rules can misalign it. For this purpose, DirectXMath provides the following types, which allow us to use integer or floating-point vectors as class members.</p>
+<br>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 32-bit signed floating-point components</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">XMFLOAT2</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">XMFLOAT3</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">XMFLOAT4</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<br>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 32-bit signed integer components</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">XMINTT2</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">XMINT3</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">XMINT4</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">w</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<br>
+<p>These types can be used without worrying about alignment issues. However, we can’t take advantage of SIMD if you use them, as they don’t map to XMM registers. So, you must remember to convert to <strong>XMVECTOR</strong> before performing any calculations on vectors. DirectXMath also provides some helper functions to convert from <strong>XMFLOAT</strong> to <strong>XMVECTOR</strong>.</p>
+<br>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">XMVECTOR</span><span class="w"> </span><span class="nf">XMLoadFloat2</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT2</span><span class="o">*</span><span class="w"> </span><span class="n">pSource</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="n">XMVECTOR</span><span class="w"> </span><span class="nf">XMLoadFloat3</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT3</span><span class="o">*</span><span class="w"> </span><span class="n">pSource</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="n">XMVECTOR</span><span class="w"> </span><span class="nf">XMLoadFloat4</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT4</span><span class="o">*</span><span class="w"> </span><span class="n">pSource</span><span class="p">);</span>
+</pre></div>
+</div>
+<br>
+<p>And back from <strong>XMVECTOR</strong> to <strong>XMFLOAT</strong> (similar functions are defined for <strong>XMINT</strong> as well).</p>
+<br>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">XMStoreFloat2</span><span class="p">(</span><span class="n">XMFLOAT2</span><span class="o">*</span><span class="w"> </span><span class="n">pDestination</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w">  </span><span class="n">V</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">XMStoreFloat3</span><span class="p">(</span><span class="n">XMFLOAT3</span><span class="o">*</span><span class="w"> </span><span class="n">pDestination</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w">  </span><span class="n">V</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">XMStoreFloat4</span><span class="p">(</span><span class="n">XMFLOAT4</span><span class="o">*</span><span class="w"> </span><span class="n">pDestination</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w">  </span><span class="n">V</span><span class="p">);</span>
+</pre></div>
+</div>
+<br>
+<p>If a function takes one or more <strong>XMVECTOR</strong>s as parameters then:</p>
+<ul class="simple">
+<li><p><strong>FXMVECTOR</strong> must be used for the first three parameters.</p></li>
+<li><p><strong>GXMVECTOR</strong> must be used for the fourth parameter.</p></li>
+<li><p><strong>HXMVECTOR</strong> must be used for the remaining ones.</p></li>
+</ul>
+<br>
+<p>This allows to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections you can refer to the official documentation (see [3] and [4] in the reference list at the end of the tutorial).</p>
+<p>As stated above, <strong>XMVECTOR</strong> is just an alias for <strong>__m128</strong>, which identify a type mapped to XMM registers. This means we should not use <strong>XMVECTOR</strong> to operate with vectors without using SIMD instructions. For this reason, DirectXMath provides many helper functions that take advantage of SIMD to initialize <strong>XMVECTOR</strong>s and operate with them. We will examine most of these functions in the upcoming tutorials.</p>
+<p>If you want to declare a vectorized-constant (const <strong>XMVECTOR</strong>) then it is recommended to use <strong>XMVECTORF32</strong> for floating-point values, and <strong>XMVECTORU32</strong> (or <strong>XMVECTORI32</strong>) for integer values. That’s because these types are defined as the union of a <strong>XMVECTOR</strong> and an array. This allows us to use the initialization syntax, and let the compiler use SIMD instructions for other operations.</p>
+<br>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">__declspec</span><span class="p">(</span><span class="n">align</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">XMVECTORF32</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">union</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">f</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="w">        </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="n">XMVECTOR</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">operator</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">};</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">XMVECTORF32</span><span class="w"> </span><span class="n">vZero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+<p>[WIP]</p>
+<br>
+</section>
 </section>
 </section>
 
@@ -986,7 +1148,11 @@ From equation <span class="math notranslate nohighlight">\((1)\)</span> we can a
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-in-directx-wip">Vectors in DirectX [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectors-in-directx">Vectors in DirectX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
