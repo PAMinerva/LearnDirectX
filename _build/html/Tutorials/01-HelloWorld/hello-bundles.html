@@ -438,7 +438,7 @@ document.write(`
 </figure>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
-<p>The sample we will review in this tutorial (<a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloBundles</a>) is not much different from the sample examined in <a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>, as they both use the same vertex buffer, shaders and commands to render a triangle on the screen (I only changed the background color of the window’s client area to visually distinguish between them). The only main difference is the way we record some commands in the command list. In the implementation of the <strong>D3D12HelloBundles</strong> sample, we will make use of a bundle. Bundles allow the GPU to speed up the execution of groups of commands in some specific cases. The online documentation for bundles is clear, so the next theoretical sections of this tutorial will simply summarize information already accessible on the Microsoft website (see <span id="id1">[<a class="reference internal" href="#id17" title="Microsoft. Direct3d 12 graphics. https://learn.microsoft.com/en-us/windows/win32/direct3d12/direct3d-12-graphics.">Mic</a>]</span>).</p>
+<p>The sample we will review in this tutorial (<a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloBundles</a>) is not much different from the sample examined in <a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>, as they both use the same vertex buffer, shaders and commands to render a triangle on the screen (I only changed the background color of the window’s client area to visually distinguish between them). The only main difference is the way we record some commands in the command list. In the implementation of the <strong>D3D12HelloBundles</strong> sample, we will make use of a bundle. Bundles allow the GPU to speed up the execution of groups of commands in some specific cases. The online documentation for bundles is clear, so the next theoretical sections of this tutorial will simply summarize information already accessible on the Microsoft website (see <span id="id1">[<a class="reference internal" href="#id19" title="Microsoft. Direct3d 12 graphics. https://learn.microsoft.com/en-us/windows/win32/direct3d12/direct3d-12-graphics.">Mic</a>]</span>).</p>
 <br>
 </section>
 <section id="bundles">
@@ -495,8 +495,8 @@ If any of these APIs are called on a bundle, the runtime will drop the call. The
 <section id="d3d12hellobundles-code-review">
 <h2>D3D12HelloBundles: code review<a class="headerlink" href="#d3d12hellobundles-code-review" title="Link to this heading">#</a></h2>
 <p>In previous tutorials, we used <strong>PopulateCommandList</strong> as the only function for recording commands in the command list. Let’s revisit this function again by showing its implementation from the previous tutorial (<a class="reference internal" href="hello-triangle.html"><span class="std std-doc">Hello Triangle</span></a>).</p>
-<div class="literal-block-wrapper docutils container" id="id22">
-<div class="code-block-caption"><span class="caption-number">Listing 28 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#id22" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id24">
+<div class="code-block-caption"><span class="caption-number">Listing 28 </span><span class="caption-text">HelloTriangle/D3D12HelloTriangle.cpp</span><a class="headerlink" href="#id24" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">D3D12HelloTriangle::PopulateCommandList</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="c1">// Command list allocators can only be reset when the associated </span>
@@ -712,7 +712,7 @@ In the application class, we declare a bundle (as a <strong>ID3D12GraphicsComman
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id2">
 <div role="list" class="citation-list">
-<div class="citation" id="id17" role="doc-biblioentry">
+<div class="citation" id="id19" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Mic</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. Direct3d 12 graphics. <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/direct3d12/direct3d-12-graphics">https://learn.microsoft.com/en-us/windows/win32/direct3d12/direct3d-12-graphics</a>.</p>
 </div>
