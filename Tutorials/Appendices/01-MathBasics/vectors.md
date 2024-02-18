@@ -352,11 +352,7 @@ $$\mathbf{v_1}=\mathbf{w_1}+\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})$$
 
 So, we have that
 
-<br>
-
 $$\mathbf{w_1}=\mathbf{v_1}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})$$
-
-<br>
 
 where $\ \text{proj}_{\mathbf{w_0}}(\mathbf{v_1})=\displaystyle\frac{\mathbf{v_1}\cdot\mathbf{w_0}}{|\mathbf{w_0}|^2}\mathbf{w_0}$
 
@@ -526,8 +522,6 @@ The components of a vector can be accessed using the subscript operator, [ ], to
 
 Specifying one or more vector components is called swizzling. For example:
 
-<br>
-
 ```{code-block} hlsl
 
 vector<int, 1> iVector = 1;                             // int iVector = 1;
@@ -582,8 +576,6 @@ SIMD allows the CPU to execute four operations (denoted as OP in the image below
 However, **__m128** variables require 16-byte alignment in memory. This isn't an issue for global or local variables of this type, as the compiler automatically aligns them. Problems arise when using an **XMVECTOR** (which is an alias for **__m128**) as a member of a structure or class, where C++ packing rules might cause misalignment. To address this, DirectXMath provides specific types for including integer or floating-point vectors as class members without alignment concerns.
 
 ```{code-block} cpp
-:caption: DirectXMath.h
-:name: vectors-xmfloats-code
 
 // 32-bit signed floating-point components
 struct XMFLOAT2
@@ -609,9 +601,8 @@ struct XMFLOAT4
     float w;
 };
 ```
-<br>
 
-```cpp
+```{code-block} cpp
 // 32-bit signed integer components
 struct XMINTT2
 {
@@ -700,8 +691,6 @@ __declspec(align(16)) struct XMVECTORF32
  
 static const XMVECTORF32 vZero = { 0.0f, 0.0f, 0.0f, 0.0f };
 ```
-
-[WIP]
 
 <br>
 
