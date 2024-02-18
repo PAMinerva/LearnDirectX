@@ -312,12 +312,12 @@ $$\text{proj}_\mathbf{n}(\mathbf{v})=\left(\mathbf{v}\cdot\displaystyle\frac{\ma
 Thanks to the concept of orthogonal projection, we can express any bound vector $\mathbf{v}$ as the sum of its projections onto the standard basis vectors as follows:
 
 $$
-\begin{flalign}
+\begin{align*}
 \mathbf{v}&=(\mathbf{v}\cdot\mathbf{i})\mathbf{i}+(\mathbf{v}\cdot\mathbf{j})\mathbf{j}+(\mathbf{v}\cdot\mathbf{k})\mathbf{k} \\
 &=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}  && \text{(more on this shortly)} \\
 &=x(1, 0, 0)+y(0, 1, 0)+z(0, 0, 1) \\
 &=(x, y, z)
-\end{flalign}
+\end{align*}
 $$
 
 Indeed, we have
