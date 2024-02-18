@@ -544,31 +544,30 @@ Using vectors in C++ is not as straightforward as in HLSL because there are no b
 typedef __m128 XMVECTOR;
 ```
 
-That is, a variable of type **__m128** is backed by a memory region of 128 bits that the compiler can use as a source\destination to load\store data in\from XMM[0-7] registers, which are used in SIMD instructions. SIMD (single instruction multiple data) allows us to perform more operations with a single instruction. To better understand how SIMD works, it’s useful to consider a practical example. First, it is worth noting that in DirectX it is common to use vectors of four components, where each of them is a 4-byte floating point or integer value. 
+In other words, a **__m128** variable is backed by a memory region of 128 bits that the compiler can use as a source\destination to load\store data in\from XMM[0-7] registers, which are used in SIMD instructions. SIMD (single instruction multiple data) allows us to perform more operations with a single instruction. 
 
->You may wonder why we have vectors of four components if we mostly work in 3D space (where only 3 coordinates are needed). Well, as we will see in a later tutorial, at some point we will introduce an extra coordinate to distinguish between free vectors and bound vectors. That is, we will work in a special homogeneous coordinate system to use both points and vectors.
+To better understand how SIMD works, it's useful to consider a practical example. <br>
+First, it is worth noting that in DirectX, using vectors with four components is quite common, where each component consists of 4-byte to represent a floating-point or integer value.
 
-Now consider the following sum of vectors, which means four sums of the corresponding components.
+```{note}
+You may wonder why DirectX provides four-component vectors if we primarily operate in 3D space (which typically requires only 3 coordinates). As we'll explore in a subsequent tutorial, introducing an additional coordinate proves useful to differentiate between free and bound vectors. In other words, we'll operate in a homogeneous coordinate system to enable us to work with both points and vectors using a unified representation. But don't worry, it is simpler than it may seem.
+```
 
-<br>
+Now, consider the following sum of vectors, consisting of four separate additions for their corresponding components.
 
-$\mathbf{u}+\mathbf{v}=(u_x+v_x,\ u_y+v_y,\ u_z+v_z,\ u_w+v_w)$
+$$\mathbf{u}+\mathbf{v}=(u_x+v_x,\ u_y+v_y,\ u_z+v_z,\ u_w+v_w)$$
 
-<br>
+SIMD allows the CPU to execute four operations (denoted as OP in the image below) simultaneously in a single instruction. DirectXMath can leverage SIMD instructions (if supported by the CPU) to perform the same operation on the corresponding components of two **XMVECTOR** operands, as illustrated below.
 
-With SIMD we can perform the four sums in a single instruction. In general, the math API of DirectX, called DirectXMath, takes advantage of SIMD to let the CPU perform four operations (OPs) in a single instruction. That is, DirectXMath can use SIMD instructions to perform the same operation on the corresponding components of a couple of **XMVECTOR**s used as operands\sources, as shown in the following illustration.
+```{figure} images/01/SIMD.jpg
+```
 
-<br>
+However, **__m128** variables require 16-byte alignment in memory. This isn't an issue for global or local variables of this type, as the compiler automatically aligns them. Problems arise when using an **XMVECTOR** (which is an alias for **__m128**) as a member of a structure or class, where C++ packing rules might cause misalignment. To address this, DirectXMath provides specific types for including integer or floating-point vectors as class members without alignment concerns.
 
-![Image](images/A/01/SIMD.jpg)
+```{code-block} cpp
+:caption: DirectXMath.h
+:name: vectors-xmfloats-code
 
-<br>
-
-The only problem is that **__m128** variables need to be aligned on 16-byte boundaries in memory. That’s not really an issue if you declare a global or local variable of this type because the compiler will automatically align them. Problems arise when you use a **XMVECTOR** (which is an alias for **__m128**) as a member of a structure or a class, where the C++ packing rules can misalign it. For this purpose, DirectXMath provides the following types, which allow us to use integer or floating-point vectors as class members.
-
-<br>
-
-```cpp
 // 32-bit signed floating-point components
 struct XMFLOAT2
 {
@@ -620,51 +619,55 @@ struct XMINT4
     int w;
 };
 ```
-<br>
 
-These types can be used without worrying about alignment issues. However, we can’t take advantage of SIMD if you use them, as they don’t map to XMM registers. So, you must remember to convert to **XMVECTOR** before performing any calculations on vectors. DirectXMath also provides some helper functions to convert from **XMFLOAT** to **XMVECTOR**.
+While these predefined types eliminate alignment concerns, they cannot be directly used in SIMD operations since they don't map to XMM registers; they are simple C++ structure definitions. Therefore, for vector calculations, ensure conversion to **XMVECTOR** before proceeding. DirectXMath conveniently offers helper functions to facilitate the conversion from **XMFLOAT** to **XMVECTOR**,
 
-<br>
+```{code-block} cpp
+:caption: DirectXMath.h
+:name: xmfloats-xmvector-code
 
-```cpp
 XMVECTOR XMLoadFloat2(const XMFLOAT2* pSource);
  
 XMVECTOR XMLoadFloat3(const XMFLOAT3* pSource);
  
 XMVECTOR XMLoadFloat4(const XMFLOAT4* pSource);
 ```
-<br>
 
-And back from **XMVECTOR** to **XMFLOAT** (similar functions are defined for **XMINT** as well).
+and back from **XMVECTOR** to **XMFLOAT** (similar functions are defined for **XMINT** as well).
 
-<br>
+```{code-block} cpp
+:caption: DirectXMath.h
+:name: xmvector-xmfloats-code
 
-```cpp
 void XMStoreFloat2(XMFLOAT2* pDestination, FXMVECTOR  V);
  
 void XMStoreFloat3(XMFLOAT3* pDestination, FXMVECTOR  V);
  
 void XMStoreFloat4(XMFLOAT4* pDestination, FXMVECTOR  V);
 ```
-<br>
 
-If a function takes one or more **XMVECTOR**s as parameters then:
+When declaring function parameters that accept one or more **XMVECTOR**s, follow these guidelines:
 
-- **FXMVECTOR** must be used for the first three parameters.
-- **GXMVECTOR** must be used for the fourth parameter.
-- **HXMVECTOR** must be used for the remaining ones.
+- Use **FXMVECTOR** for declaring the first three parameters.
+- Use **GXMVECTOR** for declaring the 4-th parameter.
+- Use **HXMVECTOR** for declaring the 5-th and 6-th parameters.
+- Use **CXMVECTOR** for declaring the remaining parameters.
+- Use **XMVECTOR** for declaring output parameters.
+  
+```{seealso}
+If the function is a C++ class constructor, then just use **FXMVECTOR** for the first three parameters and **CXMVECTOR** for the remaining ones.
 
-<br>
+**FXMVECTOR**, **GXMVECTOR**, **HXMVECTOR** and **CXMVECTOR** are all aliases to the **XMVECTOR**. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections you can refer to the official documentation (see {cite}`DirectXMathLibraryInternals` and {cite}`vectorcallCallingConvention` in the reference list at the end of the tutorial). 
+```
 
-This allows to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections you can refer to the official documentation (see [3] and [4] in the reference list at the end of the tutorial). 
+As mentioned earlier, **XMVECTOR** is merely an alias for **__m128**, which corresponds to a type that maps to XMM registers. Consequently, using **XMVECTOR**s to operate on vectors without using SIMD instructions is not recommended. Therefore, DirectXMath provides various helper functions utilizing SIMD instructions for both initializing and working with **XMVECTOR**s. We'll explore most of these functions in the upcoming tutorials.
 
-As stated above, **XMVECTOR** is just an alias for **__m128**, which identify a type mapped to XMM registers. This means we should not use **XMVECTOR** to operate with vectors without using SIMD instructions. For this reason, DirectXMath provides many helper functions that take advantage of SIMD to initialize **XMVECTOR**s and operate with them. We will examine most of these functions in the upcoming tutorials.
+For declaring vectorized constants (`const **XMVECTOR`), use **XMVECTORF32** for floating-point values and **XMVECTORU32** (or **XMVECTORI32**) for integer values. These types, defined as the union of a **XMVECTOR** and an array, enable convenient initialization syntax and let the compiler use SIMD instructions for other operations.
 
-If you want to declare a vectorized-constant (const **XMVECTOR**) then it is recommended to use **XMVECTORF32** for floating-point values, and **XMVECTORU32** (or **XMVECTORI32**) for integer values. That’s because these types are defined as the union of a **XMVECTOR** and an array. This allows us to use the initialization syntax, and let the compiler use SIMD instructions for other operations.
+```{code-block} cpp
+:caption: DirectXMath.h
+:name: XMVECTORF32-code
 
-<br>
-
-```cpp
 __declspec(align(16)) struct XMVECTORF32
 {
     union
@@ -683,4 +686,22 @@ static const XMVECTORF32 vZero = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 [WIP]
 
+<br>
+
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
+
+```{figure} ../../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
+
+<br>
+
+## References
+```{bibliography}
+:filter: docname in docnames
+```
 <br>
