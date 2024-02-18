@@ -772,10 +772,8 @@ document.write(`
 <img alt="../../../_images/2D-Gram-Schmidt.png" src="../../../_images/2D-Gram-Schmidt.png" />
 </figure>
 <p>So, we have that</p>
-<br>
 <div class="math notranslate nohighlight">
 \[\mathbf{w_1}=\mathbf{v_1}-\text{proj}_{\mathbf{w_0}}(\mathbf{v_1})\]</div>
-<br>
 <p>where <span class="math notranslate nohighlight">\(\ \text{proj}_{\mathbf{w_0}}(\mathbf{v_1})=\displaystyle\frac{\mathbf{v_1}\cdot\mathbf{w_0}}{|\mathbf{w_0}|^2}\mathbf{w_0}\)</span></p>
 <p>To prove that <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> are orthogonal to each other, we can first observe that a projection is orthogonal if the direction of projection forms a right angle <span class="math notranslate nohighlight">\((90°)\)</span> with the vector we project onto (see the dashed line in the illustration above). Also, we know that the sum of two vectors is the diagonal of the parallelogram with sides the two vectors. In this case we obtain a rectangle since we just established that an angle of the parallelogram with diagonal <span class="math notranslate nohighlight">\(v_1\)</span> is <span class="math notranslate nohighlight">\(90°\)</span>. So, we verified that <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> are orthogonal: <span class="math notranslate nohighlight">\(\mathbf{w_0}\ \bot\ \mathbf{w_1}\)</span>.</p>
 <p>In the 3D case, we introduce a third vector <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> that we need to modify in order to make it orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>. As before, we start by setting <span class="math notranslate nohighlight">\(\mathbf{w_0}=\mathbf{v_0}\)</span>, and we can still use the method of subtracting the projection of <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> to compute <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>. This is possible because we can consider <span class="math notranslate nohighlight">\(\mathbf{v_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v_1}\)</span> as lying in the same plane, thereby reducing the problem to the 2D case. To calculate <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span>, we proceed similarly. We subtract the projection of <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> from <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span>, obtaining an intermediate vector. Then, we can subtract the projection of <span class="math notranslate nohighlight">\(\mathbf{v_2}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span> from this intermediate vector. By doing this, we ensure that the resultant vector <span class="math notranslate nohighlight">\(\mathbf{w_2}\)</span> is orthogonal to both <span class="math notranslate nohighlight">\(\mathbf{w_0}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{w_1}\)</span>.</p>
@@ -916,7 +914,6 @@ From equation <span class="math notranslate nohighlight">\((1)\)</span> we can a
 <li><p>The color set: <span class="math notranslate nohighlight">\(\ r,g,b,a\)</span></p></li>
 </ul>
 <p>Specifying one or more vector components is called swizzling. For example:</p>
-<br>
 <div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="kt">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">iVector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                             </span><span class="c1">// int iVector = 1;</span>
 <span class="kt">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dVector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w"> </span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">};</span><span class="w">      </span><span class="c1">// float4 dVector = { 0.2, 0.3, 0.4, 0.5 };  </span>
 <span class="w">  </span>
@@ -961,8 +958,6 @@ First, it is worth noting that in DirectX, using vectors with four components is
 <img alt="../../../_images/SIMD.jpg" src="../../../_images/SIMD.jpg" />
 </figure>
 <p>However, <strong>__m128</strong> variables require 16-byte alignment in memory. This isn’t an issue for global or local variables of this type, as the compiler automatically aligns them. Problems arise when using an <strong>XMVECTOR</strong> (which is an alias for <strong>__m128</strong>) as a member of a structure or class, where C++ packing rules might cause misalignment. To address this, DirectXMath provides specific types for including integer or floating-point vectors as class members without alignment concerns.</p>
-<div class="literal-block-wrapper docutils container" id="vectors-xmfloats-code">
-<div class="code-block-caption"><span class="caption-number">Listing 52 </span><span class="caption-text">DirectXMath.h</span><a class="headerlink" href="#vectors-xmfloats-code" title="Link to this code">#</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 32-bit signed floating-point components</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">XMFLOAT2</span>
 <span class="p">{</span>
@@ -988,8 +983,6 @@ First, it is worth noting that in DirectX, using vectors with four components is
 <span class="p">};</span>
 </pre></div>
 </div>
-</div>
-<br>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 32-bit signed integer components</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">XMINTT2</span>
 <span class="p">{</span>
@@ -1071,7 +1064,6 @@ First, it is worth noting that in DirectX, using vectors with four components is
 </pre></div>
 </div>
 </div>
-<p>[WIP]</p>
 <br>
 <div class="admonition-support-this-project admonition">
 <p class="admonition-title">Support this project</p>
