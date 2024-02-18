@@ -549,7 +549,7 @@ document.write(`
 </section>
 <section id="id1">
 <h2>Vectors<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p>Vectors are mathematical objects that represent quantities with both magnitude and direction. They are used in many fields, including physics and computer graphics. For example, vectors can be used to specify the position and displacement of objects, as well as their speed. They can also describe the direction and intensity of forces acting on objects or light rays emitted by a light source, as well as surface normals.</p>
+<p>Vectors are mathematical objects that represent quantities with both magnitude and direction. They are used in many fields, including physics and computer graphics. For example, vectors can be used to specify the position and displacement of objects, as well as their speed. They can also describe the direction and intensity of forces acting on objects or light rays emitted by a light source, as well as surface normals. For a more extensive and detailed presentation on vectors, you may find valuable information in <span id="id2">[<a class="reference internal" href="#id15" title="Gerald E. Farin and Dianne Hansford. Practical Linear Algebra: A Geometry Toolbox. CRC Press, 4th edition, 2021.">FH21</a>]</span> and <span id="id3">[<a class="reference internal" href="#id16" title="Philip Schneider and David H. Eberly. Geometric Tools for Computer Graphics. Morgan Kaufmann, 1st edition, 2002.">SE02</a>]</span>.</p>
 <section id="definition">
 <h3>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h3>
 <p>Geometrically, a vector can be visualized as an arrow. The length of the arrow represents the magnitude or size of the vector, while the direction in which the arrow points indicates the direction of the vector.</p>
@@ -1039,7 +1039,7 @@ First, it is worth noting that in DirectX, using vectors with four components is
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>If the function is a C++ class constructor, then just use <strong>FXMVECTOR</strong> for the first three parameters and <strong>CXMVECTOR</strong> for the remaining ones.</p>
-<p><strong>FXMVECTOR</strong>, <strong>GXMVECTOR</strong>, <strong>HXMVECTOR</strong> and <strong>CXMVECTOR</strong> are all aliases to the <strong>XMVECTOR</strong>. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections you can refer to the official documentation (see <span id="id2">[<a class="reference internal" href="#id22" title="Microsoft. Directxmath library internals. https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals.">Mica</a>]</span> and <span id="id3">[<a class="reference internal" href="#id23" title="Microsoft. __vectorcall. https://learn.microsoft.com/en-us/cpp/cpp/vectorcall.">Micb</a>]</span> in the reference list at the end of the tutorial).</p>
+<p><strong>FXMVECTOR</strong>, <strong>GXMVECTOR</strong>, <strong>HXMVECTOR</strong> and <strong>CXMVECTOR</strong> are all aliases to the <strong>XMVECTOR</strong>. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections you can refer to the official documentation (see <span id="id4">[<a class="reference internal" href="#id26" title="Microsoft. Directxmath library internals. https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals.">Mica</a>]</span> and <span id="id5">[<a class="reference internal" href="#id27" title="Microsoft. __vectorcall. https://learn.microsoft.com/en-us/cpp/cpp/vectorcall.">Micb</a>]</span> in the reference list at the end of the tutorial).</p>
 </div>
 <p>As mentioned earlier, <strong>XMVECTOR</strong> is merely an alias for <strong>__m128</strong>, which corresponds to a type that maps to XMM registers. Consequently, using <strong>XMVECTOR</strong>s to operate on vectors without using SIMD instructions is not recommended. Therefore, DirectXMath provides various helper functions utilizing SIMD instructions for both initializing and working with <strong>XMVECTOR</strong>s. We’ll explore most of these functions in the upcoming tutorials.</p>
 <p>For declaring vectorized constants (<code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">**XMVECTOR</span></code>), use <strong>XMVECTORF32</strong> for floating-point values and <strong>XMVECTORU32</strong> (or <strong>XMVECTORI32</strong>) for integer values. These types, defined as the union of a <strong>XMVECTOR</strong> and an array, enable convenient initialization syntax and let the compiler use SIMD instructions for other operations.</p>
@@ -1072,15 +1072,23 @@ First, it is worth noting that in DirectX, using vectors with four components is
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id4">
+<div class="docutils container" id="id6">
 <div role="list" class="citation-list">
-<div class="citation" id="id22" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Mica</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">FH21</a><span class="fn-bracket">]</span></span>
+<p>Gerald E. Farin and Dianne Hansford. <em>Practical Linear Algebra: A Geometry Toolbox</em>. CRC Press, 4th edition, 2021.</p>
+</div>
+<div class="citation" id="id26" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Mica</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. Directxmath library internals. <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals">https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals</a>.</p>
 </div>
-<div class="citation" id="id23" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Micb</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id27" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">Micb</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. __vectorcall. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/cpp/vectorcall">https://learn.microsoft.com/en-us/cpp/cpp/vectorcall</a>.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">SE02</a><span class="fn-bracket">]</span></span>
+<p>Philip Schneider and David H. Eberly. <em>Geometric Tools for Computer Graphics</em>. Morgan Kaufmann, 1st edition, 2002.</p>
 </div>
 </div>
 </div>

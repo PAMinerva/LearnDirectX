@@ -103,7 +103,7 @@ After performing the division to obtain the Cartesian coordinates, the last coor
 
 ## Vectors
 
-Vectors are mathematical objects that represent quantities with both magnitude and direction. They are used in many fields, including physics and computer graphics. For example, vectors can be used to specify the position and displacement of objects, as well as their speed. They can also describe the direction and intensity of forces acting on objects or light rays emitted by a light source, as well as surface normals.
+Vectors are mathematical objects that represent quantities with both magnitude and direction. They are used in many fields, including physics and computer graphics. For example, vectors can be used to specify the position and displacement of objects, as well as their speed. They can also describe the direction and intensity of forces acting on objects or light rays emitted by a light source, as well as surface normals. For a more extensive and detailed presentation on vectors, you may find valuable information in {cite}`FarinHansfordPracticalLinearAlgebra2021` and {cite}`SchneiderEberlyGeometricToolsforComputerGraphics2002`.
 
 
 ### Definition
