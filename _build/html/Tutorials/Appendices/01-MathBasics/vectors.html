@@ -740,7 +740,14 @@ document.write(`
 \[\text{proj}_\mathbf{n}(\mathbf{v})=\left(\mathbf{v}\cdot\displaystyle\frac{\mathbf{n}}{|\mathbf{n}|}\right)\displaystyle\frac{\mathbf{n}}{|\mathbf{n}|}=\displaystyle\frac{(\mathbf{v}\cdot\mathbf{n})}{|\mathbf{n}|^2}\mathbf{n}\]</div>
 <p>Thanks to the concept of orthogonal projection, we can express any bound vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as the sum of its projections onto the standard basis vectors as follows:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{v}=(\mathbf{v}\cdot\mathbf{i})\mathbf{i}+(\mathbf{v}\cdot\mathbf{j})\mathbf{j}+(\mathbf{v}\cdot\mathbf{k})\mathbf{k}=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}=x(1, 0, 0)+y(0, 1, 0)+z(0, 0, 1)=(x, y, z)\]</div>
+\[\begin{split}
+\begin{flalign}
+\mathbf{v}&amp;=(\mathbf{v}\cdot\mathbf{i})\mathbf{i}+(\mathbf{v}\cdot\mathbf{j})\mathbf{j}+(\mathbf{v}\cdot\mathbf{k})\mathbf{k} \\
+&amp;=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}  &amp;&amp; \text{(more on this shortly)} \\
+&amp;=x(1, 0, 0)+y(0, 1, 0)+z(0, 0, 1) \\
+&amp;=(x, y, z)
+\end{flalign}
+\end{split}\]</div>
 <p>Indeed, we have</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
