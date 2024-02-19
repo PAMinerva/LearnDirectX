@@ -1,0 +1,707 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Matrices &#8212; Learn DirectX</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/proof.css?v=ca93fcec" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/Appendices/01-MathBasics/matrices';</script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="Vectors" href="vectors.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <header>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 This documentation is a work in progress! 🚧</div>
+  </div>
+
+  
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
+  
+  </header>
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../presentation.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Learn DirectX - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Learn DirectX - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../presentation.html">
+                    Welcome to Learn DirectX
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../00-Intro/intro-and-prerequisites.html">Introduction and Prerequisites</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hello DirectX</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../01-HelloWorld/hello-world.html">Hello World</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../01-HelloWorld/hello-window.html">Hello Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../01-HelloWorld/hello-triangle.html">Hello Triangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../01-HelloWorld/hello-bundles.html">Hello Bundles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../01-HelloWorld/hello-cbs.html">Hello Constant Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../01-HelloWorld/hello-texture.html">Hello Texture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../01-HelloWorld/hello-frame-buffering.html">Hello Frame Buffering</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Appendices</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="math-basics.html">Math Basics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="vectors.html">Vectors</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Matrices</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PAMinerva/LearnDirectX/issues/new?title=Issue%20on%20page%20%2FTutorials/Appendices/01-MathBasics/matrices.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/Tutorials/Appendices/01-MathBasics/matrices.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Matrices</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-matrix-operations">Basic matrix operations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#addition">Addition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scalar-multiplication">Scalar multiplication</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-addition-and-scalar-multiplications">Properties of addition and scalar multiplications</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-multiplication">Matrix multiplication</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-matrix-multiplication">Vector-Matrix multiplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-matrix-multiplication">Properties of matrix multiplication</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix-wip">Transpose of a matrix [WIP]</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="matrices">
+<h1>Matrices<a class="headerlink" href="#matrices" title="Link to this heading">#</a></h1>
+<p>Matrices are fundamental mathematical structures that play a crucial role in various fields, including mathematics, physics, engineering, and computer graphics as well. They provides a compact and efficient way to express transformations, such as scaling, rotation, and translation. This feature enables easy manipulation of the position, orientation, or size of 3D objects in a rendering scene in an easy way.</p>
+<br>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h2>
+<p>Basically, a matrix is just a rectangular table of real numbers arranged in rows and columns.<br>
+The dimensions of a matrix are determined by the number of its rows and columns. For instance, an <span class="math notranslate nohighlight">\(m\times n\)</span> matrix consists of <span class="math notranslate nohighlight">\(m\)</span> rows and <span class="math notranslate nohighlight">\(n\)</span> columns. The individual numbers within a matrix are referred to as elements or entries. To indicate a specific entry within a matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>, a double subscript notation, such as <span class="math notranslate nohighlight">\(M_{ij}\)</span>, is often used to specify the element located in the i-th row and j-th column. Matrices are conventionally denoted using square brackets.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{M}=\left\lbrack\matrix{M_{00}&amp;M_{01}&amp;\cdots&amp;M_{0(n-1)} \cr M_{10}&amp;M_{11}&amp;\cdots&amp;M_{1(n-1)} \cr \vdots&amp;\vdots&amp;\ddots&amp;\vdots \cr M_{(m-1)1}&amp;\cdots&amp;M_{(m-1)0}&amp;M_{0(n-1)}}\right\rbrack\]</div>
+<p>In computer graphics, it is common to work with square matrices <span class="math notranslate nohighlight">\(n\times n\)</span>, where the number of rows and columns are equal. Row and column vectors, which are matrices with dimensions of <span class="math notranslate nohighlight">\(1\times n\)</span> and <span class="math notranslate nohighlight">\(n\times 1\)</span> respectively, are also widely used. When it comes to row and column vectors, a different naming convention is typically used: lowercase letters are used instead of uppercase ones. This is because row and column vectors can be used as operands in certain vector operations.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{u}=\left\lbrack\matrix{u_0&amp;u_1&amp;\cdots&amp;u_{n-1}}\right\rbrack\quad\quad\quad\quad\mathbf{v}=\left\lbrack\matrix{v_0 \cr v_1 \cr \vdots \cr v_{n-1}}\right\rbrack\]</div>
+<p>We can also use them to specify the rows or columns of a matrix. For example, we can write the following <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> by using 3 row vectors, or 3 column vectors.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{M}=\left\lbrack\matrix{M_{00}&amp;M_{01}&amp;M_{02}\cr M_{10}&amp;M_{11}&amp;M_{12}\cr M_{20}&amp;M_{21}&amp;M_{22}}\right\rbrack=\left\lbrack\matrix{\gets&amp;\mathbf{u}_0&amp;\rightarrow\cr \gets&amp;\mathbf{u}_1&amp;\rightarrow\cr \gets&amp;\mathbf{u}_2&amp;\rightarrow}\right\rbrack=\left\lbrack\matrix{\uparrow&amp;\uparrow&amp;\uparrow\cr \mathbf{v}_0&amp;\mathbf{v}_1&amp;\mathbf{v}_2\cr \downarrow&amp;\downarrow&amp;\downarrow}\right\rbrack\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{u_i}=\left\lbrack\matrix{M_{i0}&amp;M_{i1}&amp;M_{i2}}\right\rbrack\)</span>, <span class="math notranslate nohighlight">\(\ \mathbf{v_i}=\left\lbrack\matrix{M_{0i}&amp;M_{1i}&amp;M_{2i}}\right\rbrack\)</span> and <span class="math notranslate nohighlight">\(0\le i&lt;3\)</span>.</p>
+<br>
+</section>
+<section id="basic-matrix-operations">
+<h2>Basic matrix operations<a class="headerlink" href="#basic-matrix-operations" title="Link to this heading">#</a></h2>
+<p>There are several interesting operations that can be performed with matrices, including addition, subtraction, and two different types of multiplication.</p>
+<section id="addition">
+<h3>Addition<a class="headerlink" href="#addition" title="Link to this heading">#</a></h3>
+<p>The addition of two matrices <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> can only be performed if the matrices have the same dimensions. If this condition is met, the corresponding elements of the matrices are added together.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A}+\mathbf{B}=\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack+\left\lbrack\matrix{B_{00}&amp;B_{01}&amp;B_{02}\cr B_{10}&amp;B_{11}&amp;B_{12}\cr B_{20}&amp;B_{21}&amp;B_{22}}\right\rbrack=\left\lbrack\matrix{A_{00}+B_{00}&amp;A_{01}+B_{01}&amp;A_{02}+B_{02}\cr A_{10}+B_{10}&amp;A_{11}+B_{11}&amp;A_{12}+B_{12}\cr A_{20}+B_{20}&amp;A_{21}+B_{21}&amp;A_{22}+B_{22}}\right\rbrack\]</div>
+<p>The difference of two matrices is defined in a similar way.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A}-\mathbf{B}=\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack-\left\lbrack\matrix{B_{00}&amp;B_{01}&amp;B_{02}\cr B_{10}&amp;B_{11}&amp;B_{12}\cr B_{20}&amp;B_{21}&amp;B_{22}}\right\rbrack=\left\lbrack\matrix{A_{00}-B_{00}&amp;A_{01}-B_{01}&amp;A_{02}-B_{02}\cr A_{10}-B_{10}&amp;A_{11}-B_{11}&amp;A_{12}-B_{12}\cr A_{20}-B_{20}&amp;A_{21}-B_{21}&amp;A_{22}-B_{22}}\right\rbrack\]</div>
+</section>
+<section id="scalar-multiplication">
+<h3>Scalar multiplication<a class="headerlink" href="#scalar-multiplication" title="Link to this heading">#</a></h3>
+<p>We can multiply a matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> with a scalar <span class="math notranslate nohighlight">\(k\)</span> by scaling all the elements of the matrix by <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[k\mathbf{M}=\left\lbrack\matrix{kM_{00}&amp;kM_{01}&amp;kM_{02}\cr kM_{10}&amp;kM_{11}&amp;kM_{12}\cr kM_{20}&amp;kM_{21}&amp;kM_{22}}\right\rbrack\]</div>
+<section id="properties-of-addition-and-scalar-multiplications">
+<h4>Properties of addition and scalar multiplications<a class="headerlink" href="#properties-of-addition-and-scalar-multiplications" title="Link to this heading">#</a></h4>
+<p>Since addition and scalar multiplication are performed element-wise on matrices, they inherit the following properties from real numbers:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Property</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Commutative</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbf{A}+\mathbf{B} = \mathbf{B}+\mathbf{A}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Associative</p></td>
+<td><p><span class="math notranslate nohighlight">\((\mathbf{A}+\mathbf{B})+\mathbf{C}=\mathbf{A}+(\mathbf{B}+\mathbf{C})\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Distributive (scalar)</p></td>
+<td><p><span class="math notranslate nohighlight">\((k+t)\mathbf{A} = k\mathbf{A}+t\mathbf{A}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Distributive (matrix)</p></td>
+<td><p><span class="math notranslate nohighlight">\(k(\mathbf{A}+\mathbf{B}) = k\mathbf{A}+k\mathbf{B}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="matrix-multiplication">
+<h3>Matrix multiplication<a class="headerlink" href="#matrix-multiplication" title="Link to this heading">#</a></h3>
+<p>In order to multiply two matrices <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>, it is necessary for the number of columns in <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> to be equal to the number of rows in <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>. This requirement arises because each element <span class="math notranslate nohighlight">\(C_{ij}\)</span> of the resulting matrix <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> is obtained by taking the dot product of the i-th row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and the j-th column of <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>. This means that, if <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is an <span class="math notranslate nohighlight">\(m\times n\)</span> matrix and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is an <span class="math notranslate nohighlight">\(n\times p\)</span> matrix, the resulting matrix <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> will have dimensions <span class="math notranslate nohighlight">\(m\times p\)</span>. This is because we need to multiply each of the <span class="math notranslate nohighlight">\(m\)</span> rows of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> by each of the <span class="math notranslate nohighlight">\(p\)</span> columns of <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> in order to obtain all the elements of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}\tag{1}C_{ij}=\mathbf{A}_{i\ast}\cdot\mathbf{B}_{\ast j}\label{eq:AMatrices1}\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{A}_{i\ast}\)</span> is the i-th row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{B}_{\ast j}\)</span> is the j-th column of <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>.</p>
+<p>As an example, the following illustration shows that if we multiply a <span class="math notranslate nohighlight">\(2\times 3\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> by a <span class="math notranslate nohighlight">\(3\times 2\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>, we get a <span class="math notranslate nohighlight">\(2\times 2\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> where the top-left element <span class="math notranslate nohighlight">\(C_{00}\)</span> is computed by taking the dot product of the 0-th row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and the 0-th column of <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>.</p>
+<figure class="align-default">
+<img alt="../../../_images/matrix-multiplication.png" src="../../../_images/matrix-multiplication.png" />
+</figure>
+<p>Observe that matrix multiplication is always defined for square matrices of the same dimension, and the resulting matrix will have the same dimensions as the operands.</p>
+<section id="vector-matrix-multiplication">
+<h4>Vector-Matrix multiplication<a class="headerlink" href="#vector-matrix-multiplication" title="Link to this heading">#</a></h4>
+<p>A row vector is a <span class="math notranslate nohighlight">\(1\times n\)</span> matrix, so we can multiply it with a generic <span class="math notranslate nohighlight">\(n\times p\)</span> matrix. For example, if <span class="math notranslate nohighlight">\(\mathbf{u}=(x, y, z)\)</span> is a three-component vector that represent a row vector and <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix, applying equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices1}\)</span> we have that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{uA}=\left\lbrack\matrix{x&amp;y&amp;z}\right\rbrack\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack=\left\lbrack\matrix{\mathbf{u}\cdot\mathbf{A}_{\ast 0}&amp;\mathbf{u}\cdot\mathbf{A}_{\ast 1}&amp;\mathbf{u}\cdot\mathbf{A}_{\ast 2}}\right\rbrack\]</div>
+<p>The result is a row vector with three elements (just like <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>) where each entry is the dot product of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and a column of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>. Now, if we actually perform the dot product we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\mathbf{uA}&amp;=\left\lbrack\matrix{\mathbf{u}\cdot\mathbf{A}_{\ast 0}&amp;\mathbf{u}\cdot\mathbf{A}_{\ast 1}&amp;\mathbf{u}\cdot\mathbf{A}_{\ast 2}}\right\rbrack \\
+&amp;=\left\lbrack\matrix{xA_{00}+yA_{10}+zA_{20}&amp;\quad xA_{01}+yA_{11}+zA_{21}&amp;\quad xA_{02}+yA_{12}+zA_{22}}\right\rbrack \\
+&amp;=\left\lbrack\matrix{xA_{00}&amp;xA_{01}&amp;xA_{02}}\right\rbrack+\left\lbrack\matrix{yA_{10}&amp;yA_{11}&amp;yA_{12}}\right\rbrack+\left\lbrack\matrix{zA_{20}&amp;zA_{21}&amp;zA_{22}}\right\rbrack \\
+&amp;=x\mathbf{A}_{0\ast}+y\mathbf{A}_{1\ast}+z\mathbf{A}_{2\ast}
+\end{align*}
+\end{split}\]</div>
+<p>So, the vector-matrix multiplication can be seen as a sum of the rows of the matrix, scaled by the elements of the vector. This is an example of linear combination: a sum of vectors multiplied (scaled) by scalar coefficients. In this case, the vectors are the row vectors of the matrix, while the scalar coefficients are the elements of the vector acting as left operandin the multiplication. We can also write this linear combination as the product of a row vector and a column vector.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{uA}=x\mathbf{A}_{0\ast}+y\mathbf{A}_{1\ast}+z\mathbf{A}_{2\ast}=\left\lbrack\matrix{x&amp;y&amp;z}\right\rbrack\left\lbrack\matrix{\mathbf{A}_{0\ast}\cr \mathbf{A}_{1\ast}\cr \mathbf{A}_{2\ast}}\right\rbrack\)</span></p>
+<p>As you may easily notice, the multiplication of a row vector and a column vector is closely related to the concept of dot product. Indeed, we have that</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{a}\cdot\mathbf{b}=\left\lbrack\matrix{a_x&amp;a_y&amp;a_z}\right\rbrack\left\lbrack\matrix{b_x\cr b_y\cr b_z}\right\rbrack=a_xb_x+a_yb_y+a_zb_z\)</span></p>
+<p>That is, we can consider the operands of a dot product as row and column vectors, rather than just ordinary vectors.</p>
+<p>What we have discussed so far in this section applies in general. That is, if we have a <span class="math notranslate nohighlight">\(1\times n\)</span> row vector <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and an <span class="math notranslate nohighlight">\(n\times p\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, then the product <span class="math notranslate nohighlight">\(\mathbf{uA}\)</span> is a linear combination of the rows of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, with scalar coefficients given by the elements of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{uA}=\left\lbrack\matrix{u_0&amp;u_1&amp;\cdots&amp;u_{n-1}}\right\rbrack\left\lbrack\matrix{A_{00}&amp;\cdots&amp;A_{0(n-1)}\cr \vdots&amp;\ddots&amp;\cdots\cr A_{(n-1)0}&amp;\cdots&amp;A_{(n-1)(n-1)}}\right\rbrack=u_0\mathbf{A}_{0\ast}+u_1\mathbf{A}_{1\ast}+\cdots+u_{n-1}\mathbf{A}_{(n-1)\ast}\]</div>
+<p>We can also multiply an <span class="math notranslate nohighlight">\(m\times n\)</span> matrix by an <span class="math notranslate nohighlight">\(n\times 1\)</span> column vector. For example, if <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix and <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> is a three-component vector that represent a column vector, we have that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{Au}=\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack\left\lbrack\matrix{x\cr y\cr z}\right\rbrack=\left\lbrack\matrix{\mathbf{u}\cdot\mathbf{A}_ {0\ast}\cr \mathbf{u}\cdot\mathbf{A}_ {1\ast}\cr \mathbf{u}\cdot\mathbf{A}_ {2\ast}}\right\rbrack\]</div>
+<p>The result is a column vector with three elements where each entry is the dot product of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and a row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>. Now, if we perform the dot product we have</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{Au}=x\mathbf{A}_ {\ast 0}+y\mathbf{A}_ {\ast 1}+z\mathbf{A}_ {\ast 2}=\left\lbrack\matrix{\mathbf{A}_ {\ast 0}&amp;\mathbf{A}_ {\ast 1}&amp;\mathbf{A}_ {\ast 2}}\right\rbrack\left\lbrack\matrix{x\cr y\cr z}\right\rbrack\]</div>
+<p>Therefore, the product of a matrix and a column vector is a linear combination of the columns of the matrix, scaled by the elements of the column vector.</p>
+</section>
+<section id="properties-of-matrix-multiplication">
+<h4>Properties of matrix multiplication<a class="headerlink" href="#properties-of-matrix-multiplication" title="Link to this heading">#</a></h4>
+<p>Since matrix multiplication is performed element-wise, it inherits the following properties from real numbers:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Property</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Associative</p></td>
+<td><p><span class="math notranslate nohighlight">\((\mathbf{AB})\mathbf{C}=\mathbf{A}(\mathbf{BC})\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Distributive</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbf{A}(\mathbf{B}+\mathbf{C})=\mathbf{AB}+\mathbf{AC}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<p>The commutative property does not apply for two reasons. Firstly, as mentioned earlier, matrix multiplication is only defined when the number of columns in the left matrix is equal to the number of rows in the right matrix. Secondly, even with square matrices of the same dimension (where matrix multiplication is always defined), swapping the order of the operands can lead to a different resultant matrix ─ consider equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices1}\)</span> and observe how each element of the resulting matrix is computed.</p>
+<p>To conclude this section, as mentioned in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>, we stated that the cross product can be computed by multiplying a row vector by a matrix. We can now verify this statement using the following equation.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=\mathbf{u}\times\mathbf{v}=\left\lbrack\matrix{v_x&amp;v_y&amp;v_z}\right\rbrack\left\lbrack\matrix{0&amp;u_z&amp;-u_y\cr -u_z&amp;0&amp;u_x\cr u_y&amp;-u_x&amp;0}\right\rbrack=(u_yv_z-u_zv_y,\ u_zv_x-u_xv_z,\ u_xv_y-u_yv_x)\]</div>
+<p>Also, it’s interesting to note that we can compute the orthogonal projection of a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto a unit vector <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> by multiplying a row vector by a matrix.</p>
+<p><span class="math notranslate nohighlight">\(\text{proj}_{\mathbf{n}}(\mathbf{v})=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}=\left\lbrack\matrix{v_x&amp;v_y&amp;v_z}\right\rbrack\left\lbrack\matrix{n_x^2&amp;n_xn_y&amp;n_xn_z\cr n_xn_y&amp;n_y^2&amp;n_yn_z\cr n_xn_z&amp;n_yn_z&amp;n_z^2}\right\rbrack\)</span></p>
+<p>Indeed, observe that the i-th component of <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\mathbf{n}\)</span> is computed by multiplying <span class="math notranslate nohighlight">\(n_i\)</span> with <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\)</span>. For instance, the first component of <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\mathbf{n}\)</span> is <span class="math notranslate nohighlight">\(n_x(v_xn_x+v_yn_y+v_zn_z)=(v_xn_x^2+v_yn_xn_y+v_zn_xn_z)\)</span>. As you can verify, the same result is obtained in the vector-matrix multiplication above by executing the dot product between <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and the first column of the matrix. The same applies to the other two components of <span class="math notranslate nohighlight">\((\mathbf{v}\cdot\mathbf{n})\mathbf{n}\)</span>.</p>
+<br>
+</section>
+</section>
+</section>
+<section id="transpose-of-a-matrix-wip">
+<h2>Transpose of a matrix [WIP]<a class="headerlink" href="#transpose-of-a-matrix-wip" title="Link to this heading">#</a></h2>
+<br>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Tutorials\Appendices\01-MathBasics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="vectors.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Vectors</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-matrix-operations">Basic matrix operations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#addition">Addition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scalar-multiplication">Scalar multiplication</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-addition-and-scalar-multiplications">Properties of addition and scalar multiplications</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-multiplication">Matrix multiplication</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-matrix-multiplication">Vector-Matrix multiplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-matrix-multiplication">Properties of matrix multiplication</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix-wip">Transpose of a matrix [WIP]</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By P. A. Minerva
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
