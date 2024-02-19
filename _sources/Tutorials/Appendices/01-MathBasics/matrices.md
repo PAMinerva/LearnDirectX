@@ -100,11 +100,11 @@ $$
 
 So, the vector-matrix multiplication can be seen as a sum of the rows of the matrix, scaled by the elements of the vector. This is an example of linear combination: a sum of vectors multiplied (scaled) by scalar coefficients. In this case, the vectors are the row vectors of the matrix, while the scalar coefficients are the elements of the vector acting as left operandin the multiplication. We can also write this linear combination as the product of a row vector and a column vector.
 
-$\mathbf{uA}=x\mathbf{A}_{0\ast}+y\mathbf{A}_{1\ast}+z\mathbf{A}_{2\ast}=\left\lbrack\matrix{x&y&z}\right\rbrack\left\lbrack\matrix{\mathbf{A}_{0\ast}\cr \mathbf{A}_{1\ast}\cr \mathbf{A}_{2\ast}}\right\rbrack$
+$$\mathbf{uA}=x\mathbf{A}_{0\ast}+y\mathbf{A}_{1\ast}+z\mathbf{A}_{2\ast}=\left\lbrack\matrix{x&y&z}\right\rbrack\left\lbrack\matrix{\mathbf{A}_{0\ast}\cr \mathbf{A}_{1\ast}\cr \mathbf{A}_{2\ast}}\right\rbrack$$
 
 As you may easily notice, the multiplication of a row vector and a column vector is closely related to the concept of dot product. Indeed, we have that
 
-$\mathbf{a}\cdot\mathbf{b}=\left\lbrack\matrix{a_x&a_y&a_z}\right\rbrack\left\lbrack\matrix{b_x\cr b_y\cr b_z}\right\rbrack=a_xb_x+a_yb_y+a_zb_z$
+$$\mathbf{a}\cdot\mathbf{b}=\left\lbrack\matrix{a_x&a_y&a_z}\right\rbrack\left\lbrack\matrix{b_x\cr b_y\cr b_z}\right\rbrack=a_xb_x+a_yb_y+a_zb_z$$
 
 That is, we can consider the operands of a dot product as row and column vectors, rather than just ordinary vectors.
 
@@ -147,9 +147,13 @@ $$\mathbf{w}=\mathbf{u}\times\mathbf{v}=\left\lbrack\matrix{v_x&v_y&v_z}\right\r
 
 Also, it’s interesting to note that we can compute the orthogonal projection of a vector $\mathbf{v}$ onto a unit vector $\mathbf{n}$ by multiplying a row vector by a matrix.
 
-$\text{proj}_{\mathbf{n}}(\mathbf{v})=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}=\left\lbrack\matrix{v_x&v_y&v_z}\right\rbrack\left\lbrack\matrix{n_x^2&n_xn_y&n_xn_z\cr n_xn_y&n_y^2&n_yn_z\cr n_xn_z&n_yn_z&n_z^2}\right\rbrack$
+$$\text{proj}_{\mathbf{n}}(\mathbf{v})=(\mathbf{v}\cdot\mathbf{n})\mathbf{n}=\left\lbrack\matrix{v_x&v_y&v_z}\right\rbrack\left\lbrack\matrix{n_x^2&n_xn_y&n_xn_z\cr n_xn_y&n_y^2&n_yn_z\cr n_xn_z&n_yn_z&n_z^2}\right\rbrack$$
 
-Indeed, observe that the i-th component of $(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$ is computed by multiplying $n_i$ with $(\mathbf{v}\cdot\mathbf{n})$. For instance, the first component of $(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$ is $n_x(v_xn_x+v_yn_y+v_zn_z)=(v_xn_x^2+v_yn_xn_y+v_zn_xn_z)$. As you can verify, the same result is obtained in the vector-matrix multiplication above by executing the dot product between $\mathbf{v}$ and the first column of the matrix. The same applies to the other two components of $(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$.
+Indeed, observe that the i-th component of $(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$ is computed by multiplying $n_i$ with $(\mathbf{v}\cdot\mathbf{n})$. For instance, the first component of $(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$ is 
+
+$$n_x(v_xn_x+v_yn_y+v_zn_z)=(v_xn_x^2+v_yn_xn_y+v_zn_xn_z)$$
+
+As you can verify, the same result is obtained in the vector-matrix multiplication above by executing the dot product between $\mathbf{v}$ and the first column of the matrix. The same applies to the other two components of $(\mathbf{v}\cdot\mathbf{n})\mathbf{n}$.
 
 <br>
 
