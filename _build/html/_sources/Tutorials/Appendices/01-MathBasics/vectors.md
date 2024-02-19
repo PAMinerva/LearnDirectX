@@ -1,7 +1,8 @@
 # Vectors
 
-Before delving into the core presentation on vectors, it is crucial to establish a foundational understanding of coordinate systems.
+Before delving into the core presentation of vectors, it is crucial to establish a foundational understanding of coordinate systems.
 
+<br>
 
 ## Coordinate systems
 
