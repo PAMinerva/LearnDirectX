@@ -400,11 +400,11 @@ $$
 \end{flalign}
 $$
 
-Also, the cross product can be computed multiplying a matrix by a column.
+Also, the cross product can be computed multiplying a row vector by a matrix.
 
 $$
 \begin{align*}
-\mathbf{w}=\mathbf{u}\times\mathbf{v}&=\left\lbrack\matrix{0&-u_z&u_y \cr u_z&0&-u_x \cr -u_y&u_x&0}\right\rbrack\left\lbrack\matrix{v_x\cr v_y\cr v_z}\right\rbrack \\ \\
+\mathbf{w}=\mathbf{u}\times\mathbf{v}&=\left\lbrack\matrix{v_x&v_y&v_z}\right\rbrack\left\lbrack\matrix{0&u_z&-u_y \cr -u_z&0&u_x \cr u_y&-u_x&0}\right\rbrack \\ \\
 &=(u_yv_z-u_zv_y,\ u_zv_x-u_xv_z,\ u_xv_y-u_yv_x)
 \end{align*}
 $$
