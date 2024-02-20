@@ -422,11 +422,11 @@ Now, if we want to multiply two matrices, or a vector and a matrix, what's the b
 
 If you want to multiply two $n\times n$ matrices $\mathbf{A}$ and $\mathbf{B}$, then we transpose them in the C++ code before passing the matrix data to the GPU. At that point, in the HLSL code, we simply pass $\mathbf{A}$ as the first argument and $\mathbf{B}$ as the second argument of **mul**, which will return a matrix where each element is the dot product of a row of $\mathbf{A}$ with a column of $\mathbf{B}$.
 
-On the other hand, what happens if you want to multiply a vector and a matrix? Well, it depends on how you want to perform that operation. If you want to multiply the row vector by each column of the matrix, then you should pass the row vector to the first parameter, and the transpose of the matrix to the second parameter of **mul**. Indeed, after copying the transpose of the matrix in a GPU heap, the layout of its elements in memory will be 
+On the other hand, what happens if you want to multiply a vector and a matrix? Well, it depends on how you want to perform this operation. If you want to multiply the row vector by each column of the matrix, then you should pass the row vector as the first argument, and the transpose of the matrix as the second argument to **mul**. Indeed, after copying the transpose of the matrix in a GPU heap, the layout of its elements in memory will be 
 
 $$\vert A_{00}\vert A_{10}\vert A_{20}\vert A_{30}\vert A_{01}\vert A_{11}\vert A_{21}\vert A_{31}\vert A_{02}\vert A_{12}\vert A_{22}\vert A_{32}\vert A_{03}\vert A_{13}\vert A_{23}\vert A_{33}\vert$$
 
-Then, the columns can be easily loaded into shader core registers since their entries are contiguous in memory.
+Therefore, the columns can be easily loaded into shader core registers since their entries are contiguous in memory.
 
 $$reg_1: \vert A_{00}\vert A_{10}\vert A_{20}\vert A_{30}\vert$$
 $$reg_2: \vert A_{01}\vert A_{11}\vert A_{21}\vert A_{31}\vert$$
@@ -439,7 +439,7 @@ $$reg_0: \vert x\vert y\vert z\vert w\vert$$
 
 At that point, the GPU can simply compute the dot product of $reg_0$ with the other registers to compute the four elements of the resultant vector.
 
-Under the same conditions, if you want to multiply a column vector by each row of the matrix, then you can pass the transpose of the matrix to the first parameter, and the vector to the second parameter of **mul**. At that point, the GPU could execute more instructions to execute the dot product of the vector with the rows of the matrix since the elements of the matrix are ordered column by column. The conditional is used because the real GPU instructions (not the bytecode) could be similar in both cases. The following listings show both the bytecode and a possible translation in GPU machine code of the multiplication between a vector (**vpos**) and a matrix (**World**), passed as arguments to **mul**.
+Under the same conditions, if you want to multiply a column vector by each row of the matrix, then you can pass the transpose of the matrix as the first argument, and the vector as the second argument to **mul**. At that point, the GPU may have to execute more instructions to perform the dot product of the vector with the rows of the matrix since the elements of the matrix are ordered column by column. The conditional is used because the real GPU instructions (not the bytecode) could be similar in both cases. The following listings show both the bytecode and a possible translation in GPU machine code of the multiplication between a vector (**vpos**) and a matrix (**World**), passed as arguments to **mul**.
 
 ```
 BYTECODE (DXBC\DXIL)
@@ -518,10 +518,10 @@ And the multiplication of a matrix by a column vector as well.
 
 $$\mathbf{Au}=\left\lbrack\matrix{a&b&c&d\cr e&f&g&h\cr i&j&k&l\cr m&n&o&p}\right\rbrack\left\lbrack\matrix{x\cr y\cr z\cr w}\right\rbrack=\left\lbrack\matrix{ax+by+cz+dw\cr ex+fy+gz+hw\cr ix+jy+kz+lw\cr mx+ny+oz+pw}\right\rbrack$$
 
-In the latter case, observe that the first column is scaled by $x$, the second by $y$, the third by $z$, and the fourth by $w$. Then, the sum of corresponding components in the scaled columns gives us the components of the resultant vector.
+In the latter case, observe that the first column of the matrix $\mathbf{A}$ is scaled by $x$, the second by $y$, the third by $z$, and the fourth by $w$. Finally, the sum of corresponding components in the scaled columns gives us the components of the resultant vector.
 
 ```{important}
-The ISA disassembly unveils what GPUs mean by SIMD operations. GPU hardware cores commonly include 32-bit registers and ALUs which execute single operations on 32-bit data. However, GPUs are perfectly capable of performing the same instruction in parallel on different hardware cores (usually 64) for different data (e.g., vertex or pixel data). The shader model hides\abstracts these hardware details with 128-bit shader registers and SIMD instructions to mimic the CPU behaviour. We will return to the architecture and design of GPUs in a later tutorial.
+The ISA disassembly unveils what GPUs mean by SIMD operations. GPU hardware cores commonly include 32-bit registers and ALUs to execute single operations on 32-bit data. However, GPUs are perfectly capable of performing the same instruction in parallel on different hardware cores (usually 64) for different data (e.g., vertex data). The shader model hides\abstracts these hardware details with 128-bit shader registers and SIMD instructions to mimic the CPU behaviour. We will return to the architecture and design of GPUs in a later tutorial.
 ```
 
 <br>
