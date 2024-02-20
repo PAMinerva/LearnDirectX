@@ -317,6 +317,215 @@ The adjoint of a matrix, and in particular the equation $\eqref{eq:AMatrices4}$,
 
 <br>
 
-## Inverse of a matrix [WIP]
+## Inverse of a matrix 
+
+In matrix algebra, the concept of inverse only applies to square matrices and is similar to the concept of inverse (or reciprocal) for real numbers. Specifically, for an $n\times n$ matrix $\mathbf{M}$, its inverse $\mathbf{M}^{-1}$ (which is still $n\times n$) can be computed as follows:
+
+$$\mathbf{M}\mathbf{M}^{-1}=\mathbf{M}^{-1}\mathbf{M}=\mathbf{I}$$
+
+Just like with real numbers, if we multiply a matrix by its inverse we get the the multiplicative identity (in this case, an identity matrix of the same dimension). Observe that the inverse of $\mathbf{M}^{-1}$ is $\mathbf{M}$, so the commutative property applies by definition (this is the second exception to the general operation of matrix multiplication). A relevant difference from real numbers is that not every square matrix has an inverse. If the inverse $\mathbf{M}^{-1}$ exists, it is unique and we say that $\mathbf{M}$ is invertible, otherwise we call it singular. It can be proven that we can use equations $\eqref{eq:AMatrices2}$ and $\eqref{eq:AMatrices4}$ to compute the ij-th entry of the inverse $\mathbf{A}^{-1}$ of a matrix $\mathbf{A}$.
+
+$$
+\tag{5}
+A_{ij}^{-1}=\displaystyle {C_{ij}^T \over det\mathbf{A}}
+\label{eq:AMatrices5}
+$$
+
+````{prf:example}
+:label: matrices-example1
+
+Given a $2\times 2$ matrix $\mathbf{A}$ and its inverse $\mathbf{A}^{-1}$
+
+$$\mathbf{A}=\left\lbrack\matrix{a&b\cr c&d}\right\rbrack\quad\quad\quad\quad\mathbf{A}^{-1}=\left\lbrack\matrix{v_{00}&v_{01}\cr v_{10}&v_{11}}\right\rbrack$$
+
+Since $\mathbf{A}\mathbf{A}^{-1}=\mathbf{I}$ we have that
+
+$$
+\begin{align*}
+\left\lbrack\matrix{a&b}\right\rbrack\ \mathbf{A}^{-1}=\left\lbrack\matrix{1&0}\right\rbrack \\
+\left\lbrack\matrix{c&d}\right\rbrack\ \mathbf{A}^{-1}=\left\lbrack\matrix{0&1}\right\rbrack
+\end{align*}
+$$
+
+From these two expressions, we can derive the following system of four equations with four unknowns $v_{ij}$.
+
+$$
+ \begin{cases} 
+ a\ v_{00}+b\ v_{01} &=1 \cr 
+ a\ v_{10}+b\ v_{11} &=0 \cr 
+ c\ v_{00}+d\ v_{01} &=0 \cr 
+ c\ v_{10}+d\ v_{11} &=1
+ \end{cases}$$
+
+If we solve this system for $v_{00}$ we get
+
+$$v_{00}=\displaystyle {d \over ad-bc}$$
+
+That's exactly the ratio between the cofactor of the 00-th element of $\mathbf{A}$ and the its determinant. The same applies to the other unknowns and to matrices of higher dimensions as well, since it always ends up with a system of $n$ equations with $n$ unknowns.
+````
+
+<br>
+
+As you may have noticed, in equation $\eqref{eq:AMatrices5}$ we have a determinant in the denominator, which can be zero. This explains why not all square matrices have an inverse. Indeed, a matrix is invertible if its determinant is not zero.
+
+Below are the properties of the matrix inverse.
+
+- $(\mathbf{A}^{-1})^T=(\mathbf{A}^T)^{-1}$
+- $(\mathbf{AB})^{-1}=\mathbf{B}^{-1}\mathbf{A}^{-1}$
+
+```{admonition} Proof
+:class: dropdown
+
+For the first property, we need to show that $(\mathbf{A}^{-1})^T$ is the inverse of $\mathbf{A}^T$. And indeed, from $(\mathbf{AB})^T=\mathbf{B}^T\mathbf{A}^T$ we have that
+
+$$(\mathbf{A}^{-1})^T\mathbf{A}^T=(\mathbf{A}\mathbf{A}^{-1})^T=\mathbf{I}^T=\mathbf{I}$$
+
+For the second property, assuming that $\mathbf{A}$ and $\mathbf{B}$ are square and invertible matrices, we need to show that $(\mathbf{AB})(\mathbf{B}^{-1}\mathbf{A}^{-1})=\mathbf{I}$ and $(\mathbf{B}^{-1}\mathbf{A}^{-1})(\mathbf{AB})=\mathbf{I}$. Indeed, using the associative property of matrix multiplication, we have that
+
+$$(\mathbf{AB})(\mathbf{B}^{-1}\mathbf{A}^{-1})=\mathbf{A}(\mathbf{B}\mathbf{B}^{-1})\mathbf{A}^{-1}=\mathbf{AI}\mathbf{A}^{-1}=\mathbf{A}\mathbf{A}^{-1}=\mathbf{I}$$
+
+$$(\mathbf{B}^{-1}\mathbf{A}^{-1})(\mathbf{AB})=\mathbf{B}^{-1}(\mathbf{A}\mathbf{A}^{-1})\mathbf{B}=\mathbf{B}^{-1}\mathbf{IB}=\mathbf{B}^{-1}\mathbf{B}=\mathbf{I}$$
+```
+
+<br>
+
+## Memory layout
+
+The elements of matrices used in C++ applications are stored contiguously row by row in CPU memory (RAM), as illustrated below.
+
+$$\left\lbrack\matrix{A_{00}&A_{01}&A_{02}&A_{03}\cr A_{10}&A_{11}&A_{12}&A_{13}\cr A_{20}&A_{21}&A_{22}&A_{23}\cr A_{30}&A_{31}&A_{32}&A_{33}}\right\rbrack\quad\longrightarrow\quad \vert A_{00}\vert A_{01}\vert A_{02}\vert A_{03}\vert A_{10}\vert A_{11}\vert A_{12}\vert A_{13}\vert A_{20}\vert A_{21}\vert A_{22}\vert A_{23}\vert A_{30}\vert A_{31}\vert A_{32}\vert A_{33}\vert$$
+
+We refer to this arrangement of elements as row-major order. <br>
+Of course, the elements of matrices used in shader code are stored contiguously in GPU memory as well. However, by default, they are considered as stored column by column. We refer to this arrangement as column-major order. Then, to represent the same matrix in shader code, its elements should have the following layout when stored in GPU heaps.
+
+$$\left\lbrack\matrix{A_{00}&A_{01}&A_{02}&A_{03}\cr A_{10}&A_{11}&A_{12}&A_{13}\cr A_{20}&A_{21}&A_{22}&A_{23}\cr A_{30}&A_{31}&A_{32}&A_{33}}\right\rbrack\quad\longrightarrow\quad \vert A_{00}\vert A_{10}\vert A_{20}\vert A_{30}\vert A_{01}\vert A_{11}\vert A_{21}\vert A_{31}\vert A_{02}\vert A_{12}\vert A_{22}\vert A_{32}\vert A_{03}\vert A_{13}\vert A_{23}\vert A_{33}\vert$$
+
+Now, a problem arises whenever we have to pass matrix data from our C++ applications to shader programs. As stated in a previous tutorial, the transfer of data from CPU to GPU is just a bit stream. Then, if we simply copy the matrix data from CPU memory to a GPU heap, the transpose of the matrix will be passed because the contiguous elements of the rows in CPU memory will be considered columns in GPU memory by the shader code.
+
+$$\vert A_{00}\vert A_{01}\vert A_{02}\vert A_{03}\vert A_{10}\vert A_{11}\vert A_{12}\vert A_{13}\vert A_{20}\vert A_{21}\vert A_{22}\vert A_{23}\vert A_{30}\vert A_{31}\vert A_{32}\vert A_{33}\vert\quad\longrightarrow\quad\left\lbrack\matrix{A_{00}&A_{10}&A_{20}&A_{30}\cr A_{01}&A_{11}&A_{21}&A_{31}\cr A_{02}&A_{12}&A_{22}&A_{32}\cr A_{03}&A_{13}&A_{23}&A_{33}}\right\rbrack$$
+
+Fortunately, we showed that $(\mathbf{A}^T)^T=\mathbf{A}$. Thismeans that we only need to transpose a matrix before passing it to the GPU in order to fix the problem. Another approach is to enforce a row-major order by indicating **#pragma pack_matrix(row_major)** at the start of a shader program. Alternatively, we can specify a row-major order for a single matrix by prefixing its declaration in the shader code with the keyword **row_major**. In the upcoming tutorials we will simply transpose the matrices in our C++ applications before passing them to the GPU. This way, we can work with matrices by using the default major orders both in C++ and HLSL.
+
+To conclude this section, it's interesting to see how we can use the intrinsic function **mul** (available in HLSL), which multiplies two operands using matrix math. The HLSL documentation describes the **mul** function as follows:
+
+```
+ret  mul(x, y)
+```
+
+>The **x** input value is a matrix. If **x** is a vector, it treated as a row vector.<br>
+The **y** input value is a matrix. If **y** is a vector, it treated as a column vector.
+>
+>The number of columns of **x** and the number of rows of **y** must be equal.<br>
+The result **ret** has the dimension (**x**-rows $\times$ **y**-columns).
+
+Now, if we want to multiply two matrices, or a vector and a matrix, what's the best way to do it using the **mul** function? Let's assume we are using a column-major order in the shader code.
+
+If you want to multiply two $n\times n$ matrices $\mathbf{A}$ and $\mathbf{B}$, then we transpose them in the C++ code before passing the matrix data to the GPU. At that point, in the HLSL code, we simply pass $\mathbf{A}$ as the first argument and $\mathbf{B}$ as the second argument of **mul**, which will return a matrix where each element is the dot product of a row of $\mathbf{A}$ with a column of $\mathbf{B}$.
+
+On the other hand, what happens if you want to multiply a vector and a matrix? Well, it depends on how you want to perform that operation. If you want to multiply the row vector by each column of the matrix, then you should pass the row vector to the first parameter, and the transpose of the matrix to the second parameter of **mul**. Indeed, after copying the transpose of the matrix in a GPU heap, the layout of its elements in memory will be 
+
+$$\vert A_{00}\vert A_{10}\vert A_{20}\vert A_{30}\vert A_{01}\vert A_{11}\vert A_{21}\vert A_{31}\vert A_{02}\vert A_{12}\vert A_{22}\vert A_{32}\vert A_{03}\vert A_{13}\vert A_{23}\vert A_{33}\vert$$
+
+Then, the columns can be easily loaded into shader core registers since their entries are contiguous in memory.
+
+$$reg_1: \vert A_{00}\vert A_{10}\vert A_{20}\vert A_{30}\vert$$
+$$reg_2: \vert A_{01}\vert A_{11}\vert A_{21}\vert A_{31}\vert$$
+$$reg_3: \vert A_{02}\vert A_{12}\vert A_{22}\vert A_{32}\vert$$
+$$reg_4: \vert A_{03}\vert A_{13}\vert A_{23}\vert A_{33}\vert$$
+
+The row vector is loaded in a register as well.
+
+$$reg_0: \vert x\vert y\vert z\vert w\vert$$
+
+At that point, the GPU can simply compute the dot product of $reg_0$ with the other registers to compute the four elements of the resultant vector.
+
+Under the same conditions, if you want to multiply a column vector by each row of the matrix, then you can pass the transpose of the matrix to the first parameter, and the vector to the second parameter of **mul**. At that point, the GPU could execute more instructions to execute the dot product of the vector with the rows of the matrix since the elements of the matrix are ordered column by column. The conditional is used because the real GPU instructions (not the bytecode) could be similar in both cases. The following listings show both the bytecode and a possible translation in GPU machine code of the multiplication between a vector (**vpos**) and a matrix (**World**), passed as arguments to **mul**.
+
+```
+BYTECODE (DXBC\DXIL)
+output.position = mul(vpos, World);
+ 
+dp4 r0.x, v0.xyzw, World[0].xyzw  // dot product of vpos with the 1st column of World
+dp4 r0.y, v0.xyzw, World[1].xyzw  // dot product of vpos with the 2nd column of World
+dp4 r0.z, v0.xyzw, World[2].xyzw  // dot product of vpos with the 3rd column of World
+dp4 r0.w, v0.xyzw, World[3].xyzw  // dot product of vpos with the 4th column of World 
+```
+
+```
+BYTECODE (DXBC\DXIL)
+output.position = mul(World, vpos);
+ 
+mul r0.xyzw, v0.xxxx, World[0].xyzw  // scale the 1st column of World by vpos.x and put the result in r0
+mul r1.xyzw, v0.yyyy, World[1].xyzw  // scale the 2st column of World by vpos.y and put the result in r1
+add r0.xyzw, r0.xyzw, r1.xyzw        // r0 += r1; sum of the first 2 addends
+mul r1.xyzw, v0.zzzz, World[2].xyzw  // scale the 3rd column of World by vpos.z and put the result in r1
+add r0.xyzw, r0.xyzw, r1.xyzw        // r0 += r1; add the third addend
+mul r1.xyzw, v0.wwww, World[3].xyzw  // scale the 4th column of World by vpos.z and put the result in r1
+add r0.xyzw, r0.xyzw, r1.xyzw        // r0 += r1; add the fourth addend
+```
+
+```
+ISA Disassembly
+output.position = mul(vpos, World);
+ 
+v_mul_f32 v0, s0, v4            // 000000000018: 0A000800             v0 = ax
+v_mul_f32 v1, s4, v4            // 00000000001C: 0A020804             v1 = bx
+v_mul_f32 v2, s8, v4            // 000000000020: 0A040808             v2 = cx
+v_mul_f32 v3, s12, v4           // 000000000024: 0A06080C             v3 = dx
+v_mac_f32 v0, s1, v5            // 000000000028: 2C000A01             v0 = ey + ax
+v_mac_f32 v1, s5, v5            // 00000000002C: 2C020A05             v1 = fy + bx
+v_mac_f32 v2, s9, v5            // 000000000030: 2C040A09             v2 = gy + cx
+v_mac_f32 v3, s13, v5           // 000000000034: 2C060A0D             v3 = hy + dx
+v_mac_f32 v0, s2, v6            // 000000000038: 2C000C02             v0 = iz + ey + ax
+v_mac_f32 v1, s6, v6            // 00000000003C: 2C020C06             v1 = jz + fy + bx
+v_mac_f32 v2, s10, v6           // 000000000040: 2C040C0A             v2 = kz + gy + cx
+v_mac_f32 v3, s14, v6           // 000000000044: 2C060C0E             v3 = lz + hy + dx
+v_mac_f32 v0, s3, v7            // 000000000048: 2C000E03             v0 = mw + iz + ey + ax
+v_mac_f32 v1, s7, v7            // 00000000004C: 2C020E07             v1 = nw + jz + fy + bx
+v_mac_f32 v2, s11, v7           // 000000000050: 2C040E0B             v2 = ow + kz + gy + cx
+v_mac_f32 v3, s15, v7           // 000000000054: 2C060E0F             v3 = pw + lz + hy + dx
+exp pos0, v0, v1, v2, v3 done   // 000000000058: C40008CF 03020100    output.position = {v0, v1, v2, v3}
+```
+
+```
+ISA Disassembly
+output.position = mul(World, vpos);
+ 
+v_mul_f32 v0, s4, v5            // 000000000018: 0A000A04             v0 = by
+v_mul_f32 v1, s5, v5            // 00000000001C: 0A020A05             v1 = fy
+v_mul_f32 v2, s6, v5            // 000000000020: 0A040A06             v2 = jy
+v_mul_f32 v3, s7, v5            // 000000000024: 0A060A07             v3 = ny
+v_mac_f32 v0, s0, v4            // 000000000028: 2C000800             v0 = ax + by
+v_mac_f32 v1, s1, v4            // 00000000002C: 2C020801             v1 = ex + fy
+v_mac_f32 v2, s2, v4            // 000000000030: 2C040802             v2 = ix + jy
+v_mac_f32 v3, s3, v4            // 000000000034: 2C060803             v3 = mx + ny
+v_mac_f32 v0, s8, v6            // 000000000038: 2C000C08             v0 = cz + ax + by
+v_mac_f32 v1, s9, v6            // 00000000003C: 2C020C09             v1 = gz + ex + fy
+v_mac_f32 v2, s10, v6           // 000000000040: 2C040C0A             v2 = kz + ix + jy
+v_mac_f32 v3, s11, v6           // 000000000044: 2C060C0B             v3 = oz + mx + ny
+v_mac_f32 v0, s12, v7           // 000000000048: 2C000E0C             v0 = dw + cz + ax + by
+v_mac_f32 v1, s13, v7           // 00000000004C: 2C020E0D             v1 = hw + gz + ex + fy
+v_mac_f32 v2, s14, v7           // 000000000050: 2C040E0E             v2 = lw + kz + ix + jy
+v_mac_f32 v3, s15, v7           // 000000000054: 2C060E0F             v3 = pw + oz + mx + ny
+exp pos0, v0, v1, v2, v3 done   // 000000000058: C40008CF 03020100    output.position = {v0, v1, v2, v3}
+```
+
+Aside from the registers used, the GPU machine code (ISA disassembly) is the same for both vector by matrix and matrix by vector multiplications. To understand the listings above, observe how we compute the multiplication of a row vector by a matrix.
+
+$$\mathbf{uA}=\left\lbrack\matrix{x&y&z&w}\right\rbrack\left\lbrack\matrix{a&b&c&d\cr e&f&g&h\cr i&j&k&l\cr m&n&o&p}\right\rbrack=\left\lbrack\matrix{ax+ey+iz+mw\cr bx+fy+jz+nw\cr cx+gy+kz+ow\cr dx+hy+lz+pw}\right\rbrack$$
+
+And the multiplication of a matrix by a column vector as well.
+
+$$\mathbf{Au}=\left\lbrack\matrix{a&b&c&d\cr e&f&g&h\cr i&j&k&l\cr m&n&o&p}\right\rbrack\left\lbrack\matrix{x\cr y\cr z\cr w}\right\rbrack=\left\lbrack\matrix{ax+by+cz+dw\cr ex+fy+gz+hw\cr ix+jy+kz+lw\cr mx+ny+oz+pw}\right\rbrack$$
+
+In the latter case, observe that the first column is scaled by $x$, the second by $y$, the third by $z$, and the fourth by $w$. Then, the sum of corresponding components in the scaled columns gives us the components of the resultant vector.
+
+```{important}
+The ISA disassembly unveils what GPUs mean by SIMD operations. GPU hardware cores commonly include 32-bit registers and ALUs which execute single operations on 32-bit data. However, GPUs are perfectly capable of performing the same instruction in parallel on different hardware cores (usually 64) for different data (e.g., vertex or pixel data). The shader model hides\abstracts these hardware details with 128-bit shader registers and SIMD instructions to mimic the CPU behaviour. We will return to the architecture and design of GPUs in a later tutorial.
+```
+
+<br>
+
+## Matrices in DirectX [WIP]
 
 <br>
