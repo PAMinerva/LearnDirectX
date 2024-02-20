@@ -293,6 +293,30 @@ $$
 
 <br>
 
-## Adjoint of a matrix [WIP]
+## Adjoint of a matrix 
+
+The cofactor $C_{ij}$ of the entry $A_{ij}$ in an $n\times n$ matrix $\mathbf{A}$ can be defined as follows
+
+$$C_{ij}=(-1)^{i+j}\ det{\bar{\mathbf{A}}}_{ij}$$
+
+Computing the cofactor of every element of the matrix $\mathbf{A}$, we can create the cofactor matrix $\mathbf{C}_\mathbf{A}$ of $\mathbf{A}$, where $C_{ij}$ is the element of $\mathbf{C}_\mathbf{A}$ at the ij-th position.
+
+$\mathbf{C}_\mathbf{A}=\left\lbrack\matrix{C_{00}&\cdots&C_{0n}\cr \vdots&\ddots&\vdots\cr C_{n0}&\cdots&C_{nn}}\right\rbrack$
+
+The adjoint $\mathbf{A}^\ast$ of the matrix $\mathbf{A}$ is simply the transpose of its cofactor matrix: $\mathbf{A}^\ast=\mathbf{C}_\mathbf{A}^T$. 
+So, we have that the ij-th element of $\mathbf{A}^\ast$ is
+
+$$\tag{4}
+C_{ij}^T=(-1)^{i+j}\ det\bar{\mathbf{A}}_ {ji}
+\label{eq:AMatrices4}
+$$
+
+Please note the swap between subscripts in the matrix minor to select the corresponding entry in the transpose.
+
+The adjoint of a matrix, and in particular the equation $\eqref{eq:AMatrices4}$, is useful to compute the inverse of the matrix.
+
+<br>
+
+## Inverse of a matrix [WIP]
 
 <br>

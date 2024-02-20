@@ -431,7 +431,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix">Transpose of a matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identity-matrix">Identity matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determinant-of-a-matrix">Determinant of a matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix-wip">Adjoint of a matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix">Adjoint of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-of-a-matrix-wip">Inverse of a matrix [WIP]</a></li>
 </ul>
             </nav>
         </div>
@@ -697,8 +698,26 @@ det\left\lbrack\matrix{(1+3(2))&amp;2\cr (3+3(4))&amp;4}\right\rbrack&amp;=(7)(4
 \end{split}\]</div>
 <br>
 </section>
-<section id="adjoint-of-a-matrix-wip">
-<h2>Adjoint of a matrix [WIP]<a class="headerlink" href="#adjoint-of-a-matrix-wip" title="Link to this heading">#</a></h2>
+<section id="adjoint-of-a-matrix">
+<h2>Adjoint of a matrix<a class="headerlink" href="#adjoint-of-a-matrix" title="Link to this heading">#</a></h2>
+<p>The cofactor <span class="math notranslate nohighlight">\(C_{ij}\)</span> of the entry <span class="math notranslate nohighlight">\(A_{ij}\)</span> in an <span class="math notranslate nohighlight">\(n\times n\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> can be defined as follows</p>
+<div class="math notranslate nohighlight">
+\[C_{ij}=(-1)^{i+j}\ det{\bar{\mathbf{A}}}_{ij}\]</div>
+<p>Computing the cofactor of every element of the matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, we can create the cofactor matrix <span class="math notranslate nohighlight">\(\mathbf{C}_\mathbf{A}\)</span> of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, where <span class="math notranslate nohighlight">\(C_{ij}\)</span> is the element of <span class="math notranslate nohighlight">\(\mathbf{C}_\mathbf{A}\)</span> at the ij-th position.</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{C}_\mathbf{A}=\left\lbrack\matrix{C_{00}&amp;\cdots&amp;C_{0n}\cr \vdots&amp;\ddots&amp;\vdots\cr C_{n0}&amp;\cdots&amp;C_{nn}}\right\rbrack\)</span></p>
+<p>The adjoint <span class="math notranslate nohighlight">\(\mathbf{A}^\ast\)</span> of the matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is simply the transpose of its cofactor matrix: <span class="math notranslate nohighlight">\(\mathbf{A}^\ast=\mathbf{C}_\mathbf{A}^T\)</span>.
+So, we have that the ij-th element of <span class="math notranslate nohighlight">\(\mathbf{A}^\ast\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\tag{4}
+C_{ij}^T=(-1)^{i+j}\ det\bar{\mathbf{A}}_ {ji}
+\label{eq:AMatrices4}
+\]</div>
+<p>Please note the swap between subscripts in the matrix minor to select the corresponding entry in the transpose.</p>
+<p>The adjoint of a matrix, and in particular the equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices4}\)</span>, is useful to compute the inverse of the matrix.</p>
+<br>
+</section>
+<section id="inverse-of-a-matrix-wip">
+<h2>Inverse of a matrix [WIP]<a class="headerlink" href="#inverse-of-a-matrix-wip" title="Link to this heading">#</a></h2>
 <br>
 </section>
 </section>
@@ -775,7 +794,8 @@ det\left\lbrack\matrix{(1+3(2))&amp;2\cr (3+3(4))&amp;4}\right\rbrack&amp;=(7)(4
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix">Transpose of a matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identity-matrix">Identity matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determinant-of-a-matrix">Determinant of a matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix-wip">Adjoint of a matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix">Adjoint of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-of-a-matrix-wip">Inverse of a matrix [WIP]</a></li>
 </ul>
   </nav></div>
 
