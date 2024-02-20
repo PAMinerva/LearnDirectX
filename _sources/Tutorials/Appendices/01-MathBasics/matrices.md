@@ -441,73 +441,73 @@ At that point, the GPU can simply compute the dot product of $reg_0$ with the ot
 
 Under the same conditions, if you want to multiply a column vector by each row of the matrix, then you can pass the transpose of the matrix as the first argument, and the vector as the second argument to **mul**. At that point, the GPU may have to execute more instructions to perform the dot product of the vector with the rows of the matrix since the elements of the matrix are ordered column by column. The conditional is used because the real GPU instructions (not the bytecode) could be similar in both cases. The following listings show both the bytecode and a possible translation in GPU machine code of the multiplication between a vector (**vpos**) and a matrix (**World**), passed as arguments to **mul**.
 
-```
-BYTECODE (DXBC\DXIL)
-output.position = mul(vpos, World);
+```nasm
+# BYTECODE (DXBC\DXIL)
+# output.position = mul(vpos, World);
  
-dp4 r0.x, v0.xyzw, World[0].xyzw  // dot product of vpos with the 1st column of World
-dp4 r0.y, v0.xyzw, World[1].xyzw  // dot product of vpos with the 2nd column of World
-dp4 r0.z, v0.xyzw, World[2].xyzw  // dot product of vpos with the 3rd column of World
-dp4 r0.w, v0.xyzw, World[3].xyzw  // dot product of vpos with the 4th column of World 
+dp4 r0.x, v0.xyzw, World[0].xyzw  # dot product of vpos with the 1st column of World
+dp4 r0.y, v0.xyzw, World[1].xyzw  # dot product of vpos with the 2nd column of World
+dp4 r0.z, v0.xyzw, World[2].xyzw  # dot product of vpos with the 3rd column of World
+dp4 r0.w, v0.xyzw, World[3].xyzw  # dot product of vpos with the 4th column of World 
 ```
 
-```
-BYTECODE (DXBC\DXIL)
-output.position = mul(World, vpos);
+```nasm
+# BYTECODE (DXBC\DXIL)
+# output.position = mul(World, vpos);
  
-mul r0.xyzw, v0.xxxx, World[0].xyzw  // scale the 1st column of World by vpos.x and put the result in r0
-mul r1.xyzw, v0.yyyy, World[1].xyzw  // scale the 2st column of World by vpos.y and put the result in r1
-add r0.xyzw, r0.xyzw, r1.xyzw        // r0 += r1; sum of the first 2 addends
-mul r1.xyzw, v0.zzzz, World[2].xyzw  // scale the 3rd column of World by vpos.z and put the result in r1
-add r0.xyzw, r0.xyzw, r1.xyzw        // r0 += r1; add the third addend
-mul r1.xyzw, v0.wwww, World[3].xyzw  // scale the 4th column of World by vpos.z and put the result in r1
-add r0.xyzw, r0.xyzw, r1.xyzw        // r0 += r1; add the fourth addend
+mul r0.xyzw, v0.xxxx, World[0].xyzw  # scale the 1st column of World by vpos.x and put the result in r0
+mul r1.xyzw, v0.yyyy, World[1].xyzw  # scale the 2st column of World by vpos.y and put the result in r1
+add r0.xyzw, r0.xyzw, r1.xyzw        # r0 += r1; sum of the first 2 addends
+mul r1.xyzw, v0.zzzz, World[2].xyzw  # scale the 3rd column of World by vpos.z and put the result in r1
+add r0.xyzw, r0.xyzw, r1.xyzw        # r0 += r1; add the third addend
+mul r1.xyzw, v0.wwww, World[3].xyzw  # scale the 4th column of World by vpos.z and put the result in r1
+add r0.xyzw, r0.xyzw, r1.xyzw        # r0 += r1; add the fourth addend
 ```
 
-```
-ISA Disassembly
-output.position = mul(vpos, World);
+```nasm
+# ISA Disassembly
+# output.position = mul(vpos, World);
  
-v_mul_f32 v0, s0, v4            // 000000000018: 0A000800             v0 = ax
-v_mul_f32 v1, s4, v4            // 00000000001C: 0A020804             v1 = bx
-v_mul_f32 v2, s8, v4            // 000000000020: 0A040808             v2 = cx
-v_mul_f32 v3, s12, v4           // 000000000024: 0A06080C             v3 = dx
-v_mac_f32 v0, s1, v5            // 000000000028: 2C000A01             v0 = ey + ax
-v_mac_f32 v1, s5, v5            // 00000000002C: 2C020A05             v1 = fy + bx
-v_mac_f32 v2, s9, v5            // 000000000030: 2C040A09             v2 = gy + cx
-v_mac_f32 v3, s13, v5           // 000000000034: 2C060A0D             v3 = hy + dx
-v_mac_f32 v0, s2, v6            // 000000000038: 2C000C02             v0 = iz + ey + ax
-v_mac_f32 v1, s6, v6            // 00000000003C: 2C020C06             v1 = jz + fy + bx
-v_mac_f32 v2, s10, v6           // 000000000040: 2C040C0A             v2 = kz + gy + cx
-v_mac_f32 v3, s14, v6           // 000000000044: 2C060C0E             v3 = lz + hy + dx
-v_mac_f32 v0, s3, v7            // 000000000048: 2C000E03             v0 = mw + iz + ey + ax
-v_mac_f32 v1, s7, v7            // 00000000004C: 2C020E07             v1 = nw + jz + fy + bx
-v_mac_f32 v2, s11, v7           // 000000000050: 2C040E0B             v2 = ow + kz + gy + cx
-v_mac_f32 v3, s15, v7           // 000000000054: 2C060E0F             v3 = pw + lz + hy + dx
-exp pos0, v0, v1, v2, v3 done   // 000000000058: C40008CF 03020100    output.position = {v0, v1, v2, v3}
+v_mul_f32 v0, s0, v4            # 000000000018: 0A000800             v0 = ax
+v_mul_f32 v1, s4, v4            # 00000000001C: 0A020804             v1 = bx
+v_mul_f32 v2, s8, v4            # 000000000020: 0A040808             v2 = cx
+v_mul_f32 v3, s12, v4           # 000000000024: 0A06080C             v3 = dx
+v_mac_f32 v0, s1, v5            # 000000000028: 2C000A01             v0 = ey + ax
+v_mac_f32 v1, s5, v5            # 00000000002C: 2C020A05             v1 = fy + bx
+v_mac_f32 v2, s9, v5            # 000000000030: 2C040A09             v2 = gy + cx
+v_mac_f32 v3, s13, v5           # 000000000034: 2C060A0D             v3 = hy + dx
+v_mac_f32 v0, s2, v6            # 000000000038: 2C000C02             v0 = iz + ey + ax
+v_mac_f32 v1, s6, v6            # 00000000003C: 2C020C06             v1 = jz + fy + bx
+v_mac_f32 v2, s10, v6           # 000000000040: 2C040C0A             v2 = kz + gy + cx
+v_mac_f32 v3, s14, v6           # 000000000044: 2C060C0E             v3 = lz + hy + dx
+v_mac_f32 v0, s3, v7            # 000000000048: 2C000E03             v0 = mw + iz + ey + ax
+v_mac_f32 v1, s7, v7            # 00000000004C: 2C020E07             v1 = nw + jz + fy + bx
+v_mac_f32 v2, s11, v7           # 000000000050: 2C040E0B             v2 = ow + kz + gy + cx
+v_mac_f32 v3, s15, v7           # 000000000054: 2C060E0F             v3 = pw + lz + hy + dx
+exp pos0, v0, v1, v2, v3 done   # 000000000058: C40008CF 03020100    output.position = {v0, v1, v2, v3}
 ```
 
-```
-ISA Disassembly
-output.position = mul(World, vpos);
+```nasm
+# ISA Disassembly
+# output.position = mul(World, vpos);
  
-v_mul_f32 v0, s4, v5            // 000000000018: 0A000A04             v0 = by
-v_mul_f32 v1, s5, v5            // 00000000001C: 0A020A05             v1 = fy
-v_mul_f32 v2, s6, v5            // 000000000020: 0A040A06             v2 = jy
-v_mul_f32 v3, s7, v5            // 000000000024: 0A060A07             v3 = ny
-v_mac_f32 v0, s0, v4            // 000000000028: 2C000800             v0 = ax + by
-v_mac_f32 v1, s1, v4            // 00000000002C: 2C020801             v1 = ex + fy
-v_mac_f32 v2, s2, v4            // 000000000030: 2C040802             v2 = ix + jy
-v_mac_f32 v3, s3, v4            // 000000000034: 2C060803             v3 = mx + ny
-v_mac_f32 v0, s8, v6            // 000000000038: 2C000C08             v0 = cz + ax + by
-v_mac_f32 v1, s9, v6            // 00000000003C: 2C020C09             v1 = gz + ex + fy
-v_mac_f32 v2, s10, v6           // 000000000040: 2C040C0A             v2 = kz + ix + jy
-v_mac_f32 v3, s11, v6           // 000000000044: 2C060C0B             v3 = oz + mx + ny
-v_mac_f32 v0, s12, v7           // 000000000048: 2C000E0C             v0 = dw + cz + ax + by
-v_mac_f32 v1, s13, v7           // 00000000004C: 2C020E0D             v1 = hw + gz + ex + fy
-v_mac_f32 v2, s14, v7           // 000000000050: 2C040E0E             v2 = lw + kz + ix + jy
-v_mac_f32 v3, s15, v7           // 000000000054: 2C060E0F             v3 = pw + oz + mx + ny
-exp pos0, v0, v1, v2, v3 done   // 000000000058: C40008CF 03020100    output.position = {v0, v1, v2, v3}
+v_mul_f32 v0, s4, v5            # 000000000018: 0A000A04             v0 = by
+v_mul_f32 v1, s5, v5            # 00000000001C: 0A020A05             v1 = fy
+v_mul_f32 v2, s6, v5            # 000000000020: 0A040A06             v2 = jy
+v_mul_f32 v3, s7, v5            # 000000000024: 0A060A07             v3 = ny
+v_mac_f32 v0, s0, v4            # 000000000028: 2C000800             v0 = ax + by
+v_mac_f32 v1, s1, v4            # 00000000002C: 2C020801             v1 = ex + fy
+v_mac_f32 v2, s2, v4            # 000000000030: 2C040802             v2 = ix + jy
+v_mac_f32 v3, s3, v4            # 000000000034: 2C060803             v3 = mx + ny
+v_mac_f32 v0, s8, v6            # 000000000038: 2C000C08             v0 = cz + ax + by
+v_mac_f32 v1, s9, v6            # 00000000003C: 2C020C09             v1 = gz + ex + fy
+v_mac_f32 v2, s10, v6           # 000000000040: 2C040C0A             v2 = kz + ix + jy
+v_mac_f32 v3, s11, v6           # 000000000044: 2C060C0B             v3 = oz + mx + ny
+v_mac_f32 v0, s12, v7           # 000000000048: 2C000E0C             v0 = dw + cz + ax + by
+v_mac_f32 v1, s13, v7           # 00000000004C: 2C020E0D             v1 = hw + gz + ex + fy
+v_mac_f32 v2, s14, v7           # 000000000050: 2C040E0E             v2 = lw + kz + ix + jy
+v_mac_f32 v3, s15, v7           # 000000000054: 2C060E0F             v3 = pw + oz + mx + ny
+exp pos0, v0, v1, v2, v3 done   # 000000000058: C40008CF 03020100    output.position = {v0, v1, v2, v3}
 ```
 
 Aside from the registers used, the GPU machine code (ISA disassembly) is the same for both vector by matrix and matrix by vector multiplications. To understand the listings above, observe how we compute the multiplication of a row vector by a matrix.
