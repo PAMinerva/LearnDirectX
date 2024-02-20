@@ -301,7 +301,7 @@ $$C_{ij}=(-1)^{i+j}\ det{\bar{\mathbf{A}}}_{ij}$$
 
 Computing the cofactor of every element of the matrix $\mathbf{A}$, we can create the cofactor matrix $\mathbf{C}_\mathbf{A}$ of $\mathbf{A}$, where $C_{ij}$ is the element of $\mathbf{C}_\mathbf{A}$ at the ij-th position.
 
-$\mathbf{C}_\mathbf{A}=\left\lbrack\matrix{C_{00}&\cdots&C_{0n}\cr \vdots&\ddots&\vdots\cr C_{n0}&\cdots&C_{nn}}\right\rbrack$
+$$\mathbf{C}_\mathbf{A}=\left\lbrack\matrix{C_{00}&\cdots&C_{0n}\cr \vdots&\ddots&\vdots\cr C_{n0}&\cdots&C_{nn}}\right\rbrack$$
 
 The adjoint $\mathbf{A}^\ast$ of the matrix $\mathbf{A}$ is simply the transpose of its cofactor matrix: $\mathbf{A}^\ast=\mathbf{C}_\mathbf{A}^T$. 
 So, we have that the ij-th element of $\mathbf{A}^\ast$ is
