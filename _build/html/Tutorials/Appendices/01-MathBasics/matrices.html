@@ -428,7 +428,10 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix-wip">Transpose of a matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix">Transpose of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identity-matrix">Identity matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determinant-of-a-matrix">Determinant of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix-wip">Adjoint of a matrix [WIP]</a></li>
 </ul>
             </nav>
         </div>
@@ -540,10 +543,10 @@ The dimensions of a matrix are determined by the number of its rows and columns.
 \[\mathbf{uA}=\left\lbrack\matrix{u_0&amp;u_1&amp;\cdots&amp;u_{n-1}}\right\rbrack\left\lbrack\matrix{A_{00}&amp;\cdots&amp;A_{0(n-1)}\cr \vdots&amp;\ddots&amp;\cdots\cr A_{(n-1)0}&amp;\cdots&amp;A_{(n-1)(n-1)}}\right\rbrack=u_0\mathbf{A}_{0\ast}+u_1\mathbf{A}_{1\ast}+\cdots+u_{n-1}\mathbf{A}_{(n-1)\ast}\]</div>
 <p>We can also multiply an <span class="math notranslate nohighlight">\(m\times n\)</span> matrix by an <span class="math notranslate nohighlight">\(n\times 1\)</span> column vector. For example, if <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix and <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> is a three-component vector that represent a column vector, we have that</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{Au}=\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack\left\lbrack\matrix{x\cr y\cr z}\right\rbrack=\left\lbrack\matrix{\mathbf{u}\cdot\mathbf{A}_ {0\ast}\cr \mathbf{u}\cdot\mathbf{A}_ {1\ast}\cr \mathbf{u}\cdot\mathbf{A}_ {2\ast}}\right\rbrack\]</div>
+\[\mathbf{Au}=\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack\left\lbrack\matrix{x\cr y\cr z}\right\rbrack=\left\lbrack\matrix{\mathbf{u}\cdot\mathbf{A}_{0\ast}\cr \mathbf{u}\cdot\mathbf{A}_{1\ast}\cr \mathbf{u}\cdot\mathbf{A}_{2\ast}}\right\rbrack\]</div>
 <p>The result is a column vector with three elements where each entry is the dot product of <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and a row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>. Now, if we perform the dot product we have</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{Au}=x\mathbf{A}_ {\ast 0}+y\mathbf{A}_ {\ast 1}+z\mathbf{A}_ {\ast 2}=\left\lbrack\matrix{\mathbf{A}_ {\ast 0}&amp;\mathbf{A}_ {\ast 1}&amp;\mathbf{A}_ {\ast 2}}\right\rbrack\left\lbrack\matrix{x\cr y\cr z}\right\rbrack\]</div>
+\[\mathbf{Au}=x\mathbf{A}_{\ast 0}+y\mathbf{A}_{\ast 1}+z\mathbf{A}_{\ast 2}=\left\lbrack\matrix{\mathbf{A}_{\ast 0}&amp;\mathbf{A}_{\ast 1}&amp;\mathbf{A}_{\ast 2}}\right\rbrack\left\lbrack\matrix{x\cr y\cr z}\right\rbrack\]</div>
 <p>Therefore, the product of a matrix and a column vector is a linear combination of the columns of the matrix, scaled by the elements of the column vector.</p>
 </section>
 <section id="properties-of-matrix-multiplication">
@@ -580,8 +583,122 @@ The dimensions of a matrix are determined by the number of its rows and columns.
 </section>
 </section>
 </section>
-<section id="transpose-of-a-matrix-wip">
-<h2>Transpose of a matrix [WIP]<a class="headerlink" href="#transpose-of-a-matrix-wip" title="Link to this heading">#</a></h2>
+<section id="transpose-of-a-matrix">
+<h2>Transpose of a matrix<a class="headerlink" href="#transpose-of-a-matrix" title="Link to this heading">#</a></h2>
+<p>The transpose of a matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is often denoted with <span class="math notranslate nohighlight">\(\mathbf{M}^T\)</span>. The transpose can be derived from the original matrix by simply interchanging its rows and columns.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{M}=\left\lbrack\matrix{1&amp;2&amp;3\cr 4&amp;5&amp;6\cr 7&amp;8&amp;9}\right\rbrack\quad\quad\quad\quad\mathbf{M^T}=\left\lbrack\matrix{1&amp;4&amp;7\cr 2&amp;5&amp;8\cr 3&amp;6&amp;9}\right\rbrack\]</div>
+<p>As you can see, interchanging rows and columns in a matrix is equivalent to flipping the matrix over its diagonal. As a result, if we have a matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>, obtaining the ij-th entry of its transpose can be achieved by simply swapping the subscripts and specifying the ji-th entry</p>
+<p>Below are the properties of the matrix transpose.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\((\mathbf{A}^T)^T=\mathbf{A}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((k\mathbf{A}^T)=k\mathbf{A}^T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((\mathbf{A}+\mathbf{B})^T=\mathbf{A}^T+\mathbf{B}^T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((\mathbf{AB})^T=\mathbf{B}^T\mathbf{A}^T\)</span></p></li>
+</ul>
+<div class="dropdown admonition">
+<p class="admonition-title">Proof</p>
+<p>The first three properties are straightforward to prove. For the last property, we can demonstrate it by computing the ji-th entry of both <span class="math notranslate nohighlight">\((\mathbf{AB})^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}^T\mathbf{A}^T\)</span>, and showing that they are equal. Specifically, we have:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+(\mathbf{AB})_{ij}^T&amp;=(\mathbf{AB})_{ji}=\mathbf{A}_{j\ast}\cdot\mathbf{B}_{\ast i} \\
+\\
+(\mathbf{B}^T\mathbf{A}^T)_{ij}&amp;=\mathbf{B}_{i\ast}^T\cdot\mathbf{A}_{\ast j}^T=\mathbf{B}_{\ast i}\cdot\mathbf{A}_{j\ast}
+\end{align*}
+\end{split}\]</div>
+<p>The two expressions are the same since the dot product is commutative. Also, observe how we flipped the subscripts to refer to the corresponding entry in the transposes.</p>
+</div>
+<br>
+</section>
+<section id="identity-matrix">
+<h2>Identity matrix<a class="headerlink" href="#identity-matrix" title="Link to this heading">#</a></h2>
+<p>The identity matrix is a square matrix in which all the elements are zero, except for the entries on the main diagonal, which are all 1. The main diagonal consists of elements <span class="math notranslate nohighlight">\(M_{ij}\)</span> where <span class="math notranslate nohighlight">\(i=j\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\left\lbrack\matrix{1&amp;0\cr 0&amp;1}\right\rbrack\quad\quad\quad\quad\left\lbrack\matrix{1&amp;0&amp;0\cr 0&amp;1&amp;0\cr 0&amp;0&amp;1}\right\rbrack\quad\quad\quad\quad\left\lbrack\matrix{1&amp;0&amp;0&amp;0\cr 0&amp;1&amp;0&amp;0\cr 0&amp;0&amp;1&amp;0\cr 0&amp;0&amp;0&amp;1}\right\rbrack\]</div>
+<p>The identity matrix is named as such because it serves as the multiplicative identity. That is, for an <span class="math notranslate nohighlight">\(n\times n\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> and an identity matrix <span class="math notranslate nohighlight">\(\mathbf{I}\)</span> of the same dimension, we have the following property:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{MI} = \mathbf{IM} = \mathbf{M}\]</div>
+<p>Observe that the multiplication with the identity matrix is commutative by definition, meaning that the order of multiplication does not matter. This is an exception to the general operation of matrix multiplication, where the order of multiplication typically matters and matrix multiplication is not commutative.</p>
+<br>
+</section>
+<section id="determinant-of-a-matrix">
+<h2>Determinant of a matrix<a class="headerlink" href="#determinant-of-a-matrix" title="Link to this heading">#</a></h2>
+<p>The determinant of a matrix is closely related to the concept of hypervolume, which represents the measure of length in 1D, area in 2D, and volume in 3D. It is important to note that the determinant is only defined for square matrices. Now, you may be wondering what it means to have a signed length, area, or volume. As mentioned earlier in this tutorial (and as we will formally demonstrate in a subsequent appendix), matrices are associated with transformations, and the sign of the determinant indicates whether a transformation preserves or reverses the orientation of the standard basis vectors. In simpler terms, when multiplying (transforming) the standard basis vectors <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> by a square matrix with a positive determinant, the handedness of the resulting coordinate system remains unchanged.</p>
+<p>Before delving into the calculation of the determinant of a matrix, we first need to introduce the concept of matrix minors. By matrix minor of an <span class="math notranslate nohighlight">\(n\times n\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> we mean the <span class="math notranslate nohighlight">\((n−1)\times(n−1)\)</span> matrix <span class="math notranslate nohighlight">\(\bar{\mathbf{A}}_{ij}\)</span> derived from <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> by deleting the i-th row and j-th column. For example,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+&amp;\mathbf{A}=\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack \\
+\\
+&amp;{\bar{\mathbf{A}}}_{00}=\left\lbrack\matrix{A_{11}&amp;A_{12}\cr A_{21}&amp;A_{22}}\right\rbrack \\
+\\
+&amp;{\bar{\mathbf{A}}}_{01}=\left\lbrack\matrix{A_{10}&amp;A_{12}\cr A_{20}&amp;A_{22}}\right\rbrack
+\end{align*}
+\end{split}\]</div>
+<p>Now, let’s see how to calculate the determinant <span class="math notranslate nohighlight">\(\lvert\mathbf{A}\rvert\)</span> (or <span class="math notranslate nohighlight">\(det\mathbf{A}\)</span>) of a square matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>. First of all, the determinant of a <span class="math notranslate nohighlight">\(1\times 1\)</span> matrix is simply the only element in the matrix: <span class="math notranslate nohighlight">\(\lvert\mathbf{A}\rvert=A_{00}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{A}=\left\lbrack\matrix{A_{00}}\right\rbrack\)</span>. For matrices of higher dimensions, we can use the following recursive formula.</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}\tag{2}det\mathbf{A}=\sum_{j=0}^{n-1}\ [(-1)^{i+j}\cdot A_{ij}\cdot det{\bar{\mathbf{A}}}_{ij}]\label{eq:AMatrices2}\end{equation}\]</div>
+<p>Observe that the dot in the equation above represents a scalar multiplication, not a dot product. The only variable in the equation is <span class="math notranslate nohighlight">\(j\)</span>, allowing you to choose any <span class="math notranslate nohighlight">\(i\)</span>-th row of matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and apply equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span>. Similarly, you can choose any <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix and apply equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span> by changing the variable under the summation symbol to <span class="math notranslate nohighlight">\(i\)</span> instead of <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>Equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span> provides a recursive method for calculating the determinant of a matrix. It involves computing the determinants of matrix minors and using them in a linear combination, where the coefficients are the elements of the chosen i-th row. This approach allows us to extend the calculation of determinants from <span class="math notranslate nohighlight">\(1\times 1\)</span> matrices to <span class="math notranslate nohighlight">\(2\times 2\)</span> matrices by applying the formula above (we will use the elements of the first row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> as coefficients; that is, we set <span class="math notranslate nohighlight">\(i=0\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[\tag{3}
+det\left\lbrack\matrix{A_{00}&amp;A_{01}\cr A_{10}&amp;A_{11}}\right\rbrack=A_{00}\ det[A_{11}]-A_{01}\ det\,[A_{10}]=A_{00}A_{11}-A_{01}A_{10}
+\label{eq:AMatrices3}
+\]</div>
+<p>Now that we know how to calculate the determinants of <span class="math notranslate nohighlight">\(2\times 2\)</span> matrices, we can compute the determinants of <span class="math notranslate nohighlight">\(3\times 3\)</span> matrices as well.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+det\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}\cr A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}}\right\rbrack&amp;=A_{00}\ det\left\lbrack\matrix{A_{11}&amp;A_{12}\cr A_{21}&amp;A_{22}}\right\rbrack-A_{01}\ det\left\lbrack\matrix{A_{10}&amp;A_{12}\cr A_{20}&amp;A_{22}}\right\rbrack+A_{02}\ det\left\lbrack\matrix{A_{10}&amp;A_{11}\cr A_{20}&amp;A_{21}}\right\rbrack \\
+&amp;=A_{00}A_{11}A_{22}-A_{00}A_{12}A_{21}-A_{01}A_{10}A_{22}+A_{01}A_{12}A_{20}+A_{02}A_{10}A_{11}-A_{02}A_{10}A_{21}
+\end{align*}
+\end{split}\]</div>
+<p>As can be observed, the result obtained is similar to the outcome of the scalar triple product discussed in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>. This means that the determinant of a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> represents the signed volume of the parallelepiped formed by its three row vectors (or column vectors; indeed, note that <span class="math notranslate nohighlight">\(\lvert\mathbf{A}\rvert\)</span>=<span class="math notranslate nohighlight">\(\lvert\mathbf{A}^T\rvert\)</span>). Specifically, if the row vectors are denoted as <span class="math notranslate nohighlight">\(\mathbf{A}_{0\ast}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{A}_{1\ast}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_{2\ast}\)</span>, the sign of the determinant is positive if the vectors <span class="math notranslate nohighlight">\(\mathbf{A}_{0\ast}\)</span> and <span class="math notranslate nohighlight">\((\mathbf{A}_{1\ast}\times\mathbf{A}_{2\ast})\)</span> are on the same side (half-space) with respect to the plane defined by <span class="math notranslate nohighlight">\(\mathbf{A}_{1\ast}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_{2\ast}\)</span>. As will be further discussed in a later appendix, this property ensures that the handedness of a frame doesn’t change if we use <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> to transform the standard basis vectors of the frame.</p>
+<p>On the other hand, it’s much easier to prove that the determinant of a <span class="math notranslate nohighlight">\(2\times 2\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is the signed area of the parallelogram formed by its two row vectors <span class="math notranslate nohighlight">\(\mathbf{A}_{0\ast}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_{1\ast}\)</span>.</p>
+<figure class="align-default">
+<img alt="../../../_images/det-signed-area.png" src="../../../_images/det-signed-area.png" />
+</figure>
+<p>In the illustration above, we have that the area <span class="math notranslate nohighlight">\(T\)</span> of the triangle formed by <span class="math notranslate nohighlight">\(\mathbf{A}_{0\ast}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_{1\ast}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[T=A_{00}A_{11}-T_1-T_2-T_3\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+T_1&amp;=\frac{1}{2}A_{00}A_{01} \\
+\\
+T_2&amp;=\frac{1}{2}(A_{11}-A_{01})(A_{00}-A_{10}) \\
+\\
+T_3&amp;=\frac{1}{2}A_{10}A_{11}
+\end{align*}
+\end{split}\]</div>
+<p>Substituting and simplifying, we get</p>
+<div class="math notranslate nohighlight">
+\[T=\frac{1}{2}A_{00}A_{11}-\frac{1}{2}A_{01}A_{10}\]</div>
+<p>However, we want to calculate the area of the parallelogram <span class="math notranslate nohighlight">\(A_p\)</span> formed by <span class="math notranslate nohighlight">\(\mathbf{A}_{0\ast}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_{1\ast}\)</span>. For this purpose, we know that <span class="math notranslate nohighlight">\(A_p=2T\)</span>, so we have that <span class="math notranslate nohighlight">\(A_p\)</span> is equal to equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices3}\)</span>, the determinant of a <span class="math notranslate nohighlight">\(2\times 2\)</span> matrix whose columns are <span class="math notranslate nohighlight">\(\mathbf{A}_{0\ast}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_{1\ast}\)</span>. If you can rotate <span class="math notranslate nohighlight">\(\mathbf{A}_{0\ast}\)</span> towards <span class="math notranslate nohighlight">\(\mathbf{A}_{1\ast}\)</span> in the same way as <span class="math notranslate nohighlight">\(\mathbf{i}\)</span> rotates towards <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> then the area is positive, otherwise it is negative.</p>
+<p>By now, you might have figured out how to compute the determinant of a <span class="math notranslate nohighlight">\(4\times 4\)</span> matrix.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+det\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}&amp;A_{03}\cr A_{10}&amp;A_{11}&amp;A_{12}&amp;A_{13}\cr A_{20}&amp;A_{21}&amp;A_{22}&amp;A_{23}\cr A_{30}&amp;A_{31}&amp;A_{32}&amp;A_{33}}\right\rbrack&amp;=A_{00}\ det\left\lbrack\matrix{A_{11}&amp;A_{12}&amp;A_{13}\cr A_{21}&amp;A_{22}&amp;A_{23}\cr A_{31}&amp;A_{32}&amp;A_{33}}\right\rbrack-A_{01}\ det\left\lbrack\matrix{A_{10}&amp;A_{12}&amp;A_{13}\cr A_{20}&amp;A_{22}&amp;A_{23}\cr A_{30}&amp;A_{32}&amp;A_{33}}\right\rbrack \\
+\\
+&amp;+\ A_{02}\ det\left\lbrack\matrix{A_{10}&amp;A_{11}&amp;A_{13}\cr A_{20}&amp;A_{21}&amp;A_{23}\cr A_{30}&amp;A_{31}&amp;A_{33}}\right\rbrack-A_{03}\ det\left\lbrack\matrix{A_{10}&amp;A_{11}&amp;A_{12}\cr A_{20}&amp;A_{21}&amp;A_{22}\cr A_{30}&amp;A_{31}&amp;A_{32}}\right\rbrack
+\end{align*}
+\end{split}\]</div>
+<p>It can be proven that if we add a scaled column (or row) of a matrix to another column (or row) of the same matrix, the determinant does not change. However, we won’t provide a formal proof here as a practical example is more than enough. Indeed, below you can verify that if we scale the second column of a simple <span class="math notranslate nohighlight">\(2\times 2\)</span> matrix by <span class="math notranslate nohighlight">\(3\)</span>, and add the result to the first column, the determinant doesn’t change.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+det\left\lbrack\matrix{1&amp;2\cr 3&amp;4}\right\rbrack&amp;=(1)(4)-(2)(3)=4-6=-2 \\
+\\
+det\left\lbrack\matrix{(1+3(2))&amp;2\cr (3+3(4))&amp;4}\right\rbrack&amp;=(7)(4)-(2)(15)=28-30=-2
+\end{align*}
+\end{split}\]</div>
+<br>
+</section>
+<section id="adjoint-of-a-matrix-wip">
+<h2>Adjoint of a matrix [WIP]<a class="headerlink" href="#adjoint-of-a-matrix-wip" title="Link to this heading">#</a></h2>
 <br>
 </section>
 </section>
@@ -655,7 +772,10 @@ The dimensions of a matrix are determined by the number of its rows and columns.
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix-wip">Transpose of a matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transpose-of-a-matrix">Transpose of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identity-matrix">Identity matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determinant-of-a-matrix">Determinant of a matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix-wip">Adjoint of a matrix [WIP]</a></li>
 </ul>
   </nav></div>
 

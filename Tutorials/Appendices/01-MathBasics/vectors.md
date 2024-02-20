@@ -470,7 +470,7 @@ As you know, the length of the cross product is the area of a parallelogram. Als
 $$V=|\mathbf{u}| |\mathbf{v}\times\mathbf{w}|\cos{\theta}$$
 
 with $|\mathbf{v}\times\mathbf{w}|=b$ and $|\mathbf{u}|\cos{\theta}=h$.<br>
-From equation $(1)$ we can also write it as
+From equation $\eqref{eq:Avectors1}$ we can also write it as
 
 $$V=\mathbf{u}\cdot (\mathbf{v}\times\mathbf{w})$$
 
