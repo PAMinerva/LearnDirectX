@@ -526,6 +526,218 @@ The ISA disassembly unveils what GPUs mean by SIMD operations. GPU hardware core
 
 <br>
 
-## Matrices in DirectX [WIP]
+## Matrices in DirectX 
 
+Matrices play a crucial role in computer graphics, making them a fundamental tool to use in DirectX applications as well. They are widely used in both C++ and in HLSL.
+
+
+### HLSL
+
+In HLSL, we can use the built-in types **float2x2**, **float3x3** and **float4x4** to represent $2\times 2$, $3\times 3$ and $4\times 4$ matrices of floating-point elements. Similarly, we can use **int2x2**, **int3x3** and **int4x4** for matrices of integers. We can also use the keyword **matrix** to declare matrices of various types and dimensions. To access a specific element of a matrix we can use array notation (indexing), or the structure operator `.`, followed by one of two naming sets:
+
+The zero-based row-column position:
+
+```
+_m00,  _m01,  _m02,  _m03
+_m10,  _m11,  _m12,  _m13
+_m20,  _m21,  _m22,  _m23
+_m30,  _m31,  _m32,  _m33
+```
+
+The one-based row-column position:
+
+```
+_11,  _12,  _13,  _14
+_21,  _22,  _23,  _24
+_31,  _32,  _33,  _34
+_41,  _42,  _43,  _44
+```
+
+Just like vectors, we can specify one or more components from either naming set. However, we cannot use swizzling with array notation. 
+
+As you can see in the following listing, initialization and indexing always work with rows, even if we use a column-major order in HLSL. That way, we can mimic the usual C++ style to access matrix elements from HLSL code.
+
+```{code-block} hlsl
+
+// float2x2 fMatrix = {0.0f, 0.1f,2.1f, 2.2f};
+matrix<float, 2, 2> fMatrix =
+{
+    0.0f, 0.1f, // row 1
+    2.1f, 2.2f  // row 2
+};
+ 
+ 
+float4x4 M;
+M = {                    // Initialize M
+1.0f, 2.0f, 3.0f, 4.0f,  // first row
+5.0f, 6.0f, 7.0f, 8.0f,  // second row
+// ...                   // third row
+// ...                   // fourth row
+};                 
+ 
+ 
+// Initialize T
+// {0.0f, 0.0f, 0.0f} first row
+// {1.0f, 1.0f, 1.0f} second row
+// {2.0f, 2.0f, 2.0f} third row
+float3x3 T = { { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, { 2.0f, 2.0f, 2.0f } };
+ 
+ 
+float4 v = { 4.0f, 3.0f, 2.0f, 1.0f };
+ 
+float f0 = M[0][1];     // f0 = 0|1-th element of M
+float f1 = M._m01;      // equivalent to f1 = M[0][1]
+float f2 = M._12;       // equivalent to f2 = M[0][1]
+ 
+M[0] = v;               // First row of M = v
+M._m11 = v[0];          // equivalent to M[1][1] = v[0]
+float4 f3 = M._11_12;   // equivalent to f3 = (M[0][0], M[0][1])
+M._12_21 = M._21_12;    // equivalent to the following pseudocode:
+                        // float2 vec = (M[0][1], M[1][0])
+                        // vec = vec.yx
+```
+
+### C++
+
+In C++, we can use the **XMMATRIX** type provided by DirectXMath to represent $4\times 4$ matrices. If you need matrices of lower dimensions, you can use **XMMATRIX** as well by only initializing and using the corresponding elements.
+
+```{code-block} cpp
+
+__declspec(align(16)) struct XMMATRIX
+{
+    XMVECTOR r[4];
+ 
+    XMMATRIX() XM_CTOR_DEFAULT
+ 
+    constexpr XMMATRIX(FXMVECTOR R0, FXMVECTOR R1, FXMVECTOR R2, CXMVECTOR R3) :
+        r{ R0,R1,R2,R3 } {}
+ 
+    XMMATRIX(float m00, float m01, float m02, float m03,
+        float m10, float m11, float m12, float m13,
+        float m20, float m21, float m22, float m23,
+        float m30, float m31, float m32, float m33);
+ 
+    explicit XMMATRIX(_In_reads_(16) const float* pArray);
+ 
+    XMMATRIX& operator= (const XMMATRIX& M)
+    {
+        r[0] = M.r[0]; r[1] = M.r[1]; r[2] = M.r[2]; r[3] = M.r[3]; return *this;
+    }
+ 
+    XMMATRIX    operator+ () const { return *this; }
+    XMMATRIX    operator- () const;
+ 
+    XMMATRIX& operator+= (FXMMATRIX M);
+    XMMATRIX& operator-= (FXMMATRIX M);
+    XMMATRIX& operator*= (FXMMATRIX M);
+    XMMATRIX& operator*= (float S);
+    XMMATRIX& operator/= (float S);
+ 
+    XMMATRIX    operator+ (FXMMATRIX M) const;
+    XMMATRIX    operator- (FXMMATRIX M) const;
+    XMMATRIX    operator* (FXMMATRIX M) const;
+    XMMATRIX    operator* (float S) const;
+    XMMATRIX    operator/ (float S) const;
+ 
+    friend XMMATRIX operator* (float S, FXMMATRIX M);
+};
+```
+
+As you can see, **XMMATRIX** includes an array of **XMVECTOR**s, so we shouldn't use it as a class member. Fortunately, DirectXMath also provides the following types, which allow us to use matrices as class members.
+
+```{code-block} cpp
+
+struct XMFLOAT4X4
+{
+    union
+    {
+        struct
+        {
+            float _11, _12, _13, _14;
+            float _21, _22, _23, _24;
+            float _31, _32, _33, _34;
+            float _41, _42, _43, _44;
+        };
+        float m[4][4];
+    };
+ 
+    XMFLOAT4X4() XM_CTOR_DEFAULT
+
+    XM_CONSTEXPR XMFLOAT4X4(float m00, float m01, float m02, float m03,
+                            float m10, float m11, float m12, float m13,
+                            float m20, float m21, float m22, float m23,
+                            float m30, float m31, float m32, float m33)
+        : _11(m00), _12(m01), _13(m02), _14(m03),
+        _21(m10), _22(m11), _23(m12), _24(m13),
+        _31(m20), _32(m21), _33(m22), _34(m23),
+        _41(m30), _42(m31), _43(m32), _44(m33) {}
+
+    explicit XMFLOAT4X4(_In_reads_(16) const float* pArray);
+ 
+    float       operator() (size_t Row, size_t Column) const { return m[Row][Column]; }
+    float& operator() (size_t Row, size_t Column) { return m[Row][Column]; }
+ 
+    XMFLOAT4X4& operator= (const XMFLOAT4X4& Float4x4);
+};
+```
+
+```cpp
+struct XMFLOAT3X3
+{
+    union
+    {
+        struct
+        {
+            float _11, _12, _13;
+            float _21, _22, _23;
+            float _31, _32, _33;
+        };
+        float m[3][3];
+    };
+ 
+    XMFLOAT3X3() XM_CTOR_DEFAULT
+
+    XM_CONSTEXPR XMFLOAT3X3(float m00, float m01, float m02,
+                            float m10, float m11, float m12,
+                            float m20, float m21, float m22)
+        : _11(m00), _12(m01), _13(m02),
+        _21(m10), _22(m11), _23(m12),
+        _31(m20), _32(m21), _33(m22) {}
+
+    explicit XMFLOAT3X3(_In_reads_(9) const float* pArray);
+ 
+    float       operator() (size_t Row, size_t Column) const { return m[Row][Column]; }
+    float& operator() (size_t Row, size_t Column) { return m[Row][Column]; }
+ 
+    XMFLOAT3X3& operator= (const XMFLOAT3X3& Float3x3);
+};
+```
+
+When you create a function that accepts one or more **XMMATRIX**s, in declaring function parameters follow these guidelines:
+
+- Use **FXMMATRIX** for the first parameter.
+- Use **CXMMATRIX** for the remaining ones.
+
+**FXMMATRIX** and **CXMMATRIX** are both aliases to **XMVECTOR**. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see {cite}`DirectXMathLibraryInternals` and {cite}`vectorcallCallingConvention` in the reference list at the end of the tutorial). 
+
+Obviously, all the basic matrix operations discussed in this tutorial (sum, difference and various types of multiplication) are both defined in HLSL and provided by DirectXMath, along with other helper functions that can be performed on matrices such as inversion, transposition and determinant calculation. We will examine most of these functions in the upcoming tutorials.
+
+<br>
+
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
+
+```{figure} ../../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
+
+<br>
+
+## References
+```{bibliography}
+:filter: docname in docnames
+```
 <br>
