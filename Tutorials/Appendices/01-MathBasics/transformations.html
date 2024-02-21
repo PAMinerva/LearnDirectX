@@ -415,7 +415,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations-wip">Linear transformations [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations">Linear transformations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-wip">Scaling [WIP]</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -439,9 +442,77 @@ Now, it’s interesting how we can visualize it in two different ways. Obviously
 </figure>
 <p>The same concept applies when rotating or scaling a vertex position. As we will explore in this tutorial, vector transformations and changes of coordinate systems are mathematically equivalent. In other words, transforming an object is equivalent to transforming its frame of reference, and vice versa.</p>
 <br>
-<section id="linear-transformations-wip">
-<h2>Linear transformations [WIP]<a class="headerlink" href="#linear-transformations-wip" title="Link to this heading">#</a></h2>
+<section id="linear-transformations">
+<h2>Linear transformations<a class="headerlink" href="#linear-transformations" title="Link to this heading">#</a></h2>
+<p>A transformation <span class="math notranslate nohighlight">\(L\)</span> is linear if it satisfies the following two conditions for any two vectors <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, and any scalar <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+L(\mathbf{u}+\mathbf{v})&amp;=L(\mathbf{u})+L(\mathbf{v}) \\
+\\
+L(k\mathbf{v})&amp;=kL(\mathbf{v})
+\end{align*}
+\end{split}\]</div>
+<p>In <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>, it was demonstrated that a generic bound vector <span class="math notranslate nohighlight">\(\mathbf{v}=(x,y,z)\)</span> can be expressed as a linear combination as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{v}=x\mathbf{i}+y\mathbf{j}+z\mathbf{k}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> are the basis vectors that describe a frame, and <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>, and <span class="math notranslate nohighlight">\(z\)</span> are the coefficients that determine the magnitude and direction of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> along each basis vector. Therefore, following the linearity conditions illustrated above, we can express the transformation of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[L(\mathbf{v})=L(x\mathbf{i}+y\mathbf{j}+z\mathbf{k})=xL(\mathbf{i})+yL(\mathbf{j})+zL(\mathbf{k})=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}=\mathbf{w}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\mathbf{f}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{g}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> represent the transformed standard basis vectors. These vectors correspond to the standard basis vectors of the transformed frame. It’s important to note that the coordinates of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{g}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> are expressed with respect to the original frame. For example, in the illustration below, a linear transformation <span class="math notranslate nohighlight">\(L\)</span> is applied to the standard basis vectors <span class="math notranslate nohighlight">\(\mathbf{i}=(1,0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{j}=(0,1)\)</span> of a frame B. This create a new frame A (since the transformed standard basis vector will represent the standard basis vector in a new coordinate system). However, observe that, in the transformed frame A, the coordinates of the transformed <span class="math notranslate nohighlight">\(\mathbf{i}\)</span> remain <span class="math notranslate nohighlight">\((1,0)\)</span> ─ the same applies to <span class="math notranslate nohighlight">\(L(\mathbf{i})\)</span> in frame A. On the other hand, we have <span class="math notranslate nohighlight">\(L(\mathbf{i})=\mathbf{f}=(x',y')\)</span> in frame B, which represents the original frame ─ again, the same applies to <span class="math notranslate nohighlight">\(L(\mathbf{i})\)</span> in frame B. Therefore, we can consider the transformed frame A as our initial starting point, where <span class="math notranslate nohighlight">\(\mathbf{i}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> were <span class="math notranslate nohighlight">\((1,0)\)</span> and <span class="math notranslate nohighlight">\((0,1)\)</span>, while the frame B represents the final result after applying the transformation <span class="math notranslate nohighlight">\(L\)</span> to both <span class="math notranslate nohighlight">\(\mathbf{i}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>.</p>
+<figure class="align-default">
+<img alt="../../../_images/linear-transformation.png" src="../../../_images/linear-transformation.png" />
+</figure>
+<p>Then, we can conclude that applying a linear transformation to a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is equivalent to applying the same transformation to the initial frame, represented by its standard basis vectors. This is crucial because it means that transforming a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> with a linear transformation can be achieved by transforming the standard basis vectors of the frame in which the vector is defined.</p>
+<p>Furthermore, it has been shown that the coordinates of the transformed vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> can be obtained as a linear combination of the transformed basis vectors, with the components of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> used as coefficients. From <a class="reference internal" href="matrices.html"><span class="std std-doc">Matrices</span></a>, we know that a linear combination can be expressed as the product of a row vector and a column vector, which is related to the concept of dot product. Therefore, we can express the transformation as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\mathbf{w}=L(\mathbf{v})&amp;=L(x\mathbf{i}+y\mathbf{j}+z\mathbf{k})=xL(\mathbf{i})+yL(\mathbf{j})+zL(\mathbf{k})=x\mathbf{f}+y\mathbf{g}+z\mathbf{h} \\
+\\
+&amp;=\mathbf{v}\cdot\mathbf{m}=\left\lbrack\matrix{x&amp;y&amp;z}\right\rbrack\left\lbrack\matrix{\gets&amp;\mathbf{f}&amp;\rightarrow\cr \gets&amp;\mathbf{g}&amp;\rightarrow\cr \gets&amp;\mathbf{h}&amp;\rightarrow}\right\rbrack \\
+\\
+&amp;=\mathbf{vM}=\left\lbrack\matrix{x&amp;y&amp;z}\right\rbrack\left\lbrack\matrix{M_{00}&amp;M_{01}&amp;M_{02}\cr M_{10}&amp;M_{11}&amp;M_{12}\cr M_{20}&amp;M_{21}&amp;M_{22}}\right\rbrack \\
+\\
+&amp;=\left\lbrack\matrix{\mathbf{v}\cdot\mathbf{M}_{\ast 0}&amp;\mathbf{v}\cdot\mathbf{M}_{\ast 1}&amp;\mathbf{v}\cdot\mathbf{M}_{\ast 2}}\right\rbrack
+\end{align*}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{v}=(x, y, z)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{m}=(\mathbf{f},\mathbf{g},\mathbf{h})\)</span>, <span class="math notranslate nohighlight">\(\mathbf{f}=\left\lbrack\matrix{M_{00}&amp;M_{01}&amp;M_{02}}\right\rbrack\)</span>, <span class="math notranslate nohighlight">\(\mathbf{g}=\left\lbrack\matrix{M_{10}&amp;M_{11}&amp;M_{12}}\right\rbrack\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}=\left\lbrack\matrix{M_{20}&amp;M_{21}&amp;M_{22}}\right\rbrack\)</span>.</p>
+<p>That’s exactly what we have seen in <a class="reference internal" href="matrices.html"><span class="std std-doc">Matrices</span></a>. Indeed, if we perform the multiplication between the row vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and the matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\mathbf{vM}&amp;=\left\lbrack\matrix{\mathbf{v}\cdot\mathbf{M}_{\ast0}&amp;\mathbf{v}\cdot\mathbf{M}_{\ast1}&amp;\mathbf{v}\cdot\mathbf{M}_{\ast2}}\right\rbrack \\
+\\
+&amp;=\left\lbrack\matrix{xM_{00}+yM_{10}+zM_{20}&amp;xM_{01}+yM_{11}+zM_{21}&amp;xM_{02}+yM_{12}+zM_{22}}\right\rbrack \\
+\\
+&amp;=\left\lbrack\matrix{xM_{00}&amp;xM_{01}&amp;xM_{02}}\right\rbrack+\left\lbrack\matrix{yM_{10}&amp;yM_{11}&amp;yM_{12}}\right\rbrack+\left\lbrack\matrix{zM_{20}&amp;zM_{21}&amp;zM_{22}}\right\rbrack \\
+\\
+&amp;=x\mathbf{M}_{0\ast}+y\mathbf{M}_{1\ast}+z\mathbf{M}_{2\ast}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h} =\mathbf{w}\tag{1}
+\label{eq:ATransforms1}
+\end{align*}
+\end{split}\]</div>
+<p>We just found that to transform a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> we need to multiply it by a matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> whose rows are the transformed standard basis vectors. In other words, we can express this relationship as:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=\mathbf{vM}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is the matrix that transforms a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> into another vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>.<br>
+However, we can also interpret <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> as the matrix to go from a frame A (the starting one) to a frame B (the new one), which allows a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> bound to the origin of frame A to be expressed with respect to frame B. We can demonstrate this intricated conclusion with a simple illustration.</p>
+<figure class="align-default">
+<img alt="../../../_images/linear-transformation2.png" src="../../../_images/linear-transformation2.png" />
+</figure>
+<p>On the left side of the image above, we have a vector <span class="math notranslate nohighlight">\(\mathbf{p}_A=(3,2)\)</span> applied to the origin of a frame A. Recall that a vector can be expressed as a linear combination of the standard basis vectors, using its components as coefficients. Thus, in frame A, we have:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{p}_A=3\mathbf{i}+2\mathbf{j}\]</div>
+<p>This representation corresponds to the diagonal of the parallelogram formed by scaling the vectors <span class="math notranslate nohighlight">\(\mathbf{i}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> using the components of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> as coefficients.</p>
+<p>Now, imagine scaling frame A twice along both the x-axis and y-axis, followed by a rotation around the origin. This transformation results in the vector <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> being doubled in size and rotated with respect to the original frame, which can therefore be considered as a new frame B because in the transformed one (A) the coordinates of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> are still <span class="math notranslate nohighlight">\((3,2)\)</span>. As stated earlier, <span class="math notranslate nohighlight">\(L(\mathbf{i})\)</span> and <span class="math notranslate nohighlight">\(L(\mathbf{j})\)</span> are expressed in coordinates with respect to the original frame B. Now, our goal is to demonstrate that using these transformed basis vectors as rows of a matrix, we can compute the coordinates of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> with respect to frame B. In other words, we aim to show that this matrix enables us to transition from frame A to frame B. As depicted on the right side of the illustration above, we have that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{p}_B=3L(\mathbf{i})+2L(\mathbf{j})\]</div>
+<p>That is, <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> with respect to the frame B is the diagonal of the transformed standard basis vectors, scaled using the components of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span>. In other words, the coordinates of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> with respect to frame B can be expressed as a linear combination of the transformed basis vectors, using the components of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> as coefficients. This is exactly what we formally proved in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms1}\)</span>, where we used the transformed basis vectors as rows of the matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>.</p>
+<p>Thus, we have just demonstrated that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is the matrix to express the coordinates of a vector in a frame A with respect to a frame B. That is, we have shown that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> allows to go from frame A (the original one) to frame B (the transformed one). At this point, it should come as no surprise that the inverse matrix <span class="math notranslate nohighlight">\(\mathbf{M}^{-1}\)</span> represents the transformation to go from frame B back to frame A.</p>
+<section id="scaling-wip">
+<h3>Scaling [WIP]<a class="headerlink" href="#scaling-wip" title="Link to this heading">#</a></h3>
 <br>
+</section>
 </section>
 </section>
 
@@ -500,7 +571,10 @@ Now, it’s interesting how we can visualize it in two different ways. Obviously
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations-wip">Linear transformations [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations">Linear transformations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-wip">Scaling [WIP]</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
