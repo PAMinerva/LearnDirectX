@@ -25,3 +25,4 @@ parts:
     sections:
     - file: Tutorials/Appendices/01-MathBasics/vectors
     - file: Tutorials/Appendices/01-MathBasics/matrices
+    - file: Tutorials/Appendices/01-MathBasics/transformations
