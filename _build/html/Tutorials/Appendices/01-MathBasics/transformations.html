@@ -416,7 +416,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations">Linear transformations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-wip">Scaling [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-wip">Rotation [WIP]</a></li>
 </ul>
 </li>
 </ul>
@@ -509,8 +510,67 @@ However, we can also interpret <span class="math notranslate nohighlight">\(\mat
 \[\mathbf{p}_B=3L(\mathbf{i})+2L(\mathbf{j})\]</div>
 <p>That is, <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> with respect to the frame B is the diagonal of the transformed standard basis vectors, scaled using the components of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span>. In other words, the coordinates of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> with respect to frame B can be expressed as a linear combination of the transformed basis vectors, using the components of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> as coefficients. This is exactly what we formally proved in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms1}\)</span>, where we used the transformed basis vectors as rows of the matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>.</p>
 <p>Thus, we have just demonstrated that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is the matrix to express the coordinates of a vector in a frame A with respect to a frame B. That is, we have shown that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> allows to go from frame A (the original one) to frame B (the transformed one). At this point, it should come as no surprise that the inverse matrix <span class="math notranslate nohighlight">\(\mathbf{M}^{-1}\)</span> represents the transformation to go from frame B back to frame A.</p>
-<section id="scaling-wip">
-<h3>Scaling [WIP]<a class="headerlink" href="#scaling-wip" title="Link to this heading">#</a></h3>
+<section id="scaling">
+<h3>Scaling<a class="headerlink" href="#scaling" title="Link to this heading">#</a></h3>
+<p>In a 3D Cartesian coordinate system, vectors can be scaled independently in three directions by scaling their respective components. That is, given a scaling <span class="math notranslate nohighlight">\(S\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{v}=(x,y,z)\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[S(\mathbf{v})=(s_xx, s_yy, s_zz)\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(s_x\)</span>, <span class="math notranslate nohighlight">\(s_y\)</span>, and <span class="math notranslate nohighlight">\(s_z\)</span> represent the scaling factors associated with the x, y, and z directions, respectively. This allows us to stretch or shrink vectors in each direction independently, altering their overall size and proportions.</p>
+<p>The scaling is uniform if the scaling factors are equal <span class="math notranslate nohighlight">\((s_x=s_y=s_z)\)</span>, otherwise it’s non-uniform. We can formally prove the scaling is a linear transformation by showing that it satisfies the two conditions of linearity.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Proof</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{flalign}
+S(\mathbf{u}+\mathbf{v})&amp;=\big( s_x(u_x+v_x),\ s_y(u_y+v_y),\ s_z(u_z+v_z) \big) \\ \\
+&amp;=(s_xu_x+s_xv_x,\ s_yu_y+s_yv_y,\ s_zu_z+s_zv_z) \\ \\
+&amp;=(s_xu_x,\ s_yu_y,\ s_zu_z)+(s_xv_x,\ s_yv_y,\ s_zv_z) \\ \\
+&amp;=S(\mathbf{u})+S(\mathbf{v}) \\ \\
+\\
+S(k\mathbf{v})&amp;=(s_xkv_x,\ s_ykv_y,\ s_zkv_z) \\ \\
+&amp;=k(s_xv_x,\ s_yv_y,\ s_zv_z) \\ \\
+&amp;=kS(\mathbf{v})
+\end{flalign}
+\end{split}\]</div>
+</div>
+<p>We know that a linear transformation can be associated with a matrix whose rows are the transformed standard basis vectors. In 3D Cartesian coordinate systems, we have that</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+S(\mathbf{i})&amp;=(s_x1,\ s_y0,\ s_z0)=(s_x,0,0) \\ \\
+S(\mathbf{j})&amp;=(s_x0,\ s_y1,\ s_z0)=(0,s_y,0) \\ \\
+S(\mathbf{k})&amp;=(s_x0,\ s_y0,\ s_z1)=(0,0,s_z)
+\end{align*}
+\end{split}\]</div>
+<p>Then, the matrix <span class="math notranslate nohighlight">\(\mathbf{S}\)</span> associated with a scaling is</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{S}=\left\lbrack\matrix{s_x&amp;0&amp;0\cr 0&amp;s_y&amp;0\cr 0&amp;0&amp;s_z}\right\rbrack\]</div>
+<p>This matrix is associated with the scaling operation. Consequently, we can apply scaling to any 3D vector by multiplying it with the scaling matrix <span class="math notranslate nohighlight">\(\mathbf{S}\)</span>. If the intention is to restore the vector to its original size, we can accomplish this by multiplying the scaled vector by the inverse of the scaling matrix, denoted as <span class="math notranslate nohighlight">\(\mathbf{S}^{-1}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[S^{-1}=\left\lbrack\matrix{1/s_x&amp;0&amp;0\cr 0&amp;1/s_y&amp;0\cr 0&amp;0&amp;1/s_z}\right\rbrack\]</div>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title"><span class="caption-number">Example 2 </span></p>
+<section class="example-content" id="proof-content">
+<p>Given a minimum point <span class="math notranslate nohighlight">\(\mathbf{p}=(-2,0,-2)\)</span> and a maximum point <span class="math notranslate nohighlight">\(\mathbf{q}=(2,0,2)\)</span> defining a square, if you want to scale it by a factor of <span class="math notranslate nohighlight">\(2\)</span> along the x-axis, <span class="math notranslate nohighlight">\(0.5\)</span> along the z-axis, and leave the y-coordinate unchanged, you can use the corresponding scaling matrix:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{S}=\left\lbrack\matrix{2&amp;0&amp;0\cr 0&amp;1&amp;0\cr 0&amp;0&amp;0.5}\right\rbrack\]</div>
+<p>To scale the square, we need to multiply both <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> by <span class="math notranslate nohighlight">\(\mathbf{S}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\left\lbrack\matrix{-2&amp;0&amp;-2}\right\rbrack\left\lbrack\matrix{2&amp;0&amp;0\cr 0&amp;1&amp;0\cr 0&amp;0&amp;0.5}\right\rbrack&amp;=\left\lbrack\matrix{-4&amp;0&amp;-1}\right\rbrack \\ 
+\\
+\left\lbrack\matrix{2&amp;0&amp;2}\right\rbrack\left\lbrack\matrix{2&amp;0&amp;0\cr 0&amp;1&amp;0\cr 0&amp;0&amp;0.5}\right\rbrack&amp;=\left\lbrack\matrix{4&amp;0&amp;1}\right\rbrack
+\end{align*}
+\end{split}\]</div>
+<p>The following illustration shows the result of these transformations</p>
+<figure class="align-default">
+<img alt="../../../_images/scaling.png" src="../../../_images/scaling.png" />
+</figure>
+</section>
+</div></section>
+<section id="rotation-wip">
+<h3>Rotation [WIP]<a class="headerlink" href="#rotation-wip" title="Link to this heading">#</a></h3>
 <br>
 </section>
 </section>
@@ -572,7 +632,8 @@ However, we can also interpret <span class="math notranslate nohighlight">\(\mat
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations">Linear transformations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-wip">Scaling [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-wip">Rotation [WIP]</a></li>
 </ul>
 </li>
 </ul>

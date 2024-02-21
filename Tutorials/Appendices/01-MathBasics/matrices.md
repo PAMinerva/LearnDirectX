@@ -333,7 +333,7 @@ A_{ij}^{-1}=\displaystyle {C_{ij}^T \over det\mathbf{A}}
 \label{eq:AMatrices5}
 $$
 
-````{prf:example}
+```{prf:example}
 :label: matrices-example1
 
 Given a $2\times 2$ matrix $\mathbf{A}$ and its inverse $\mathbf{A}^{-1}$
@@ -364,7 +364,7 @@ If we solve this system for $v_{00}$ we get
 $$v_{00}=\displaystyle {d \over ad-bc}$$
 
 That's exactly the ratio between the cofactor of the 00-th element of $\mathbf{A}$ and the its determinant. The same applies to the other unknowns and to matrices of higher dimensions as well, since it always ends up with a system of $n$ equations with $n$ unknowns.
-````
+```
 
 <br>
 

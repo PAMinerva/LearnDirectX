@@ -57,7 +57,7 @@ $$
 
 where $\mathbf{v}=(x, y, z)$, $\mathbf{m}=(\mathbf{f},\mathbf{g},\mathbf{h})$, $\mathbf{f}=\left\lbrack\matrix{M_{00}&M_{01}&M_{02}}\right\rbrack$, $\mathbf{g}=\left\lbrack\matrix{M_{10}&M_{11}&M_{12}}\right\rbrack$ and $\mathbf{h}=\left\lbrack\matrix{M_{20}&M_{21}&M_{22}}\right\rbrack$.
 
-That’s exactly what we have seen in [](matrices.md). Indeed, if we perform the multiplication between the row vector $\mathbf{v}$ and the matrix $\mathbf{M}$, we have
+That's exactly what we have seen in [](matrices.md). Indeed, if we perform the multiplication between the row vector $\mathbf{v}$ and the matrix $\mathbf{M}$, we have
 
 $$
 \begin{align*}
@@ -97,6 +97,74 @@ That is, $\mathbf{p}_A$ with respect to the frame B is the diagonal of the trans
 Thus, we have just demonstrated that $\mathbf{M}$ is the matrix to express the coordinates of a vector in a frame A with respect to a frame B. That is, we have shown that $\mathbf{M}$ allows to go from frame A (the original one) to frame B (the transformed one). At this point, it should come as no surprise that the inverse matrix $\mathbf{M}^{-1}$ represents the transformation to go from frame B back to frame A.
 
 
-### Scaling [WIP]
+### Scaling 
+
+In a 3D Cartesian coordinate system, vectors can be scaled independently in three directions by scaling their respective components. That is, given a scaling $S$ and a vector $\mathbf{v}=(x,y,z)$ we have
+
+$$S(\mathbf{v})=(s_xx, s_yy, s_zz)$$
+
+Here, $s_x$, $s_y$, and $s_z$ represent the scaling factors associated with the x, y, and z directions, respectively. This allows us to stretch or shrink vectors in each direction independently, altering their overall size and proportions.
+
+The scaling is uniform if the scaling factors are equal $(s_x=s_y=s_z)$, otherwise it's non-uniform. We can formally prove the scaling is a linear transformation by showing that it satisfies the two conditions of linearity.
+
+```{admonition} Proof
+:class: dropdown
+
+$$
+\begin{flalign}
+S(\mathbf{u}+\mathbf{v})&=\big( s_x(u_x+v_x),\ s_y(u_y+v_y),\ s_z(u_z+v_z) \big) \\ \\
+&=(s_xu_x+s_xv_x,\ s_yu_y+s_yv_y,\ s_zu_z+s_zv_z) \\ \\
+&=(s_xu_x,\ s_yu_y,\ s_zu_z)+(s_xv_x,\ s_yv_y,\ s_zv_z) \\ \\
+&=S(\mathbf{u})+S(\mathbf{v}) \\ \\
+\\
+S(k\mathbf{v})&=(s_xkv_x,\ s_ykv_y,\ s_zkv_z) \\ \\
+&=k(s_xv_x,\ s_yv_y,\ s_zv_z) \\ \\
+&=kS(\mathbf{v})
+\end{flalign}
+$$
+```
+
+We know that a linear transformation can be associated with a matrix whose rows are the transformed standard basis vectors. In 3D Cartesian coordinate systems, we have that
+
+$$
+\begin{align*}
+S(\mathbf{i})&=(s_x1,\ s_y0,\ s_z0)=(s_x,0,0) \\ \\
+S(\mathbf{j})&=(s_x0,\ s_y1,\ s_z0)=(0,s_y,0) \\ \\
+S(\mathbf{k})&=(s_x0,\ s_y0,\ s_z1)=(0,0,s_z)
+\end{align*}
+$$
+
+Then, the matrix $\mathbf{S}$ associated with a scaling is
+
+$$\mathbf{S}=\left\lbrack\matrix{s_x&0&0\cr 0&s_y&0\cr 0&0&s_z}\right\rbrack$$
+
+This matrix is associated with the scaling operation. Consequently, we can apply scaling to any 3D vector by multiplying it with the scaling matrix $\mathbf{S}$. If the intention is to restore the vector to its original size, we can accomplish this by multiplying the scaled vector by the inverse of the scaling matrix, denoted as $\mathbf{S}^{-1}$.
+
+$$S^{-1}=\left\lbrack\matrix{1/s_x&0&0\cr 0&1/s_y&0\cr 0&0&1/s_z}\right\rbrack$$
+
+````{prf:example}
+
+Given a minimum point $\mathbf{p}=(-2,0,-2)$ and a maximum point $\mathbf{q}=(2,0,2)$ defining a square, if you want to scale it by a factor of $2$ along the x-axis, $0.5$ along the z-axis, and leave the y-coordinate unchanged, you can use the corresponding scaling matrix:
+
+$$\mathbf{S}=\left\lbrack\matrix{2&0&0\cr 0&1&0\cr 0&0&0.5}\right\rbrack$$
+
+To scale the square, we need to multiply both $\mathbf{p}$ and $\mathbf{q}$ by $\mathbf{S}$.
+
+$$
+\begin{align*}
+\left\lbrack\matrix{-2&0&-2}\right\rbrack\left\lbrack\matrix{2&0&0\cr 0&1&0\cr 0&0&0.5}\right\rbrack&=\left\lbrack\matrix{-4&0&-1}\right\rbrack \\ 
+\\
+\left\lbrack\matrix{2&0&2}\right\rbrack\left\lbrack\matrix{2&0&0\cr 0&1&0\cr 0&0&0.5}\right\rbrack&=\left\lbrack\matrix{4&0&1}\right\rbrack
+\end{align*}
+$$
+
+The following illustration shows the result of these transformations
+
+```{figure} images/03/scaling.png
+```
+````
+
+
+### Rotation [WIP]
 
 <br>
