@@ -21,6 +21,8 @@ $$\mathbf{M}=\left\lbrack\matrix{M_{00}&M_{01}&M_{02}\cr M_{10}&M_{11}&M_{12}\cr
 
 where $\mathbf{u_i}=\left\lbrack\matrix{M_{i0}&M_{i1}&M_{i2}}\right\rbrack$, $\ \mathbf{v_i}=\left\lbrack\matrix{M_{0i}&M_{1i}&M_{2i}}\right\rbrack$ and $0\le i<3$.
 
+For a more extensive and detailed presentation on vectors, you may find valuable information in {cite}`FarinHansfordPracticalLinearAlgebra2021` and {cite}`SchneiderEberlyGeometricToolsforComputerGraphics2002`.
+
 <br>
 
 ## Basic matrix operations 
