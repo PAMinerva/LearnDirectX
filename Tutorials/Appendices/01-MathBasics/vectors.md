@@ -526,7 +526,7 @@ In HLSL, vectors of two, three and four floating-point components are represente
 
 The shader model defines 128-bit shader core registers to hold both integer and floating-point vectors to perform SIMD operations (more on this shortly).
 
-The components of a vector can be accessed using the subscript operator, [ ], to provide array indexing. Alternatively, one of the following naming sets can be used:
+The components of a vector can be accessed using the subscript operator `[]` to provide array indexing. Alternatively, one of the following naming sets can be used:
 
 - The position set:  $\ x,y,z,w$<br>
 - The color set: $\ r,g,b,a$
@@ -659,18 +659,18 @@ void XMStoreFloat3(XMFLOAT3* pDestination, FXMVECTOR  V);
 void XMStoreFloat4(XMFLOAT4* pDestination, FXMVECTOR  V);
 ```
 
-When declaring function parameters that accept one or more **XMVECTOR**s, follow these guidelines:
+When you create a function that accepts one or more **XMVECTOR**s, in declaring function parameters follow these guidelines:
 
-- Use **FXMVECTOR** for declaring the first three parameters.
-- Use **GXMVECTOR** for declaring the 4-th parameter.
-- Use **HXMVECTOR** for declaring the 5-th and 6-th parameters.
-- Use **CXMVECTOR** for declaring the remaining parameters.
-- Use **XMVECTOR** for declaring output parameters.
+- Use **FXMVECTOR** for the first three parameters.
+- Use **GXMVECTOR** for the 4-th parameter.
+- Use **HXMVECTOR** for the 5-th and 6-th parameters.
+- Use **CXMVECTOR** for the remaining parameters.
+- Use **XMVECTOR** for output parameters.
   
 ```{seealso}
 If the function is a C++ class constructor, then just use **FXMVECTOR** for the first three parameters and **CXMVECTOR** for the remaining ones.
 
-**FXMVECTOR**, **GXMVECTOR**, **HXMVECTOR** and **CXMVECTOR** are all aliases to the **XMVECTOR**. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections you can refer to the official documentation (see {cite}`DirectXMathLibraryInternals` and {cite}`vectorcallCallingConvention` in the reference list at the end of the tutorial). 
+**FXMVECTOR**, **GXMVECTOR**, **HXMVECTOR** and **CXMVECTOR** are all aliases to **XMVECTOR**. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see {cite}`DirectXMathLibraryInternals` and {cite}`vectorcallCallingConvention` in the reference list at the end of the tutorial). 
 ```
 
 As mentioned earlier, **XMVECTOR** is merely an alias for **__m128**, which corresponds to a type that maps to XMM registers. Consequently, using **XMVECTOR**s to operate on vectors without using SIMD instructions is not recommended. Therefore, DirectXMath provides various helper functions utilizing SIMD instructions for both initializing and working with **XMVECTOR**s. We'll explore most of these functions in the upcoming tutorials.

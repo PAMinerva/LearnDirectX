@@ -434,7 +434,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix">Adjoint of a matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-of-a-matrix">Inverse of a matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout">Memory layout</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrices-in-directx-wip">Matrices in DirectX [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrices-in-directx">Matrices in DirectX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
         </div>
@@ -463,6 +468,7 @@ The dimensions of a matrix are determined by the number of its rows and columns.
 <div class="math notranslate nohighlight">
 \[\mathbf{M}=\left\lbrack\matrix{M_{00}&amp;M_{01}&amp;M_{02}\cr M_{10}&amp;M_{11}&amp;M_{12}\cr M_{20}&amp;M_{21}&amp;M_{22}}\right\rbrack=\left\lbrack\matrix{\gets&amp;\mathbf{u}_0&amp;\rightarrow\cr \gets&amp;\mathbf{u}_1&amp;\rightarrow\cr \gets&amp;\mathbf{u}_2&amp;\rightarrow}\right\rbrack=\left\lbrack\matrix{\uparrow&amp;\uparrow&amp;\uparrow\cr \mathbf{v}_0&amp;\mathbf{v}_1&amp;\mathbf{v}_2\cr \downarrow&amp;\downarrow&amp;\downarrow}\right\rbrack\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{u_i}=\left\lbrack\matrix{M_{i0}&amp;M_{i1}&amp;M_{i2}}\right\rbrack\)</span>, <span class="math notranslate nohighlight">\(\ \mathbf{v_i}=\left\lbrack\matrix{M_{0i}&amp;M_{1i}&amp;M_{2i}}\right\rbrack\)</span> and <span class="math notranslate nohighlight">\(0\le i&lt;3\)</span>.</p>
+<p>For a more extensive and detailed presentation on vectors, you may find valuable information in <span id="id1">[<a class="reference internal" href="#id14" title="Gerald E. Farin and Dianne Hansford. Practical Linear Algebra: A Geometry Toolbox. CRC Press, 4th edition, 2021.">FH21</a>]</span> and <span id="id2">[<a class="reference internal" href="#id15" title="Philip Schneider and David H. Eberly. Geometric Tools for Computer Graphics. Morgan Kaufmann, 1st edition, 2002.">SE02</a>]</span>.</p>
 <br>
 </section>
 <section id="basic-matrix-operations">
@@ -899,8 +905,216 @@ The result <strong>ret</strong> has the dimension (<strong>x</strong>-rows <span
 </div>
 <br>
 </section>
-<section id="matrices-in-directx-wip">
-<h2>Matrices in DirectX [WIP]<a class="headerlink" href="#matrices-in-directx-wip" title="Link to this heading">#</a></h2>
+<section id="matrices-in-directx">
+<h2>Matrices in DirectX<a class="headerlink" href="#matrices-in-directx" title="Link to this heading">#</a></h2>
+<p>Matrices play a crucial role in computer graphics, making them a fundamental tool to use in DirectX applications as well. They are widely used in both C++ and in HLSL.</p>
+<section id="hlsl">
+<h3>HLSL<a class="headerlink" href="#hlsl" title="Link to this heading">#</a></h3>
+<p>In HLSL, we can use the built-in types <strong>float2x2</strong>, <strong>float3x3</strong> and <strong>float4x4</strong> to represent <span class="math notranslate nohighlight">\(2\times 2\)</span>, <span class="math notranslate nohighlight">\(3\times 3\)</span> and <span class="math notranslate nohighlight">\(4\times 4\)</span> matrices of floating-point elements. Similarly, we can use <strong>int2x2</strong>, <strong>int3x3</strong> and <strong>int4x4</strong> for matrices of integers. We can also use the keyword <strong>matrix</strong> to declare matrices of various types and dimensions. To access a specific element of a matrix we can use array notation (indexing), or the structure operator <code class="docutils literal notranslate"><span class="pre">.</span></code>, followed by one of two naming sets:</p>
+<p>The zero-based row-column position:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_m00</span><span class="p">,</span>  <span class="n">_m01</span><span class="p">,</span>  <span class="n">_m02</span><span class="p">,</span>  <span class="n">_m03</span>
+<span class="n">_m10</span><span class="p">,</span>  <span class="n">_m11</span><span class="p">,</span>  <span class="n">_m12</span><span class="p">,</span>  <span class="n">_m13</span>
+<span class="n">_m20</span><span class="p">,</span>  <span class="n">_m21</span><span class="p">,</span>  <span class="n">_m22</span><span class="p">,</span>  <span class="n">_m23</span>
+<span class="n">_m30</span><span class="p">,</span>  <span class="n">_m31</span><span class="p">,</span>  <span class="n">_m32</span><span class="p">,</span>  <span class="n">_m33</span>
+</pre></div>
+</div>
+<p>The one-based row-column position:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_11</span><span class="p">,</span>  <span class="n">_12</span><span class="p">,</span>  <span class="n">_13</span><span class="p">,</span>  <span class="n">_14</span>
+<span class="n">_21</span><span class="p">,</span>  <span class="n">_22</span><span class="p">,</span>  <span class="n">_23</span><span class="p">,</span>  <span class="n">_24</span>
+<span class="n">_31</span><span class="p">,</span>  <span class="n">_32</span><span class="p">,</span>  <span class="n">_33</span><span class="p">,</span>  <span class="n">_34</span>
+<span class="n">_41</span><span class="p">,</span>  <span class="n">_42</span><span class="p">,</span>  <span class="n">_43</span><span class="p">,</span>  <span class="n">_44</span>
+</pre></div>
+</div>
+<p>Just like vectors, we can specify one or more components from either naming set. However, we cannot use swizzling with array notation.</p>
+<p>As you can see in the following listing, initialization and indexing always work with rows, even if we use a column-major order in HLSL. That way, we can mimic the usual C++ style to access matrix elements from HLSL code.</p>
+<div class="highlight-hlsl notranslate"><div class="highlight"><pre><span></span><span class="c1">// float2x2 fMatrix = {0.0f, 0.1f,2.1f, 2.2f};</span>
+<span class="kt">matrix</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fMatrix</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1f</span><span class="p">,</span><span class="w"> </span><span class="c1">// row 1</span>
+<span class="w">    </span><span class="mf">2.1f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.2f</span><span class="w">  </span><span class="c1">// row 2</span>
+<span class="p">};</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="kt">float4x4</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="n">M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">                    </span><span class="c1">// Initialize M</span>
+<span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">4.0f</span><span class="p">,</span><span class="w">  </span><span class="c1">// first row</span>
+<span class="mf">5.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">6.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">7.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">8.0f</span><span class="p">,</span><span class="w">  </span><span class="c1">// second row</span>
+<span class="c1">// ...                   // third row</span>
+<span class="c1">// ...                   // fourth row</span>
+<span class="p">};</span><span class="w">                 </span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="c1">// Initialize T</span>
+<span class="c1">// {0.0f, 0.0f, 0.0f} first row</span>
+<span class="c1">// {1.0f, 1.0f, 1.0f} second row</span>
+<span class="c1">// {2.0f, 2.0f, 2.0f} third row</span>
+<span class="kt">float3x3</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w"> </span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">4.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="w"> </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">[</span><span class="mo">0</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span><span class="w">     </span><span class="c1">// f0 = 0|1-th element of M</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">_m01</span><span class="p">;</span><span class="w">      </span><span class="c1">// equivalent to f1 = M[0][1]</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">f2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">_12</span><span class="p">;</span><span class="w">       </span><span class="c1">// equivalent to f2 = M[0][1]</span>
+<span class="w"> </span>
+<span class="n">M</span><span class="p">[</span><span class="mo">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w">               </span><span class="c1">// First row of M = v</span>
+<span class="n">M</span><span class="p">.</span><span class="n">_m11</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="mo">0</span><span class="p">];</span><span class="w">          </span><span class="c1">// equivalent to M[1][1] = v[0]</span>
+<span class="kt">float4</span><span class="w"> </span><span class="n">f3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">_11_12</span><span class="p">;</span><span class="w">   </span><span class="c1">// equivalent to f3 = (M[0][0], M[0][1])</span>
+<span class="n">M</span><span class="p">.</span><span class="n">_12_21</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">_21_12</span><span class="p">;</span><span class="w">    </span><span class="c1">// equivalent to the following pseudocode:</span>
+<span class="w">                        </span><span class="c1">// float2 vec = (M[0][1], M[1][0])</span>
+<span class="w">                        </span><span class="c1">// vec = vec.yx</span>
+</pre></div>
+</div>
+</section>
+<section id="c">
+<h3>C++<a class="headerlink" href="#c" title="Link to this heading">#</a></h3>
+<p>In C++, we can use the <strong>XMMATRIX</strong> type provided by DirectXMath to represent <span class="math notranslate nohighlight">\(4\times 4\)</span> matrices. If you need matrices of lower dimensions, you can use <strong>XMMATRIX</strong> as well by only initializing and using the corresponding elements.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">__declspec</span><span class="p">(</span><span class="n">align</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">XMMATRIX</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="p">()</span><span class="w"> </span><span class="n">XM_CTOR_DEFAULT</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="p">(</span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">R0</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">R1</span><span class="p">,</span><span class="w"> </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">R2</span><span class="p">,</span><span class="w"> </span><span class="n">CXMVECTOR</span><span class="w"> </span><span class="n">R3</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">        </span><span class="n">r</span><span class="p">{</span><span class="w"> </span><span class="n">R0</span><span class="p">,</span><span class="n">R1</span><span class="p">,</span><span class="n">R2</span><span class="p">,</span><span class="n">R3</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">{}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">m00</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m01</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m02</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m03</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">m10</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m11</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m12</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m13</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">m20</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m21</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m22</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m23</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">m30</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m31</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m32</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m33</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">explicit</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="p">(</span><span class="n">_In_reads_</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">pArray</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="o">&amp;</span><span class="w"> </span><span class="n">M</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w">    </span><span class="k">operator</span><span class="o">+</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w">    </span><span class="k">operator</span><span class="o">-</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">FXMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">);</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">-=</span><span class="w"> </span><span class="p">(</span><span class="n">FXMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">);</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">*=</span><span class="w"> </span><span class="p">(</span><span class="n">FXMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">);</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">*=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">S</span><span class="p">);</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">/=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">S</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w">    </span><span class="k">operator</span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">FXMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w">    </span><span class="k">operator</span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">FXMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w">    </span><span class="k">operator</span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">FXMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w">    </span><span class="k">operator</span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w">    </span><span class="k">operator</span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="k">friend</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="k">operator</span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">FXMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>As you can see, <strong>XMMATRIX</strong> includes an array of <strong>XMVECTOR</strong>s, so we shouldn’t use it as a class member. Fortunately, DirectXMath also provides the following types, which allow us to use matrices as class members.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">XMFLOAT4X4</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">union</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">_11</span><span class="p">,</span><span class="w"> </span><span class="n">_12</span><span class="p">,</span><span class="w"> </span><span class="n">_13</span><span class="p">,</span><span class="w"> </span><span class="n">_14</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">_21</span><span class="p">,</span><span class="w"> </span><span class="n">_22</span><span class="p">,</span><span class="w"> </span><span class="n">_23</span><span class="p">,</span><span class="w"> </span><span class="n">_24</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">_31</span><span class="p">,</span><span class="w"> </span><span class="n">_32</span><span class="p">,</span><span class="w"> </span><span class="n">_33</span><span class="p">,</span><span class="w"> </span><span class="n">_34</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">_41</span><span class="p">,</span><span class="w"> </span><span class="n">_42</span><span class="p">,</span><span class="w"> </span><span class="n">_43</span><span class="p">,</span><span class="w"> </span><span class="n">_44</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMFLOAT4X4</span><span class="p">()</span><span class="w"> </span><span class="n">XM_CTOR_DEFAULT</span>
+
+<span class="w">    </span><span class="n">XM_CONSTEXPR</span><span class="w"> </span><span class="n">XMFLOAT4X4</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">m00</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m01</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m02</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m03</span><span class="p">,</span>
+<span class="w">                            </span><span class="kt">float</span><span class="w"> </span><span class="n">m10</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m11</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m12</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m13</span><span class="p">,</span>
+<span class="w">                            </span><span class="kt">float</span><span class="w"> </span><span class="n">m20</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m21</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m22</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m23</span><span class="p">,</span>
+<span class="w">                            </span><span class="kt">float</span><span class="w"> </span><span class="n">m30</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m31</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m32</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m33</span><span class="p">)</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">_11</span><span class="p">(</span><span class="n">m00</span><span class="p">),</span><span class="w"> </span><span class="n">_12</span><span class="p">(</span><span class="n">m01</span><span class="p">),</span><span class="w"> </span><span class="n">_13</span><span class="p">(</span><span class="n">m02</span><span class="p">),</span><span class="w"> </span><span class="n">_14</span><span class="p">(</span><span class="n">m03</span><span class="p">),</span>
+<span class="w">        </span><span class="n">_21</span><span class="p">(</span><span class="n">m10</span><span class="p">),</span><span class="w"> </span><span class="n">_22</span><span class="p">(</span><span class="n">m11</span><span class="p">),</span><span class="w"> </span><span class="n">_23</span><span class="p">(</span><span class="n">m12</span><span class="p">),</span><span class="w"> </span><span class="n">_24</span><span class="p">(</span><span class="n">m13</span><span class="p">),</span>
+<span class="w">        </span><span class="n">_31</span><span class="p">(</span><span class="n">m20</span><span class="p">),</span><span class="w"> </span><span class="n">_32</span><span class="p">(</span><span class="n">m21</span><span class="p">),</span><span class="w"> </span><span class="n">_33</span><span class="p">(</span><span class="n">m22</span><span class="p">),</span><span class="w"> </span><span class="n">_34</span><span class="p">(</span><span class="n">m23</span><span class="p">),</span>
+<span class="w">        </span><span class="n">_41</span><span class="p">(</span><span class="n">m30</span><span class="p">),</span><span class="w"> </span><span class="n">_42</span><span class="p">(</span><span class="n">m31</span><span class="p">),</span><span class="w"> </span><span class="n">_43</span><span class="p">(</span><span class="n">m32</span><span class="p">),</span><span class="w"> </span><span class="n">_44</span><span class="p">(</span><span class="n">m33</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">    </span><span class="k">explicit</span><span class="w"> </span><span class="n">XMFLOAT4X4</span><span class="p">(</span><span class="n">_In_reads_</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">pArray</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">float</span><span class="w">       </span><span class="nf">operator</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Row</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Column</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m</span><span class="p">[</span><span class="n">Row</span><span class="p">][</span><span class="n">Column</span><span class="p">];</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">operator</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Row</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Column</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m</span><span class="p">[</span><span class="n">Row</span><span class="p">][</span><span class="n">Column</span><span class="p">];</span><span class="w"> </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMFLOAT4X4</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT4X4</span><span class="o">&amp;</span><span class="w"> </span><span class="n">Float4x4</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">XMFLOAT3X3</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">union</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">_11</span><span class="p">,</span><span class="w"> </span><span class="n">_12</span><span class="p">,</span><span class="w"> </span><span class="n">_13</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">_21</span><span class="p">,</span><span class="w"> </span><span class="n">_22</span><span class="p">,</span><span class="w"> </span><span class="n">_23</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">_31</span><span class="p">,</span><span class="w"> </span><span class="n">_32</span><span class="p">,</span><span class="w"> </span><span class="n">_33</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMFLOAT3X3</span><span class="p">()</span><span class="w"> </span><span class="n">XM_CTOR_DEFAULT</span>
+
+<span class="w">    </span><span class="n">XM_CONSTEXPR</span><span class="w"> </span><span class="n">XMFLOAT3X3</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">m00</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m01</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m02</span><span class="p">,</span>
+<span class="w">                            </span><span class="kt">float</span><span class="w"> </span><span class="n">m10</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m11</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m12</span><span class="p">,</span>
+<span class="w">                            </span><span class="kt">float</span><span class="w"> </span><span class="n">m20</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m21</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m22</span><span class="p">)</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">_11</span><span class="p">(</span><span class="n">m00</span><span class="p">),</span><span class="w"> </span><span class="n">_12</span><span class="p">(</span><span class="n">m01</span><span class="p">),</span><span class="w"> </span><span class="n">_13</span><span class="p">(</span><span class="n">m02</span><span class="p">),</span>
+<span class="w">        </span><span class="n">_21</span><span class="p">(</span><span class="n">m10</span><span class="p">),</span><span class="w"> </span><span class="n">_22</span><span class="p">(</span><span class="n">m11</span><span class="p">),</span><span class="w"> </span><span class="n">_23</span><span class="p">(</span><span class="n">m12</span><span class="p">),</span>
+<span class="w">        </span><span class="n">_31</span><span class="p">(</span><span class="n">m20</span><span class="p">),</span><span class="w"> </span><span class="n">_32</span><span class="p">(</span><span class="n">m21</span><span class="p">),</span><span class="w"> </span><span class="n">_33</span><span class="p">(</span><span class="n">m22</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">    </span><span class="k">explicit</span><span class="w"> </span><span class="n">XMFLOAT3X3</span><span class="p">(</span><span class="n">_In_reads_</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">pArray</span><span class="p">);</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="kt">float</span><span class="w">       </span><span class="nf">operator</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Row</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Column</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m</span><span class="p">[</span><span class="n">Row</span><span class="p">][</span><span class="n">Column</span><span class="p">];</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">operator</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">Row</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">Column</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m</span><span class="p">[</span><span class="n">Row</span><span class="p">][</span><span class="n">Column</span><span class="p">];</span><span class="w"> </span><span class="p">}</span>
+<span class="w"> </span>
+<span class="w">    </span><span class="n">XMFLOAT3X3</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XMFLOAT3X3</span><span class="o">&amp;</span><span class="w"> </span><span class="n">Float3x3</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>When you create a function that accepts one or more <strong>XMMATRIX</strong>s, in declaring function parameters follow these guidelines:</p>
+<ul class="simple">
+<li><p>Use <strong>FXMMATRIX</strong> for the first parameter.</p></li>
+<li><p>Use <strong>CXMMATRIX</strong> for the remaining ones.</p></li>
+</ul>
+<p><strong>FXMMATRIX</strong> and <strong>CXMMATRIX</strong> are both aliases to <strong>XMVECTOR</strong>. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see <span id="id3">[<a class="reference internal" href="#id25" title="Microsoft. Directxmath library internals. https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals.">Mica</a>]</span> and <span id="id4">[<a class="reference internal" href="#id26" title="Microsoft. __vectorcall. https://learn.microsoft.com/en-us/cpp/cpp/vectorcall.">Micb</a>]</span> in the reference list at the end of the tutorial).</p>
+<p>Obviously, all the basic matrix operations discussed in this tutorial (sum, difference and various types of multiplication) are both defined in HLSL and provided by DirectXMath, along with other helper functions that can be performed on matrices such as inversion, transposition and determinant calculation. We will examine most of these functions in the upcoming tutorials.</p>
+<br>
+<div class="admonition-support-this-project admonition">
+<p class="admonition-title">Support this project</p>
+<p>If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!</p>
+<figure class="align-center">
+<a class="reference external image-reference" href="https://github.com/sponsors/PAMinerva"><img alt="../../../_images/sponsor.png" src="../../../_images/sponsor.png" /></a>
+</figure>
+</div>
+<br>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id5">
+<div role="list" class="citation-list">
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">FH21</a><span class="fn-bracket">]</span></span>
+<p>Gerald E. Farin and Dianne Hansford. <em>Practical Linear Algebra: A Geometry Toolbox</em>. CRC Press, 4th edition, 2021.</p>
+</div>
+<div class="citation" id="id25" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Mica</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. Directxmath library internals. <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals">https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals</a>.</p>
+</div>
+<div class="citation" id="id26" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Micb</a><span class="fn-bracket">]</span></span>
+<p>Microsoft. __vectorcall. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/cpp/vectorcall">https://learn.microsoft.com/en-us/cpp/cpp/vectorcall</a>.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">SE02</a><span class="fn-bracket">]</span></span>
+<p>Philip Schneider and David H. Eberly. <em>Geometric Tools for Computer Graphics</em>. Morgan Kaufmann, 1st edition, 2002.</p>
+</div>
+</div>
+</div>
 <br>
 </section>
 </section>
@@ -980,7 +1194,12 @@ The result <strong>ret</strong> has the dimension (<strong>x</strong>-rows <span
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoint-of-a-matrix">Adjoint of a matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-of-a-matrix">Inverse of a matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-layout">Memory layout</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrices-in-directx-wip">Matrices in DirectX [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrices-in-directx">Matrices in DirectX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hlsl">HLSL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C++</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
 
