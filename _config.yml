@@ -40,6 +40,9 @@ exclude_patterns: [README.md]
 
 sphinx:
   config:
+    html_baseurl: "https://github.com/PAMinerva/LearnDirectX"
+    sitemap_url_scheme: "{link}"
     html_theme: sphinx_book_theme
   extra_extensions:
     - sphinx_proof
+    - sphinx_sitemap
