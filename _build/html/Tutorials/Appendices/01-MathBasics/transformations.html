@@ -418,7 +418,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations">Linear transformations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-wip">Rotation [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation">Rotation</a></li>
 </ul>
 </li>
 </ul>
@@ -570,8 +570,30 @@ S(\mathbf{k})&amp;=(s_x0,\ s_y0,\ s_z1)=(0,0,s_z)
 </figure>
 </section>
 </div></section>
-<section id="rotation-wip">
-<h3>Rotation [WIP]<a class="headerlink" href="#rotation-wip" title="Link to this heading">#</a></h3>
+<section id="rotation">
+<h3>Rotation<a class="headerlink" href="#rotation" title="Link to this heading">#</a></h3>
+<p>A rotation is a linear transformation, but a formal proof of this won’t be provided since it is simpler to observe, from the illustration below, that the rotation of the sum of two vectors (that is, the rotation of the diagonal of the parallelogram defined by the two vectors) is equivalent to the sum of rotations of the two vectors (that is, the diagonal of the rotated parallelogram). At the same time, rotating a uniformly scaled vector is equivalent to first rotating the vector and then applying the uniform scaling.</p>
+<figure class="align-default">
+<img alt="../../../_images/rotation-linear.png" src="../../../_images/rotation-linear.png" />
+</figure>
+<p>Finding the matrix associated with a rotation can be slightly more challenging compared to scaling. However, for the purpose of our discussion, we will consider <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v})\)</span> as a clockwise rotation of a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> around a unit vector <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> by an angle <span class="math notranslate nohighlight">\(\theta\)</span>. That is, you will see the vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> rotating clockwise when looking down the positive direction of the unit vector <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>, which determines the axis of rotation. Obviously, the result of <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v})\)</span> is the rotated version of the vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> passed as an argument.</p>
+<p>If a counterclockwise rotation is desired, the angle <span class="math notranslate nohighlight">\(\theta\)</span> can simply be negated. Additionally, if <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> is not a unit vector, we can always normalize it, allowing us to extend our results to the more general case.</p>
+<p>Now, let’s consider the left side of the illustration below.</p>
+<figure class="align-default">
+<img alt="../../../_images/rotation2.png" src="../../../_images/rotation2.png" />
+</figure>
+<p>From <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>, we know that <span class="math notranslate nohighlight">\(\mathbf{n}\times\mathbf{v}\)</span> is orthogonal to the plane defined by <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. During the rotation, the vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> traces out an arc of a circle, which is also orthogonal to the plane defined by <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>. Therefore, the vector <span class="math notranslate nohighlight">\(\mathbf{n}\times\mathbf{v}\)</span> and the circle drawn by <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> lie in the same plane.</p>
+<p>Now, let’s consider the projection of the vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. It can be expressed as the difference between two vectors; this result can also be derived from <a class="reference internal" href="vectors.html#vectors-gram-schmidt-label"><span class="std std-ref">Gram-Schmidt Orthogonalization</span></a>.</p>
+<div class="math notranslate nohighlight">
+\[\text{proj}_\mathbf{n}(\mathbf{v})=\mathbf{v}-\mathbf{v}_\bot\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> is the orthogonal component of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. Therefore, we have that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{v}_\bot\ =\ \mathbf{v}-\text{proj}_\mathbf{n}(\mathbf{v})\]</div>
+<p>The vector <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> lies in the plane defined by <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> (since it’s the subtraction of these two vectors) and therefore it’s orthogonal to <span class="math notranslate nohighlight">\(\mathbf{n}\times\mathbf{v}\)</span>. <span class="math notranslate nohighlight">\(\ R_\mathbf{n}(\mathbf{v}_\bot)\)</span> is the orthogonal component of <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v})\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. Moreover, observe that</p>
+<div class="math notranslate nohighlight">
+\[\vert\mathbf{n}\times\mathbf{v}\vert=\vert\mathbf{n}\vert\vert\mathbf{v}\vert\sin a=\vert\mathbf{v}\vert\sin a =\vert\mathbf{v}_\bot\vert\]</div>
+<br>
+<p>[WIP]</p>
 <br>
 </section>
 </section>
@@ -634,7 +656,7 @@ S(\mathbf{k})&amp;=(s_x0,\ s_y0,\ s_z1)=(0,0,s_z)
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-transformations">Linear transformations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-wip">Rotation [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation">Rotation</a></li>
 </ul>
 </li>
 </ul>

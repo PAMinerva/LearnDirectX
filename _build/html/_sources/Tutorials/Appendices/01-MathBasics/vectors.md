@@ -350,6 +350,7 @@ The components of a bound vector represent the coordinates of its arrowhead with
 In summary, consider vectors as free vectors and points as bound vectors. When working with a generic vector $\mathbf{v}=(x, y, z)$, it is crucial to determine whether it represents a point or a vector to use it appropriately. The distinction between points and vectors will be further explored in a later tutorial.
 
 
+(vectors-gram-schmidt-label)=
 ##### Gram-Schmidt Orthogonalization
 
 A computer cannot exactly represent all elements in the infinite set of real numbers because it uses a finite number of bits to store values in memory. This means that we must to settle for good approximations. The downside is that, if you need to perform many calculations with approximate values, the outcome could differ significantly from the exact result. For example, a set of vectors $\{\mathbf{v_0},\dots,\mathbf{v_{n-1}}\}$ is called **orthonormal** if they are all unit vectors and orthogonal to each other. However, due to numerical precision issues, we might start off with an orthonormal set that gradually becomes un-orthonormal after some transformations. Fortunately, there are methods available to orthogonalize a set of vectors to restore its orthonormality. While our primary focus will be on the 3D case, it is often helpful to start by examining the simpler 2D case.
