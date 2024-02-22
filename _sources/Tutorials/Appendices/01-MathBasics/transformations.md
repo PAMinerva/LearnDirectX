@@ -165,6 +165,38 @@ The following illustration shows the result of these transformations
 ````
 
 
-### Rotation [WIP]
+### Rotation 
+
+A rotation is a linear transformation, but a formal proof of this won't be provided since it is simpler to observe, from the illustration below, that the rotation of the sum of two vectors (that is, the rotation of the diagonal of the parallelogram defined by the two vectors) is equivalent to the sum of rotations of the two vectors (that is, the diagonal of the rotated parallelogram). At the same time, rotating a uniformly scaled vector is equivalent to first rotating the vector and then applying the uniform scaling.
+
+```{figure} images/03/rotation-linear.png
+```
+
+Finding the matrix associated with a rotation can be slightly more challenging compared to scaling. However, for the purpose of our discussion, we will consider $R_\mathbf{n}(\mathbf{v})$ as a clockwise rotation of a vector $\mathbf{v}$ around a unit vector $\mathbf{n}$ by an angle $\theta$. That is, you will see the vector $\mathbf{v}$ rotating clockwise when looking down the positive direction of the unit vector $\mathbf{n}$, which determines the axis of rotation. Obviously, the result of $R_\mathbf{n}(\mathbf{v})$ is the rotated version of the vector $\mathbf{v}$ passed as an argument. 
+
+If a counterclockwise rotation is desired, the angle $\theta$ can simply be negated. Additionally, if $\mathbf{n}$ is not a unit vector, we can always normalize it, allowing us to extend our results to the more general case.
+
+Now, let's consider the left side of the illustration below.
+
+```{figure} images/03/rotation2.png
+```
+
+From [](vectors.md), we know that $\mathbf{n}\times\mathbf{v}$ is orthogonal to the plane defined by $\mathbf{n}$ and $\mathbf{v}$. During the rotation, the vector $\mathbf{v}$ traces out an arc of a circle, which is also orthogonal to the plane defined by $\mathbf{n}$ and $\mathbf{v}$. Therefore, the vector $\mathbf{n}\times\mathbf{v}$ and the circle drawn by $\mathbf{v}$ lie in the same plane.
+
+Now, let's consider the projection of the vector $\mathbf{v}$ onto $\mathbf{n}$. It can be expressed as the difference between two vectors; this result can also be derived from [](vectors-gram-schmidt-label).
+
+$$\text{proj}_\mathbf{n}(\mathbf{v})=\mathbf{v}-\mathbf{v}_\bot$$
+
+where $\mathbf{v}_\bot$ is the orthogonal component of $\mathbf{v}$ with respect to $\mathbf{n}$. Therefore, we have that
+
+$$\mathbf{v}_\bot\ =\ \mathbf{v}-\text{proj}_\mathbf{n}(\mathbf{v})$$
+
+The vector $\mathbf{v}_\bot$ lies in the plane defined by $\mathbf{n}$ and $\mathbf{v}$ (since it's the subtraction of these two vectors) and therefore it's orthogonal to $\mathbf{n}\times\mathbf{v}$. $\ R_\mathbf{n}(\mathbf{v}_\bot)$ is the orthogonal component of $R_\mathbf{n}(\mathbf{v})$ with respect to $\mathbf{n}$. Moreover, observe that
+
+$$\vert\mathbf{n}\times\mathbf{v}\vert=\vert\mathbf{n}\vert\vert\mathbf{v}\vert\sin a=\vert\mathbf{v}\vert\sin a =\vert\mathbf{v}_\bot\vert$$
+
+<br>
+
+[WIP]
 
 <br>
