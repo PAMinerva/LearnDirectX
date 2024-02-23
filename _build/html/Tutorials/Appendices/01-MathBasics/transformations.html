@@ -421,6 +421,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation">Rotation</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#affine-transformations-wip">Affine transformations [WIP]</a></li>
 </ul>
             </nav>
         </div>
@@ -588,14 +589,81 @@ S(\mathbf{k})&amp;=(s_x0,\ s_y0,\ s_z1)=(0,0,s_z)
 \[\text{proj}_\mathbf{n}(\mathbf{v})=\mathbf{v}-\mathbf{v}_\bot\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> is the orthogonal component of <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. Therefore, we have that</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{v}_\bot\ =\ \mathbf{v}-\text{proj}_\mathbf{n}(\mathbf{v})\]</div>
+\[\mathbf{v}_\bot=\mathbf{v}-\text{proj}_\mathbf{n}(\mathbf{v})\]</div>
 <p>The vector <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> lies in the plane defined by <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> (since it’s the subtraction of these two vectors) and therefore it’s orthogonal to <span class="math notranslate nohighlight">\(\mathbf{n}\times\mathbf{v}\)</span>. <span class="math notranslate nohighlight">\(\ R_\mathbf{n}(\mathbf{v}_\bot)\)</span> is the orthogonal component of <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v})\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. Moreover, observe that</p>
 <div class="math notranslate nohighlight">
 \[\vert\mathbf{n}\times\mathbf{v}\vert=\vert\mathbf{n}\vert\vert\mathbf{v}\vert\sin a=\vert\mathbf{v}\vert\sin a =\vert\mathbf{v}_\bot\vert\]</div>
-<br>
-<p>[WIP]</p>
+<p>That is, <span class="math notranslate nohighlight">\(\mathbf{n}\times\mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> have the same length, and are orthogonal to each other. So, they can define a 2D frame (just like the standard basis vectors <span class="math notranslate nohighlight">\(\mathbf{i}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>) where we can compute the coordinates of <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v}_\bot)\)</span>, which can be considered as the rotation of the basis vector <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> about <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>. This means that <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v}_\bot)\)</span> has the same length of both <span class="math notranslate nohighlight">\(\mathbf{n}\times\mathbf{v}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span>. As you can see in the image above (on the right), the orthogonal projection of <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v}_\bot)\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\displaystyle\frac{(R_\mathbf{n}(\mathbf{v}_\bot)\cdot\mathbf{v}_\bot)}{\vert\mathbf{v}_\bot\vert^2}\mathbf{v}_\bot=\frac{\vert R_\mathbf{n}(\mathbf{v}_\bot)\vert\vert\mathbf{v}_\bot\vert\cos\theta}{\vert\mathbf{v}_\bot\vert^2}\mathbf{v}_\bot=\frac{\vert\mathbf{v}_\bot\vert\vert\mathbf{v}_\bot\vert\cos\theta}{\vert\mathbf{v}_\bot\vert^2}\mathbf{v}_\bot=\cos{\mathbf{\theta}}\ \mathbf{v}_\bot\]</div>
+<p>In a similar way, the orthogonal projection of <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v} _\bot)\)</span> onto <span class="math notranslate nohighlight">\(\mathbf{n}\times\mathbf{v}\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\displaystyle\frac{(R_\mathbf{n}(\mathbf{v}_\bot)\cdot\mathbf{n}\times\mathbf{v})}{\vert\mathbf{n}\times\mathbf{v}\vert^2}\mathbf{n}\times\mathbf{v}=\frac{\vert R_\mathbf{n}(\mathbf{v}_\bot)\vert\vert\mathbf{n}\times\mathbf{v}\vert\cos{(90°-\theta)}}{\vert\mathbf{n}\times\mathbf{v}\vert^2}\mathbf{n}\times\mathbf{v}=\frac{\vert\mathbf{n}\times\mathbf{v}\vert\vert\mathbf{n}\times\mathbf{v}\vert\sin\theta}{\vert\mathbf{n}\times\mathbf{v}\vert^2}\mathbf{n}\times\mathbf{v}=\sin\theta\ \mathbf{n}\times\mathbf{v}\]</div>
+<p>Therefore, we have that</p>
+<div class="math notranslate nohighlight">
+\[R_\mathbf{n}(\mathbf{v}_\bot)=\cos\theta\ \mathbf{v}_\bot+\sin\theta\ (\mathbf{n}\times\mathbf{v})\]</div>
+<p>Now, we can compute <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v})\)</span> as a sum of <span class="math notranslate nohighlight">\(\text{proj}_\mathbf{n}(\mathbf{v})\)</span> and <span class="math notranslate nohighlight">\(R_\mathbf{n}(\mathbf{v}_\bot)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+R_{\mathbf{n}}(\mathbf{v})&amp;=\text{proj}_\mathbf{n}(\mathbf{v})+R_{\mathbf{n}}(\mathbf{v_\bot}) \\ 
+\\
+&amp;=(\mathbf{n}\cdot \mathbf{v})\mathbf{n}+\cos\theta\ \mathbf{v}_\bot+\sin\theta\ (\mathbf{n}\times\mathbf{v}) \\
+\\
+&amp;=(\mathbf{n}\cdot \mathbf{v})\mathbf{n}+\cos\theta\ (\mathbf{v}-(\mathbf{n}\cdot\mathbf{v})\mathbf{n})+\sin\theta\ (\mathbf{n}\times\mathbf{v}) \\
+\\
+&amp;=\cos\theta\ \mathbf{v}+(1-\cos\theta)(\mathbf{n}\cdot\mathbf{v})\mathbf{n}+\sin\theta\ (\mathbf{n}\times\mathbf{v})
+\end{align*}
+\end{split}\]</div>
+<p>As you can see, the orthogonal component <span class="math notranslate nohighlight">\(\mathbf{v}_\bot\)</span> has disappeared from the equation, so we can compute any rotation by knowing only the vector to rotate <span class="math notranslate nohighlight">\((\mathbf{v})\)</span>, the angle of rotation <span class="math notranslate nohighlight">\((\theta)\)</span>, and the unit vector <span class="math notranslate nohighlight">\((\mathbf{n})\)</span> indicating the axis of rotation.</p>
+<p>At this point, we can transform the standard basis vectors to compute the row vectors that make up the rotation matrix <span class="math notranslate nohighlight">\(\mathbf{R}_\mathbf{n}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+R_\mathbf{n}(\mathbf{i})&amp;=\big(\cos\theta+(1-\cos\theta)\ x^2,\quad(1-\cos\theta)\ xy+\sin\theta\ z,\quad(1-\cos\theta)\ xz-\sin\theta\ y\big) \\ 
+\\
+R_\mathbf{n}(\mathbf{j})&amp;=((1-\cos\theta)\ xy-\sin\theta\ z,\quad \cos\theta+(1-\cos\theta)\ y^2,\quad(1-\cos\theta)\ yz+\sin\theta\ x) \\
+\\
+R_\mathbf{n}(\mathbf{k})&amp;=((1-\cos\theta)\ xz+\sin\theta\ y,\quad(1-\cos\theta)\ yz-\sin\theta\ x,\quad\cos\theta+(1-\cos\theta)\ z^2)
+\end{align*}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{n}=(x, y, z)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{i}=(1,0,0)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}=(0,1,0)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{k}=(0,0,1)\)</span>. <br>
+Therefore, we have that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{R}_\mathbf{n}=\left\lbrack\matrix{c+(1-c)x^2&amp;(1-c)xy+sz&amp;(1-c)xz-sy\cr (1-c)xy-sz&amp;c+(1-c)y^2&amp;(1-c)yz+sx\cr (1-c)xz+sy&amp;(1-c)yz-sx&amp;c+(1-c)z^2}\right\rbrack\]</div>
+<p>where <span class="math notranslate nohighlight">\(c=\cos\theta\)</span>, and <span class="math notranslate nohighlight">\(s=sin\theta\)</span>.<br>
+For example, if we want to rotate about the x-, y- and z- axes, we need to set <span class="math notranslate nohighlight">\(\mathbf{n}=\mathbf{i}=(1,0,0)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{n}=\mathbf{j}=(0,1,0)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{n}=\mathbf{k}=(0,0,1)\)</span>, respectively. So, the corresponding rotation matrices are</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{R}_x=\left\lbrack\matrix{1&amp;0&amp;0\cr 0&amp;\cos\theta&amp;\sin\theta\cr 0&amp;-\sin\theta&amp;\cos\theta}\right\rbrack\quad\quad\quad\mathbf{R}_y=\left\lbrack\matrix{\cos\theta&amp;0&amp;-\sin\theta\cr 0&amp;1&amp;0\cr \sin\theta&amp;0&amp;\cos\theta}\right\rbrack\quad\quad\quad\mathbf{R}_z=\left\lbrack\matrix{\cos\theta&amp;\sin\theta&amp;0\cr -\sin\theta&amp;\cos\theta&amp;0\cr 0&amp;0&amp;1}\right\rbrack\]</div>
+<div class="proof example admonition" id="example-1">
+<p class="admonition-title"><span class="caption-number">Example 3 </span></p>
+<section class="example-content" id="proof-content">
+<p>Given a minimum point <span class="math notranslate nohighlight">\(\mathbf{p}=(-2,0,-2)\)</span> and a maximum point <span class="math notranslate nohighlight">\(\mathbf{q}=(2,0,2)\)</span> of a square, suppose you want to rotate it <span class="math notranslate nohighlight">\(-45°\)</span> clockwise (that is, <span class="math notranslate nohighlight">\(45°\)</span> counterclockwise ) about the y-axis. The corresponding rotation matrix is:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{R}_y=\left\lbrack\matrix{\cos\theta&amp;0&amp;-\sin\theta\cr 0&amp;1&amp;0\cr \sin\theta&amp;0&amp;\cos\theta}\right\rbrack=\left\lbrack\matrix{\cos{(-45°)}&amp;0&amp;-\sin{(-45°)}\cr 0&amp;1&amp;0\cr \sin{(-45°)}&amp;0&amp;\cos{(-45°)}}\right\rbrack=\left\lbrack\matrix{1/\sqrt{2}&amp;0&amp;1/\sqrt{2}\cr 0&amp;1&amp;0\cr -1/\sqrt{2}&amp;0&amp;1/\sqrt{2}}\right\rbrack\]</div>
+<p>To rotate the square we need to multiply <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> by the rotation matrix <span class="math notranslate nohighlight">\(\mathbf{R}_y\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+\left\lbrack\matrix{-2&amp;0&amp;-2}\right\rbrack\left\lbrack\matrix{1/\sqrt{2}&amp;0&amp;1/\sqrt{2}\cr 0&amp;1&amp;0\cr -1/\sqrt{2}&amp;0&amp;1/\sqrt{2}}\right\rbrack&amp;=\left\lbrack\matrix{0&amp;0&amp;-2.83}\right\rbrack \\ 
+\\
+\quad\left\lbrack\matrix{2&amp;0&amp;2}\right\rbrack\left\lbrack\matrix{1/\sqrt{2}&amp;0&amp;1/\sqrt{2}\cr 0&amp;1&amp;0\cr -1/\sqrt{2}&amp;0&amp;1/\sqrt{2}}\right\rbrack&amp;=\left\lbrack\matrix{0&amp;0&amp;2.83}\right\rbrack
+\end{align*}
+\end{split}\]</div>
+<p>The following illustration shows the result of these transformations</p>
+<figure class="align-default">
+<img alt="../../../_images/rotation.png" src="../../../_images/rotation.png" />
+</figure>
+</section>
+</div><p>You can easily verify that the rows of <span class="math notranslate nohighlight">\(\mathbf{R}_x\)</span> are unit vectors and orthogonal to each other (i.e., they make up an orthonormal set). The same applies to the rows of <span class="math notranslate nohighlight">\(\mathbf{R}_y\)</span>, <span class="math notranslate nohighlight">\(\mathbf{R}_z\)</span> and the general rotation matrix <span class="math notranslate nohighlight">\(\mathbf{R}_\mathbf{n}\)</span> (although, this last one is a little trickier to prove). A matrix whose rows compose an orthonormal set is called orthogonal. Orthogonal matrices are of particular interest since their inverse is equal to their transpose. That is, we have that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{R}_\mathbf{n}^{-1}=\mathbf{R}_\mathbf{n}^T=\left\lbrack\matrix{c+(1-c)x^2 &amp; (1-c)xy-sz &amp; (1-c)xz+sy \cr  (1-c)xy+sz &amp; c+(1-c)y^2 &amp; (1-c)yz-sx \cr  (1-c)xz-sy &amp; (1-c)yz+sx &amp; c+(1-c)z^2}\right\rbrack\]</div>
 <br>
 </section>
+</section>
+<section id="affine-transformations-wip">
+<h2>Affine transformations [WIP]<a class="headerlink" href="#affine-transformations-wip" title="Link to this heading">#</a></h2>
+<br>
 </section>
 </section>
 
@@ -659,6 +727,7 @@ S(\mathbf{k})&amp;=(s_x0,\ s_y0,\ s_z1)=(0,0,s_z)
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation">Rotation</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#affine-transformations-wip">Affine transformations [WIP]</a></li>
 </ul>
   </nav></div>
 
