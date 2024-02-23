@@ -378,7 +378,7 @@ which is a vector, as it's not bound to the origin of the frame of reference (se
 ```{figure} images/03/vector-point-sum.png
 ```
 
-In conclusion, the matrix $\mathbf{M}$ we built in this section can be used to transform both vectors and points with an affine transformation. It embeds a linear transformation, plus a translation. Its columns are the transformed standard basis vectors, and a displacement that specifies the origin of the starting frame with respect to a new one. Most importantly, $\mathbf{M}$ still allows us matrix to express the coordinates of a vector in starting frame with respect to new frame. As explained at the beginning of the tutorial, this implies that $\mathbf{M}$ is a matrix that allows to go from a frame to another, which means that change of coordinates and change of coordinate system are still mathematically equivalent in the context of affine transformations.
+In conclusion, the matrix $\mathbf{M}$ we built in this section can be used to transform both vectors and points with affine transformations, as it embeds a linear transformation, plus a translation. The first three rows represent the transformed standard basis vectors, while the four-th is a displacement that specifies the origin of the starting frame with respect to a new one. Most importantly, $\mathbf{M}$ still allows us to express the coordinates of a vector in a starting frame with respect to a new one. As explained at the beginning of the tutorial, this implies that $\mathbf{M}$ is a matrix that allows us to go from a frame to another, which means that change of coordinates and change of coordinate system are still mathematically equivalent in the context of affine transformations.
 
 <br>
 
