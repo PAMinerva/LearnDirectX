@@ -189,14 +189,90 @@ $$\text{proj}_\mathbf{n}(\mathbf{v})=\mathbf{v}-\mathbf{v}_\bot$$
 
 where $\mathbf{v}_\bot$ is the orthogonal component of $\mathbf{v}$ with respect to $\mathbf{n}$. Therefore, we have that
 
-$$\mathbf{v}_\bot\ =\ \mathbf{v}-\text{proj}_\mathbf{n}(\mathbf{v})$$
+$$\mathbf{v}_\bot=\mathbf{v}-\text{proj}_\mathbf{n}(\mathbf{v})$$
 
 The vector $\mathbf{v}_\bot$ lies in the plane defined by $\mathbf{n}$ and $\mathbf{v}$ (since it's the subtraction of these two vectors) and therefore it's orthogonal to $\mathbf{n}\times\mathbf{v}$. $\ R_\mathbf{n}(\mathbf{v}_\bot)$ is the orthogonal component of $R_\mathbf{n}(\mathbf{v})$ with respect to $\mathbf{n}$. Moreover, observe that
 
 $$\vert\mathbf{n}\times\mathbf{v}\vert=\vert\mathbf{n}\vert\vert\mathbf{v}\vert\sin a=\vert\mathbf{v}\vert\sin a =\vert\mathbf{v}_\bot\vert$$
 
+That is, $\mathbf{n}\times\mathbf{v}$ and $\mathbf{v}_\bot$ have the same length, and are orthogonal to each other. So, they can define a 2D frame (just like the standard basis vectors $\mathbf{i}$ and $\mathbf{j}$) where we can compute the coordinates of $R_\mathbf{n}(\mathbf{v}_\bot)$, which can be considered as the rotation of the basis vector $\mathbf{v}_\bot$ about $\mathbf{n}$. This means that $R_\mathbf{n}(\mathbf{v}_\bot)$ has the same length of both $\mathbf{n}\times\mathbf{v}$ and $\mathbf{v}_\bot$. As you can see in the image above (on the right), the orthogonal projection of $R_\mathbf{n}(\mathbf{v}_\bot)$ onto $\mathbf{v}_\bot$ is
+
+$$\displaystyle\frac{(R_\mathbf{n}(\mathbf{v}_\bot)\cdot\mathbf{v}_\bot)}{\vert\mathbf{v}_\bot\vert^2}\mathbf{v}_\bot=\frac{\vert R_\mathbf{n}(\mathbf{v}_\bot)\vert\vert\mathbf{v}_\bot\vert\cos\theta}{\vert\mathbf{v}_\bot\vert^2}\mathbf{v}_\bot=\frac{\vert\mathbf{v}_\bot\vert\vert\mathbf{v}_\bot\vert\cos\theta}{\vert\mathbf{v}_\bot\vert^2}\mathbf{v}_\bot=\cos{\mathbf{\theta}}\ \mathbf{v}_\bot$$
+
+In a similar way, the orthogonal projection of $R_\mathbf{n}(\mathbf{v} _\bot)$ onto $\mathbf{n}\times\mathbf{v}$ is
+
+$$\displaystyle\frac{(R_\mathbf{n}(\mathbf{v}_\bot)\cdot\mathbf{n}\times\mathbf{v})}{\vert\mathbf{n}\times\mathbf{v}\vert^2}\mathbf{n}\times\mathbf{v}=\frac{\vert R_\mathbf{n}(\mathbf{v}_\bot)\vert\vert\mathbf{n}\times\mathbf{v}\vert\cos{(90°-\theta)}}{\vert\mathbf{n}\times\mathbf{v}\vert^2}\mathbf{n}\times\mathbf{v}=\frac{\vert\mathbf{n}\times\mathbf{v}\vert\vert\mathbf{n}\times\mathbf{v}\vert\sin\theta}{\vert\mathbf{n}\times\mathbf{v}\vert^2}\mathbf{n}\times\mathbf{v}=\sin\theta\ \mathbf{n}\times\mathbf{v}$$
+
+Therefore, we have that
+
+$$R_\mathbf{n}(\mathbf{v}_\bot)=\cos\theta\ \mathbf{v}_\bot+\sin\theta\ (\mathbf{n}\times\mathbf{v})$$
+
+Now, we can compute $R_\mathbf{n}(\mathbf{v})$ as a sum of $\text{proj}_\mathbf{n}(\mathbf{v})$ and $R_\mathbf{n}(\mathbf{v}_\bot)$.
+
+$$
+\begin{align*}
+R_{\mathbf{n}}(\mathbf{v})&=\text{proj}_\mathbf{n}(\mathbf{v})+R_{\mathbf{n}}(\mathbf{v_\bot}) \\ 
+\\
+&=(\mathbf{n}\cdot \mathbf{v})\mathbf{n}+\cos\theta\ \mathbf{v}_\bot+\sin\theta\ (\mathbf{n}\times\mathbf{v}) \\
+\\
+&=(\mathbf{n}\cdot \mathbf{v})\mathbf{n}+\cos\theta\ (\mathbf{v}-(\mathbf{n}\cdot\mathbf{v})\mathbf{n})+\sin\theta\ (\mathbf{n}\times\mathbf{v}) \\
+\\
+&=\cos\theta\ \mathbf{v}+(1-\cos\theta)(\mathbf{n}\cdot\mathbf{v})\mathbf{n}+\sin\theta\ (\mathbf{n}\times\mathbf{v})
+\end{align*}
+$$
+
+As you can see, the orthogonal component $\mathbf{v}_\bot$ has disappeared from the equation, so we can compute any rotation by knowing only the vector to rotate $(\mathbf{v})$, the angle of rotation $(\theta)$, and the unit vector $(\mathbf{n})$ indicating the axis of rotation. 
+
+At this point, we can transform the standard basis vectors to compute the row vectors that make up the rotation matrix $\mathbf{R}_\mathbf{n}$.
+
+$$
+\begin{align*}
+R_\mathbf{n}(\mathbf{i})&=\big(\cos\theta+(1-\cos\theta)\ x^2,\quad(1-\cos\theta)\ xy+\sin\theta\ z,\quad(1-\cos\theta)\ xz-\sin\theta\ y\big) \\ 
+\\
+R_\mathbf{n}(\mathbf{j})&=((1-\cos\theta)\ xy-\sin\theta\ z,\quad \cos\theta+(1-\cos\theta)\ y^2,\quad(1-\cos\theta)\ yz+\sin\theta\ x) \\
+\\
+R_\mathbf{n}(\mathbf{k})&=((1-\cos\theta)\ xz+\sin\theta\ y,\quad(1-\cos\theta)\ yz-\sin\theta\ x,\quad\cos\theta+(1-\cos\theta)\ z^2)
+\end{align*}
+$$
+
+where $\mathbf{n}=(x, y, z)$, $\mathbf{i}=(1,0,0)$, $\mathbf{j}=(0,1,0)$, and $\mathbf{k}=(0,0,1)$. <br>
+Therefore, we have that
+
+$$\mathbf{R}_\mathbf{n}=\left\lbrack\matrix{c+(1-c)x^2&(1-c)xy+sz&(1-c)xz-sy\cr (1-c)xy-sz&c+(1-c)y^2&(1-c)yz+sx\cr (1-c)xz+sy&(1-c)yz-sx&c+(1-c)z^2}\right\rbrack$$
+
+where $c=\cos\theta$, and $s=sin\theta$.<br>
+For example, if we want to rotate about the x-, y- and z- axes, we need to set $\mathbf{n}=\mathbf{i}=(1,0,0)$, $\mathbf{n}=\mathbf{j}=(0,1,0)$, and $\mathbf{n}=\mathbf{k}=(0,0,1)$, respectively. So, the corresponding rotation matrices are
+
+$$\mathbf{R}_x=\left\lbrack\matrix{1&0&0\cr 0&\cos\theta&\sin\theta\cr 0&-\sin\theta&\cos\theta}\right\rbrack\quad\quad\quad\mathbf{R}_y=\left\lbrack\matrix{\cos\theta&0&-\sin\theta\cr 0&1&0\cr \sin\theta&0&\cos\theta}\right\rbrack\quad\quad\quad\mathbf{R}_z=\left\lbrack\matrix{\cos\theta&\sin\theta&0\cr -\sin\theta&\cos\theta&0\cr 0&0&1}\right\rbrack$$
+
+````{prf:example}
+
+Given a minimum point $\mathbf{p}=(-2,0,-2)$ and a maximum point $\mathbf{q}=(2,0,2)$ of a square, suppose you want to rotate it $-45°$ clockwise (that is, $45°$ counterclockwise ) about the y-axis. The corresponding rotation matrix is:
+
+$$\mathbf{R}_y=\left\lbrack\matrix{\cos\theta&0&-\sin\theta\cr 0&1&0\cr \sin\theta&0&\cos\theta}\right\rbrack=\left\lbrack\matrix{\cos{(-45°)}&0&-\sin{(-45°)}\cr 0&1&0\cr \sin{(-45°)}&0&\cos{(-45°)}}\right\rbrack=\left\lbrack\matrix{1/\sqrt{2}&0&1/\sqrt{2}\cr 0&1&0\cr -1/\sqrt{2}&0&1/\sqrt{2}}\right\rbrack$$
+
+To rotate the square we need to multiply $\mathbf{p}$ and $\mathbf{q}$ by the rotation matrix $\mathbf{R}_y$.
+
+$$
+\begin{align*}
+\left\lbrack\matrix{-2&0&-2}\right\rbrack\left\lbrack\matrix{1/\sqrt{2}&0&1/\sqrt{2}\cr 0&1&0\cr -1/\sqrt{2}&0&1/\sqrt{2}}\right\rbrack&=\left\lbrack\matrix{0&0&-2.83}\right\rbrack \\ 
+\\
+\quad\left\lbrack\matrix{2&0&2}\right\rbrack\left\lbrack\matrix{1/\sqrt{2}&0&1/\sqrt{2}\cr 0&1&0\cr -1/\sqrt{2}&0&1/\sqrt{2}}\right\rbrack&=\left\lbrack\matrix{0&0&2.83}\right\rbrack
+\end{align*}
+$$
+
+The following illustration shows the result of these transformations
+
+```{figure} images/03/rotation.png
+```
+````
+
+You can easily verify that the rows of $\mathbf{R}_x$ are unit vectors and orthogonal to each other (i.e., they make up an orthonormal set). The same applies to the rows of $\mathbf{R}_y$, $\mathbf{R}_z$ and the general rotation matrix $\mathbf{R}_\mathbf{n}$ (although, this last one is a little trickier to prove). A matrix whose rows compose an orthonormal set is called orthogonal. Orthogonal matrices are of particular interest since their inverse is equal to their transpose. That is, we have that
+
+$$\mathbf{R}_\mathbf{n}^{-1}=\mathbf{R}_\mathbf{n}^T=\left\lbrack\matrix{c+(1-c)x^2 & (1-c)xy-sz & (1-c)xz+sy \cr  (1-c)xy+sz & c+(1-c)y^2 & (1-c)yz-sx \cr  (1-c)xz-sy & (1-c)yz+sx & c+(1-c)z^2}\right\rbrack$$
+
 <br>
 
-[WIP]
+## Affine transformations [WIP]
 
 <br>
