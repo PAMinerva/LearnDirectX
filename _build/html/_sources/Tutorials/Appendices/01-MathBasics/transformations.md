@@ -67,7 +67,8 @@ $$
 \\
 &=\left\lbrack\matrix{xM_{00}&xM_{01}&xM_{02}}\right\rbrack+\left\lbrack\matrix{yM_{10}&yM_{11}&yM_{12}}\right\rbrack+\left\lbrack\matrix{zM_{20}&zM_{21}&zM_{22}}\right\rbrack \\
 \\
-&=x\mathbf{M}_{0\ast}+y\mathbf{M}_{1\ast}+z\mathbf{M}_{2\ast}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h} =\mathbf{w}\tag{1}
+&=x\mathbf{M}_{0\ast}+y\mathbf{M}_{1\ast}+z\mathbf{M}_{2\ast}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h} =\mathbf{w}
+\tag{1}
 \label{eq:ATransforms1}
 \end{align*}
 $$
@@ -288,7 +289,7 @@ Affine transformations extend linear ones by adding translations. The next secti
 
 To move a bound vector (point) $\mathbf{p}=(p_x, p_y, p_z)$ using a translation $T$, we simply add a displacement vector $\mathbf{t}=(t_x, t_y, t_z)$ to the point.
 
-$$T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)$$
+$$T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\tag{2}\label{eq:ATransforms2}$$
 
 For example, let's consider a 2D point $\mathbf{p}=(3, 3)$. If we want to translate it by $+5$ units along the x-axis and $+2$ units along the y-axis, we can add the displacement vector $\mathbf{t}=(5, 2)$ to $\mathbf{p}$, as shown in the following illustration.
 
@@ -299,9 +300,10 @@ At the same time, we can translate the frame by using the same displacement vect
 
 ```{figure} images/03/translation2.png
 ```
+
 So, it seems that translation of vectors and translation of coordinate systems are mathematically equivalent, just like with linear transformations (in the next section we will formally prove that this is true in general for affine transformations). This means that we can translate a frame to apply the same transformation to vectors defined in that frame. So far so good, but the question is: can we find a $3\times 3$ matrix $\mathbf{T}$ to associate with translations in 3D spaces? Unfortunately, the answer is no. 
 
-To understand why, just take a look at the definition of $T(\mathbf{p})$ above. It's a simple sum of vectors. On the other hand, in a vector-matrix multiplication, we have the dot product of two vectors (the row vector and a column of the matrix). Therefore, there is no way we can find a $3\times 3$ matrix $\mathbf{T}$ so that $\mathbf{w}=\mathbf{p}+\mathbf{t}=\mathbf{pT}$. This is due to the fact that translations are not linear transformations.
+To understand why, just take a look again at the definition of $T(\mathbf{p})$ provided in equation $\eqref{eq:ATransforms2}$. It's a simple sum of vectors. On the other hand, in a vector-matrix multiplication, we have the dot product of two vectors (the row vector and a column of the matrix). Therefore, there is no way we can find a $3\times 3$ matrix $\mathbf{T}$ so that $\mathbf{w}=\mathbf{p}+\mathbf{t}=\mathbf{pT}$. This is due to the fact that translations are not linear transformations.
 
 ```{admonition} Proof
 :class: dropdown
@@ -322,6 +324,64 @@ However, we can still find a way to incorporate translations into our matrix equ
 
 <br>
 
-## Homogeneous coordinates [WIP]
+## Homogeneous coordinates 
+
+As explained in [](vectors.md), homogeneous coordinates introduce an "extra" coordinate. This means that starting from a 3D Cartesian systems, we step into the 4-th dimension. Fortunately, we just pop in to pick up what we need, and leave immediately after.
+
+A point in 3D space can be represented in homogeneous coordinates by the tuple $(x,y,z,w)$, where the related 3D Cartesian coordinates are $(x/w,\ y/w,\ z/w,\ w/w)$. So, the generic 3D Cartesian coordinates $(x, y, z)$ can be written as $(x, y, z, 1)$ in homogeneous coordinates. This way, we can use the first three components as regular 3D Cartesian coordinates, and the last component to differentiate between points and vectors.
+
+- Points: $\ (x, y, z, 1)$
+
+- Vectors: $\ (x, y, z, 0)$
+
+We need this distinction between points and vectors as we want to apply translations to points without affecting vectors. Now, since we are using four components, we can try to find a $4\times 4$ matrix $\mathbf{T}$ associated with translations in 3D spaces. Let's start with the identity matrix, using the offset of the translated frame $\mathbf{t}=(t_x, t_y, t_z, 1)$ as the last row.
+
+$$\mathbf{T}=\left\lbrack\matrix{1&0&0&0\cr 0&1&0&0\cr 0&0&1&0\cr t_x&t_y&t_z&1}\right\rbrack$$
+
+Let's see what happens if we multiply a generic point $\mathbf{p}=(p_x, p_y, p_z, 1)$ by $\mathbf{T}$.
+
+$$\mathbf{w}=\mathbf{pT}=\left\lbrack\matrix{p_x & p_y & p_z & 1}\right\rbrack\left\lbrack\matrix{1&0&0&0\cr 0&1&0&0\cr 0&0&1&0\cr t_x & t_y & t_z & 1}\right\rbrack=(p_x+t_x,\ p_y+t_y,\ p_z+t_z,\ 1)=\mathbf{p}+\mathbf{t}$$
+
+That's exactly the definition of $T(\mathbf{p})$ in equation $\eqref{eq:ATransforms2}$, but expressed in homogeneous coordinates (that is, with the last component equal to $1$). Now, let's see what happens if we multiply a generic vector $\mathbf{v}=(v_x, v_y, v_z, 0)$ by $\mathbf{T}$.
+
+$$\mathbf{w}=\mathbf{vT}=\left\lbrack\matrix{v_x & v_y & v_z & 0}\right\rbrack\left\lbrack\matrix{1&0&0&0\cr 0&1&0&0\cr 0&0&1&0\cr t_x & t_y & t_z & 1}\right\rbrack=(v_x, v_y, v_z, 0)=\mathbf{v}$$
+
+The vector $\mathbf{v}$ is not affected by the translation. It looks like we just found a matrix associated with translation of points, but that does not affect directions. Of course, the inverse of the translation matrix is
+
+$$\mathbf{T}^{-1}=\left\lbrack\matrix{1&0&0&0\cr 0&1&0&0\cr 0&0&1&0\cr -t_x&-t_y&-t_z&1}\right\rbrack$$
+
+However, we'd like to also include linear transformations (scaling and rotation). For this purpose, we can try to embed the $3\times 3$ matrix $\mathbf{A}$ associated with linear transformations in the upper left position of $\mathbf{T}$ as follows:
+
+$$\mathbf{M}=\left\lbrack\matrix{A_{00}&A_{01}&A_{02}&0\cr A_{10}&A_{11}&A_{12}&0\cr A_{20}&A_{21}&A_{22}&0\cr t_x&t_y&t_z&1}\right\rbrack$$
+
+Now, if we multiply a generic vector $\mathbf{v}=(x, y, z, 0)$ by $\mathbf{M}$ we have
+
+$$\mathbf{w}=\mathbf{vM}=\left\lbrack\matrix{x&y&z&0}\right\rbrack.\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+0\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}$$
+
+where $\mathbf{f}=(A_{00}, A_{01}, A_{02}, 0)$, $\mathbf{g}=(A_{10}, A_{11}, A_{12}, 0)$ and $\mathbf{h}=(A_{20}, A_{21}, A_{22}, 0)$ are the linearly transformed standard basis vectors $\mathbf{i}=(1,0,0,0)$, $\mathbf{j}=(0,1,0,0)$ and $\mathbf{k}=(0,0,1,0)$, while $\mathbf{t}=(t_x, t_y, t_z, 1)$ is still the position of the translated frame (the starting one) with respect to the original frame (the new one).
+
+As you can see, the translation doesn't affect the vector, and the result is the same we showed in equation $\eqref{eq:ATransforms1}$: $\mathbf{w}=\mathbf{vM}$. Indeed, when you transform vectors with $\mathbf{M}$, these can only be affected by the linear transformation embedded within the matrix. Moreover, the result is still a vector: the last component is zero because it's the result of the dot product between $\mathbf{v}=(v_x, v_y, v_z, 0)$ and $(0,0,0,1)$, the last column of $\mathbf{M}$.
+
+On the other hand, if we multiply a generic point $\mathbf{q}=(x, y, z, 1)$ by $\mathbf{M}$ we have
+
+$$\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&y&z&1}\right\rbrack.\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
+\label{eq:ATransforms3}$$
+
+Here, we transform $\mathbf{q}$ with a linear transformation, which results in an intermediate vector $\mathbf{q}_1=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}$ to which we add the translation $\mathbf{t}$. That's exactly what we stated in equation $\eqref{eq:ATransforms2}$: a translation is the sum of a point ad a vector. However, in equation $\eqref{eq:ATransforms3}$ the point is $\mathbf{t}$, as it specifies the origin of the starting frame with respect to the new one. Also, the result is still a point: the last component is $1$ because it's the result of the dot product between $\mathbf{q}=(x, y, z, 1)$ and $(0, 0, 0, 1)$, the last row of $\mathbf{M}$.
+
+Furthermore, the difference of two points is the vector from a point to the other one. Indeed, from equation $\eqref{eq:ATransforms3}$, we have that
+
+$$\mathbf{p}-\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}$$
+
+which is a vector, as it's not bound to the origin of the frame of reference (see the illustration below, on the left side). On the other hand, the sum of two points is a point as well, but it doesn't make any sense (unlike the sum of two vectors, which is the resultant force, direction or speed).
+
+```{figure} images/03/vector-point-sum.png
+```
+
+In conclusion, the matrix $\mathbf{M}$ we built in this section can be used to transform both vectors and points with an affine transformation. It embeds a linear transformation, plus a translation. Its columns are the transformed standard basis vectors, and a displacement that specifies the origin of the starting frame with respect to a new one. Most importantly, $\mathbf{M}$ still allows us matrix to express the coordinates of a vector in starting frame with respect to new frame. As explained at the beginning of the tutorial, this implies that $\mathbf{M}$ is a matrix that allows to go from a frame to another, which means that change of coordinates and change of coordinate system are still mathematically equivalent in the context of affine transformations.
+
+<br>
+
+## Composition of transformations [WIP]
 
 <br>
