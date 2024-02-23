@@ -273,6 +273,55 @@ $$\mathbf{R}_\mathbf{n}^{-1}=\mathbf{R}_\mathbf{n}^T=\left\lbrack\matrix{c+(1-c)
 
 <br>
 
-## Affine transformations [WIP]
+## Affine transformations 
+
+Now that we know how to scale and rotate vectors, we'd also like to move them. However, we face two challenges when it comes to moving vectors:
+
+- We certainly can use translation to move bound vectors (points, e.g., vertex positions) to relocate 3D objects in the scene. However, for free vectors, this transformation doesn't make any sense since direction and magnitude don't change after a translation (the point of application for free vectors is irrelevant). Therefore, we need a way to distinguish between points (bound vectors) and (free) vectors.
+
+- Moving a point can't be expressed as a linear combination of the standard basis vectors. In other words, translation is not a linear transformation, so we can't associate a $3\times 3$ matrix with it. Fortunately, we can still find a way to incorporate translations into our matrix equation $\mathbf{w}=\mathbf{vM}$.
+
+Affine transformations extend linear ones by adding translations. The next section will explore this type of transformation, aiming to resolve the aforementioned issues.
+
+
+### Translation
+
+To move a bound vector (point) $\mathbf{p}=(p_x, p_y, p_z)$ using a translation $T$, we simply add a displacement vector $\mathbf{t}=(t_x, t_y, t_z)$ to the point.
+
+$$T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)$$
+
+For example, let's consider a 2D point $\mathbf{p}=(3, 3)$. If we want to translate it by $+5$ units along the x-axis and $+2$ units along the y-axis, we can add the displacement vector $\mathbf{t}=(5, 2)$ to $\mathbf{p}$, as shown in the following illustration.
+
+```{figure} images/03/translation.png
+```
+
+At the same time, we can translate the frame by using the same displacement vector $\mathbf{t}$, that now specifies the offset where to move the origin of the translated frame A (the starting one) with respect to the original frame B (the new one). In frame A, the coordinates of the bound vector (point) $\mathbf{p}$ are still the same, while in frame B the coordinates of $\mathbf{p}$ can be seen as the sum of $\mathbf{p}$ and $\mathbf{t}$.
+
+```{figure} images/03/translation2.png
+```
+So, it seems that translation of vectors and translation of coordinate systems are mathematically equivalent, just like with linear transformations (in the next section we will formally prove that this is true in general for affine transformations). This means that we can translate a frame to apply the same transformation to vectors defined in that frame. So far so good, but the question is: can we find a $3\times 3$ matrix $\mathbf{T}$ to associate with translations in 3D spaces? Unfortunately, the answer is no. 
+
+To understand why, just take a look at the definition of $T(\mathbf{p})$ above. It's a simple sum of vectors. On the other hand, in a vector-matrix multiplication, we have the dot product of two vectors (the row vector and a column of the matrix). Therefore, there is no way we can find a $3\times 3$ matrix $\mathbf{T}$ so that $\mathbf{w}=\mathbf{p}+\mathbf{t}=\mathbf{pT}$. This is due to the fact that translations are not linear transformations.
+
+```{admonition} Proof
+:class: dropdown
+
+$$
+\begin{align*}
+T(\mathbf{u}+\mathbf{v})&=(u_x+v_x+t_x,\ u_y+v_y+t_y,\ u_z+v_z+t_z) \\ 
+\\
+T(\mathbf{u})+T(\mathbf{v})&=(u_x+t_x,\ u_y+t_y,\ u_z+t_z)+(v_x+t_x,\ v_y+t_y,\ v_z+t_z) \\
+&=(u_x+v_x+2t_x,\ u_y+v_y+2t_y,\ u_z+v_z+2t_z)
+\end{align*}
+$$
+
+Therefore, $T(\mathbf{u}+\mathbf{v}) \neq T(\mathbf{u})+T(\mathbf{v})$, indicating that the first condition of linearity does not hold.
+```
+
+However, we can still find a way to incorporate translations into our matrix equation $\mathbf{w}=\mathbf{vM}$ by employing homogeneous coordinates. This allows us to mantain the form $\mathbf{w}=\mathbf{p}+\mathbf{t}=\mathbf{pT}$, where $\mathbf{T}$ is a translation matrix.
+
+<br>
+
+## Homogeneous coordinates [WIP]
 
 <br>
