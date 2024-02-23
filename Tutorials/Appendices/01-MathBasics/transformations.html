@@ -425,7 +425,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#translation">Translation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates-wip">Homogeneous coordinates [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations-wip">Composition of transformations [WIP]</a></li>
 </ul>
             </nav>
         </div>
@@ -495,7 +496,8 @@ L(k\mathbf{v})&amp;=kL(\mathbf{v})
 \\
 &amp;=\left\lbrack\matrix{xM_{00}&amp;xM_{01}&amp;xM_{02}}\right\rbrack+\left\lbrack\matrix{yM_{10}&amp;yM_{11}&amp;yM_{12}}\right\rbrack+\left\lbrack\matrix{zM_{20}&amp;zM_{21}&amp;zM_{22}}\right\rbrack \\
 \\
-&amp;=x\mathbf{M}_{0\ast}+y\mathbf{M}_{1\ast}+z\mathbf{M}_{2\ast}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h} =\mathbf{w}\tag{1}
+&amp;=x\mathbf{M}_{0\ast}+y\mathbf{M}_{1\ast}+z\mathbf{M}_{2\ast}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h} =\mathbf{w}
+\tag{1}
 \label{eq:ATransforms1}
 \end{align*}
 \end{split}\]</div>
@@ -677,7 +679,7 @@ For example, if we want to rotate about the x-, y- and z- axes, we need to set <
 <h3>Translation<a class="headerlink" href="#translation" title="Link to this heading">#</a></h3>
 <p>To move a bound vector (point) <span class="math notranslate nohighlight">\(\mathbf{p}=(p_x, p_y, p_z)\)</span> using a translation <span class="math notranslate nohighlight">\(T\)</span>, we simply add a displacement vector <span class="math notranslate nohighlight">\(\mathbf{t}=(t_x, t_y, t_z)\)</span> to the point.</p>
 <div class="math notranslate nohighlight">
-\[T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\]</div>
+\[T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\tag{2}\label{eq:ATransforms2}\]</div>
 <p>For example, let’s consider a 2D point <span class="math notranslate nohighlight">\(\mathbf{p}=(3, 3)\)</span>. If we want to translate it by <span class="math notranslate nohighlight">\(+5\)</span> units along the x-axis and <span class="math notranslate nohighlight">\(+2\)</span> units along the y-axis, we can add the displacement vector <span class="math notranslate nohighlight">\(\mathbf{t}=(5, 2)\)</span> to <span class="math notranslate nohighlight">\(\mathbf{p}\)</span>, as shown in the following illustration.</p>
 <figure class="align-default">
 <img alt="../../../_images/translation.png" src="../../../_images/translation.png" />
@@ -687,7 +689,7 @@ For example, if we want to rotate about the x-, y- and z- axes, we need to set <
 <img alt="../../../_images/translation2.png" src="../../../_images/translation2.png" />
 </figure>
 <p>So, it seems that translation of vectors and translation of coordinate systems are mathematically equivalent, just like with linear transformations (in the next section we will formally prove that this is true in general for affine transformations). This means that we can translate a frame to apply the same transformation to vectors defined in that frame. So far so good, but the question is: can we find a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> to associate with translations in 3D spaces? Unfortunately, the answer is no.</p>
-<p>To understand why, just take a look at the definition of <span class="math notranslate nohighlight">\(T(\mathbf{p})\)</span> above. It’s a simple sum of vectors. On the other hand, in a vector-matrix multiplication, we have the dot product of two vectors (the row vector and a column of the matrix). Therefore, there is no way we can find a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> so that <span class="math notranslate nohighlight">\(\mathbf{w}=\mathbf{p}+\mathbf{t}=\mathbf{pT}\)</span>. This is due to the fact that translations are not linear transformations.</p>
+<p>To understand why, just take a look again at the definition of <span class="math notranslate nohighlight">\(T(\mathbf{p})\)</span> provided in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms2}\)</span>. It’s a simple sum of vectors. On the other hand, in a vector-matrix multiplication, we have the dot product of two vectors (the row vector and a column of the matrix). Therefore, there is no way we can find a <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> so that <span class="math notranslate nohighlight">\(\mathbf{w}=\mathbf{p}+\mathbf{t}=\mathbf{pT}\)</span>. This is due to the fact that translations are not linear transformations.</p>
 <div class="dropdown admonition">
 <p class="admonition-title">Proof</p>
 <div class="math notranslate nohighlight">
@@ -705,8 +707,51 @@ T(\mathbf{u})+T(\mathbf{v})&amp;=(u_x+t_x,\ u_y+t_y,\ u_z+t_z)+(v_x+t_x,\ v_y+t_
 <br>
 </section>
 </section>
-<section id="homogeneous-coordinates-wip">
-<h2>Homogeneous coordinates [WIP]<a class="headerlink" href="#homogeneous-coordinates-wip" title="Link to this heading">#</a></h2>
+<section id="homogeneous-coordinates">
+<h2>Homogeneous coordinates<a class="headerlink" href="#homogeneous-coordinates" title="Link to this heading">#</a></h2>
+<p>As explained in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>, homogeneous coordinates introduce an “extra” coordinate. This means that starting from a 3D Cartesian systems, we step into the 4-th dimension. Fortunately, we just pop in to pick up what we need, and leave immediately after.</p>
+<p>A point in 3D space can be represented in homogeneous coordinates by the tuple <span class="math notranslate nohighlight">\((x,y,z,w)\)</span>, where the related 3D Cartesian coordinates are <span class="math notranslate nohighlight">\((x/w,\ y/w,\ z/w,\ w/w)\)</span>. So, the generic 3D Cartesian coordinates <span class="math notranslate nohighlight">\((x, y, z)\)</span> can be written as <span class="math notranslate nohighlight">\((x, y, z, 1)\)</span> in homogeneous coordinates. This way, we can use the first three components as regular 3D Cartesian coordinates, and the last component to differentiate between points and vectors.</p>
+<ul class="simple">
+<li><p>Points: <span class="math notranslate nohighlight">\(\ (x, y, z, 1)\)</span></p></li>
+<li><p>Vectors: <span class="math notranslate nohighlight">\(\ (x, y, z, 0)\)</span></p></li>
+</ul>
+<p>We need this distinction between points and vectors as we want to apply translations to points without affecting vectors. Now, since we are using four components, we can try to find a <span class="math notranslate nohighlight">\(4\times 4\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> associated with translations in 3D spaces. Let’s start with the identity matrix, using the offset of the translated frame <span class="math notranslate nohighlight">\(\mathbf{t}=(t_x, t_y, t_z, 1)\)</span> as the last row.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{T}=\left\lbrack\matrix{1&amp;0&amp;0&amp;0\cr 0&amp;1&amp;0&amp;0\cr 0&amp;0&amp;1&amp;0\cr t_x&amp;t_y&amp;t_z&amp;1}\right\rbrack\]</div>
+<p>Let’s see what happens if we multiply a generic point <span class="math notranslate nohighlight">\(\mathbf{p}=(p_x, p_y, p_z, 1)\)</span> by <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=\mathbf{pT}=\left\lbrack\matrix{p_x &amp; p_y &amp; p_z &amp; 1}\right\rbrack\left\lbrack\matrix{1&amp;0&amp;0&amp;0\cr 0&amp;1&amp;0&amp;0\cr 0&amp;0&amp;1&amp;0\cr t_x &amp; t_y &amp; t_z &amp; 1}\right\rbrack=(p_x+t_x,\ p_y+t_y,\ p_z+t_z,\ 1)=\mathbf{p}+\mathbf{t}\]</div>
+<p>That’s exactly the definition of <span class="math notranslate nohighlight">\(T(\mathbf{p})\)</span> in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms2}\)</span>, but expressed in homogeneous coordinates (that is, with the last component equal to <span class="math notranslate nohighlight">\(1\)</span>). Now, let’s see what happens if we multiply a generic vector <span class="math notranslate nohighlight">\(\mathbf{v}=(v_x, v_y, v_z, 0)\)</span> by <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=\mathbf{vT}=\left\lbrack\matrix{v_x &amp; v_y &amp; v_z &amp; 0}\right\rbrack\left\lbrack\matrix{1&amp;0&amp;0&amp;0\cr 0&amp;1&amp;0&amp;0\cr 0&amp;0&amp;1&amp;0\cr t_x &amp; t_y &amp; t_z &amp; 1}\right\rbrack=(v_x, v_y, v_z, 0)=\mathbf{v}\]</div>
+<p>The vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is not affected by the translation. It looks like we just found a matrix associated with translation of points, but that does not affect directions. Of course, the inverse of the translation matrix is</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{T}^{-1}=\left\lbrack\matrix{1&amp;0&amp;0&amp;0\cr 0&amp;1&amp;0&amp;0\cr 0&amp;0&amp;1&amp;0\cr -t_x&amp;-t_y&amp;-t_z&amp;1}\right\rbrack\]</div>
+<p>However, we’d like to also include linear transformations (scaling and rotation). For this purpose, we can try to embed the <span class="math notranslate nohighlight">\(3\times 3\)</span> matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> associated with linear transformations in the upper left position of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{M}=\left\lbrack\matrix{A_{00}&amp;A_{01}&amp;A_{02}&amp;0\cr A_{10}&amp;A_{11}&amp;A_{12}&amp;0\cr A_{20}&amp;A_{21}&amp;A_{22}&amp;0\cr t_x&amp;t_y&amp;t_z&amp;1}\right\rbrack\]</div>
+<p>Now, if we multiply a generic vector <span class="math notranslate nohighlight">\(\mathbf{v}=(x, y, z, 0)\)</span> by <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=\mathbf{vM}=\left\lbrack\matrix{x&amp;y&amp;z&amp;0}\right\rbrack.\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+0\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{f}=(A_{00}, A_{01}, A_{02}, 0)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{g}=(A_{10}, A_{11}, A_{12}, 0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}=(A_{20}, A_{21}, A_{22}, 0)\)</span> are the linearly transformed standard basis vectors <span class="math notranslate nohighlight">\(\mathbf{i}=(1,0,0,0)\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}=(0,1,0,0)\)</span> and <span class="math notranslate nohighlight">\(\mathbf{k}=(0,0,1,0)\)</span>, while <span class="math notranslate nohighlight">\(\mathbf{t}=(t_x, t_y, t_z, 1)\)</span> is still the position of the translated frame (the starting one) with respect to the original frame (the new one).</p>
+<p>As you can see, the translation doesn’t affect the vector, and the result is the same we showed in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms1}\)</span>: <span class="math notranslate nohighlight">\(\mathbf{w}=\mathbf{vM}\)</span>. Indeed, when you transform vectors with <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>, these can only be affected by the linear transformation embedded within the matrix. Moreover, the result is still a vector: the last component is zero because it’s the result of the dot product between <span class="math notranslate nohighlight">\(\mathbf{v}=(v_x, v_y, v_z, 0)\)</span> and <span class="math notranslate nohighlight">\((0,0,0,1)\)</span>, the last column of <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>.</p>
+<p>On the other hand, if we multiply a generic point <span class="math notranslate nohighlight">\(\mathbf{q}=(x, y, z, 1)\)</span> by <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&amp;y&amp;z&amp;1}\right\rbrack.\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
+\label{eq:ATransforms3}\]</div>
+<p>Here, we transform <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> with a linear transformation, which results in an intermediate vector <span class="math notranslate nohighlight">\(\mathbf{q}_1=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}\)</span> to which we add the translation <span class="math notranslate nohighlight">\(\mathbf{t}\)</span>. That’s exactly what we stated in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms2}\)</span>: a translation is the sum of a point ad a vector. However, in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms3}\)</span> the point is <span class="math notranslate nohighlight">\(\mathbf{t}\)</span>, as it specifies the origin of the starting frame with respect to the new one. Also, the result is still a point: the last component is <span class="math notranslate nohighlight">\(1\)</span> because it’s the result of the dot product between <span class="math notranslate nohighlight">\(\mathbf{q}=(x, y, z, 1)\)</span> and <span class="math notranslate nohighlight">\((0, 0, 0, 1)\)</span>, the last row of <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>.</p>
+<p>Furthermore, the difference of two points is the vector from a point to the other one. Indeed, from equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms3}\)</span>, we have that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{p}-\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}\]</div>
+<p>which is a vector, as it’s not bound to the origin of the frame of reference (see the illustration below, on the left side). On the other hand, the sum of two points is a point as well, but it doesn’t make any sense (unlike the sum of two vectors, which is the resultant force, direction or speed).</p>
+<figure class="align-default">
+<img alt="../../../_images/vector-point-sum.png" src="../../../_images/vector-point-sum.png" />
+</figure>
+<p>In conclusion, the matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> we built in this section can be used to transform both vectors and points with affine transformations, as it embeds a linear transformation, plus a translation. The first three rows represent the transformed standard basis vectors, while the four-th is a displacement that specifies the origin of the starting frame with respect to a new one. Most importantly, <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> still allows us to express the coordinates of a vector in a starting frame with respect to a new one. As explained at the beginning of the tutorial, this implies that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is a matrix that allows us to go from a frame to another, which means that change of coordinates and change of coordinate system are still mathematically equivalent in the context of affine transformations.</p>
+<br>
+</section>
+<section id="composition-of-transformations-wip">
+<h2>Composition of transformations [WIP]<a class="headerlink" href="#composition-of-transformations-wip" title="Link to this heading">#</a></h2>
 <br>
 </section>
 </section>
@@ -775,7 +820,8 @@ T(\mathbf{u})+T(\mathbf{v})&amp;=(u_x+t_x,\ u_y+t_y,\ u_z+t_z)+(v_x+t_x,\ v_y+t_
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#translation">Translation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates-wip">Homogeneous coordinates [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations-wip">Composition of transformations [WIP]</a></li>
 </ul>
   </nav></div>
 
