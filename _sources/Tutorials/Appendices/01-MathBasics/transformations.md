@@ -402,7 +402,7 @@ Each matrix multiplication needs $(2n-1)$ operations for each element of the res
 
 It seems that we need more operations to perform if we first multiply the matrices. However, imagine you want to transform 10 thousand vectors by the same matrices $\mathbf{S}$, $\mathbf{R}$ and $\mathbf{T}$. In the first case we need to perform $10000(3n(2n-1))$ operations, while in the second case we only need $10000(n(2n-1))+2(2n^3-n^2)$ operations, as the double matrix multiplication $(\mathbf{SRT})$ must be computed only once. That is, we can reuse the result of $(\mathbf{SRT})$ as a matrix to transform every vector. For example, if $n=4$, we have $10000(3n(2n-1))=840\text{k}$, while $10000(n(2n-1))+2(2n^3-n^2)=280\text{k}$.
 
-Then, it is strongly recommended to transform vectors with a matrix which is a composition of all the transformations you want to apply to the vectors.
+In conclusion, it is strongly recommended to transform vectors with a matrix which is a composition of all the transformations you want to apply to the vectors.
 
 <br>
 
