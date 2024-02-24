@@ -414,7 +414,7 @@ DirectXMath offers convenient helper functions for constructing $4\times 4$ matr
 
 - **SIMD-accelerated implementation**: Leverages the power of Single Instruction, Multiple Data (SIMD) instructions available on modern CPUs, exposed by intrinsics functions provided by the Microsoft C++ compiler. This allows the CPU to perform calculations on multiple data elements simultaneously, resulting in significant performance gains.
 
-**XMMatrixScaling** returns a matrix associated with a scaling operation, similar to the one examined in [](transforms-scaling-label). In the listing below, the `_mm_set_ps` intrinsics function efficiently sets a 4-component vector with the supplied floating-point values in a single instruction.
+**XMMatrixScaling** returns a matrix associated with a scaling operation, similar to the one examined in [](transforms-scaling-label).
 
 ```{code-block} cpp
 
@@ -461,6 +461,19 @@ inline XMMATRIX XM_CALLCONV XMMatrixScaling
 }
 
 ```
+
+In the previous code snippet, the `_mm_set_ps` intrinsics function efficiently sets a 4-component vector with the supplied floating-point values in a single instruction. Below, you'll find its declaration and a breakdown of how parameters map to the output vector's components. In particular, observe that the last parameter `e0` is used to initialize the first 32-bit component of the output vector (denoted as dst[31:0]).
+
+```
+__m128 _mm_set_ps (float e3, float e2, float e1, float e0);
+
+dst[31:0] = e0
+dst[63:32] = e1
+dst[95:64]  = e2
+dst[127:96] = e3
+```
+
+<br>
 
  [WIP]
 

@@ -775,7 +775,7 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <li><p><strong>Scalar implementation</strong>: Written in standard C++, utilizing scalar operations. It works on any CPU regardless of its architecture, but may be slower than alternative options.</p></li>
 <li><p><strong>SIMD-accelerated implementation</strong>: Leverages the power of Single Instruction, Multiple Data (SIMD) instructions available on modern CPUs, exposed by intrinsics functions provided by the Microsoft C++ compiler. This allows the CPU to perform calculations on multiple data elements simultaneously, resulting in significant performance gains.</p></li>
 </ul>
-<p><strong>XMMatrixScaling</strong> returns a matrix associated with a scaling operation, similar to the one examined in <a class="reference internal" href="#transforms-scaling-label"><span class="std std-ref">Scaling</span></a>. In the listing below, the <code class="docutils literal notranslate"><span class="pre">_mm_set_ps</span></code> intrinsics function efficiently sets a 4-component vector with the supplied floating-point values in a single instruction.</p>
+<p><strong>XMMatrixScaling</strong> returns a matrix associated with a scaling operation, similar to the one examined in <a class="reference internal" href="#transforms-scaling-label"><span class="std std-ref">Scaling</span></a>.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixScaling</span>
 <span class="p">(</span>
 <span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ScaleX</span><span class="p">,</span>
@@ -819,6 +819,16 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>In the previous code snippet, the <code class="docutils literal notranslate"><span class="pre">_mm_set_ps</span></code> intrinsics function efficiently sets a 4-component vector with the supplied floating-point values in a single instruction. Below, you’ll find its declaration and a breakdown of how parameters map to the output vector’s components. In particular, observe that the last parameter <code class="docutils literal notranslate"><span class="pre">e0</span></code> is used to initialize the first 32-bit component of the output vector (denoted as dst[31:0]).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">__m128</span> <span class="n">_mm_set_ps</span> <span class="p">(</span><span class="nb">float</span> <span class="n">e3</span><span class="p">,</span> <span class="nb">float</span> <span class="n">e2</span><span class="p">,</span> <span class="nb">float</span> <span class="n">e1</span><span class="p">,</span> <span class="nb">float</span> <span class="n">e0</span><span class="p">);</span>
+
+<span class="n">dst</span><span class="p">[</span><span class="mi">31</span><span class="p">:</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">e0</span>
+<span class="n">dst</span><span class="p">[</span><span class="mi">63</span><span class="p">:</span><span class="mi">32</span><span class="p">]</span> <span class="o">=</span> <span class="n">e1</span>
+<span class="n">dst</span><span class="p">[</span><span class="mi">95</span><span class="p">:</span><span class="mi">64</span><span class="p">]</span>  <span class="o">=</span> <span class="n">e2</span>
+<span class="n">dst</span><span class="p">[</span><span class="mi">127</span><span class="p">:</span><span class="mi">96</span><span class="p">]</span> <span class="o">=</span> <span class="n">e3</span>
+</pre></div>
+</div>
+<br>
 <p>[WIP]</p>
 <br>
 </section>
