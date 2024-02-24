@@ -97,7 +97,7 @@ That is, $\mathbf{p}_A$ with respect to the frame B is the diagonal of the trans
 
 Thus, we have just demonstrated that $\mathbf{M}$ is the matrix to express the coordinates of a vector in a frame A with respect to a frame B. That is, we have shown that $\mathbf{M}$ allows to go from frame A (the original one) to frame B (the transformed one). At this point, it should come as no surprise that the inverse matrix $\mathbf{M}^{-1}$ represents the transformation to go from frame B back to frame A.
 
-
+(transforms-scaling-label)=
 ### Scaling 
 
 In a 3D Cartesian coordinate system, vectors can be scaled independently in three directions by scaling their respective components. That is, given a scaling $S$ and a vector $\mathbf{v}=(x,y,z)$ we have
@@ -406,6 +406,62 @@ Then, it is strongly recommended to transform vectors with a matrix which is a c
 
 <br>
 
-## Transformation in DirectX [WIP]
+## Transformation in DirectX
+
+DirectXMath offers convenient helper functions for constructing $4\times 4$ matrices to transform (i.e., scale, rotate and translate) both points (e.g., vertex positions) and vectors (e.g., light directions) in homogeneous coordinates. These functions often come in two flavors:
+
+- **Scalar implementation**: Written in standard C++, utilizing scalar operations. It works on any CPU regardless of its architecture, but may be slower than alternative options.
+
+- **SIMD-accelerated implementation**: Leverages the power of Single Instruction, Multiple Data (SIMD) instructions available on modern CPUs, exposed by intrinsics functions provided by the Microsoft C++ compiler. This allows the CPU to perform calculations on multiple data elements simultaneously, resulting in significant performance gains.
+
+**XMMatrixScaling** returns a matrix associated with a scaling operation, similar to the one examined in [](transforms-scaling-label). In the listing below, the `_mm_set_ps` intrinsics function efficiently sets a 4-component vector with the supplied floating-point values in a single instruction.
+
+```{code-block} cpp
+
+inline XMMATRIX XM_CALLCONV XMMatrixScaling
+(
+    float ScaleX,
+    float ScaleY,
+    float ScaleZ
+) noexcept
+{
+#if defined(_XM_NO_INTRINSICS_)
+
+    XMMATRIX M;
+    M.m[0][0] = ScaleX;
+    M.m[0][1] = 0.0f;
+    M.m[0][2] = 0.0f;
+    M.m[0][3] = 0.0f;
+
+    M.m[1][0] = 0.0f;
+    M.m[1][1] = ScaleY;
+    M.m[1][2] = 0.0f;
+    M.m[1][3] = 0.0f;
+
+    M.m[2][0] = 0.0f;
+    M.m[2][1] = 0.0f;
+    M.m[2][2] = ScaleZ;
+    M.m[2][3] = 0.0f;
+
+    M.m[3][0] = 0.0f;
+    M.m[3][1] = 0.0f;
+    M.m[3][2] = 0.0f;
+    M.m[3][3] = 1.0f;
+    return M;
+
+#elif defined(_XM_SSE_INTRINSICS_)
+    XMMATRIX M;
+    M.r[0] = _mm_set_ps(0, 0, 0, ScaleX);
+    M.r[1] = _mm_set_ps(0, 0, ScaleY, 0);
+    M.r[2] = _mm_set_ps(0, ScaleZ, 0, 0);
+    M.r[3] = g_XMIdentityR3.v;
+    return M;
+
+#endif
+}
+
+```
+
+ [WIP]
 
 <br>
