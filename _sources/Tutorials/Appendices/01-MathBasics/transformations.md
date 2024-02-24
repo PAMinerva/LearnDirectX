@@ -462,7 +462,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixScaling
 
 ```
 
-In the previous code snippet, `g_XMIdentityR3 = (0.0f, 0.0f, 0.0f, 1.0f)`, while the `_mm_set_ps` intrinsic function efficiently initializes a 4-component vector with the provided floating-point values in a single instruction. Below, you'll find its declaration. along with a concise explanation of how parameters map to the output vector's components. In particular, observe that the last parameter `e0` is used to initialize the first 32-bit component of the output vector (denoted as dst[31:0]).
+In the previous code snippet, `g_XMIdentityR3` is a constant vector defined as `(0.0f, 0.0f, 0.0f, 1.0f)`, while the `_mm_set_ps` intrinsic function efficiently initializes a 4-component vector with the provided floating-point values in a single instruction. Below, you'll find its declaration. along with a concise explanation of how parameters map to the output vector's components. In particular, observe that the last parameter `e0` is used to initialize the first 32-bit component of the output vector (denoted as dst[31:0]).
 
 ```
 __m128 _mm_set_ps (float e3, float e2, float e1, float e0);
