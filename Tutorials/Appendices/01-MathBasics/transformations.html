@@ -426,7 +426,8 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations-wip">Composition of transformations [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations">Composition of transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx-wip">Transformation in DirectX [WIP]</a></li>
 </ul>
             </nav>
         </div>
@@ -751,8 +752,24 @@ T(\mathbf{u})+T(\mathbf{v})&amp;=(u_x+t_x,\ u_y+t_y,\ u_z+t_z)+(v_x+t_x,\ v_y+t_
 <p>In conclusion, the matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> we built in this section can be used to transform both vectors and points with affine transformations, as it embeds a linear transformation, plus a translation. The first three rows represent the transformed standard basis vectors, while the four-th is a displacement that specifies the origin of the starting frame with respect to a new one. Most importantly, <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> still allows us to express the coordinates of a vector in a starting frame with respect to a new one. As explained at the beginning of the tutorial, this implies that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is a matrix that allows us to go from a frame to another, which means that change of coordinates and change of coordinate system are still mathematically equivalent in the context of affine transformations.</p>
 <br>
 </section>
-<section id="composition-of-transformations-wip">
-<h2>Composition of transformations [WIP]<a class="headerlink" href="#composition-of-transformations-wip" title="Link to this heading">#</a></h2>
+<section id="composition-of-transformations">
+<h2>Composition of transformations<a class="headerlink" href="#composition-of-transformations" title="Link to this heading">#</a></h2>
+<p>Imagine you want to scale, rotate and translate a vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span>, obtaining a vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>. Mathematically, this can be expressed in matrix form as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=((\mathbf{vS})\mathbf{R})\mathbf{T})\tag{4}\label{eq:ATransforms4}\]</div>
+<p>The vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> and the resultant vector <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> can be considered row vectors of dimension <span class="math notranslate nohighlight">\(1\times n\)</span>, while the matrices <span class="math notranslate nohighlight">\(\mathbf{S}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> are all <span class="math notranslate nohighlight">\(n\times n\)</span>.</p>
+<p>In vector-matrix multiplication, we need to perform <span class="math notranslate nohighlight">\((2n-1)\)</span> operations for each component of the resultant vector: <span class="math notranslate nohighlight">\((n-1)\)</span> sums and <span class="math notranslate nohighlight">\(n\)</span> products. So, to obtain the total operations involved, we must multiply <span class="math notranslate nohighlight">\((2n-1)\)</span> by the <span class="math notranslate nohighlight">\(n\)</span> components of the resultant vector. Therefore, we have <span class="math notranslate nohighlight">\(n(2n-1)\)</span> operations to perform each vector-matrix multiplication. In equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms4}\)</span>, we need to perform three of these multiplications, so the total cost is <span class="math notranslate nohighlight">\(3n(2n-1)=6n^2-3n=O(n^2)\)</span>.</p>
+<p>However, thanks to the associative property of matrix multiplication we can re-write equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms4}\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}\label{eq:ATransforms5}\]</div>
+<p>Now, we have two matrix multiplications and a vector-matrix multiplication.<br>
+Each matrix multiplication needs <span class="math notranslate nohighlight">\((2n-1)\)</span> operations for each element of the resultant matrix. So, to obtain the total operations involved, we must multiply <span class="math notranslate nohighlight">\((2n-1)\)</span> by the <span class="math notranslate nohighlight">\(n^2\)</span> elements of the resultant matrix. Therefore, we have <span class="math notranslate nohighlight">\((2n-1)n^2\)</span> operations to perform a matrix multiplication. In equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms5}\)</span>, we have two of these multiplications, plus a vector-matrix multiplication, so the total cost is <span class="math notranslate nohighlight">\(2(2n^3-n^2)+n(2n-1)=4n^3-n=O(n^3)\)</span>.</p>
+<p>It seems that we need more operations to perform if we first multiply the matrices. However, imagine you want to transform 10 thousand vectors by the same matrices <span class="math notranslate nohighlight">\(\mathbf{S}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>. In the first case we need to perform <span class="math notranslate nohighlight">\(10000(3n(2n-1))\)</span> operations, while in the second case we only need <span class="math notranslate nohighlight">\(10000(n(2n-1))+2(2n^3-n^2)\)</span> operations, as the double matrix multiplication <span class="math notranslate nohighlight">\((\mathbf{SRT})\)</span> must be computed only once. That is, we can reuse the result of <span class="math notranslate nohighlight">\((\mathbf{SRT})\)</span> as a matrix to transform every vector. For example, if <span class="math notranslate nohighlight">\(n=4\)</span>, we have <span class="math notranslate nohighlight">\(10000(3n(2n-1))=840\text{k}\)</span>, while <span class="math notranslate nohighlight">\(10000(n(2n-1))+2(2n^3-n^2)=280\text{k}\)</span>.</p>
+<p>Then, it is strongly recommended to transform vectors with a matrix which is a composition of all the transformations you want to apply to the vectors.</p>
+<br>
+</section>
+<section id="transformation-in-directx-wip">
+<h2>Transformation in DirectX [WIP]<a class="headerlink" href="#transformation-in-directx-wip" title="Link to this heading">#</a></h2>
 <br>
 </section>
 </section>
@@ -822,7 +839,8 @@ T(\mathbf{u})+T(\mathbf{v})&amp;=(u_x+t_x,\ u_y+t_y,\ u_z+t_z)+(v_x+t_x,\ v_y+t_
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations-wip">Composition of transformations [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations">Composition of transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx-wip">Transformation in DirectX [WIP]</a></li>
 </ul>
   </nav></div>
 

@@ -383,6 +383,29 @@ In conclusion, the matrix $\mathbf{M}$ we built in this section can be used to t
 
 <br>
 
-## Composition of transformations [WIP]
+## Composition of transformations 
+
+Imagine you want to scale, rotate and translate a vector $\mathbf{v}$, obtaining a vector $\mathbf{w}$. Mathematically, this can be expressed in matrix form as follows:
+
+$$\mathbf{w}=((\mathbf{vS})\mathbf{R})\mathbf{T})\tag{4}\label{eq:ATransforms4}$$
+
+The vector $\mathbf{v}$ and the resultant vector $\mathbf{w}$ can be considered row vectors of dimension $1\times n$, while the matrices $\mathbf{S}$, $\mathbf{R}$ and $\mathbf{T}$ are all $n\times n$.
+
+In vector-matrix multiplication, we need to perform $(2n-1)$ operations for each component of the resultant vector: $(n-1)$ sums and $n$ products. So, to obtain the total operations involved, we must multiply $(2n-1)$ by the $n$ components of the resultant vector. Therefore, we have $n(2n-1)$ operations to perform each vector-matrix multiplication. In equation $\eqref{eq:ATransforms4}$, we need to perform three of these multiplications, so the total cost is $3n(2n-1)=6n^2-3n=O(n^2)$.
+
+However, thanks to the associative property of matrix multiplication we can re-write equation $\eqref{eq:ATransforms4}$ as follows:
+
+$$\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}\label{eq:ATransforms5}$$
+
+Now, we have two matrix multiplications and a vector-matrix multiplication.<br>
+Each matrix multiplication needs $(2n-1)$ operations for each element of the resultant matrix. So, to obtain the total operations involved, we must multiply $(2n-1)$ by the $n^2$ elements of the resultant matrix. Therefore, we have $(2n-1)n^2$ operations to perform a matrix multiplication. In equation $\eqref{eq:ATransforms5}$, we have two of these multiplications, plus a vector-matrix multiplication, so the total cost is $2(2n^3-n^2)+n(2n-1)=4n^3-n=O(n^3)$.
+
+It seems that we need more operations to perform if we first multiply the matrices. However, imagine you want to transform 10 thousand vectors by the same matrices $\mathbf{S}$, $\mathbf{R}$ and $\mathbf{T}$. In the first case we need to perform $10000(3n(2n-1))$ operations, while in the second case we only need $10000(n(2n-1))+2(2n^3-n^2)$ operations, as the double matrix multiplication $(\mathbf{SRT})$ must be computed only once. That is, we can reuse the result of $(\mathbf{SRT})$ as a matrix to transform every vector. For example, if $n=4$, we have $10000(3n(2n-1))=840\text{k}$, while $10000(n(2n-1))+2(2n^3-n^2)=280\text{k}$.
+
+Then, it is strongly recommended to transform vectors with a matrix which is a composition of all the transformations you want to apply to the vectors.
+
+<br>
+
+## Transformation in DirectX [WIP]
 
 <br>
