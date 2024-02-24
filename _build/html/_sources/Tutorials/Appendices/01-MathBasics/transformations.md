@@ -462,7 +462,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixScaling
 
 ```
 
-In the previous code snippet, `g_XMIdentityR3` is a **XMVECTORF32** global constant defined as `{0.0f, 0.0f, 0.0f, 1.0f}`, while the `_mm_set_ps` intrinsic function returns a **__m128** value initialized (in a single instruction) using the floating-point values provided as arguments to the function. Below, you'll find the declaration of the `_mm_set_ps` function, along with a concise explanation of how its parameters map to the bits of the return value (denoted as `dst`). In particular, observe that the last parameter `e0` is used to initialize the least significant 32 bits of the returned `__m128` value, which correspond to the first 32-bit component of a 4-component vector of floating point values.
+In the previous code snippet, `g_XMIdentityR3` is a **XMVECTORF32** global constant defined as `{0.0f, 0.0f, 0.0f, 1.0f}`. In contrast, the `_mm_set_ps` intrinsic function returns a **__m128** value initialized (in a single instruction) using the floating-point values provided as arguments. Below, you'll find the declaration of the `_mm_set_ps` function, along with a concise explanation of how its parameters map to the bits of the return value (denoted as `dst`). In particular, observe that the last parameter `e0` is used to initialize the least significant 32 bits of the returned **__m128** value, corresponding to the bits of the first component of a 4-component vector of floating-point values.
 
 ```
 __m128 _mm_set_ps (float e3, float e2, float e1, float e0);
