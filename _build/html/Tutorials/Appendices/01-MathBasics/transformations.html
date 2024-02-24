@@ -427,7 +427,7 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations">Composition of transformations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx-wip">Transformation in DirectX [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx">Transformation in DirectX</a></li>
 </ul>
             </nav>
         </div>
@@ -520,7 +520,7 @@ However, we can also interpret <span class="math notranslate nohighlight">\(\mat
 <p>That is, <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> with respect to the frame B is the diagonal of the transformed standard basis vectors, scaled using the components of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span>. In other words, the coordinates of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> with respect to frame B can be expressed as a linear combination of the transformed basis vectors, using the components of <span class="math notranslate nohighlight">\(\mathbf{p}_A\)</span> as coefficients. This is exactly what we formally proved in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms1}\)</span>, where we used the transformed basis vectors as rows of the matrix <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>.</p>
 <p>Thus, we have just demonstrated that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is the matrix to express the coordinates of a vector in a frame A with respect to a frame B. That is, we have shown that <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> allows to go from frame A (the original one) to frame B (the transformed one). At this point, it should come as no surprise that the inverse matrix <span class="math notranslate nohighlight">\(\mathbf{M}^{-1}\)</span> represents the transformation to go from frame B back to frame A.</p>
 <section id="scaling">
-<h3>Scaling<a class="headerlink" href="#scaling" title="Link to this heading">#</a></h3>
+<span id="transforms-scaling-label"></span><h3>Scaling<a class="headerlink" href="#scaling" title="Link to this heading">#</a></h3>
 <p>In a 3D Cartesian coordinate system, vectors can be scaled independently in three directions by scaling their respective components. That is, given a scaling <span class="math notranslate nohighlight">\(S\)</span> and a vector <span class="math notranslate nohighlight">\(\mathbf{v}=(x,y,z)\)</span> we have</p>
 <div class="math notranslate nohighlight">
 \[S(\mathbf{v})=(s_xx, s_yy, s_zz)\]</div>
@@ -768,8 +768,58 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <p>Then, it is strongly recommended to transform vectors with a matrix which is a composition of all the transformations you want to apply to the vectors.</p>
 <br>
 </section>
-<section id="transformation-in-directx-wip">
-<h2>Transformation in DirectX [WIP]<a class="headerlink" href="#transformation-in-directx-wip" title="Link to this heading">#</a></h2>
+<section id="transformation-in-directx">
+<h2>Transformation in DirectX<a class="headerlink" href="#transformation-in-directx" title="Link to this heading">#</a></h2>
+<p>DirectXMath offers convenient helper functions for constructing <span class="math notranslate nohighlight">\(4\times 4\)</span> matrices to transform (i.e., scale, rotate and translate) both points (e.g., vertex positions) and vectors (e.g., light directions) in homogeneous coordinates. These functions often come in two flavors:</p>
+<ul class="simple">
+<li><p><strong>Scalar implementation</strong>: Written in standard C++, utilizing scalar operations. It works on any CPU regardless of its architecture, but may be slower than alternative options.</p></li>
+<li><p><strong>SIMD-accelerated implementation</strong>: Leverages the power of Single Instruction, Multiple Data (SIMD) instructions available on modern CPUs, exposed by intrinsics functions provided by the Microsoft C++ compiler. This allows the CPU to perform calculations on multiple data elements simultaneously, resulting in significant performance gains.</p></li>
+</ul>
+<p><strong>XMMatrixScaling</strong> returns a matrix associated with a scaling operation, similar to the one examined in <a class="reference internal" href="#transforms-scaling-label"><span class="std std-ref">Scaling</span></a>. In the listing below, the <code class="docutils literal notranslate"><span class="pre">_mm_set_ps</span></code> intrinsics function efficiently sets a 4-component vector with the supplied floating-point values in a single instruction.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixScaling</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ScaleX</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ScaleY</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">ScaleZ</span>
+<span class="p">)</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="p">{</span>
+<span class="cp">#if defined(_XM_NO_INTRINSICS_)</span>
+
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScaleX</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScaleY</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScaleZ</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+
+<span class="cp">#elif defined(_XM_SSE_INTRINSICS_)</span>
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm_set_ps</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ScaleX</span><span class="p">);</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm_set_ps</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ScaleY</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_mm_set_ps</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">ScaleZ</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g_XMIdentityR3</span><span class="p">.</span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+
+<span class="cp">#endif</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>[WIP]</p>
 <br>
 </section>
 </section>
@@ -840,7 +890,7 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations">Composition of transformations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx-wip">Transformation in DirectX [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx">Transformation in DirectX</a></li>
 </ul>
   </nav></div>
 
