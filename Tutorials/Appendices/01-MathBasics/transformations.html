@@ -682,11 +682,9 @@ For example, if we want to rotate about the x-, y- and z- axes, we need to set <
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\tag{2}\label{eq:ATransforms2} \\
+T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\quad\quad\quad\quad\tag{2}\label{eq:ATransforms2} \\
 \end{align*}
 \end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[\begin{split}T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\tag{6}\label{eq:ATransforms6} \\\end{split}\]</div>
 <p>For example, let’s consider a 2D point <span class="math notranslate nohighlight">\(\mathbf{p}=(3, 3)\)</span>. If we want to translate it by <span class="math notranslate nohighlight">\(+5\)</span> units along the x-axis and <span class="math notranslate nohighlight">\(+2\)</span> units along the y-axis, we can add the displacement vector <span class="math notranslate nohighlight">\(\mathbf{t}=(5, 2)\)</span> to <span class="math notranslate nohighlight">\(\mathbf{p}\)</span>, as shown in the following illustration.</p>
 <figure class="align-default">
 <img alt="../../../_images/translation.png" src="../../../_images/translation.png" />
@@ -769,7 +767,11 @@ T(\mathbf{u})+T(\mathbf{v})&amp;=(u_x+t_x,\ u_y+t_y,\ u_z+t_z)+(v_x+t_x,\ v_y+t_
 <p>In vector-matrix multiplication, we need to perform <span class="math notranslate nohighlight">\((2n-1)\)</span> operations for each component of the resultant vector: <span class="math notranslate nohighlight">\((n-1)\)</span> sums and <span class="math notranslate nohighlight">\(n\)</span> products. So, to obtain the total operations involved, we must multiply <span class="math notranslate nohighlight">\((2n-1)\)</span> by the <span class="math notranslate nohighlight">\(n\)</span> components of the resultant vector. Therefore, we have <span class="math notranslate nohighlight">\(n(2n-1)\)</span> operations to perform each vector-matrix multiplication. In equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms4}\)</span>, we need to perform three of these multiplications, so the total cost is <span class="math notranslate nohighlight">\(3n(2n-1)=6n^2-3n=O(n^2)\)</span>.</p>
 <p>However, thanks to the associative property of matrix multiplication we can re-write equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms4}\)</span> as follows:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}\label{eq:ATransforms5}\]</div>
+\[\begin{split}
+\begin{align*}
+\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\quad\quad\quad\quad\tag{5}\label{eq:ATransforms5} \\
+\end{align*}
+\end{split}\]</div>
 <p>Now, we have two matrix multiplications and a vector-matrix multiplication.<br>
 Each matrix multiplication needs <span class="math notranslate nohighlight">\((2n-1)\)</span> operations for each element of the resultant matrix. So, to obtain the total operations involved, we must multiply <span class="math notranslate nohighlight">\((2n-1)\)</span> by the <span class="math notranslate nohighlight">\(n^2\)</span> elements of the resultant matrix. Therefore, we have <span class="math notranslate nohighlight">\((2n-1)n^2\)</span> operations to perform a matrix multiplication. In equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms5}\)</span>, we have two of these multiplications, plus a vector-matrix multiplication, so the total cost is <span class="math notranslate nohighlight">\(2(2n^3-n^2)+n(2n-1)=4n^3-n=O(n^3)\)</span>.</p>
 <p>It seems that we need more operations to perform if we first multiply the matrices. However, imagine you want to transform 10 thousand vectors by the same matrices <span class="math notranslate nohighlight">\(\mathbf{S}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{T}\)</span>. In the first case we need to perform <span class="math notranslate nohighlight">\(10000(3n(2n-1))\)</span> operations, while in the second case we only need <span class="math notranslate nohighlight">\(10000(n(2n-1))+2(2n^3-n^2)\)</span> operations, as the double matrix multiplication <span class="math notranslate nohighlight">\((\mathbf{SRT})\)</span> must be computed only once. That is, we can reuse the result of <span class="math notranslate nohighlight">\((\mathbf{SRT})\)</span> as a matrix to transform every vector. For example, if <span class="math notranslate nohighlight">\(n=4\)</span>, we have <span class="math notranslate nohighlight">\(10000(3n(2n-1))=840\text{k}\)</span>, while <span class="math notranslate nohighlight">\(10000(n(2n-1))+2(2n^3-n^2)=280\text{k}\)</span>.</p>
