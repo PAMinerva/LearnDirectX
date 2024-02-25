@@ -395,10 +395,12 @@ In vector-matrix multiplication, we need to perform $(2n-1)$ operations for each
 
 However, thanks to the associative property of matrix multiplication we can re-write equation $\eqref{eq:ATransforms4}$ as follows:
 
-$$\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}\label{eq:ATransforms5}$$
+$$\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}$$
 
 Now, we have two matrix multiplications and a vector-matrix multiplication.<br>
-Each matrix multiplication needs $(2n-1)$ operations for each element of the resultant matrix. So, to obtain the total operations involved, we must multiply $(2n-1)$ by the $n^2$ elements of the resultant matrix. Therefore, we have $(2n-1)n^2$ operations to perform a matrix multiplication. In equation $\eqref{eq:ATransforms5}$, we have two of these multiplications, plus a vector-matrix multiplication, so the total cost is $2(2n^3-n^2)+n(2n-1)=4n^3-n=O(n^3)$.
+Each matrix multiplication needs $(2n-1)$ operations for each element of the resultant matrix. So, to obtain the total operations involved, we must multiply $(2n-1)$ by the $n^2$ elements of the resultant matrix. Therefore, we have $(2n-1)n^2$ operations to perform a matrix multiplication. In equation (5), we have two of these multiplications, plus a vector-matrix multiplication, so the total cost is 
+
+$$2(2n^3-n^2)+n(2n-1)=4n^3-n=O(n^3)$$
 
 It seems that we need more operations to perform if we first multiply the matrices. However, imagine you want to transform 10 thousand vectors by the same matrices $\mathbf{S}$, $\mathbf{R}$ and $\mathbf{T}$. In the first case we need to perform $10000(3n(2n-1))$ operations, while in the second case we only need $10000(n(2n-1))+2(2n^3-n^2)$ operations, as the double matrix multiplication $(\mathbf{SRT})$ must be computed only once. That is, we can reuse the result of $(\mathbf{SRT})$ as a matrix to transform every vector. For example, if $n=4$, we have $10000(3n(2n-1))=840\text{k}$, while $10000(n(2n-1))+2(2n^3-n^2)=280\text{k}$.
 
