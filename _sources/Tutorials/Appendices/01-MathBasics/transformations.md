@@ -395,6 +395,14 @@ In vector-matrix multiplication, we need to perform $(2n-1)$ operations for each
 
 However, thanks to the associative property of matrix multiplication we can re-write equation $\eqref{eq:ATransforms4}$ as follows:
 
+$$
+\begin{align*}
+\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})
+\tag{6}
+\label{eq:ATransforms6}
+\end{align*}
+$$
+
 $$\begin{equation}\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}\label{eq:ATransforms5}\end{equation}$$
 
 Now, we have two matrix multiplications and a vector-matrix multiplication.<br>
