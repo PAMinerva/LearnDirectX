@@ -471,7 +471,7 @@ The dimensions of a matrix are determined by the number of its rows and columns.
 <div class="math notranslate nohighlight">
 \[\mathbf{M}=\left\lbrack\matrix{M_{00}&amp;M_{01}&amp;M_{02}\cr M_{10}&amp;M_{11}&amp;M_{12}\cr M_{20}&amp;M_{21}&amp;M_{22}}\right\rbrack=\left\lbrack\matrix{\gets&amp;\mathbf{u}_0&amp;\rightarrow\cr \gets&amp;\mathbf{u}_1&amp;\rightarrow\cr \gets&amp;\mathbf{u}_2&amp;\rightarrow}\right\rbrack=\left\lbrack\matrix{\uparrow&amp;\uparrow&amp;\uparrow\cr \mathbf{v}_0&amp;\mathbf{v}_1&amp;\mathbf{v}_2\cr \downarrow&amp;\downarrow&amp;\downarrow}\right\rbrack\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{u_i}=\left\lbrack\matrix{M_{i0}&amp;M_{i1}&amp;M_{i2}}\right\rbrack\)</span>, <span class="math notranslate nohighlight">\(\ \mathbf{v_i}=\left\lbrack\matrix{M_{0i}&amp;M_{1i}&amp;M_{2i}}\right\rbrack\)</span> and <span class="math notranslate nohighlight">\(0\le i&lt;3\)</span>.</p>
-<p>For a more extensive and detailed presentation on vectors, you may find valuable information in <span id="id1">[<a class="reference internal" href="vectors.html#id15" title="Gerald E. Farin and Dianne Hansford. Practical Linear Algebra: A Geometry Toolbox. CRC Press, 4th edition, 2021.">FH21</a>]</span> and <span id="id2">[<a class="reference internal" href="vectors.html#id16" title="Philip Schneider and David H. Eberly. Geometric Tools for Computer Graphics. Morgan Kaufmann, 1st edition, 2002.">SE02</a>]</span>.</p>
+<p>For a more extensive and detailed presentation on vectors, you may find valuable information in <span id="id1">[<a class="reference internal" href="#id14" title="Gerald E. Farin and Dianne Hansford. Practical Linear Algebra: A Geometry Toolbox. CRC Press, 4th edition, 2021.">FH21</a>]</span> and <span id="id2">[<a class="reference internal" href="#id15" title="Philip Schneider and David H. Eberly. Geometric Tools for Computer Graphics. Morgan Kaufmann, 1st edition, 2002.">SE02</a>]</span>.</p>
 <br>
 </section>
 <section id="basic-matrix-operations">
@@ -654,10 +654,11 @@ The dimensions of a matrix are determined by the number of its rows and columns.
 <p>Observe that the dot in the equation above represents a scalar multiplication, not a dot product. The only variable in the equation is <span class="math notranslate nohighlight">\(j\)</span>, allowing you to choose any <span class="math notranslate nohighlight">\(i\)</span>-th row of matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and apply equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span>. Similarly, you can choose any <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix and apply equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span> by changing the variable under the summation symbol to <span class="math notranslate nohighlight">\(i\)</span> instead of <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <p>Equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span> provides a recursive method for calculating the determinant of a matrix. It involves computing the determinants of matrix minors and using them in a linear combination, where the coefficients are the elements of the chosen i-th row. This approach allows us to extend the calculation of determinants from <span class="math notranslate nohighlight">\(1\times 1\)</span> matrices to <span class="math notranslate nohighlight">\(2\times 2\)</span> matrices by applying the formula above (we will use the elements of the first row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> as coefficients; that is, we set <span class="math notranslate nohighlight">\(i=0\)</span>).</p>
 <div class="math notranslate nohighlight">
-\[\tag{3}
-det\left\lbrack\matrix{A_{00}&amp;A_{01}\cr A_{10}&amp;A_{11}}\right\rbrack=A_{00}\ det[A_{11}]-A_{01}\ det\,[A_{10}]=A_{00}A_{11}-A_{01}A_{10}
-\label{eq:AMatrices3}
-\]</div>
+\[\begin{split}
+\begin{align*}
+det\left\lbrack\matrix{A_{00}&amp;A_{01}\cr A_{10}&amp;A_{11}}\right\rbrack=A_{00}\ det[A_{11}]-A_{01}\ det\,[A_{10}]=A_{00}A_{11}-A_{01}A_{10}\quad\quad\quad\quad\tag{3}\label{eq:AMatrices3} \\
+\end{align*}
+\end{split}\]</div>
 <p>Now that we know how to calculate the determinants of <span class="math notranslate nohighlight">\(2\times 2\)</span> matrices, we can compute the determinants of <span class="math notranslate nohighlight">\(3\times 3\)</span> matrices as well.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1083,7 +1084,7 @@ The result <strong>ret</strong> has the dimension (<strong>x</strong>-rows <span
 <li><p>Use <strong>FXMMATRIX</strong> for the first parameter.</p></li>
 <li><p>Use <strong>CXMMATRIX</strong> for the remaining ones.</p></li>
 </ul>
-<p><strong>FXMMATRIX</strong> and <strong>CXMMATRIX</strong> are both aliases to <strong>XMVECTOR</strong>. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see <span id="id3">[<a class="reference internal" href="vectors.html#id26" title="Microsoft. Directxmath library internals. https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals.">Mica</a>]</span> and <span id="id4">[<a class="reference internal" href="vectors.html#id27" title="Microsoft. __vectorcall. https://learn.microsoft.com/en-us/cpp/cpp/vectorcall.">Micb</a>]</span> in the reference list at the end of the tutorial).</p>
+<p><strong>FXMMATRIX</strong> and <strong>CXMMATRIX</strong> are both aliases to <strong>XMVECTOR</strong>. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see <span id="id3">[<a class="reference internal" href="#id25" title="Microsoft. Directxmath library internals. https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals.">Mica</a>]</span> and <span id="id4">[<a class="reference internal" href="#id26" title="Microsoft. __vectorcall. https://learn.microsoft.com/en-us/cpp/cpp/vectorcall.">Micb</a>]</span> in the reference list at the end of the tutorial).</p>
 <p>Obviously, all the basic matrix operations discussed in this tutorial (sum, difference and various types of multiplication) are both defined in HLSL and provided by DirectXMath, along with other helper functions that can be performed on matrices such as inversion, transposition and determinant calculation. We will examine most of these functions in the upcoming tutorials.</p>
 <br>
 <div class="admonition-support-this-project admonition">
