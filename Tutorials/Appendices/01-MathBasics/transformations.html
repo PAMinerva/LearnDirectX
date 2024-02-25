@@ -738,13 +738,13 @@ T(\mathbf{u})+T(\mathbf{v})&amp;=(u_x+t_x,\ u_y+t_y,\ u_z+t_z)+(v_x+t_x,\ v_y+t_
 <p>As you can see, the translation doesn’t affect the vector, and the result is the same we showed in equation <span class="math notranslate nohighlight">\(\eqref{eq:ATransforms1}\)</span>: <span class="math notranslate nohighlight">\(\mathbf{w}=\mathbf{vM}\)</span>. Indeed, when you transform vectors with <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>, these can only be affected by the linear transformation embedded within the matrix. Moreover, the result is still a vector: the last component is zero because it’s the result of the dot product between <span class="math notranslate nohighlight">\(\mathbf{v}=(v_x, v_y, v_z, 0)\)</span> and <span class="math notranslate nohighlight">\((0,0,0,1)\)</span>, the last column of <span class="math notranslate nohighlight">\(\mathbf{M}\)</span>.</p>
 <p>On the other hand, if we multiply a generic point <span class="math notranslate nohighlight">\(\mathbf{q}=(x, y, z, 1)\)</span> by <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> we have</p>
 <div class="math notranslate nohighlight">
-\[
+\[\begin{split}
 \begin{align*}
-&amp;\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&amp;y&amp;z&amp;1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
+&amp;\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&amp;y&amp;z&amp;1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t} \\
 \tag{6}
 \label{eq:ATransforms6}
 \end{align*}
-\]</div>
+\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&amp;y&amp;z&amp;1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
 \tag{3}
