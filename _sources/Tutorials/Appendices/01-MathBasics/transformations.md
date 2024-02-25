@@ -366,13 +366,7 @@ On the other hand, if we multiply a generic point $\mathbf{q}=(x, y, z, 1)$ by $
 
 $$
 \begin{align*}
-\mathbf{p}&=\mathbf{q}\mathbf{M} \\
-\\
-&=\left\lbrack\matrix{x&y&z&1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack \\
-\\
-&=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t} \\
-\\
-&=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
+&\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&y&z&1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
 \tag{6}
 \label{eq:ATransforms6}
 \end{align*}
