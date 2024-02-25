@@ -371,9 +371,8 @@ $$
 $$
 
 $$
-\begin{equation}
 \mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&y&z&1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t} \\
-\end{equation}\tag{6}\label{eq:ATransforms6}
+\tag{6}\label{eq:ATransforms6}
 $$
 
 Here, we transform $\mathbf{q}$ with a linear transformation, which results in an intermediate vector $\mathbf{q}_1=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}$ to which we add the translation $\mathbf{t}$. That's exactly what we stated in equation $\eqref{eq:ATransforms2}$: a translation is the sum of a point ad a vector. However, in equation $\eqref{eq:ATransforms3}$ the point is $\mathbf{t}$, as it specifies the origin of the starting frame with respect to the new one. Also, the result is still a point: the last component is $1$ because it's the result of the dot product between $\mathbf{q}=(x, y, z, 1)$ and $(0, 0, 0, 1)$, the last row of $\mathbf{M}$.
