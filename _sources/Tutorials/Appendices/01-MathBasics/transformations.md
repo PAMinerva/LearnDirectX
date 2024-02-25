@@ -369,8 +369,8 @@ $$
 \mathbf{p}&=\mathbf{q}\mathbf{M} \\
 \\
 &=\left\lbrack\matrix{x&y&z&1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
+\quad\quad\tag{6}\label{eq:ATransforms6}
 \end{align*}
-\tag{6}\label{eq:ATransforms6}
 $$
 
 $$\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&y&z&1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
