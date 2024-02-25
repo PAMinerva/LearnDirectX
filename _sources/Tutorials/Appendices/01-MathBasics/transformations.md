@@ -395,15 +395,7 @@ In vector-matrix multiplication, we need to perform $(2n-1)$ operations for each
 
 However, thanks to the associative property of matrix multiplication we can re-write equation $\eqref{eq:ATransforms4}$ as follows:
 
-$$
-\begin{align*}
-\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})
-\tag{6}
-\label{eq:ATransforms6}
-\end{align*}
-$$
-
-$$\begin{equation}\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}\label{eq:ATransforms5}\end{equation}$$
+$$\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\label{eq:ATransforms5}$$
 
 Now, we have two matrix multiplications and a vector-matrix multiplication.<br>
 Each matrix multiplication needs $(2n-1)$ operations for each element of the resultant matrix. So, to obtain the total operations involved, we must multiply $(2n-1)$ by the $n^2$ elements of the resultant matrix. Therefore, we have $(2n-1)n^2$ operations to perform a matrix multiplication. In equation $\eqref{eq:ATransforms5}$, we have two of these multiplications, plus a vector-matrix multiplication, so the total cost is 
