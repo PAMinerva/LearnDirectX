@@ -661,7 +661,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixTranslation
     M.m[3][3] = 1.0f;
     return M;
 
-#elif defined(_XM_SSE_INTRINSICS_) || defined(_XM_ARM_NEON_INTRINSICS_)
+#elif defined(_XM_SSE_INTRINSICS_)
     XMMATRIX M;
     M.r[0] = g_XMIdentityR0.v;
     M.r[1] = g_XMIdentityR1.v;
