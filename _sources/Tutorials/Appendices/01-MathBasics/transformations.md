@@ -609,7 +609,7 @@ $$R1 = \{(1-\cos\theta)yz + \sin(\theta)x,\ (1-\cos\theta)xz + \sin(\theta)y,\ (
 
 $$R2 = \{(1-\cos\theta)yz - \sin(\theta)x,\ (1-\cos\theta)xz - \sin(\theta)y,\ (1-\cos\theta)xy - \sin(\theta)z,\ (1-\cos\theta)w^2 - \sin(\theta)w\}$$
 
-**XMVectorSelect** returns an **XMVECTOR**  with components selected between the two vectors passed to the function, based on the mask vector passed as the third argument. If a component of the mask vector is zero, the corresponding component of the first vector will be selected. If a component of the mask has a value of 0xFF, the corresponding component of the second vector will be selected. **g_XMSelect1110** is a constant vector defined as $\{\text{uint}(-1),\ \text{uint}(-1),\ \text{uint}(-1),\ 0 \}$. So, after line 31, we have
+**XMVectorSelect** returns an **XMVECTOR**  with components selected between the two vectors passed to the function, based on the mask vector passed as the third argument. If a component of the mask vector is zero, the corresponding component of the first vector will be selected. If a component of the mask has a value of 0xFF, the corresponding component of the second vector will be selected. **g_XMSelect1110** is a constant vector defined as `{uint(-1), uint(-1), uint(-1), 0}`. So, after line 31, we have
 
 $$V0 = \{(1-\cos\theta)x^2 + \cos\theta,\ (1-\cos\theta)y^2 + \cos\theta,\ (1-\cos\theta)z^2 + \cos(\theta),\ 0 \}$$
 
