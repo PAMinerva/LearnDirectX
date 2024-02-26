@@ -73,6 +73,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="icon" href="../../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Spaces" href="spaces.html" />
     <link rel="prev" title="Matrices" href="matrices.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -219,6 +220,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="vectors.html">Vectors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="matrices.html">Matrices</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spaces.html">Spaces</a></li>
 </ul>
 </li>
 </ul>
@@ -456,7 +458,7 @@ Now, it’s interesting how we can visualize it in two different ways. Obviously
 <img alt="../../../_images/transformation.png" src="../../../_images/transformation.png" />
 </figure>
 <p>The same concept applies when rotating or scaling a vertex position. As we will explore in this tutorial, vector transformations and changes of coordinate systems are mathematically equivalent. In other words, transforming an object is equivalent to transforming its frame of reference, and vice versa.</p>
-<p>For a more extensive and detailed presentation on transformations, you may find valuable information in <span id="id1">[<a class="reference internal" href="#id18" title="Gerald E. Farin and Dianne Hansford. Practical Linear Algebra: A Geometry Toolbox. CRC Press, 4th edition, 2021.">FH21</a>]</span> and <span id="id2">[<a class="reference internal" href="#id19" title="Philip Schneider and David H. Eberly. Geometric Tools for Computer Graphics. Morgan Kaufmann, 1st edition, 2002.">SE02</a>]</span>.</p>
+<p>For a more extensive and detailed presentation on transformations, you may find valuable information in <span id="id1">[<a class="reference internal" href="vectors.html#id15" title="Gerald E. Farin and Dianne Hansford. Practical Linear Algebra: A Geometry Toolbox. CRC Press, 4th edition, 2021.">FH21</a>]</span> and <span id="id2">[<a class="reference internal" href="vectors.html#id16" title="Philip Schneider and David H. Eberly. Geometric Tools for Computer Graphics. Morgan Kaufmann, 1st edition, 2002.">SE02</a>]</span>.</p>
 <br>
 <section id="linear-transformations">
 <h2>Linear transformations<a class="headerlink" href="#linear-transformations" title="Link to this heading">#</a></h2>
@@ -965,7 +967,7 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <div class="math notranslate nohighlight">
 \[V2 = \{(1-\cos\theta)xz+\sin(\theta)y,\ (1-\cos\theta)yz-\sin(\theta)x,\ (1-\cos\theta)xz+\sin(\theta)y,\ (1-\cos\theta)yz-\sin(\theta)x\}\]</div>
 <p>Using <strong>XMVectorPermute</strong> again, along with the vectors <span class="math notranslate nohighlight">\(V0\)</span>, <span class="math notranslate nohighlight">\(V1\)</span> and <span class="math notranslate nohighlight">\(V2\)</span>, <strong>XMMatrixRotationNormal</strong> builds the rotation matrix around the <strong>NormalAxis</strong> vector. Compare the result with the rotation matrix presented in <a class="reference internal" href="#transforms-rotatiion-label"><span class="std std-ref">Rotation</span></a>.</p>
-<p>Regarding the SSE-Intrinsics implementation, the result is the same but achieved in a faster and more efficient way. Refer to <span id="id5">[<a class="reference internal" href="#id32" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> and <span id="id6">[<a class="reference internal" href="#id31" title="Microsoft. X64 (amd64) intrinsics list. https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list.">Micb</a>]</span> for implementation details.</p>
+<p>Regarding the SSE-Intrinsics implementation, the result is the same but achieved in a faster and more efficient way. Refer to <span id="id5">[<a class="reference internal" href="#id33" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> and <span id="id6">[<a class="reference internal" href="#id32" title="Microsoft. X64 (amd64) intrinsics list. https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list.">Micb</a>]</span> for implementation details.</p>
 <p>Additionally, DirectXMath provides other rotation methods such as <strong>XMMatrixRotationX</strong>, <strong>XMMatrixRotationY</strong>, and <strong>XMMatrixRotationZ</strong> to rotate around the X-, Y-, and Z-axes of the coordinate system.</p>
 </section>
 <section id="id7">
@@ -1014,7 +1016,7 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 </pre></div>
 </div>
 <p>In DirectXMath, <strong>g_XMIdentityR0</strong> is a constant vector defined as <code class="docutils literal notranslate"><span class="pre">{1.0f,</span> <span class="pre">0.0f,</span> <span class="pre">0.0f,</span> <span class="pre">0.0f}</span></code>, while <strong>g_XMIdentityR1</strong> e <strong>g_XMIdentityR2</strong> are defined as <code class="docutils literal notranslate"><span class="pre">{0.0f,</span> <span class="pre">1.0f,</span> <span class="pre">0.0f,</span> <span class="pre">0.0f}</span></code> e <code class="docutils literal notranslate"><span class="pre">{0.0f,</span> <span class="pre">0.0f,</span> <span class="pre">1.0f,</span> <span class="pre">0.0f}</span></code>, respectively.</p>
-<p>DirectXMath provides many other helper functions to perform transformations on matrices and vectors. See <span id="id8">[<a class="reference internal" href="#id32" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> for a reference guide to these functions.</p>
+<p>DirectXMath provides many other helper functions to perform transformations on matrices and vectors. See <span id="id8">[<a class="reference internal" href="#id33" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> for a reference guide to these functions.</p>
 <br>
 <div class="admonition-support-this-project admonition">
 <p class="admonition-title">Support this project</p>
@@ -1034,12 +1036,12 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">FH21</a><span class="fn-bracket">]</span></span>
 <p>Gerald E. Farin and Dianne Hansford. <em>Practical Linear Algebra: A Geometry Toolbox</em>. CRC Press, 4th edition, 2021.</p>
 </div>
-<div class="citation" id="id32" role="doc-biblioentry">
+<div class="citation" id="id33" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Mica<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
 <p>Microsoft. Directxmath. <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal">https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal</a>.</p>
 </div>
-<div class="citation" id="id31" role="doc-biblioentry">
+<div class="citation" id="id32" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">Micb</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. X64 (amd64) intrinsics list. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list">https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list</a>.</p>
 </div>
@@ -1091,6 +1093,15 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Matrices</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="spaces.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Spaces</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
