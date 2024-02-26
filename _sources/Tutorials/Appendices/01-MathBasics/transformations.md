@@ -613,7 +613,7 @@ $$R2 = \{(1-\cos\theta)yz - \sin(\theta)x,\ (1-\cos\theta)xz - \sin(\theta)y,\ (
 
 $$V0 = \{(1-\cos\theta)x^2 + \cos\theta,\ (1-\cos\theta)y^2 + \cos\theta,\ (1-\cos\theta)z^2 + \cos(\theta),\ 0 \}$$
 
-**XMVectorPermute** returns an **XMVECTOR** with components selected from the two vectors passed to the function based on the values of the four template parameters. Each of these parameters is an index from 0 to 7, indicating where the corresponding component of the new vector should be copied from. In fact, the components of the two vectors passed to the function are treated as a contiguous array of 8 elements. The constants `XM_PERMUTE_0[X/Y/Z/W]` are in the range $[0,3]$ and select components from the first vector, while the constants `XM_PERMUTE_1[X/Y/Z/W]` are in the range $[4,7]$ and select components from the second vector. So, after line 33, we have
+**XMVectorPermute** returns an **XMVECTOR** with components selected from the two vectors passed to the function based on the values of the four template parameters. Each of these parameters is an index from 0 to 7, indicating where the corresponding component of the new vector should be copied from. In fact, the components of the two vectors passed to the function are treated as a contiguous array of 8 elements. The constants `XM_PERMUTE_0[X-W]` are in the range $[0,3]$ and select components from the first vector, while the constants `XM_PERMUTE_1[X-W]` are in the range $[4,7]$ and select components from the second vector. So, after line 33, we have
 
 $$V1 = \{(1-\cos\theta)xy+\sin(\theta)z,\ (1-\cos\theta)xz - \sin(\theta)y,\ (1-\cos\theta)xy - \sin(\theta)z,\ (1-\cos\theta)yz+\sin(\theta)x\}$$
 
