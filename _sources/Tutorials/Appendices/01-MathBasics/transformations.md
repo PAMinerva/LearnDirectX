@@ -12,6 +12,8 @@ Now, it's interesting how we can visualize it in two different ways. Obviously, 
 
 The same concept applies when rotating or scaling a vertex position. As we will explore in this tutorial, vector transformations and changes of coordinate systems are mathematically equivalent. In other words, transforming an object is equivalent to transforming its frame of reference, and vice versa.
 
+For a more extensive and detailed presentation on transformations, you may find valuable information in {cite}`FarinHansfordPracticalLinearAlgebra2021` and {cite}`SchneiderEberlyGeometricToolsforComputerGraphics2002`.
+
 <br>
 
 ## Linear transformations 

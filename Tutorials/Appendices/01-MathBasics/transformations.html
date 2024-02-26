@@ -428,9 +428,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations">Composition of transformations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx">Transformation in DirectX</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Scaling</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Rotation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Translation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Rotation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Translation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
@@ -456,6 +456,7 @@ Now, it’s interesting how we can visualize it in two different ways. Obviously
 <img alt="../../../_images/transformation.png" src="../../../_images/transformation.png" />
 </figure>
 <p>The same concept applies when rotating or scaling a vertex position. As we will explore in this tutorial, vector transformations and changes of coordinate systems are mathematically equivalent. In other words, transforming an object is equivalent to transforming its frame of reference, and vice versa.</p>
+<p>For a more extensive and detailed presentation on transformations, you may find valuable information in <span id="id1">[<a class="reference internal" href="#id18" title="Gerald E. Farin and Dianne Hansford. Practical Linear Algebra: A Geometry Toolbox. CRC Press, 4th edition, 2021.">FH21</a>]</span> and <span id="id2">[<a class="reference internal" href="#id19" title="Philip Schneider and David H. Eberly. Geometric Tools for Computer Graphics. Morgan Kaufmann, 1st edition, 2002.">SE02</a>]</span>.</p>
 <br>
 <section id="linear-transformations">
 <h2>Linear transformations<a class="headerlink" href="#linear-transformations" title="Link to this heading">#</a></h2>
@@ -791,8 +792,8 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <li><p><strong>No-Intrinsics implementation</strong>: Written in standard C++, utilizing scalar operations. It works on any CPU regardless of its architecture, but may be slower than alternative options.</p></li>
 <li><p><strong>SSE-Intrinsics implementation</strong>: Leverages the power of Single Instruction, Multiple Data (SIMD) instructions available on modern CPUs, exposed by intrinsics functions provided by the Microsoft C++ compiler. This allows the CPU to perform calculations on multiple data elements simultaneously, resulting in significant performance gains.</p></li>
 </ul>
-<section id="id1">
-<h3>Scaling<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<section id="id3">
+<h3>Scaling<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p><strong>XMMatrixScaling</strong> returns a matrix associated with a scaling operation, similar to the one examined in <a class="reference internal" href="#transforms-scaling-label"><span class="std std-ref">Scaling</span></a>.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixScaling</span>
 <span class="p">(</span>
@@ -847,8 +848,8 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 </pre></div>
 </div>
 </section>
-<section id="id2">
-<h3>Rotation<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3>Rotation<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p><strong>XMMatrixRotationNormal</strong> returns a matrix that represents a rotation around an axis specified by a unit vector. The resultant matrix is similar to the one examinated in <a class="reference internal" href="#transforms-rotatiion-label"><span class="std std-ref">Rotation</span></a>.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixRotationNormal</span>
 <span class="linenos"> 2</span><span class="p">(</span>
@@ -964,11 +965,11 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <div class="math notranslate nohighlight">
 \[V2 = \{(1-\cos\theta)xz+\sin(\theta)y,\ (1-\cos\theta)yz-\sin(\theta)x,\ (1-\cos\theta)xz+\sin(\theta)y,\ (1-\cos\theta)yz-\sin(\theta)x\}\]</div>
 <p>Using <strong>XMVectorPermute</strong> again, along with the vectors <span class="math notranslate nohighlight">\(V0\)</span>, <span class="math notranslate nohighlight">\(V1\)</span> and <span class="math notranslate nohighlight">\(V2\)</span>, <strong>XMMatrixRotationNormal</strong> builds the rotation matrix around the <strong>NormalAxis</strong> vector. Compare the result with the rotation matrix presented in <a class="reference internal" href="#transforms-rotatiion-label"><span class="std std-ref">Rotation</span></a>.</p>
-<p>Regarding the SSE-Intrinsics implementation, the result is the same but achieved in a faster and more efficient way. Refer to <span id="id3">[<a class="reference internal" href="#id30" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> and <span id="id4">[<a class="reference internal" href="#id29" title="Microsoft. X64 (amd64) intrinsics list. https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list.">Micb</a>]</span> for implementation details.</p>
+<p>Regarding the SSE-Intrinsics implementation, the result is the same but achieved in a faster and more efficient way. Refer to <span id="id5">[<a class="reference internal" href="#id32" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> and <span id="id6">[<a class="reference internal" href="#id31" title="Microsoft. X64 (amd64) intrinsics list. https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list.">Micb</a>]</span> for implementation details.</p>
 <p>Additionally, DirectXMath provides other rotation methods such as <strong>XMMatrixRotationX</strong>, <strong>XMMatrixRotationY</strong>, and <strong>XMMatrixRotationZ</strong> to rotate around the X-, Y-, and Z-axes of the coordinate system.</p>
 </section>
-<section id="id5">
-<h3>Translation<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="id7">
+<h3>Translation<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <p><strong>XMMatrixTranslation</strong> returns a translation matrix built from the specified offsets (components of the dislpacement vector). The resultant matrix is similar to the one examinated in <a class="reference internal" href="#transforms-translation-label"><span class="std std-ref">Translation</span></a>.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixTranslation</span>
 <span class="p">(</span>
@@ -1013,7 +1014,7 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 </pre></div>
 </div>
 <p>In DirectXMath, <strong>g_XMIdentityR0</strong> is a constant vector defined as <code class="docutils literal notranslate"><span class="pre">{1.0f,</span> <span class="pre">0.0f,</span> <span class="pre">0.0f,</span> <span class="pre">0.0f}</span></code>, while <strong>g_XMIdentityR1</strong> e <strong>g_XMIdentityR2</strong> are defined as <code class="docutils literal notranslate"><span class="pre">{0.0f,</span> <span class="pre">1.0f,</span> <span class="pre">0.0f,</span> <span class="pre">0.0f}</span></code> e <code class="docutils literal notranslate"><span class="pre">{0.0f,</span> <span class="pre">0.0f,</span> <span class="pre">1.0f,</span> <span class="pre">0.0f}</span></code>, respectively.</p>
-<p>DirectXMath provides many other helper functions to perform transformations on matrices and vectors. See <span id="id6">[<a class="reference internal" href="#id30" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> for a reference guide to these functions.</p>
+<p>DirectXMath provides many other helper functions to perform transformations on matrices and vectors. See <span id="id8">[<a class="reference internal" href="#id32" title="Microsoft. Directxmath. https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal.">Mica</a>]</span> for a reference guide to these functions.</p>
 <br>
 <div class="admonition-support-this-project admonition">
 <p class="admonition-title">Support this project</p>
@@ -1027,16 +1028,24 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id7">
+<div class="docutils container" id="id9">
 <div role="list" class="citation-list">
-<div class="citation" id="id30" role="doc-biblioentry">
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">FH21</a><span class="fn-bracket">]</span></span>
+<p>Gerald E. Farin and Dianne Hansford. <em>Practical Linear Algebra: A Geometry Toolbox</em>. CRC Press, 4th edition, 2021.</p>
+</div>
+<div class="citation" id="id32" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Mica<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id6">2</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
 <p>Microsoft. Directxmath. <a class="reference external" href="https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal">https://learn.microsoft.com/en-us/windows/win32/dxmath/directxmath-portal</a>.</p>
 </div>
-<div class="citation" id="id29" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Micb</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id31" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">Micb</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. X64 (amd64) intrinsics list. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list">https://learn.microsoft.com/en-us/cpp/intrinsics/x64-amd64-intrinsics-list</a>.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">SE02</a><span class="fn-bracket">]</span></span>
+<p>Philip Schneider and David H. Eberly. <em>Geometric Tools for Computer Graphics</em>. Morgan Kaufmann, 1st edition, 2002.</p>
 </div>
 </div>
 </div>
@@ -1111,9 +1120,9 @@ Each matrix multiplication needs <span class="math notranslate nohighlight">\((2
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composition-of-transformations">Composition of transformations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformation-in-directx">Transformation in DirectX</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Scaling</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Rotation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Translation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Rotation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Translation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
