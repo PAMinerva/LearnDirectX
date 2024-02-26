@@ -220,6 +220,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathBasics/vectors.html">Vectors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathBasics/matrices.html">Matrices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathBasics/transformations.html">Transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Appendices/01-MathBasics/spaces.html">Spaces</a></li>
 </ul>
 </li>
 </ul>
@@ -458,7 +459,7 @@ document.write(`
 <li><p><strong>XInput</strong> enables applications to receive input from the Xbox Controller when it is connected to a Windows PC.</p></li>
 </ul>
 <p>To create graphics applications, you first need a window to draw on. Therefore, the aim of this tutorial is to create and display a simple window on your screen. For this purpose, we will examine the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, which is part of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples">DirectX-Graphics-Samples</a> repository maintained by Microsoft. The only significant graphics operation performed by this sample is the setting of the window background color. You might be surprised to discover that you need to write a substantial amount of code to execute this simple operation. The good news is that the code we will review in this first tutorial primarily consists of boilerplate code. This means that, by the end of this tutorial, you will have a basic understanding of the common framework used by almost all samples we will examine in the upcoming tutorials, so we can solely focus on new additions.</p>
-<p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id16" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id18" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id17" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micc</a>]</span> for further information.</p>
+<p>Before starting to review the source code of the <a class="reference external" href="https://github.com/microsoft/DirectX-Graphics-Samples/tree/master/Samples/Desktop/D3D12HelloWorld">D3D12HelloWindow</a> sample, you need a basic understanding of the Component Object Model (COM), the DXGI API, as well as how Windows applications work. You can skip the following three sections if you are comfortable with these topics. Alternatively, you can also refer to <span id="id1">[<a class="reference internal" href="#id17" title="Microsoft. About windows. https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows.">Mica</a>, <a class="reference internal" href="#id19" title="Microsoft. Dxgi overview. https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi.">Micb</a>, <a class="reference internal" href="#id18" title="Microsoft. Programming directx with com. https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com.">Micc</a>]</span> for further information.</p>
 <br>
 </section>
 <section id="windows-applications">
@@ -633,7 +634,7 @@ document.write(`
 <p><a class="reference internal" href="#stdafx-code"><span class="std std-numref">Listing 2</span></a> show the <em>stdafx.h</em> header, which includes other header files associated with various DirectX libraries, such as Direct3D 12, DirectXMath, and DXGI. We need to include <em>wrl.h</em> to use the smart pointers provided by the Windows Template Library. <em>d3dx12.h</em> defines helpful structures that act as C++ wrappers around Direct3D 12 native structures, simplifying their initialization. Additionally, this header provides helper functions that make handling subresources more straightforward. <em>D3DCompiler.h</em> is the header associated with a library we will use to compile shader code. The concepts of subresources and shader code will be covered in upcoming tutorials.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><strong><em>Use_decl_annotations</em></strong> is a macro that simplifies SAL annotations. We won’t go into detail about this concept, as it’s not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see <span id="id2">[<a class="reference internal" href="#id19" title="Microsoft. Using sal annotations. https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170.">Micd</a>]</span>.</p>
+<p><strong><em>Use_decl_annotations</em></strong> is a macro that simplifies SAL annotations. We won’t go into detail about this concept, as it’s not relevant for this tutorial or the rest of the series. If you want to learn more, check out the official Microsoft documentation: see <span id="id2">[<a class="reference internal" href="#id20" title="Microsoft. Using sal annotations. https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170.">Micd</a>]</span>.</p>
 </div>
 <div class="literal-block-wrapper docutils container" id="stdafx-code">
 <div class="code-block-caption"><span class="caption-number">Listing 2 </span><span class="caption-text">HelloWindow/stdafx.h</span><a class="headerlink" href="#stdafx-code" title="Link to this code">#</a></div>
@@ -1310,10 +1311,10 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 </div>
 <p>At this point, it should be clear that we are dealing with two different timelines. The term “timeline” in this context refers to the time when something is executed. For example, creating a command queue, a command list, and a command allocator are operations executed on the CPU timeline because the creation of the related resources occurs at the time of an API call in our C++ application, which is executed by the CPU. Adding commands to a command list is also executed on the CPU timeline, but the execution of those commands belongs to the GPU timeline when the GPU actually consumes command lists from a command queue.</p>
 <p><strong>IDXGISwapChain::Present</strong> allows presenting (to the user, on the screen) the frame just created on the CPU timeline (using the current back buffer as the render target). How does it work? Present operations occur on the graphics queue associated with the swap chain. That is, when you call <strong>Present</strong>, a present operation is recorded in the command queue associated with swap chain during its creation, and a request to present the frame is inserted in a queue called the present queue, waiting for the GPU to execute the commands to draw on the related back buffer. Since this happens only after recording all the commands needed to create the frame, you are sure the GPU reached the present operation in the command queue only at the very end (i.e., after executing all the other previous drawing commands). At that point, the frame associated with the request in the present queue is done, ready to be shown on the screen at the next vertical interval when the swap/flip between the back and present buffers takes place.</p>
-<figure class="align-default" id="id27">
+<figure class="align-default" id="id28">
 <img alt="../../_images/rect853d.png" src="../../_images/rect853d.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Presenting frames</span><a class="headerlink" href="#id27" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Presenting frames</span><a class="headerlink" href="#id28" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition important">
@@ -1384,22 +1385,22 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <p>Observe how we get a CPU handle to the RTV (Render Target View) of the current back buffer by offsetting the handle to the first RTV in the descriptor heap. For this purpose, we need the index of the current back buffer (<strong>m_frameIndex</strong>) and the size of an RTV (<strong>m_rtvDescriptorSize</strong>).</p>
 <p>The images below demonstrate that, if you modify the code slightly and debug the sample, CPU descriptor handles are simple CPU virtual addresses, while GPU descriptor handles are offsets. Note that, in my case, <strong>m_ rtvDescriptorSize</strong> is 32 bytes (0x20 in hexadecimal), but remember that descriptors hold hardware-specific information, so this can vary from system to system.</p>
 <p>if you change a bit the code and debug the sample, CPU descriptor handles are simple CPU virtual addresses, while GPU descriptor handles are offsets. Note that, in my case, <strong>m_ rtvDescriptorSize</strong> is 32 bytes (0x20 in hexadecimal), but remember that descriptors hold hardware-specific information, so this can vary from system to system.</p>
-<figure class="align-default" id="id28">
+<figure class="align-default" id="id29">
 <img alt="../../_images/cpu-gpu-handle2.PNG" src="../../_images/cpu-gpu-handle2.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">First call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id28" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id29">
-<img alt="../../_images/cpu-gpu-handle3.PNG" src="../../_images/cpu-gpu-handle3.PNG" />
-<figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Second call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id29" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">First call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id29" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id30">
+<img alt="../../_images/cpu-gpu-handle3.PNG" src="../../_images/cpu-gpu-handle3.PNG" />
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Second call to <strong>PopulatedCommandList</strong></span><a class="headerlink" href="#id30" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id31">
 <img alt="../../_images/cpu-gpu-handle1.PNG" src="../../_images/cpu-gpu-handle1.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Memory regions in the virtual address space of <strong>D3D12HelloWindow</strong></span><a class="headerlink" href="#id30" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Memory regions in the virtual address space of <strong>D3D12HelloWindow</strong></span><a class="headerlink" href="#id31" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>At this point, we have completed the frame creation on the CPU timeline, so we can modify the state of the back buffer to “present”. This indicates that, once this transition command is executed by the GPU, the back buffer is almost ready to be displayed on the screen (the GPU must first execute the corresponding present operation in the command queue).</p>
@@ -1458,19 +1459,19 @@ GPU descriptor handles also exist. However, we will only use them to reference d
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id3">
 <div role="list" class="citation-list">
-<div class="citation" id="id16" role="doc-biblioentry">
+<div class="citation" id="id17" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Mica</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. About windows. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows">https://docs.microsoft.com/en-us/windows/win32/winmsg/about-windows</a>.</p>
 </div>
-<div class="citation" id="id18" role="doc-biblioentry">
+<div class="citation" id="id19" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Micb</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. Dxgi overview. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi">https://docs.microsoft.com/en-us/windows/win32/direct3ddxgi/d3d10-graphics-programming-guide-dxgi</a>.</p>
 </div>
-<div class="citation" id="id17" role="doc-biblioentry">
+<div class="citation" id="id18" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Micc</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. Programming directx with com. <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com">https://docs.microsoft.com/en-us/windows/win32/prog-dx-with-com</a>.</p>
 </div>
-<div class="citation" id="id19" role="doc-biblioentry">
+<div class="citation" id="id20" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Micd</a><span class="fn-bracket">]</span></span>
 <p>Microsoft. Using sal annotations. <a class="reference external" href="https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170">https://learn.microsoft.com/en-us/cpp/code-quality/using-sal-annotations-to-reduce-c-cpp-code-defects?view=msvc-170</a>.</p>
 </div>
