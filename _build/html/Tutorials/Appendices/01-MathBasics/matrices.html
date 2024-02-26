@@ -654,10 +654,11 @@ The dimensions of a matrix are determined by the number of its rows and columns.
 <p>Observe that the dot in the equation above represents a scalar multiplication, not a dot product. The only variable in the equation is <span class="math notranslate nohighlight">\(j\)</span>, allowing you to choose any <span class="math notranslate nohighlight">\(i\)</span>-th row of matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and apply equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span>. Similarly, you can choose any <span class="math notranslate nohighlight">\(j\)</span>-th column of the matrix and apply equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span> by changing the variable under the summation symbol to <span class="math notranslate nohighlight">\(i\)</span> instead of <span class="math notranslate nohighlight">\(j\)</span>.</p>
 <p>Equation <span class="math notranslate nohighlight">\(\eqref{eq:AMatrices2}\)</span> provides a recursive method for calculating the determinant of a matrix. It involves computing the determinants of matrix minors and using them in a linear combination, where the coefficients are the elements of the chosen i-th row. This approach allows us to extend the calculation of determinants from <span class="math notranslate nohighlight">\(1\times 1\)</span> matrices to <span class="math notranslate nohighlight">\(2\times 2\)</span> matrices by applying the formula above (we will use the elements of the first row of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> as coefficients; that is, we set <span class="math notranslate nohighlight">\(i=0\)</span>).</p>
 <div class="math notranslate nohighlight">
-\[\tag{3}
-det\left\lbrack\matrix{A_{00}&amp;A_{01}\cr A_{10}&amp;A_{11}}\right\rbrack=A_{00}\ det[A_{11}]-A_{01}\ det\,[A_{10}]=A_{00}A_{11}-A_{01}A_{10}
-\label{eq:AMatrices3}
-\]</div>
+\[\begin{split}
+\begin{align*}
+det\left\lbrack\matrix{A_{00}&amp;A_{01}\cr A_{10}&amp;A_{11}}\right\rbrack=A_{00}\ det[A_{11}]-A_{01}\ det\,[A_{10}]=A_{00}A_{11}-A_{01}A_{10}\quad\quad\quad\quad\tag{3}\label{eq:AMatrices3} \\
+\end{align*}
+\end{split}\]</div>
 <p>Now that we know how to calculate the determinants of <span class="math notranslate nohighlight">\(2\times 2\)</span> matrices, we can compute the determinants of <span class="math notranslate nohighlight">\(3\times 3\)</span> matrices as well.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1084,7 +1085,8 @@ The result <strong>ret</strong> has the dimension (<strong>x</strong>-rows <span
 <li><p>Use <strong>CXMMATRIX</strong> for the remaining ones.</p></li>
 </ul>
 <p><strong>FXMMATRIX</strong> and <strong>CXMMATRIX</strong> are both aliases to <strong>XMVECTOR</strong>. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see <span id="id3">[<a class="reference internal" href="vectors.html#id26" title="Microsoft. Directxmath library internals. https://learn.microsoft.com/en-us/windows/win32/dxmath/pg-xnamath-internals.">Mica</a>]</span> and <span id="id4">[<a class="reference internal" href="vectors.html#id27" title="Microsoft. __vectorcall. https://learn.microsoft.com/en-us/cpp/cpp/vectorcall.">Micb</a>]</span> in the reference list at the end of the tutorial).</p>
-<p>Obviously, all the basic matrix operations discussed in this tutorial (sum, difference and various types of multiplication) are both defined in HLSL and provided by DirectXMath, along with other helper functions that can be performed on matrices such as inversion, transposition and determinant calculation. We will examine most of these functions in the upcoming tutorials.</p>
+<p>Obviously, all the basic matrix operations discussed in this tutorial (sum, difference, and various types of multiplication) are defined in HLSL using the usual operators (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>). Fortunately, DirectXMath overloads these same operators for matrices to allow us to perform the same operations in C++.</p>
+<p>DirectXMath also provides many helper functions to work with matrices, enabling us to perform useful operations such as inversion, transposition, and determinant calculation. We will encounter and use most of these functions in the upcoming tutorials.</p>
 <br>
 <div class="admonition-support-this-project admonition">
 <p class="admonition-title">Support this project</p>

@@ -165,7 +165,7 @@ The following illustration shows the result of these transformations
 ```
 ````
 
-
+(transforms-rotatiion-label)=
 ### Rotation 
 
 A rotation is a linear transformation, but a formal proof of this won't be provided since it is simpler to observe, from the illustration below, that the rotation of the sum of two vectors (that is, the rotation of the diagonal of the parallelogram defined by the two vectors) is equivalent to the sum of rotations of the two vectors (that is, the diagonal of the rotated parallelogram). At the same time, rotating a uniformly scaled vector is equivalent to first rotating the vector and then applying the uniform scaling.
@@ -285,11 +285,16 @@ Now that we know how to scale and rotate vectors, we'd also like to move them. H
 Affine transformations extend linear ones by adding translations. The next section will explore this type of transformation, aiming to resolve the aforementioned issues.
 
 
+(transforms-translation-label)=
 ### Translation
 
 To move a bound vector (point) $\mathbf{p}=(p_x, p_y, p_z)$ using a translation $T$, we simply add a displacement vector $\mathbf{t}=(t_x, t_y, t_z)$ to the point.
 
-$$T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\tag{2}\label{eq:ATransforms2}$$
+$$
+\begin{align*}
+T(\mathbf{p})=\mathbf{p}+\mathbf{t}=(p_x+t_x,\ p_y+t_y,\ p_z+t_z)\quad\quad\quad\quad\tag{2}\label{eq:ATransforms2} \\
+\end{align*}
+$$
 
 For example, let's consider a 2D point $\mathbf{p}=(3, 3)$. If we want to translate it by $+5$ units along the x-axis and $+2$ units along the y-axis, we can add the displacement vector $\mathbf{t}=(5, 2)$ to $\mathbf{p}$, as shown in the following illustration.
 
@@ -364,9 +369,11 @@ As you can see, the translation doesn't affect the vector, and the result is the
 
 On the other hand, if we multiply a generic point $\mathbf{q}=(x, y, z, 1)$ by $\mathbf{M}$ we have
 
-$$\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&y&z&1}\right\rbrack.\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}
-\tag{3}
-\label{eq:ATransforms3}$$
+$$
+\begin{align*}
+\mathbf{p}=\mathbf{q}\mathbf{M}=\left\lbrack\matrix{x&y&z&1}\right\rbrack\left\lbrack\matrix{\mathbf{f}\cr \mathbf{g}\cr \mathbf{h}\cr \mathbf{t}}\right\rbrack=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+1\mathbf{t}=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}+\mathbf{t}\quad\quad\quad\quad\tag{3}\label{eq:ATransforms3} \\
+\end{align*}
+$$
 
 Here, we transform $\mathbf{q}$ with a linear transformation, which results in an intermediate vector $\mathbf{q}_1=x\mathbf{f}+y\mathbf{g}+z\mathbf{h}$ to which we add the translation $\mathbf{t}$. That's exactly what we stated in equation $\eqref{eq:ATransforms2}$: a translation is the sum of a point ad a vector. However, in equation $\eqref{eq:ATransforms3}$ the point is $\mathbf{t}$, as it specifies the origin of the starting frame with respect to the new one. Also, the result is still a point: the last component is $1$ because it's the result of the dot product between $\mathbf{q}=(x, y, z, 1)$ and $(0, 0, 0, 1)$, the last row of $\mathbf{M}$.
 
@@ -395,7 +402,11 @@ In vector-matrix multiplication, we need to perform $(2n-1)$ operations for each
 
 However, thanks to the associative property of matrix multiplication we can re-write equation $\eqref{eq:ATransforms4}$ as follows:
 
-$$\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\tag{5}\label{eq:ATransforms5}$$
+$$
+\begin{align*}
+\mathbf{w}=(((\mathbf{vS})\mathbf{R})\mathbf{T})=(\mathbf{v}(\mathbf{SR})\mathbf{T})=\mathbf{v}(\mathbf{SRT})\quad\quad\quad\quad\tag{5}\label{eq:ATransforms5} \\
+\end{align*}
+$$
 
 Now, we have two matrix multiplications and a vector-matrix multiplication.<br>
 Each matrix multiplication needs $(2n-1)$ operations for each element of the resultant matrix. So, to obtain the total operations involved, we must multiply $(2n-1)$ by the $n^2$ elements of the resultant matrix. Therefore, we have $(2n-1)n^2$ operations to perform a matrix multiplication. In equation $\eqref{eq:ATransforms5}$, we have two of these multiplications, plus a vector-matrix multiplication, so the total cost is $2(2n^3-n^2)+n(2n-1)=4n^3-n=O(n^3)$.
@@ -410,9 +421,12 @@ In conclusion, it is strongly recommended to transform vectors with a matrix whi
 
 DirectXMath offers convenient helper functions for constructing $4\times 4$ matrices to transform (i.e., scale, rotate and translate) both points (e.g., vertex positions) and vectors (e.g., light directions) in homogeneous coordinates. These functions often come in two flavors:
 
-- **Scalar implementation**: Written in standard C++, utilizing scalar operations. It works on any CPU regardless of its architecture, but may be slower than alternative options.
+- **No-Intrinsics implementation**: Written in standard C++, utilizing scalar operations. It works on any CPU regardless of its architecture, but may be slower than alternative options.
 
-- **SIMD-accelerated implementation**: Leverages the power of Single Instruction, Multiple Data (SIMD) instructions available on modern CPUs, exposed by intrinsics functions provided by the Microsoft C++ compiler. This allows the CPU to perform calculations on multiple data elements simultaneously, resulting in significant performance gains.
+- **SSE-Intrinsics implementation**: Leverages the power of Single Instruction, Multiple Data (SIMD) instructions available on modern CPUs, exposed by intrinsics functions provided by the Microsoft C++ compiler. This allows the CPU to perform calculations on multiple data elements simultaneously, resulting in significant performance gains.
+
+
+### Scaling
 
 **XMMatrixScaling** returns a matrix associated with a scaling operation, similar to the one examined in [](transforms-scaling-label).
 
@@ -473,8 +487,212 @@ dst[95:64]  = e2
 dst[127:96] = e3
 ```
 
+### Rotation 
+
+**XMMatrixRotationNormal** returns a matrix that represents a rotation around an axis specified by a unit vector. The resultant matrix is similar to the one examinated in [](transforms-rotatiion-label).
+
+```{code-block} cpp
+:lineno-start: 1
+
+inline XMMATRIX XM_CALLCONV XMMatrixRotationNormal
+(
+    FXMVECTOR NormalAxis,
+    float     Angle
+) noexcept
+{
+#if defined(_XM_NO_INTRINSICS_)
+
+    float    fSinAngle;
+    float    fCosAngle;
+    XMScalarSinCos(&fSinAngle, &fCosAngle, Angle);
+
+    XMVECTOR A = XMVectorSet(fSinAngle, fCosAngle, 1.0f - fCosAngle, 0.0f);
+
+    XMVECTOR C2 = XMVectorSplatZ(A);
+    XMVECTOR C1 = XMVectorSplatY(A);
+    XMVECTOR C0 = XMVectorSplatX(A);
+
+    XMVECTOR N0 = XMVectorSwizzle<XM_SWIZZLE_Y, XM_SWIZZLE_Z, XM_SWIZZLE_X, XM_SWIZZLE_W>(NormalAxis);
+    XMVECTOR N1 = XMVectorSwizzle<XM_SWIZZLE_Z, XM_SWIZZLE_X, XM_SWIZZLE_Y, XM_SWIZZLE_W>(NormalAxis);
+
+    XMVECTOR V0 = XMVectorMultiply(C2, N0);
+    V0 = XMVectorMultiply(V0, N1);
+
+    XMVECTOR R0 = XMVectorMultiply(C2, NormalAxis);
+    R0 = XMVectorMultiplyAdd(R0, NormalAxis, C1);
+
+    XMVECTOR R1 = XMVectorMultiplyAdd(C0, NormalAxis, V0);
+    XMVECTOR R2 = XMVectorNegativeMultiplySubtract(C0, NormalAxis, V0);
+
+    V0 = XMVectorSelect(A, R0, g_XMSelect1110.v);
+    XMVECTOR V1 = XMVectorPermute<XM_PERMUTE_0Z, XM_PERMUTE_1Y, XM_PERMUTE_1Z, XM_PERMUTE_0X>(R1, R2);
+    XMVECTOR V2 = XMVectorPermute<XM_PERMUTE_0Y, XM_PERMUTE_1X, XM_PERMUTE_0Y, XM_PERMUTE_1X>(R1, R2);
+
+    XMMATRIX M;
+    M.r[0] = XMVectorPermute<XM_PERMUTE_0X, XM_PERMUTE_1X, XM_PERMUTE_1Y, XM_PERMUTE_0W>(V0, V1);
+    M.r[1] = XMVectorPermute<XM_PERMUTE_1Z, XM_PERMUTE_0Y, XM_PERMUTE_1W, XM_PERMUTE_0W>(V0, V1);
+    M.r[2] = XMVectorPermute<XM_PERMUTE_1X, XM_PERMUTE_1Y, XM_PERMUTE_0Z, XM_PERMUTE_0W>(V0, V2);
+    M.r[3] = g_XMIdentityR3.v;
+    return M;
+
+#elif defined(_XM_SSE_INTRINSICS_)
+    float    fSinAngle;
+    float    fCosAngle;
+    XMScalarSinCos(&fSinAngle, &fCosAngle, Angle);
+
+    XMVECTOR C2 = _mm_set_ps1(1.0f - fCosAngle);
+    XMVECTOR C1 = _mm_set_ps1(fCosAngle);
+    XMVECTOR C0 = _mm_set_ps1(fSinAngle);
+
+    XMVECTOR N0 = XM_PERMUTE_PS(NormalAxis, _MM_SHUFFLE(3, 0, 2, 1));
+    XMVECTOR N1 = XM_PERMUTE_PS(NormalAxis, _MM_SHUFFLE(3, 1, 0, 2));
+
+    XMVECTOR V0 = _mm_mul_ps(C2, N0);
+    V0 = _mm_mul_ps(V0, N1);
+
+    XMVECTOR R0 = _mm_mul_ps(C2, NormalAxis);
+    R0 = _mm_mul_ps(R0, NormalAxis);
+    R0 = _mm_add_ps(R0, C1);
+
+    XMVECTOR R1 = _mm_mul_ps(C0, NormalAxis);
+    R1 = _mm_add_ps(R1, V0);
+    XMVECTOR R2 = _mm_mul_ps(C0, NormalAxis);
+    R2 = _mm_sub_ps(V0, R2);
+
+    V0 = _mm_and_ps(R0, g_XMMask3);
+    XMVECTOR V1 = _mm_shuffle_ps(R1, R2, _MM_SHUFFLE(2, 1, 2, 0));
+    V1 = XM_PERMUTE_PS(V1, _MM_SHUFFLE(0, 3, 2, 1));
+    XMVECTOR V2 = _mm_shuffle_ps(R1, R2, _MM_SHUFFLE(0, 0, 1, 1));
+    V2 = XM_PERMUTE_PS(V2, _MM_SHUFFLE(2, 0, 2, 0));
+
+    R2 = _mm_shuffle_ps(V0, V1, _MM_SHUFFLE(1, 0, 3, 0));
+    R2 = XM_PERMUTE_PS(R2, _MM_SHUFFLE(1, 3, 2, 0));
+
+    XMMATRIX M;
+    M.r[0] = R2;
+
+    R2 = _mm_shuffle_ps(V0, V1, _MM_SHUFFLE(3, 2, 3, 1));
+    R2 = XM_PERMUTE_PS(R2, _MM_SHUFFLE(1, 3, 0, 2));
+    M.r[1] = R2;
+
+    V2 = _mm_shuffle_ps(V2, V0, _MM_SHUFFLE(3, 2, 1, 0));
+    M.r[2] = V2;
+    M.r[3] = g_XMIdentityR3.v;
+    return M;
+#endif
+}
+```
+
+Regarding the No-Intrinsics implementation:
+
+**XMScalarSinCos** calculates the sine and cosine of an angle ─ in this case, the rotation angle.
+
+**XMVectorSet** returns an **XMVECTOR** with components initialized using the arguments passed to the function. So, we have $A = \{\sin\theta,\ \cos\theta,\ (1-\cos\theta),\ 0\}$.
+
+**XMVectorSplat[X,Y,Z]** returns an **XMVECTOR** with components all initialized using the [X,Y,Z] component of the vector passed to the function. Thus, $C0 = \{\sin\theta,\ \sin\theta,\ \sin\theta,\ 0\}$, $C1 = \{\cos\theta,\ \cos\theta,\ \cos\theta,\ 0\}$ and $C2 = \{(1-\cos\theta),\ (1-\cos\theta),\ (1-\cos\theta),\ 0\}$.
+
+**XMVectorSwizzle** returns an **XMVECTOR** with components specified by swizzling the vector passed to the function. In this case, we simply reorder the components of the vector $\mathbf{n}$, specifying the rotation axis, so that $N0 = \{y, z, x, w\}$ and $N1 = \{z, x, y, w\}$.
+
+**XMVectorMultiply** returns an **XMVECTOR** obtained by multiplying the two **XMVECTOR**s passed to the function. In this case, after the line 23 of the listing above, we have 
+
+$$V0 = \{ (1-\cos\theta)yz,\ (1-\cos\theta)xz,\ (1-\cos\theta)xy,\ (1-\cos\theta)w^2 \}$$
+
+**XMVectorMultiplyAdd** is similar to **XMVectorMultiply** but, after multiplying the first two vectors, it adds the third vector passed to the function to the result. In this case, after line 26, we have
+
+$$R0 = \{(1-\cos\theta)x^2 + \cos\theta,\ (1-\cos\theta)y^2 + \cos\theta,\ (1-\cos\theta)z^2 + \cos(\theta),\ (1-\cos\theta)w^2\}$$
+
+**XMVectorNegativeMultiplySubtract** is similar to **XMVectorMultiply** but, after multiplying the first two vectors, it negates the result and subtracts the third vector passed to the function. In this case, after line 29, we have
+
+$$R1 = \{(1-\cos\theta)yz + \sin(\theta)x,\ (1-\cos\theta)xz + \sin(\theta)y,\ (1-\cos\theta)xy + \sin(\theta)z,\ (1-\cos\theta)w^2 + \sin(\theta)w\}$$
+
+$$R2 = \{(1-\cos\theta)yz - \sin(\theta)x,\ (1-\cos\theta)xz - \sin(\theta)y,\ (1-\cos\theta)xy - \sin(\theta)z,\ (1-\cos\theta)w^2 - \sin(\theta)w\}$$
+
+**XMVectorSelect** returns an **XMVECTOR**  with components selected between the two vectors passed to the function, based on the mask vector passed as the third argument. If a component of the mask vector is zero, the corresponding component of the first vector will be selected. If a component of the mask has a value of 0xFF, the corresponding component of the second vector will be selected. **g_XMSelect1110** is a constant vector defined as $\{\text{uint}(-1),\ \text{uint}(-1),\ \text{uint}(-1),\ 0 \}$. So, after line 31, we have
+
+$$V0 = \{(1-\cos\theta)x^2 + \cos\theta,\ (1-\cos\theta)y^2 + \cos\theta,\ (1-\cos\theta)z^2 + \cos(\theta),\ 0 \}$$
+
+**XMVectorPermute** returns an **XMVECTOR** with components selected from the two vectors passed to the function based on the values of the four template parameters. Each of these parameters is an index from 0 to 7, indicating where the corresponding component of the new vector should be copied from. In fact, the components of the two vectors passed to the function are treated as a contiguous array of 8 elements. The constants `XM_PERMUTE_0[X,Y,Z,W]` are in the range $[0,3]$ and select components from the first vector, while the constants `XM_PERMUTE_1[X,Y,Z,W]` are in the range $[4,7]$ and select components from the second vector. So, after line 33, we have
+
+$$V1 = \{(1-\cos\theta)xy+\sin(\theta)z,\ (1-\cos\theta)xz - \sin(\theta)y,\ (1-\cos\theta)xy - \sin(\theta)z,\ (1-\cos\theta)yz+\sin(\theta)x\}$$
+
+$$V2 = \{(1-\cos\theta)xz+\sin(\theta)y,\ (1-\cos\theta)yz-\sin(\theta)x,\ (1-\cos\theta)xz+\sin(\theta)y,\ (1-\cos\theta)yz-\sin(\theta)x\}$$
+
+Using **XMVectorPermute** again, along with the vectors $V0$, $V1$ and $V2$, **XMMatrixRotationNormal** builds the rotation matrix around the **NormalAxis** vector. Compare the result with the rotation matrix presented in [](transforms-rotatiion-label).
+
+Regarding the SSE-Intrinsics implementation, the result is the same but achieved in a faster and more efficient way. Refer to {cite}`DirectXMath` and {cite}`x64IntrinsicsList` for implementation details.
+
+Additionally, DirectXMath provides other rotation methods such as **XMMatrixRotationX**, **XMMatrixRotationY**, and **XMMatrixRotationZ** to rotate around the X-, Y-, and Z-axes of the coordinate system.
+
+
+### Translation
+
+**XMMatrixTranslation** returns a translation matrix built from the specified offsets (components of the dislpacement vector). The resultant matrix is similar to the one examinated in [](transforms-translation-label).
+
+```cpp
+
+inline XMMATRIX XM_CALLCONV XMMatrixTranslation
+(
+    float OffsetX,
+    float OffsetY,
+    float OffsetZ
+) noexcept
+{
+#if defined(_XM_NO_INTRINSICS_)
+
+    XMMATRIX M;
+    M.m[0][0] = 1.0f;
+    M.m[0][1] = 0.0f;
+    M.m[0][2] = 0.0f;
+    M.m[0][3] = 0.0f;
+
+    M.m[1][0] = 0.0f;
+    M.m[1][1] = 1.0f;
+    M.m[1][2] = 0.0f;
+    M.m[1][3] = 0.0f;
+
+    M.m[2][0] = 0.0f;
+    M.m[2][1] = 0.0f;
+    M.m[2][2] = 1.0f;
+    M.m[2][3] = 0.0f;
+
+    M.m[3][0] = OffsetX;
+    M.m[3][1] = OffsetY;
+    M.m[3][2] = OffsetZ;
+    M.m[3][3] = 1.0f;
+    return M;
+
+#elif defined(_XM_SSE_INTRINSICS_) || defined(_XM_ARM_NEON_INTRINSICS_)
+    XMMATRIX M;
+    M.r[0] = g_XMIdentityR0.v;
+    M.r[1] = g_XMIdentityR1.v;
+    M.r[2] = g_XMIdentityR2.v;
+    M.r[3] = XMVectorSet(OffsetX, OffsetY, OffsetZ, 1.f);
+    return M;
+#endif
+}
+```
+
+In DirectXMath, **g_XMIdentityR0** is a constant vector defined as `{1.0f, 0.0f, 0.0f, 0.0f}`, while **g_XMIdentityR1** e **g_XMIdentityR2** are defined as `{0.0f, 1.0f, 0.0f, 0.0f}` e `{0.0f, 0.0f, 1.0f, 0.0f}`, respectively.
+
+
+DirectXMath provides many other helper functions to perform transformations on matrices and vectors. See {cite}`DirectXMath` for a reference guide to these functions.
+
 <br>
 
-[WIP]
+````{admonition} Support this project
+If you found the content of this tutorial somewhat useful or interesting, please consider supporting this project by clicking on the Sponsor button below. Whether a small tip, a one-time donation, or a recurring payment, all contributions are welcome! Thank you!
 
+```{figure} ../../../sponsor.png
+:align: center
+:target: https://github.com/sponsors/PAMinerva
+
+```
+````
+
+<br>
+
+## References
+```{bibliography}
+:filter: docname in docnames
+```
 <br>

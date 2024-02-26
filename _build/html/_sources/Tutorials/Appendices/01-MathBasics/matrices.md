@@ -230,9 +230,10 @@ Observe that the dot in the equation above represents a scalar multiplication, n
 
 Equation $\eqref{eq:AMatrices2}$ provides a recursive method for calculating the determinant of a matrix. It involves computing the determinants of matrix minors and using them in a linear combination, where the coefficients are the elements of the chosen i-th row. This approach allows us to extend the calculation of determinants from $1\times 1$ matrices to $2\times 2$ matrices by applying the formula above (we will use the elements of the first row of $\mathbf{A}$ as coefficients; that is, we set $i=0$).
 
-$$\tag{3}
-det\left\lbrack\matrix{A_{00}&A_{01}\cr A_{10}&A_{11}}\right\rbrack=A_{00}\ det[A_{11}]-A_{01}\ det\,[A_{10}]=A_{00}A_{11}-A_{01}A_{10}
-\label{eq:AMatrices3}
+$$
+\begin{align*}
+det\left\lbrack\matrix{A_{00}&A_{01}\cr A_{10}&A_{11}}\right\rbrack=A_{00}\ det[A_{11}]-A_{01}\ det\,[A_{10}]=A_{00}A_{11}-A_{01}A_{10}\quad\quad\quad\quad\tag{3}\label{eq:AMatrices3} \\
+\end{align*}
 $$
 
 Now that we know how to calculate the determinants of $2\times 2$ matrices, we can compute the determinants of $3\times 3$ matrices as well.
@@ -722,7 +723,9 @@ When you create a function that accepts one or more **XMMATRIX**s, in declaring 
 
 **FXMMATRIX** and **CXMMATRIX** are both aliases to **XMVECTOR**. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see {cite}`DirectXMathLibraryInternals` and {cite}`vectorcallCallingConvention` in the reference list at the end of the tutorial). 
 
-Obviously, all the basic matrix operations discussed in this tutorial (sum, difference and various types of multiplication) are both defined in HLSL and provided by DirectXMath, along with other helper functions that can be performed on matrices such as inversion, transposition and determinant calculation. We will examine most of these functions in the upcoming tutorials.
+Obviously, all the basic matrix operations discussed in this tutorial (sum, difference, and various types of multiplication) are defined in HLSL using the usual operators (`+`, `-`, `*`). Fortunately, DirectXMath overloads these same operators for matrices to allow us to perform the same operations in C++. 
+
+DirectXMath also provides many helper functions to work with matrices, enabling us to perform useful operations such as inversion, transposition, and determinant calculation. We will encounter and use most of these functions in the upcoming tutorials.
 
 <br>
 
