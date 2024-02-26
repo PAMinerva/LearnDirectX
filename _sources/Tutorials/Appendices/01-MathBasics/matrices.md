@@ -723,7 +723,9 @@ When you create a function that accepts one or more **XMMATRIX**s, in declaring 
 
 **FXMMATRIX** and **CXMMATRIX** are both aliases to **XMVECTOR**. They allow the system to use the appropriate calling conventions for each platform supported by the DirectXMath Library. To learn more about calling convections, refer to the official documentation (see {cite}`DirectXMathLibraryInternals` and {cite}`vectorcallCallingConvention` in the reference list at the end of the tutorial). 
 
-Obviously, all the basic matrix operations discussed in this tutorial (sum, difference and various types of multiplication) are both defined in HLSL and provided by DirectXMath, along with other helper functions that can be performed on matrices such as inversion, transposition and determinant calculation. We will examine most of these functions in the upcoming tutorials.
+Obviously, all the basic matrix operations discussed in this tutorial (sum, difference, and various types of multiplication) are defined in HLSL using the usual operators (`+`, `-`, `*`). Fortunately, DirectXMath overloads these same operators for matrices to allow us to perform the same operations in C++. 
+
+DirectXMath also provides many helper functions to work with matrices, enabling us to perform useful operations such as inversion, transposition, and determinant calculation. We will encounter and use most of these functions in the upcoming tutorials.
 
 <br>
 
