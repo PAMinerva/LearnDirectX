@@ -591,7 +591,7 @@ Regarding the No-Intrinsics implementation:
 
 **XMVectorSet** returns an **XMVECTOR** with components initialized using the arguments passed to the function. So, we have $A = \{\sin\theta,\ \cos\theta,\ (1-\cos\theta),\ 0\}$.
 
-**XMVectorSplat[X,Y,Z]** returns an **XMVECTOR** with components all initialized using the [X,Y,Z] component of the vector passed to the function. Thus, $C0 = \{\sin\theta,\ \sin\theta,\ \sin\theta,\ 0\}$, $C1 = \{\cos\theta,\ \cos\theta,\ \cos\theta,\ 0\}$ and $C2 = \{(1-\cos\theta),\ (1-\cos\theta),\ (1-\cos\theta),\ 0\}$.
+**XMVectorSplat[X/Y/Z]** returns an **XMVECTOR** with components all initialized using the [X/Y/Z] component of the vector passed to the function. Thus, $C0 = \{\sin\theta,\ \sin\theta,\ \sin\theta,\ 0\}$, $C1 = \{\cos\theta,\ \cos\theta,\ \cos\theta,\ 0\}$ and $C2 = \{(1-\cos\theta),\ (1-\cos\theta),\ (1-\cos\theta),\ 0\}$.
 
 **XMVectorSwizzle** returns an **XMVECTOR** with components specified by swizzling the vector passed to the function. In this case, we simply reorder the components of the vector $\mathbf{n}$, specifying the rotation axis, so that $N0 = \{y, z, x, w\}$ and $N1 = \{z, x, y, w\}$.
 
@@ -613,7 +613,7 @@ $$R2 = \{(1-\cos\theta)yz - \sin(\theta)x,\ (1-\cos\theta)xz - \sin(\theta)y,\ (
 
 $$V0 = \{(1-\cos\theta)x^2 + \cos\theta,\ (1-\cos\theta)y^2 + \cos\theta,\ (1-\cos\theta)z^2 + \cos(\theta),\ 0 \}$$
 
-**XMVectorPermute** returns an **XMVECTOR** with components selected from the two vectors passed to the function based on the values of the four template parameters. Each of these parameters is an index from 0 to 7, indicating where the corresponding component of the new vector should be copied from. In fact, the components of the two vectors passed to the function are treated as a contiguous array of 8 elements. The constants `XM_PERMUTE_0[X,Y,Z,W]` are in the range $[0,3]$ and select components from the first vector, while the constants `XM_PERMUTE_1[X,Y,Z,W]` are in the range $[4,7]$ and select components from the second vector. So, after line 33, we have
+**XMVectorPermute** returns an **XMVECTOR** with components selected from the two vectors passed to the function based on the values of the four template parameters. Each of these parameters is an index from 0 to 7, indicating where the corresponding component of the new vector should be copied from. In fact, the components of the two vectors passed to the function are treated as a contiguous array of 8 elements. The constants `XM_PERMUTE_0[X/Y/Z/W]` are in the range $[0,3]$ and select components from the first vector, while the constants `XM_PERMUTE_1[X/Y/Z/W]` are in the range $[4,7]$ and select components from the second vector. So, after line 33, we have
 
 $$V1 = \{(1-\cos\theta)xy+\sin(\theta)z,\ (1-\cos\theta)xz - \sin(\theta)y,\ (1-\cos\theta)xy - \sin(\theta)z,\ (1-\cos\theta)yz+\sin(\theta)x\}$$
 
