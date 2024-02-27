@@ -483,7 +483,7 @@ document.write(`
 <div class="proof example admonition" id="example-0">
 <p class="admonition-title"><span class="caption-number">Example 4 </span></p>
 <section class="example-content" id="proof-content">
-<p>Given a cube in local space, suppose you want to double its size, rotate it by <span class="math notranslate nohighlight">\(45°\)</span> clockwise about the y-axis, and move it at <span class="math notranslate nohighlight">\((10,0,5)\)</span> in the world space. Therefore, we must transform all the vertices of the square with the following world matrix.</p>
+<p>Given a cube in local space, suppose you want to double its size, rotate it by <span class="math notranslate nohighlight">\(45°\)</span> clockwise about the y-axis, and move it at <span class="math notranslate nohighlight">\((10,0,5)\)</span> in the world space. Therefore, we must transform all the vertices of the cube using the following world matrix:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
@@ -492,7 +492,7 @@ document.write(`
 &amp;=\left\lbrack\matrix{\sqrt2&amp;0&amp;-\sqrt2&amp;0\cr 0&amp;2&amp;0&amp;0\cr \sqrt2&amp;0&amp;\sqrt2&amp;0\cr 10&amp;0&amp;5&amp;1}\right\rbrack
 \end{align*}
 \end{split}\]</div>
-<p>As you can see in the illustration below, the first three rows of <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> are the scaled and rotated basis vectors of the local space in world coordinates (that is, whose coordinates are with respect to the world space), while the fourth row is the position (point) of the origin of the translated local space (again, in world coordinates). Based on the information provided in <a class="reference internal" href="matrices.html"><span class="std std-doc">Matrices</span></a>, we can use <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> to transform the vertices of the cube in order to place it in the global scene.</p>
+<p>The image below shows a 2D cross-section of the scene, obtained by looking down along the positive y-axis. Note that the first three rows of the <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> matrix are the scaled and rotated basis vectors of the local space in world coordinates (that is, whose coordinates are with respect to the world space), while the fourth row is the position (point) of the origin of the translated local space (again, in world coordinates). Based on the information provided in <a class="reference internal" href="matrices.html"><span class="std std-doc">Matrices</span></a>, we can use <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> to transform the vertices of the cube in order to place it in the global scene.</p>
 <figure class="align-default">
 <img alt="../../../_images/example1.png" src="../../../_images/example1.png" />
 </figure>
