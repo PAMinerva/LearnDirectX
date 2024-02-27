@@ -58,7 +58,7 @@ where the first three rows of $\mathbf{W}$ are the scaled and rotated basis vect
 
 ````{prf:example}
 
-Given a cube in local space, suppose you want to double its size, rotate it by $45°$ clockwise about the y-axis, and move it at $(10,0,5)$ in the world space. Therefore, we must transform all the vertices of the square with the following world matrix.
+Given a cube in local space, suppose you want to double its size, rotate it by $45°$ clockwise about the y-axis, and move it at $(10,0,5)$ in the world space. Therefore, we must transform all the vertices of the cube using the following world matrix:
 
 $$
 \begin{align*}
@@ -68,7 +68,7 @@ $$
 \end{align*}
 $$
 
-As you can see in the illustration below, the first three rows of $\mathbf{W}$ are the scaled and rotated basis vectors of the local space in world coordinates (that is, whose coordinates are with respect to the world space), while the fourth row is the position (point) of the origin of the translated local space (again, in world coordinates). Based on the information provided in [](matrices.md), we can use $\mathbf{W}$ to transform the vertices of the cube in order to place it in the global scene.
+The image below shows a 2D cross-section of the scene, obtained by looking down along the positive y-axis. Note that the first three rows of the $\mathbf{W}$ matrix are the scaled and rotated basis vectors of the local space in world coordinates (that is, whose coordinates are with respect to the world space), while the fourth row is the position (point) of the origin of the translated local space (again, in world coordinates). Based on the information provided in [](matrices.md), we can use $\mathbf{W}$ to transform the vertices of the cube in order to place it in the global scene.
 
 ```{figure} images/04/example1.png
 ```
