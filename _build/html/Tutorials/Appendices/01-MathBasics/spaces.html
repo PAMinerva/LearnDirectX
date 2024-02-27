@@ -66,6 +66,8 @@ const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials/Appendices/01-MathBasics/spaces';</script>
     <link rel="canonical" href="https://github.com/PAMinerva/LearnDirectX/Tutorials/Appendices/01-MathBasics/spaces.html" />
     <link rel="icon" href="../../../_static/favicon.png"/>
@@ -415,7 +417,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space-wip">Object space [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix-wip">View space and View matrix [WIP]</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -433,8 +437,64 @@ document.write(`
 <p>The magic of computer graphics lies in the ability to transform and manipulate objects within cartesian coordinate systems, also known as spaces for brevity. Indeed, a fundamental concept that forms the backbone of many graphics pipelines is the transformation of 3D objects to represent them in various spaces in order to bring virtual scene to be shown on the screen.</p>
 <p>In <a class="reference internal" href="transformations.html"><span class="std std-doc">Transformations</span></a>, we showed that to transform a points and vectors we can transform the basis vectors representing the starting frame, so that we can express the coordinates with respect to a new space. Building upon this foundation, it’s now interesting to look at the common spaces typically employed in the graphics pipeline and how to go from a space to another as well in order to project the 3D scenes onto a 2D surface before showing the result on the screen.</p>
 <p>From the initial local space where each object is defined, to the all-encompassing world space, and the camera space that offers a unique perspective, each space plays a crucial role in the intricate process of rendering. For a more extensive and detailed presentation on spaces used in computer graphics and transformations to go from one space to another, you may find valuable information in <span id="id1">[<a class="reference internal" href="#id13" title="S. Marschner and P. Shirley. Fundamentals of Computer Graphics. CRC Press, 4th edition, 2022.">MS22</a>]</span>.</p>
-<section id="object-space-wip">
-<h2>Object space [WIP]<a class="headerlink" href="#object-space-wip" title="Link to this heading">#</a></h2>
+<section id="object-space">
+<h2>Object space<a class="headerlink" href="#object-space" title="Link to this heading">#</a></h2>
+<p>The object space, also known as local space, is the frame in which 3D objects\meshes are defined. When creating 3D objects, graphic artists often work in a convenient space that simplifies vertex modeling by providing symmetry with respect to the origin of the coordinate system.</p>
+<figure class="align-default">
+<img alt="../../../_images/object-space.jpg" src="../../../_images/object-space.jpg" />
+</figure>
+<p>For instance, consider the modeling of a sphere. It is much easier to place all the vertices at an equal distance from the origin, rather than using a random point as the sphere’s center. This intuitive choice is not only practical but can also be mathematically justified.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+&amp;\text{Equation of the sphere with center in } (0,0,0): \quad x^2+y^2+z^2=r^2 \\ 
+\\
+&amp;\text{Equation of the sphere with center in } (x_0, y_0, z_0): \quad (x-x_0)^2+(y-y_0)^2+(z-z_0)^2=r^2
+\end{align*}
+\end{split}\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The local space is the frame where the vertices of a mesh are defined in the first place. These vertices are often stored in a file on disk and can be loaded into memory to create the vertex buffer, which is subsequently sent to the input assembler. Within this buffer, the vertices remain in their local space representation until the graphics pipeline performs the necessary transformations to convert the 3D objects they represent into a 2D representation to show on the screen.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Throughout this tutorial series, we’ll use a left-handed coordinate system where the y-axis points upwards to represent the object space. As explained in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>, this is completely arbitrary and you can choose any configuration (z-up or y-up) and handedness that suits your needs.</p>
+</div>
+<br>
+</section>
+<section id="world-space-and-world-matrix">
+<h2>World space and World matrix<a class="headerlink" href="#world-space-and-world-matrix" title="Link to this heading">#</a></h2>
+<p>When the input assembler sends its output to the next stage (the vertex shader), we have vertices in local space that we want to place in a 3D global scene shared by all objects. The space of the global scene is called world space, and the transformation to go from local to world space is called world transformation. To represent the world space, we will use the same convention as the object space: left-handed system with the y-axis pointing upwards.</p>
+<figure class="align-default">
+<img alt="../../../_images/world-space.png" src="../../../_images/world-space.png" />
+</figure>
+<p>As we know, to go from a frame to another, we need to express the basis vectors of the starting frame with respect to the new frame. So, we can build a matrix <span class="math notranslate nohighlight">\(\mathbf{W}=\mathbf{SRT}\)</span> (a composition of three trasformations: a scaling, a rotation, and a translation) associated with the world transformation we want to apply to the local frame to get the coordinates of its basis vectors with respect to the world space. Therefore, <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> is the matrix to go from local to world space, and that allows us to put an object (or rather, its vertices) in the global scene. For this reason, we call <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> the world matrix.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>We hardly place every object in the same location of the world space, so <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> will likely be different from object to object.</p>
+<figure class="align-default">
+<img alt="../../../_images/local2world.png" src="../../../_images/local2world.png" />
+</figure>
+</div>
+<p>Thus, we can define <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{W}=\mathbf{SRT}=\left\lbrack\matrix{f_x&amp;f_y&amp;f_z&amp;0\cr g_x&amp;g_y&amp;g_z&amp;0\cr h_x&amp;h_y&amp;h_z&amp;0\cr t_x&amp;t_y&amp;t_z&amp;1}\right\rbrack\]</div>
+<p>where the first three rows of <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> are the scaled and rotated basis vectors of the local space with respect to the world space, while the last row is the translation of the origin of the local space (again, with respect to the world space).</p>
+<div class="proof example admonition" id="example-0">
+<p class="admonition-title"><span class="caption-number">Example 4 </span></p>
+<section class="example-content" id="proof-content">
+<p>Given a cube in local space, suppose you want to double its size, rotate it by <span class="math notranslate nohighlight">\(45°\)</span> clockwise about the y-axis, and move it at <span class="math notranslate nohighlight">\((10,0,5)\)</span> in the world space. Therefore, we must transform all the vertices of the square with the following world matrix.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{W}=\mathbf{SRT}=\left\lbrack\matrix{2&amp;0&amp;0&amp;0\cr 0&amp;2&amp;0&amp;0\cr 0&amp;0&amp;2&amp;0\cr 0&amp;0&amp;0&amp;1}\right\rbrack\left\lbrack\matrix{\sqrt2/2&amp;0&amp;-\sqrt2/2&amp;0\cr 0&amp;1&amp;0&amp;0\cr \sqrt2/2&amp;0&amp;\sqrt2/2&amp;0\cr 0&amp;0&amp;0&amp;1}\right\rbrack\left\lbrack\matrix{1&amp;0&amp;0&amp;0\cr 0&amp;1&amp;0&amp;0\cr 0&amp;0&amp;1&amp;0\cr 10&amp;0&amp;5&amp;1}\right\rbrack=\left\lbrack\matrix{\sqrt2&amp;0&amp;-\sqrt2&amp;0\cr 0&amp;2&amp;0&amp;0\cr \sqrt2&amp;0&amp;\sqrt2&amp;0\cr 10&amp;0&amp;5&amp;1}\right\rbrack\]</div>
+<p>As you can see in the following illustration, the first three rows of <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> are the scaled and rotated basis vectors of the local space in world coordinates (that is, whose coordinates are with respect to the world space), while the fourth row is the position (point) of the origin of the translated local space (again, in world coordinates). Based on the information provided in <a class="reference internal" href="matrices.html"><span class="std std-doc">Matrices</span></a>, we can use <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> to transform the vertices of the cube in order to place it in the global scene.</p>
+<figure class="align-default">
+<img alt="../../../_images/example1.png" src="../../../_images/example1.png" />
+</figure>
+</section>
+</div><br>
+</section>
+<section id="view-space-and-view-matrix-wip">
+<h2>View space and View matrix [WIP]<a class="headerlink" href="#view-space-and-view-matrix-wip" title="Link to this heading">#</a></h2>
 <br>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -515,7 +575,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space-wip">Object space [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix-wip">View space and View matrix [WIP]</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
