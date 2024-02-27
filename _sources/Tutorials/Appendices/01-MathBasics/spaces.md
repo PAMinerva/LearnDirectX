@@ -68,7 +68,7 @@ $$
 \end{align*}
 $$
 
-As you can see in the following illustration, the first three rows of $\mathbf{W}$ are the scaled and rotated basis vectors of the local space in world coordinates (that is, whose coordinates are with respect to the world space), while the fourth row is the position (point) of the origin of the translated local space (again, in world coordinates). Based on the information provided in [](matrices.md), we can use $\mathbf{W}$ to transform the vertices of the cube in order to place it in the global scene.
+As you can see in the illustration below, the first three rows of $\mathbf{W}$ are the scaled and rotated basis vectors of the local space in world coordinates (that is, whose coordinates are with respect to the world space), while the fourth row is the position (point) of the origin of the translated local space (again, in world coordinates). Based on the information provided in [](matrices.md), we can use $\mathbf{W}$ to transform the vertices of the cube in order to place it in the global scene.
 
 ```{figure} images/04/example1.png
 ```
