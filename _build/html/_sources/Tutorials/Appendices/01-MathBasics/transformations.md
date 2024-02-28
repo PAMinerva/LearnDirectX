@@ -630,7 +630,7 @@ Additionally, DirectXMath provides other rotation methods such as **XMMatrixRota
 
 **XMMatrixTranslation** returns a translation matrix built from the specified offsets (components of the dislpacement vector). The resultant matrix is similar to the one examinated in [](transforms-translation-label).
 
-```cpp
+```{code-block} cpp
 
 inline XMMATRIX XM_CALLCONV XMMatrixTranslation
 (

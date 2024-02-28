@@ -36,7 +36,7 @@ Throughout this tutorial series, we’ll use a left-handed coordinate system whe
 
 ## World space and World matrix
 
-When the input assembler sends its output to the next stage (the vertex shader), we have vertices in local space that we want to place in a 3D global scene shared by all objects. The space of the global scene is called world space, and the transformation to go from local to world space is called world transformation. To represent the world space, we will use the same convention as the object space: left-handed system with the y-axis pointing upwards.
+When the input assembler sends its output to the next stage (the vertex shader), we have vertices in local space that we want to place in a 3D global scene shared by all objects. The space of the global scene is called **world space**, and the transformation to go from local to world space is called **world transformation**. To represent the world space, we will use the same convention as the object space: left-handed system with the y-axis pointing upwards.
 
 ```{figure} images/04/world-space.png
 ```
@@ -76,7 +76,136 @@ The image below shows a 2D cross-section of the scene, obtained by looking down 
 
 <br>
 
-## View space and View matrix [WIP]
+## View space and View matrix 
+
+Once we apply the world transformation, all objects are in world space. However, we still require a specific viewpoint to observe the 3D scene. This space is typically called **view space**, or **camera space**, and to represent it, we’ll adopt a left-handed system similar to the ones used for local and world spaces, where the y-axis points upwards. To transition objects from world space to view space, we need to apply another transformation: the **view transformation**. This involves applying a **view matrix** (denoted by $\mathbf{V}$), which configures the camera's position, orientation, and perspective within the global scene. By applying the view matrix, we effectively convert the coordinates of objects' vertices from world space to view space, establishing the desired viewpoint for our 3D scene.
+
+```{figure} images/04/view-space.png
+```
+
+Unlike the world transformation, where each object typically requires a separate transformation, the view transformation usually employs the same view matrix for all objects in the global scene. This is because we generally aim for a consistent viewpoint to observe the entire 3D scene. In other words, it's as if we can consider the entire scene, encompassing all the objects, as a single large object that needs to be transformed from world space to view space.
+
+Now, to build the view matrix, we can start considering the camera as an ordinary object we can place in world space. So, we can use a world matrix $\mathbf{W}_ c$ to put the camera in the global space as the point of view from which to look at the scene.
+
+$$\mathbf{W}_c=\left\lbrack\matrix{f_x&f_y&f_z&0\cr g_x&g_y&g_z&0\cr h_x&h_y&h_z&0\cr t_x&t_y&t_z&1}\right\rbrack$$
+
+$\mathbf{W}_c$ is the matrix that transforms from the local space of the camera to the world space. However, note that the local space of the camera is exactly the view space, the perspective from which we observe the scene. This means that $\mathbf{W}_c$ is the matrix for transitioning from view space to world space. Therefore, we can simply compute the inverse $\mathbf{W}_c^{-1}$ to get the view matrix allowing to go from world space to view space. In this case, computing the inverse is straightforward as $\mathbf{W}_c$ is the composition of a rotation and a translation: $\mathbf{W}_c=\mathbf{RT}$. Indeed, it doesn’t make any sense to scale the camera since it’s a dummy object; we are only interested in the position and orientation of the view space. And we don’t need scaling in the inverse transformation either, as we've already scaled the objects during the world transformations, aiming to maintain their size in world space. Therefore, the first three rows of $\mathbf{W}_c^{-1}$ represent the rotations of the standard basis vectors of the view space relative to the world space (that is, in world coordinates), while the last row represents the position of the origin of the view space, in world coordinates as well. So, we have
+
+$$\mathbf{V}=\mathbf{W}_c^{-1}=(\mathbf{RT})^{-1}=\mathbf{T}^{-1}\mathbf{R}^{-1}=\mathbf{T}^{-1}\mathbf{R}^{-T}=\left\lbrack\matrix{1&0&0&0\cr 0&1&0&0\cr 0&0&1&0\cr {-t}_x&-t_y&-t_z&1}\right\rbrack\left\lbrack\matrix{f_x&g_x&h_x&0\cr f_y&g_y&h_y&0\cr f_z&g_z&h_z&0\cr 0&0&0&1}\right\rbrack$$
+
+Indeed, remember that the inverse of a rotation matrix is equivalent to its transpose (as explained in [](matrices.md)). Consequently, the view matrix $\mathbf{V}$ to go from world space to view space is
+
+$$\mathbf{V}=\left\lbrack\matrix{f_x&g_x&h_x&0\cr f_y&g_y&h_y&0\cr f_z&g_z&h_z&0\cr -\mathbf{t}\cdot\mathbf{f}&-\mathbf{t}\cdot\mathbf{g}&-\mathbf{t}\cdot\mathbf{h}&1}\right\rbrack$$
+
+It’s interesting to note that, since $\mathbf{f}$, $\mathbf{g}$, $\mathbf{h}$ and $\mathbf{t}$ are all in world coordinates, we can compute the view matrix $\mathbf{V}$ from scratch by only using two points in the world space: the origin $\mathbf{O}_v$ of the view space and a target point $\mathbf{T}$ indicating where the camera is aimed. To verify this, let's start by observing that
+
+$$\mathbf{t}=\mathbf{O}_v$$
+
+because both $\mathbf{O}_v$ and $\mathbf{t}$ represent the same geometric entity: the position of the view space in world coordinates.
+
+Now, we need to calculate $\mathbf{f}$, $\mathbf{g}$ and $\mathbf{h}$, which represent the transformations of the standard basis vectors $\mathbf{i}$, $\mathbf{j}$ and $\mathbf{k}$ in the camera's local space. Specifically, $\mathbf{h}$, the transformation of $\mathbf{k}$, points in the direction the camera is aimed (z-axis of the camera space in the image above). Therefore, we can calculate it simply by taking the difference between $\mathbf{T}$ and $\mathbf{O}_v$.
+
+$$\mathbf{h}=\displaystyle\frac{\mathbf{T}-\mathbf{O}_v}{\vert\mathbf{T}-\mathbf{O}_v\vert}$$
+
+Observe that since this is the difference between two points in world coordinates, the result is a vector in world coordinates as well.
+
+To compute $\mathbf{f}$ (transformation of $\mathbf{i}$), we will use $\mathbf{j}$, the unit vector we chose pointing upwards in local, world and camera spaces. This is because we typically limit the vertical rotation of the camera to less than $90°$ around the x-axis (the reasons behind this will be explained in another tutorial). As a result, the angle between $\mathbf{j}$ and $\mathbf{g}$ will be less than $90°$. Similarly, the angle between $\mathbf{j}$ and $\mathbf{h}$ will be less than $180°$, as $\mathbf{g}$ and $\mathbf{h}$ must be orthogonal to each other.
+
+```{figure} images/04/view-matrix-rows.png
+```
+
+Therefore, we can calculate $\mathbf{f}$ with the following cross product.
+
+$$\mathbf{f}=\displaystyle\frac{\mathbf{j}\times\mathbf{h}}{\vert\mathbf{j}\times\mathbf{h}\vert}$$
+
+As explained above, the vector $\mathbf{j}$ remains consistent regardless the frame of reference (i.e., it has the same coordinates $(0,1,0)$ in both local and world spaces). Therefore, both $\mathbf{j}$ and $\mathbf{h}$ can be considered as expressed relative to the world space, which we defined as a left-handed system. This implies that the direction of $\mathbf{f}$ will be the one that sees $\mathbf{j}$ rotate clockwise towards $\mathbf{h}$, making $\mathbf{f}$, $\mathbf{j}$, and $\mathbf{h}$ a left-handed system. This is exactly the expected result when transitioning from world space to view space, as we usually don’t want to change the handedness of the system we are working with after a transformation.
+
+Finally, to compute $\mathbf{g}$ (transformation of $\mathbf{j}$), we can simply calculate the cross product between $\mathbf{h}$ and $\mathbf{f}$.
+
+$$\mathbf{g}=\mathbf{h}\times\mathbf{f}$$
+
+```{note}
+Both $\mathbf{f}$ and $\mathbf{h}$ are unit vectors, so we don’t need to normalize the result. Recall what we stated in [](vectors.md): the length of the vector resulting from the cross product $\mathbf{u}\times\mathbf{v}$ is $\vert\mathbf{u}\times\mathbf{v}\vert=\vert\mathbf{u}\vert\vert\mathbf{v}\vert\sin{\theta}$. In this case, we have $\vert\mathbf{h}\vert=\vert\mathbf{f}\vert=1$ and $\sin{90°}=1$.
+```
+
+DirectXMath provides the helper function **XMMatrixLookAtLH** to build a view matrix similar to the one we discussed in this section (i.e., for transitioning from world to camera spaces defined as left-handed systems). You need to pass the camera position and target point as arguments to this function, which returns the related view matrix.
+
+```{code-block} cpp
+// pos: position (in world coordinates) of the (origin of the) view space.
+// target: position (in world coordinates) where we want the camera is aimed at.
+// up == j (unit basis vector which points up).
+XMVECTOR pos = XMVectorSet(x, y, z, 1.0f);
+XMVECTOR target = XMVectorZero();
+XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+ 
+
+// Compute the View matrix.
+XMMATRIX V = XMMatrixLookAtLH(pos, target, up);
+```
+<br>
+
+**XMVectorSet** and **XMVectorZero** are also helper functions. They allow us to initialize an **XMVECTOR** variable using a single SIMD instruction (if SIMD instructions are supported by the CPU). 
+
+```{note}
+As explained in [](vectors.md), **XMVECTOR** is an alias for **__m128**, so we should avoid initializing it with a simple assignment or the usual array initialization, because these methods may require multiple instructions, which is inefficient. Instead, **XMVectorSet** and **XMVectorZero** offer a dual implementation (No-Intrinsics and SSE-Intrinsics, as detailed in [](transformations.md)) that allows the CPU to leverage SIMD instructions (if supported) to load four values into a 16-byte aligned **__m128** variable in a single instruction, significantly improving performance.
+```
+
+The implementation of the **XMMatrixLookAtLH** function should be relatively straightforward, given the concepts we have discussed in this section.
+
+```{code-block} cpp
+inline XMMATRIX XM_CALLCONV XMMatrixLookAtLH
+(
+    FXMVECTOR EyePosition,
+    FXMVECTOR FocusPosition,
+    FXMVECTOR UpDirection
+) noexcept
+{
+    XMVECTOR EyeDirection = XMVectorSubtract(FocusPosition, EyePosition);
+    return XMMatrixLookToLH(EyePosition, EyeDirection, UpDirection);
+}
+```
+
+```{code-block} cpp
+inline XMMATRIX XM_CALLCONV XMMatrixLookToLH
+(
+    FXMVECTOR EyePosition,
+    FXMVECTOR EyeDirection,
+    FXMVECTOR UpDirection
+) noexcept
+{
+    assert(!XMVector3Equal(EyeDirection, XMVectorZero()));
+    assert(!XMVector3IsInfinite(EyeDirection));
+    assert(!XMVector3Equal(UpDirection, XMVectorZero()));
+    assert(!XMVector3IsInfinite(UpDirection));
+
+    XMVECTOR R2 = XMVector3Normalize(EyeDirection);
+
+    XMVECTOR R0 = XMVector3Cross(UpDirection, R2);
+    R0 = XMVector3Normalize(R0);
+
+    XMVECTOR R1 = XMVector3Cross(R2, R0);
+
+    XMVECTOR NegEyePosition = XMVectorNegate(EyePosition);
+
+    XMVECTOR D0 = XMVector3Dot(R0, NegEyePosition);
+    XMVECTOR D1 = XMVector3Dot(R1, NegEyePosition);
+    XMVECTOR D2 = XMVector3Dot(R2, NegEyePosition);
+
+    XMMATRIX M;
+    M.r[0] = XMVectorSelect(D0, R0, g_XMSelect1110.v);
+    M.r[1] = XMVectorSelect(D1, R1, g_XMSelect1110.v);
+    M.r[2] = XMVectorSelect(D2, R2, g_XMSelect1110.v);
+    M.r[3] = g_XMIdentityR3.v;
+
+    M = XMMatrixTranspose(M);
+
+    return M;
+}
+```
+
+**EyePosition**, **FocusPosition** and **UpDirection** are the origin, target and up direction of the camera, expressed in world coordinates.
+
+[WIP]
 
 <br>
 

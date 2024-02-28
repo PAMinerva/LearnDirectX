@@ -419,7 +419,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix-wip">View space and View matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -464,7 +464,7 @@ document.write(`
 </section>
 <section id="world-space-and-world-matrix">
 <h2>World space and World matrix<a class="headerlink" href="#world-space-and-world-matrix" title="Link to this heading">#</a></h2>
-<p>When the input assembler sends its output to the next stage (the vertex shader), we have vertices in local space that we want to place in a 3D global scene shared by all objects. The space of the global scene is called world space, and the transformation to go from local to world space is called world transformation. To represent the world space, we will use the same convention as the object space: left-handed system with the y-axis pointing upwards.</p>
+<p>When the input assembler sends its output to the next stage (the vertex shader), we have vertices in local space that we want to place in a 3D global scene shared by all objects. The space of the global scene is called <strong>world space</strong>, and the transformation to go from local to world space is called <strong>world transformation</strong>. To represent the world space, we will use the same convention as the object space: left-handed system with the y-axis pointing upwards.</p>
 <figure class="align-default">
 <img alt="../../../_images/world-space.png" src="../../../_images/world-space.png" />
 </figure>
@@ -499,8 +499,116 @@ document.write(`
 </section>
 </div><br>
 </section>
-<section id="view-space-and-view-matrix-wip">
-<h2>View space and View matrix [WIP]<a class="headerlink" href="#view-space-and-view-matrix-wip" title="Link to this heading">#</a></h2>
+<section id="view-space-and-view-matrix">
+<h2>View space and View matrix<a class="headerlink" href="#view-space-and-view-matrix" title="Link to this heading">#</a></h2>
+<p>Once we apply the world transformation, all objects are in world space. However, we still require a specific viewpoint to observe the 3D scene. This space is typically called <strong>view space</strong>, or <strong>camera space</strong>, and to represent it, we’ll adopt a left-handed system similar to the ones used for local and world spaces, where the y-axis points upwards. To transition objects from world space to view space, we need to apply another transformation: the <strong>view transformation</strong>. This involves applying a <strong>view matrix</strong> (denoted by <span class="math notranslate nohighlight">\(\mathbf{V}\)</span>), which configures the camera’s position, orientation, and perspective within the global scene. By applying the view matrix, we effectively convert the coordinates of objects’ vertices from world space to view space, establishing the desired viewpoint for our 3D scene.</p>
+<figure class="align-default">
+<img alt="../../../_images/view-space.png" src="../../../_images/view-space.png" />
+</figure>
+<p>Unlike the world transformation, where each object typically requires a separate transformation, the view transformation usually employs the same view matrix for all objects in the global scene. This is because we generally aim for a consistent viewpoint to observe the entire 3D scene. In other words, it’s as if we can consider the entire scene, encompassing all the objects, as a single large object that needs to be transformed from world space to view space.</p>
+<p>Now, to build the view matrix, we can start considering the camera as an ordinary object we can place in world space. So, we can use a world matrix <span class="math notranslate nohighlight">\(\mathbf{W}_ c\)</span> to put the camera in the global space as the point of view from which to look at the scene.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{W}_c=\left\lbrack\matrix{f_x&amp;f_y&amp;f_z&amp;0\cr g_x&amp;g_y&amp;g_z&amp;0\cr h_x&amp;h_y&amp;h_z&amp;0\cr t_x&amp;t_y&amp;t_z&amp;1}\right\rbrack\]</div>
+<p><span class="math notranslate nohighlight">\(\mathbf{W}_c\)</span> is the matrix that transforms from the local space of the camera to the world space. However, note that the local space of the camera is exactly the view space, the perspective from which we observe the scene. This means that <span class="math notranslate nohighlight">\(\mathbf{W}_c\)</span> is the matrix for transitioning from view space to world space. Therefore, we can simply compute the inverse <span class="math notranslate nohighlight">\(\mathbf{W}_c^{-1}\)</span> to get the view matrix allowing to go from world space to view space. In this case, computing the inverse is straightforward as <span class="math notranslate nohighlight">\(\mathbf{W}_c\)</span> is the composition of a rotation and a translation: <span class="math notranslate nohighlight">\(\mathbf{W}_c=\mathbf{RT}\)</span>. Indeed, it doesn’t make any sense to scale the camera since it’s a dummy object; we are only interested in the position and orientation of the view space. And we don’t need scaling in the inverse transformation either, as we’ve already scaled the objects during the world transformations, aiming to maintain their size in world space. Therefore, the first three rows of <span class="math notranslate nohighlight">\(\mathbf{W}_c^{-1}\)</span> represent the rotations of the standard basis vectors of the view space relative to the world space (that is, in world coordinates), while the last row represents the position of the origin of the view space, in world coordinates as well. So, we have</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{V}=\mathbf{W}_c^{-1}=(\mathbf{RT})^{-1}=\mathbf{T}^{-1}\mathbf{R}^{-1}=\mathbf{T}^{-1}\mathbf{R}^{-T}=\left\lbrack\matrix{1&amp;0&amp;0&amp;0\cr 0&amp;1&amp;0&amp;0\cr 0&amp;0&amp;1&amp;0\cr {-t}_x&amp;-t_y&amp;-t_z&amp;1}\right\rbrack\left\lbrack\matrix{f_x&amp;g_x&amp;h_x&amp;0\cr f_y&amp;g_y&amp;h_y&amp;0\cr f_z&amp;g_z&amp;h_z&amp;0\cr 0&amp;0&amp;0&amp;1}\right\rbrack\]</div>
+<p>Indeed, remember that the inverse of a rotation matrix is equivalent to its transpose (as explained in <a class="reference internal" href="matrices.html"><span class="std std-doc">Matrices</span></a>). Consequently, the view matrix <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> to go from world space to view space is</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{V}=\left\lbrack\matrix{f_x&amp;g_x&amp;h_x&amp;0\cr f_y&amp;g_y&amp;h_y&amp;0\cr f_z&amp;g_z&amp;h_z&amp;0\cr -\mathbf{t}\cdot\mathbf{f}&amp;-\mathbf{t}\cdot\mathbf{g}&amp;-\mathbf{t}\cdot\mathbf{h}&amp;1}\right\rbrack\]</div>
+<p>It’s interesting to note that, since <span class="math notranslate nohighlight">\(\mathbf{f}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{g}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> are all in world coordinates, we can compute the view matrix <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> from scratch by only using two points in the world space: the origin <span class="math notranslate nohighlight">\(\mathbf{O}_v\)</span> of the view space and a target point <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> indicating where the camera is aimed. To verify this, let’s start by observing that</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{t}=\mathbf{O}_v\]</div>
+<p>because both <span class="math notranslate nohighlight">\(\mathbf{O}_v\)</span> and <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> represent the same geometric entity: the position of the view space in world coordinates.</p>
+<p>Now, we need to calculate <span class="math notranslate nohighlight">\(\mathbf{f}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span>, which represent the transformations of the standard basis vectors <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> in the camera’s local space. Specifically, <span class="math notranslate nohighlight">\(\mathbf{h}\)</span>, the transformation of <span class="math notranslate nohighlight">\(\mathbf{k}\)</span>, points in the direction the camera is aimed (z-axis of the camera space in the image above). Therefore, we can calculate it simply by taking the difference between <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{O}_v\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{h}=\displaystyle\frac{\mathbf{T}-\mathbf{O}_v}{\vert\mathbf{T}-\mathbf{O}_v\vert}\]</div>
+<p>Observe that since this is the difference between two points in world coordinates, the result is a vector in world coordinates as well.</p>
+<p>To compute <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> (transformation of <span class="math notranslate nohighlight">\(\mathbf{i}\)</span>), we will use <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>, the unit vector we chose pointing upwards in local, world and camera spaces. This is because we typically limit the vertical rotation of the camera to less than <span class="math notranslate nohighlight">\(90°\)</span> around the x-axis (the reasons behind this will be explained in another tutorial). As a result, the angle between <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> will be less than <span class="math notranslate nohighlight">\(90°\)</span>. Similarly, the angle between <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> will be less than <span class="math notranslate nohighlight">\(180°\)</span>, as <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> must be orthogonal to each other.</p>
+<figure class="align-default">
+<img alt="../../../_images/view-matrix-rows.png" src="../../../_images/view-matrix-rows.png" />
+</figure>
+<p>Therefore, we can calculate <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> with the following cross product.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{f}=\displaystyle\frac{\mathbf{j}\times\mathbf{h}}{\vert\mathbf{j}\times\mathbf{h}\vert}\]</div>
+<p>As explained above, the vector <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> remains consistent regardless the frame of reference (i.e., it has the same coordinates <span class="math notranslate nohighlight">\((0,1,0)\)</span> in both local and world spaces). Therefore, both <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> can be considered as expressed relative to the world space, which we defined as a left-handed system. This implies that the direction of <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> will be the one that sees <span class="math notranslate nohighlight">\(\mathbf{j}\)</span> rotate clockwise towards <span class="math notranslate nohighlight">\(\mathbf{h}\)</span>, making <span class="math notranslate nohighlight">\(\mathbf{f}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> a left-handed system. This is exactly the expected result when transitioning from world space to view space, as we usually don’t want to change the handedness of the system we are working with after a transformation.</p>
+<p>Finally, to compute <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> (transformation of <span class="math notranslate nohighlight">\(\mathbf{j}\)</span>), we can simply calculate the cross product between <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{f}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{g}=\mathbf{h}\times\mathbf{f}\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> are unit vectors, so we don’t need to normalize the result. Recall what we stated in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>: the length of the vector resulting from the cross product <span class="math notranslate nohighlight">\(\mathbf{u}\times\mathbf{v}\)</span> is <span class="math notranslate nohighlight">\(\vert\mathbf{u}\times\mathbf{v}\vert=\vert\mathbf{u}\vert\vert\mathbf{v}\vert\sin{\theta}\)</span>. In this case, we have <span class="math notranslate nohighlight">\(\vert\mathbf{h}\vert=\vert\mathbf{f}\vert=1\)</span> and <span class="math notranslate nohighlight">\(\sin{90°}=1\)</span>.</p>
+</div>
+<p>DirectXMath provides the helper function <strong>XMMatrixLookAtLH</strong> to build a view matrix similar to the one we discussed in this section (i.e., for transitioning from world to camera spaces defined as left-handed systems). You need to pass the camera position and target point as arguments to this function, which returns the related view matrix.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// pos: position (in world coordinates) of the (origin of the) view space.</span>
+<span class="c1">// target: position (in world coordinates) where we want the camera is aimed at.</span>
+<span class="c1">// up == j (unit basis vector which points up).</span>
+<span class="n">XMVECTOR</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorSet</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+<span class="n">XMVECTOR</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorZero</span><span class="p">();</span>
+<span class="n">XMVECTOR</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorSet</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span>
+<span class="w"> </span>
+
+<span class="c1">// Compute the View matrix.</span>
+<span class="n">XMMATRIX</span><span class="w"> </span><span class="n">V</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMMatrixLookAtLH</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">up</span><span class="p">);</span>
+</pre></div>
+</div>
+<br>
+<p><strong>XMVectorSet</strong> and <strong>XMVectorZero</strong> are also helper functions. They allow us to initialize an <strong>XMVECTOR</strong> variable using a single SIMD instruction (if SIMD instructions are supported by the CPU).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As explained in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>, <strong>XMVECTOR</strong> is an alias for <strong>__m128</strong>, so we should avoid initializing it with a simple assignment or the usual array initialization, because these methods may require multiple instructions, which is inefficient. Instead, <strong>XMVectorSet</strong> and <strong>XMVectorZero</strong> offer a dual implementation (No-Intrinsics and SSE-Intrinsics, as detailed in <a class="reference internal" href="transformations.html"><span class="std std-doc">Transformations</span></a>) that allows the CPU to leverage SIMD instructions (if supported) to load four values into a 16-byte aligned <strong>__m128</strong> variable in a single instruction, significantly improving performance.</p>
+</div>
+<p>The implementation of the <strong>XMMatrixLookAtLH</strong> function should be relatively straightforward, given the concepts we have discussed in this section.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixLookAtLH</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">EyePosition</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">FocusPosition</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">UpDirection</span>
+<span class="p">)</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">EyeDirection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorSubtract</span><span class="p">(</span><span class="n">FocusPosition</span><span class="p">,</span><span class="w"> </span><span class="n">EyePosition</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">XMMatrixLookToLH</span><span class="p">(</span><span class="n">EyePosition</span><span class="p">,</span><span class="w"> </span><span class="n">EyeDirection</span><span class="p">,</span><span class="w"> </span><span class="n">UpDirection</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixLookToLH</span>
+<span class="p">(</span>
+<span class="w">    </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">EyePosition</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">EyeDirection</span><span class="p">,</span>
+<span class="w">    </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">UpDirection</span>
+<span class="p">)</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">XMVector3Equal</span><span class="p">(</span><span class="n">EyeDirection</span><span class="p">,</span><span class="w"> </span><span class="n">XMVectorZero</span><span class="p">()));</span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">XMVector3IsInfinite</span><span class="p">(</span><span class="n">EyeDirection</span><span class="p">));</span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">XMVector3Equal</span><span class="p">(</span><span class="n">UpDirection</span><span class="p">,</span><span class="w"> </span><span class="n">XMVectorZero</span><span class="p">()));</span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="o">!</span><span class="n">XMVector3IsInfinite</span><span class="p">(</span><span class="n">UpDirection</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">R2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVector3Normalize</span><span class="p">(</span><span class="n">EyeDirection</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">R0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVector3Cross</span><span class="p">(</span><span class="n">UpDirection</span><span class="p">,</span><span class="w"> </span><span class="n">R2</span><span class="p">);</span>
+<span class="w">    </span><span class="n">R0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVector3Normalize</span><span class="p">(</span><span class="n">R0</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">R1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVector3Cross</span><span class="p">(</span><span class="n">R2</span><span class="p">,</span><span class="w"> </span><span class="n">R0</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">NegEyePosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorNegate</span><span class="p">(</span><span class="n">EyePosition</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">D0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVector3Dot</span><span class="p">(</span><span class="n">R0</span><span class="p">,</span><span class="w"> </span><span class="n">NegEyePosition</span><span class="p">);</span>
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">D1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVector3Dot</span><span class="p">(</span><span class="n">R1</span><span class="p">,</span><span class="w"> </span><span class="n">NegEyePosition</span><span class="p">);</span>
+<span class="w">    </span><span class="n">XMVECTOR</span><span class="w"> </span><span class="n">D2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVector3Dot</span><span class="p">(</span><span class="n">R2</span><span class="p">,</span><span class="w"> </span><span class="n">NegEyePosition</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorSelect</span><span class="p">(</span><span class="n">D0</span><span class="p">,</span><span class="w"> </span><span class="n">R0</span><span class="p">,</span><span class="w"> </span><span class="n">g_XMSelect1110</span><span class="p">.</span><span class="n">v</span><span class="p">);</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorSelect</span><span class="p">(</span><span class="n">D1</span><span class="p">,</span><span class="w"> </span><span class="n">R1</span><span class="p">,</span><span class="w"> </span><span class="n">g_XMSelect1110</span><span class="p">.</span><span class="n">v</span><span class="p">);</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMVectorSelect</span><span class="p">(</span><span class="n">D2</span><span class="p">,</span><span class="w"> </span><span class="n">R2</span><span class="p">,</span><span class="w"> </span><span class="n">g_XMSelect1110</span><span class="p">.</span><span class="n">v</span><span class="p">);</span>
+<span class="w">    </span><span class="n">M</span><span class="p">.</span><span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g_XMIdentityR3</span><span class="p">.</span><span class="n">v</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XMMatrixTranspose</span><span class="p">(</span><span class="n">M</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>EyePosition</strong>, <strong>FocusPosition</strong> and <strong>UpDirection</strong> are the origin, target and up direction of the camera, expressed in world coordinates.</p>
+<p>[WIP]</p>
 <br>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -583,7 +691,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix-wip">View space and View matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
