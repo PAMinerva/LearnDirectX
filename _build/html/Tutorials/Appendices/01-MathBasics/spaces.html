@@ -420,6 +420,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix-wip">NDC space and Projection matrix [WIP]</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -557,7 +558,7 @@ document.write(`
 <p class="admonition-title">Note</p>
 <p>As explained in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>, <strong>XMVECTOR</strong> is an alias for <strong>__m128</strong>, so we should avoid initializing it with a simple assignment or the usual array initialization, because these methods may require multiple instructions, which is inefficient. Instead, <strong>XMVectorSet</strong> and <strong>XMVectorZero</strong> offer a dual implementation (No-Intrinsics and SSE-Intrinsics, as detailed in <a class="reference internal" href="transformations.html"><span class="std std-doc">Transformations</span></a>) that allows the CPU to leverage SIMD instructions (if supported) to load four values into a 16-byte aligned <strong>__m128</strong> variable in a single instruction, significantly improving performance.</p>
 </div>
-<p>The implementation of the <strong>XMMatrixLookAtLH</strong> function should be relatively straightforward, given the concepts we have discussed in this section.</p>
+<p>The implementation of the <strong>XMMatrixLookAtLH</strong> function should be relatively straightforward to understand, given the concepts we have discussed in this section and in <a class="reference internal" href="transformations.html"><span class="std std-doc">Transformations</span></a>.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span><span class="w"> </span><span class="n">XMMATRIX</span><span class="w"> </span><span class="n">XM_CALLCONV</span><span class="w"> </span><span class="n">XMMatrixLookAtLH</span>
 <span class="p">(</span>
 <span class="w">    </span><span class="n">FXMVECTOR</span><span class="w"> </span><span class="n">EyePosition</span><span class="p">,</span>
@@ -608,7 +609,10 @@ document.write(`
 </pre></div>
 </div>
 <p><strong>EyePosition</strong>, <strong>FocusPosition</strong> and <strong>UpDirection</strong> are the origin, target and up direction of the camera, expressed in world coordinates.</p>
-<p>[WIP]</p>
+<br>
+</section>
+<section id="ndc-space-and-projection-matrix-wip">
+<h2>NDC space and Projection matrix [WIP]<a class="headerlink" href="#ndc-space-and-projection-matrix-wip" title="Link to this heading">#</a></h2>
 <br>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -692,6 +696,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix-wip">NDC space and Projection matrix [WIP]</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
