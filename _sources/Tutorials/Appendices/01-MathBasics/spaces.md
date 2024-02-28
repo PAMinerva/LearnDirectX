@@ -150,7 +150,7 @@ XMMATRIX V = XMMatrixLookAtLH(pos, target, up);
 As explained in [](vectors.md), **XMVECTOR** is an alias for **__m128**, so we should avoid initializing it with a simple assignment or the usual array initialization, because these methods may require multiple instructions, which is inefficient. Instead, **XMVectorSet** and **XMVectorZero** offer a dual implementation (No-Intrinsics and SSE-Intrinsics, as detailed in [](transformations.md)) that allows the CPU to leverage SIMD instructions (if supported) to load four values into a 16-byte aligned **__m128** variable in a single instruction, significantly improving performance.
 ```
 
-The implementation of the **XMMatrixLookAtLH** function should be relatively straightforward, given the concepts we have discussed in this section.
+The implementation of the **XMMatrixLookAtLH** function should be relatively straightforward to understand, given the concepts we have discussed in this section and in [](transformations.md).
 
 ```{code-block} cpp
 inline XMMATRIX XM_CALLCONV XMMatrixLookAtLH
@@ -205,7 +205,9 @@ inline XMMATRIX XM_CALLCONV XMMatrixLookToLH
 
 **EyePosition**, **FocusPosition** and **UpDirection** are the origin, target and up direction of the camera, expressed in world coordinates.
 
-[WIP]
+<br>
+
+## NDC space and Projection matrix [WIP]
 
 <br>
 
