@@ -420,7 +420,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix-wip">NDC space and Projection matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix">NDC space and Projection matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-projection-wip">Perspective projection [WIP]</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
@@ -611,8 +614,61 @@ document.write(`
 <p><strong>EyePosition</strong>, <strong>FocusPosition</strong> and <strong>UpDirection</strong> are the origin, target and up direction of the camera, expressed in world coordinates.</p>
 <br>
 </section>
-<section id="ndc-space-and-projection-matrix-wip">
-<h2>NDC space and Projection matrix [WIP]<a class="headerlink" href="#ndc-space-and-projection-matrix-wip" title="Link to this heading">#</a></h2>
+<section id="ndc-space-and-projection-matrix">
+<h2>NDC space and Projection matrix<a class="headerlink" href="#ndc-space-and-projection-matrix" title="Link to this heading">#</a></h2>
+<p>Once we have all objects in camera space, the next step is to project them onto a plane to obtain a 2D representation of the 3D scene. To achieve this, we can ideally place a plane in front of the camera and trace rays from the camera to each vertex of the mesh, as illustrated in the image below. The intersection between these rays and the plane gives us a 2D representation of the corresponding 3D vertices. Note that if the projection rays are parallel to each other and orthogonal to the projection plane, the camera’s position becomes irrelevant.</p>
+<figure class="align-default">
+<img alt="../../../_images/projection.png" src="../../../_images/projection.png" />
+</figure>
+<p>In the first case, where the projection rays converge towards a focal point, distant objects appear smaller. This replicates the way human vision works in real life and we commonly refer to this type of projection as perspective.</p>
+<p>On the other hand, if the projection rays are parallel to each other, the perspective effect is lost, and the size of objects becomes independent of their distance from the camera. This type of projection is known as orthographic.</p>
+<p>To better understand the difference, consider the illustration provided below. It depicts two segments of equal size placed at different distances from the camera. In the perspective projection, the closer segment appears longer when projected onto the projection plane, emphasizing the depth perception effect.</p>
+<figure class="align-default">
+<img alt="../../../_images/projection2.png" src="../../../_images/projection2.png" />
+</figure>
+<p>Fortunately, the intricacies of the projection process are almost transparent to the programmer, who is primarily responsible for defining the portion of the 3D scene to be projected onto the projection plane. Indeed, in most cases, capturing the entire scene is not necessary or desired. Depending on the type of projection being used, different bounding geometries define the region of interest.</p>
+<p>In orthographic projections, the region of interest is represented by a box. This box encompasses the portion of the scene that will be projected onto the 2D plane. While we can use any plane in front of the camera as the projection plane, typically the box face closest to the camera is used as the projection window where the 3D scene is projected.</p>
+<p>In perspective projections, the region of interest is defined by a frustum. A frustum is the volume enclosed between two parallel planes that intersect a pyramid. The apex of the pyramid corresponds to the camera’s position. The plane closer to the camera is called the near plane, while the farther plane is called the far plane. We can obtain a projection window by intersecting the pyramid between the camera and the near plane with another plane. Alternatively, the upper face of the frustum, the intersection between the near plane and the pyramid, can also be used as the projection window. In computer graphics literature, the terms “near plane” and “far plane” are commonly used to refer to the corresponding windows as well.</p>
+<figure class="align-default">
+<img alt="../../../_images/frustum.png" src="../../../_images/frustum.png" />
+</figure>
+<p>The illustration below clearly demonstrates the differences between perspective and orthographic projections. In both projections, the green ball lies outside the defined region of interest and therefore is not projected onto the projection window.</p>
+<p>In the orthographic projection, the red and yellow balls appear the same size, regardless of their distance from the camera. This is because the projection rays are parallel and do not converge towards a focal point, resulting in a lack of perspective distortion.</p>
+<p>On the other hand, in the perspective projection, the red ball appears smaller compared to the yellow ball. This is due to the converging projection rays that mimic the behavior of human vision in real life. As objects move further away from the camera, they appear smaller, resulting in the size difference observed in the perspective projection.</p>
+<figure class="align-default">
+<img alt="../../../_images/persp-ortho.png" src="../../../_images/persp-ortho.png" />
+</figure>
+<p>To define a frustum (for perspective projections) or a box (for orthographic projections), we need to specify the distances from the camera to the near and far planes. For convenience, we typically define this bounding geometry in view space, where the camera position is located at the origin. Additionally, we need to determine the dimensions of the projection window. With this information, we can construct a projection matrix. This matrix transforms 3D vertices from view space to a space called Normalized Device Coordinates (NDC).</p>
+<p>In perspective projection, the frustum defined in view space becomes a box in NDC space. The origin of this box is located at the center of its front face, which corresponds to the transformed near plane\window. A significant aspect of interest is that the objects contained within the box in NDC space (previously within the frustum\box in view space) will have vertex coordinates falling within the following ranges:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+-1\le x\le 1 \\ 
+\\
+-1\le y\le 1 \\
+\\
+0\le z\le 1
+\end{align*}
+\end{split}\]</div>
+<p>The illustration below depicts the frustum in view space (left) and the corresponding box in NDC space (right) after a perspective transformation. In DirectX, the NDC space is a left-handed system, with the y-axis that points upwards. The z-axis is always perpendicular to both the front and back faces of the box in NDC space and passes through their centers. While this arrangement also holds in view space, it is not an absolute requirement. Indeed, the z-axis in view space can be non-perpendicular to both the near and far planes, and it may pass through a point other than their centers.</p>
+<figure class="align-default">
+<img alt="../../../_images/persp-ndc.png" src="../../../_images/persp-ndc.png" />
+</figure>
+<p>Now, you might be wondering what’s the point of this transformation. The following illustration shows a 2D representation from the top that explains what happens if you transform a frustum to a box. The objects inside the frustum are transformed accordingly, and the projection rays become parallel to each other. This way, we can orthographically project the mesh vertices onto a projection window (typically the front face of the box in NDC space) to mimic the perspective vision we are used to in real life, where objects like roads seem to converge in the distance, and where near objects appear bigger than distant ones.</p>
+<figure class="align-default">
+<img alt="../../../_images/persp-ndc2.png" src="../../../_images/persp-ndc2.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Interestingly, once we are in NDC space, there is no actual need for explicit projection onto the window plane. Indeed, as mentioned earlier, in NDC space the projection rays are parallel, and the z-axis is orthogonal to the front face of the NDC box, passing through its center (which is the origin of the NDC space). This means that the x- and y-coordinates of vertices remain constant along the projection rays in NDC space, only the z-coordinate varies. Consequently, the x- and y-coordinates of a vertex in NDC space are identical both inside the NDC box and when projected onto the front face (which lies in the <span class="math notranslate nohighlight">\(z=0\)</span> plane of the NDC space). The illustration below provides a top-down view that further demonstrates this concept. It shows that the x-coordinate of a vertex remains constant along the projection ray. The same applies to the y-coordinate if you look at the NDC space sideways.</p>
+<figure class="align-default">
+<img alt="../../../_images/ndc.png" src="../../../_images/ndc.png" />
+</figure>
+</div>
+<p>Usually, that’s all we need to know in order to write applications that renders 3D objects on the screen using a perspective or orthographic effect. However, as graphics programmers, we are expected to know how things work under the hood. In particular, knowing how to build a projection matrix might come in useful in the future.</p>
+<p>As stated in the note box above, once we go from view space to NDC space, we implicitly get a 2D representation of 3D vertex positions. So, this transformation is definitely related to the concept of projection. Indeed, the associated matrix is called projection matrix, that can vary depending on the type of projection we are interested in. We will start with a couple of matrices associated with the perspective projection, and then we will show the matrix associated with the orthographic projection.</p>
+<section id="perspective-projection-wip">
+<h3>Perspective projection [WIP]<a class="headerlink" href="#perspective-projection-wip" title="Link to this heading">#</a></h3>
 <br>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -623,6 +679,7 @@ document.write(`
 </figure>
 </div>
 <br>
+</section>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
@@ -696,7 +753,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix-wip">NDC space and Projection matrix [WIP]</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix">NDC space and Projection matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-projection-wip">Perspective projection [WIP]</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
