@@ -404,7 +404,7 @@ Observe that $n$ in view space is mapped to $0$ in NDC space, while $f$ is mappe
 $$z_c=Sz_v+T$$
 
 ```{note}
-The equation above uses $z_c$ (instead of $z_{ndc}$) to denote a clip coordinate. This is because the matrix in equation $\eqref{eq:ASpaces5}$ transforms from view space to clip space, not directly to NDC space. However, this does not alter the observations made above: we still require a scaling operation followed by a translation to resize and remap the range of the z-coordinate, even in clip space.
+The equation above uses $z_c$ (instead of $z_{ndc}$) to denote a clip coordinate. This is because the matrix in equation $\eqref{eq:ASpaces5}$ transforms from view space to clip space, not directly to NDC space. However, this does not alter the observations made above: we still require a scaling operation followed by a translation to resize and remap the range of the z-coordinate, even in clip space. Indeed, the difference between clip and NDC coordinates can be seen a straightforward, additional scaling operation.
 ```
 
 Consequently, the matrix in equation $\eqref{eq:ASpaces5}$ becomes
