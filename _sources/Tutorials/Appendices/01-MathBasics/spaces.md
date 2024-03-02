@@ -596,7 +596,7 @@ $$
 \end{flalign}
 $$
 
-The following illustration shows a 2D representation of the frustum in the homogeneous zw-plane.
+The following illustration shows a 2D representation of the frustum in the homogeneous xw-plane.
 
 ```{figure} images/04/persp-div.png
 ```
