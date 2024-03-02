@@ -779,7 +779,7 @@ w_c&amp;=z_v
 \[z_c=Sz_v+T\]</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The equation above uses <span class="math notranslate nohighlight">\(z_c\)</span> (instead of <span class="math notranslate nohighlight">\(z_{ndc}\)</span>) to denote a clip coordinate. This is because the matrix in equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces5}\)</span> transforms from view space to clip space, not directly to NDC space. However, this does not alter the observations made above: we still require a scaling operation followed by a translation to resize and remap the range of the z-coordinate, even in clip space.</p>
+<p>The equation above uses <span class="math notranslate nohighlight">\(z_c\)</span> (instead of <span class="math notranslate nohighlight">\(z_{ndc}\)</span>) to denote a clip coordinate. This is because the matrix in equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces5}\)</span> transforms from view space to clip space, not directly to NDC space. However, this does not alter the observations made above: we still require a scaling operation followed by a translation to resize and remap the range of the z-coordinate, even in clip space. Indeed, the difference between clip and NDC coordinates can be seen a straightforward, additional scaling operation.</p>
 </div>
 <p>Consequently, the matrix in equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces5}\)</span> becomes</p>
 <div class="math notranslate nohighlight">
