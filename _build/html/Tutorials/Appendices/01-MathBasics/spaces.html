@@ -428,7 +428,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orthographic-projection">Orthographic projection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection-matrices-in-vulkan-wip">Projection matrices in Vulkan [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection-matrices-in-directx-wip">Projection matrices in DirectX [WIP]</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
@@ -1005,8 +1005,8 @@ z_{ndc}&amp;=\frac{z_v}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2}  \quad\qu
 \[\mathbf{P}=\left\lbrack\matrix{\frac{2}{r-l}&amp;0&amp;0&amp;0\cr 0&amp;\frac{2}{t-b}&amp;0&amp;0\cr 0&amp;0&amp;\frac{1}{f-n}&amp;0\cr -\frac{r+l}{r-l}&amp;-\frac{t+b}{t-b}&amp;-\frac{n}{f-n}&amp;1}\right\rbrack \tag{22}\label{eq:ASpaces22} \]</div>
 <p>This means that the matrix above allows us to go straight from view space to NDC space, without passing through the homogeneous clip space. Although, the rasterizer still expects vertices in clip coordinates. Then, we need a way to make the rasterizer believe we are passing clip coordinates, while also avoiding the perspective division. As you can see in the fourth column of the orthographic projection matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces22}\)</span>, the unitary value has moved in the last element. This means that if you multiply a vertex by this matrix you will get 1 in the last component of the resultant vector. That way, the rasterizer will divide the remaining components by 1, which nullifies the effect of the perspective division.</p>
 </section>
-<section id="projection-matrices-in-vulkan-wip">
-<h3>Projection matrices in Vulkan [WIP]<a class="headerlink" href="#projection-matrices-in-vulkan-wip" title="Link to this heading">#</a></h3>
+<section id="projection-matrices-in-directx-wip">
+<h3>Projection matrices in DirectX [WIP]<a class="headerlink" href="#projection-matrices-in-directx-wip" title="Link to this heading">#</a></h3>
 <br>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -1099,7 +1099,7 @@ z_{ndc}&amp;=\frac{z_v}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2}  \quad\qu
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orthographic-projection">Orthographic projection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection-matrices-in-vulkan-wip">Projection matrices in Vulkan [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection-matrices-in-directx-wip">Projection matrices in DirectX [WIP]</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
