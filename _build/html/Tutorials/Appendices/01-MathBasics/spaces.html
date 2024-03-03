@@ -767,7 +767,11 @@ w_c&amp;=z_v
 \]</div>
 <p>Remember that we still need to derive <span class="math notranslate nohighlight">\(z_{ndc}\)</span> from the view coordinates of the vertex. Meanwhile, we can write the above equations in the following matrix form as follows:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{v}_c=\left\lbrack\matrix{x_v&amp;y_v&amp;z_v&amp;w_v}\right\rbrack\left\lbrack\matrix{d/r&amp;0&amp;0&amp;0\cr 0&amp;d&amp;0&amp;0\cr 0&amp;0&amp;z_ {ndc}&amp;1\cr 0&amp;0&amp;0&amp;0}\right\rbrack \tag{5}\label{eq:ASpaces5} \]</div>
+\[\begin{split}
+\begin{align*}
+\mathbf{v}_c=\left\lbrack\matrix{x_v&amp;y_v&amp;z_v&amp;w_v}\right\rbrack\left\lbrack\matrix{d/r&amp;0&amp;0&amp;0\cr 0&amp;d&amp;0&amp;0\cr 0&amp;0&amp;z_ {ndc}&amp;1\cr 0&amp;0&amp;0&amp;0}\right\rbrack \quad\quad\quad\quad\tag{5}\label{eq:ASpaces5} \\
+\end{align*}
+\end{split}\]</div>
 <p>Then, to get the NDC coordinates, we simply need to divide all the components of <span class="math notranslate nohighlight">\(\mathbf{v}_c\)</span> by <span class="math notranslate nohighlight">\(z_v\)</span> (operation automatically performed by the rasterizer; we will simply enjoy the result in the pixel shader).</p>
 <p>We can now focus on deriving a formula for <span class="math notranslate nohighlight">\(z_{ndc}\)</span> starting from <span class="math notranslate nohighlight">\(z_v\)</span>. Actually, we simply need to re-map <span class="math notranslate nohighlight">\(z_v\)</span> from <span class="math notranslate nohighlight">\([n, f]\)</span> (the range defined by the near and far planes of the frustum in view space) to <span class="math notranslate nohighlight">\([0, 1]\)</span> (the range defined by front and back faces of the corresponding box in NDC space). That is, we want the normalized distance between the vertex and the projection window (front face of the NDC box).</p>
 <div class="admonition note">
@@ -785,7 +789,8 @@ w_c&amp;=z_v
 <div class="math notranslate nohighlight">
 \[\left\lbrack\matrix{d/r&amp;0&amp;0&amp;0\cr 0&amp;d&amp;0&amp;0\cr 0&amp;0&amp;S&amp;1\cr 0&amp;0&amp;T&amp;0}\right\rbrack \tag{6}\label{eq:ASpaces6}\]</div>
 <p>because the last two entry in the third column are the only ones that can scale and translate the third coordinate of <span class="math notranslate nohighlight">\(\mathbf{v}_v\)</span>, that is <span class="math notranslate nohighlight">\(z_v\)</span>. To find <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, we can multiply the matrix above by a couple of vertices in view space which we already know the results in NDC space. For example, we know that for a vertex in view space that lies in the near plane we have <span class="math notranslate nohighlight">\(z_{ndc}=0\)</span> (since <span class="math notranslate nohighlight">\(z_v=n\)</span>, and we know that <span class="math notranslate nohighlight">\(n\)</span> maps to <span class="math notranslate nohighlight">\(0\)</span>). So, if we multiply the vertex <span class="math notranslate nohighlight">\(\mathbf{v}_v=(0, 0, n, 1)\)</span> (which lies in the near plane) by the matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces6}\)</span>, we have</p>
-<p><span class="math notranslate nohighlight">\(\mathbf{v}_c=\left\lbrack\matrix{0&amp;0&amp;n&amp;1}\right\rbrack\left\lbrack\matrix{d/r&amp;0&amp;0&amp;0\cr 0&amp;d&amp;0&amp;0\cr 0&amp;0&amp;S&amp;1\cr 0&amp;0&amp;T&amp;0}\right\rbrack=\left\lbrack\matrix{0\cr 0\cr Sn+T\cr n}\right\rbrack^T\)</span></p>
+<div class="math notranslate nohighlight">
+\[\mathbf{v}_c=\left\lbrack\matrix{0&amp;0&amp;n&amp;1}\right\rbrack\left\lbrack\matrix{d/r&amp;0&amp;0&amp;0\cr 0&amp;d&amp;0&amp;0\cr 0&amp;0&amp;S&amp;1\cr 0&amp;0&amp;T&amp;0}\right\rbrack=\left\lbrack\matrix{0\cr 0\cr Sn+T\cr n}\right\rbrack^T\]</div>
 <p>The coordinates of <span class="math notranslate nohighlight">\(\mathbf{v}_c\)</span> are in clip space, and after the perspective division (by <span class="math notranslate nohighlight">\(w_c=n\)</span>) we have</p>
 <div class="math notranslate nohighlight">
 \[\displaystyle z_{ndc}=S+\frac{T}{n}\]</div>
@@ -795,7 +800,7 @@ w_c&amp;=z_v
 \begin{align*}
 0&amp;=S+\frac{T}{n} \\
 \\
-T&amp;=-Sn\quad\quad\quad\quad\tag{6b}\label{eq:ASpaces6b}
+T&amp;=-Sn\quad\quad\quad\quad\tag{7}\label{eq:ASpaces7}
 \end{align*}
 \end{split}\]</div>
 <p>We also know that for a vertex in view space that lies in the far plane we have <span class="math notranslate nohighlight">\(z_{ndc}=1\)</span> (since <span class="math notranslate nohighlight">\(z_v=f\)</span>, and we know that <span class="math notranslate nohighlight">\(f\)</span> maps to <span class="math notranslate nohighlight">\(1\)</span>). Therefore, if we multiply the vertex <span class="math notranslate nohighlight">\(\mathbf{v}_v=(0,0,f,1)\)</span> (which lies in the far plane) by the matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces6}\)</span>, we have</p>
@@ -813,26 +818,26 @@ T&amp;=-Sn\quad\quad\quad\quad\tag{6b}\label{eq:ASpaces6b}
 S&amp;=\frac{1}{1-\displaystyle\frac{n}{f}}=\frac{1}{\displaystyle\frac{f-n}{f}}=\frac{f}{f-n}
 \end{align*}
 \end{split}\]</div>
-<p>Substituting this into equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces6b}\)</span> we have</p>
+<p>Substituting this into equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces7}\)</span> we have</p>
 <div class="math notranslate nohighlight">
 \[ T=-\left(\frac{f}{f-n}\right)n=-\frac{fn}{f-n} \]</div>
 <p>We just found the values of <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, so that we can write the z-coordinate both in clip space and in NDC space, after the perspective division, as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-\displaystyle z_c&amp;=\frac{f}{f-n}z_v-\frac{nf}{(f-n)}\quad\quad\quad\quad\tag{7}\label{eq:ASpaces7} \\
+\displaystyle z_c&amp;=\frac{f}{f-n}z_v-\frac{nf}{(f-n)}\quad\quad\quad\quad\tag{8}\label{eq:ASpaces8} \\
 \\
-\displaystyle z_{ndc}&amp;=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}\quad\quad\quad\quad\tag{7b}\label{eq:ASpaces7b}
+\displaystyle z_{ndc}&amp;=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}\quad\quad\quad\quad\tag{9}\label{eq:ASpaces9}
 \end{align*}
 \end{split}\]</div>
 <p>Matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces6}\)</span> now only depends on the distances of the near and far planes from the camera. This means that we can build this matrix by only using the frustum information at our disposal as follows:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{P}=\left\lbrack\matrix{d/r\ &amp;0&amp;0&amp;0\cr 0&amp;d&amp;0&amp;0\cr 0&amp;0&amp;\frac{f}{f-n}&amp;1\cr 0&amp;0&amp;-\frac{nf}{f-n}&amp;0}\right\rbrack \tag{8}\label{eq:ASpaces8}\]</div>
-<p>Matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces8}\)</span> can be used to transform vertex positions from view space to homogeneous clip space.</p>
+\[\mathbf{P}=\left\lbrack\matrix{d/r\ &amp;0&amp;0&amp;0\cr 0&amp;d&amp;0&amp;0\cr 0&amp;0&amp;\frac{f}{f-n}&amp;1\cr 0&amp;0&amp;-\frac{nf}{f-n}&amp;0}\right\rbrack \tag{10}\label{eq:ASpaces10}\]</div>
+<p>Matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces10}\)</span> can be used to transform vertex positions from view space to homogeneous clip space.</p>
 <p>Although, that’s not what we wanted to find at the start of this section (the matrix to go from view to NDC space). However, since we get the perspective division for free during the rasterizer stage, we can actually consider <span class="math notranslate nohighlight">\(\mathbf{P}\)</span> as the perspective projection matrix to go from the view space to NDC space.</p>
 <section id="general-case">
 <h4>General case<a class="headerlink" href="#general-case" title="Link to this heading">#</a></h4>
-<p>We built the perspective projection matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces8}\)</span> with the assumption that the z-axis goes through the center of the projection window. However, in a more general case, we have a scenario similar to the one shown in the illustration below.</p>
+<p>We built the perspective projection matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces10}\)</span> with the assumption that the z-axis goes through the center of the projection window. However, in a more general case, we have a scenario similar to the one shown in the illustration below.</p>
 <figure class="align-default">
 <img alt="../../../_images/persp-proj3.png" src="../../../_images/persp-proj3.png" />
 </figure>
@@ -857,21 +862,21 @@ n\ \le\ z_v\ \le\ f
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-x_w&amp;=x_w-\frac{r+l}{2} \quad\quad\quad\quad\tag{9}\label{eq:ASpaces9} \\
+x_w&amp;=x_w-\frac{r+l}{2} \quad\quad\quad\quad\tag{11}\label{eq:ASpaces11} \\
 \\
-y_w&amp;=y_w-\frac{t+b}{2} \quad\quad\quad\quad\tag{10}\label{eq:ASpaces10}
+y_w&amp;=y_w-\frac{t+b}{2} \quad\quad\quad\quad\tag{12}\label{eq:ASpaces12}
 \end{align*}
 \end{split}\]</div>
-<p>Observe that we used the mid-point formula to subtract the x- and y- center coordinates of the projection window from <span class="math notranslate nohighlight">\(x_w\)</span> and <span class="math notranslate nohighlight">\(y_w\)</span>, respectively. Now, to get the NDC coordinates, we need to scale their ranges. That is, since <span class="math notranslate nohighlight">\(x_w\)</span> is in the range <span class="math notranslate nohighlight">\([l, r]\)</span> and <span class="math notranslate nohighlight">\(y_w\)</span> is in the range <span class="math notranslate nohighlight">\([b,t]\)</span>, we must re-map both to the range <span class="math notranslate nohighlight">\([-1, 1]\)</span>. If we multiply <span class="math notranslate nohighlight">\(x_w\)</span> (as expressed in equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces9}\)</span>) by <span class="math notranslate nohighlight">\((t-b)^{-1}\)</span> and <span class="math notranslate nohighlight">\(y_w\)</span> (as expressed in equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces10}\)</span>) by <span class="math notranslate nohighlight">\((r-l)^{-1}\)</span>, then both ranges will be in <span class="math notranslate nohighlight">\([-0.5, 0.5]\)</span>. At that point, we only need to multiply by 2 to scale both ranges to <span class="math notranslate nohighlight">\([-1, 1]\)</span>. These transformations are reflected in the following equations:</p>
+<p>Observe that we used the mid-point formula to subtract the x- and y- center coordinates of the projection window from <span class="math notranslate nohighlight">\(x_w\)</span> and <span class="math notranslate nohighlight">\(y_w\)</span>, respectively. Now, to get the NDC coordinates, we need to scale their ranges. That is, since <span class="math notranslate nohighlight">\(x_w\)</span> is in the range <span class="math notranslate nohighlight">\([l, r]\)</span> and <span class="math notranslate nohighlight">\(y_w\)</span> is in the range <span class="math notranslate nohighlight">\([b,t]\)</span>, we must re-map both to the range <span class="math notranslate nohighlight">\([-1, 1]\)</span>. If we multiply <span class="math notranslate nohighlight">\(x_w\)</span> (as expressed in equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces11}\)</span>) by <span class="math notranslate nohighlight">\((t-b)^{-1}\)</span> and <span class="math notranslate nohighlight">\(y_w\)</span> (as expressed in equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces12}\)</span>) by <span class="math notranslate nohighlight">\((r-l)^{-1}\)</span>, then both ranges will be in <span class="math notranslate nohighlight">\([-0.5, 0.5]\)</span>. At that point, we only need to multiply by 2 to scale both ranges to <span class="math notranslate nohighlight">\([-1, 1]\)</span>. These transformations are reflected in the following equations:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-x_{ndc}&amp;=\frac{2\ x_w}{r-l}-\frac{2(r+l)}{2(r-l)} \quad\quad\quad\quad\tag{11}\label{eq:ASpaces11} \\
+x_{ndc}&amp;=\frac{2\ x_w}{r-l}-\frac{2(r+l)}{2(r-l)} \quad\quad\quad\quad\tag{13}\label{eq:ASpaces13} \\
 \\
-y_{ndc}&amp;=\frac{2\ y_w}{t-b}-\frac{2(t+b)}{2(t-b)} \quad\quad\quad\quad\tag{12}\label{eq:ASpaces12}
+y_{ndc}&amp;=\frac{2\ y_w}{t-b}-\frac{2(t+b)}{2(t-b)} \quad\quad\quad\quad\tag{14}\label{eq:ASpaces14}
 \end{align*}
 \end{split}\]</div>
-<p>Now that we are back to the specific case, we can substitute equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces1}\)</span> into equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces12}\)</span>, keeping in mind that we now have <span class="math notranslate nohighlight">\(d=n\)</span>.</p>
+<p>Now that we are back to the specific case, we can substitute equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces1}\)</span> into equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces14}\)</span>, keeping in mind that we now have <span class="math notranslate nohighlight">\(d=n\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
@@ -881,10 +886,10 @@ y_{ndc}&amp;=\frac{2(ny_v/z_v)}{t-b}-\frac{2(t+b)}{2(t-b)} \\
 \\
 &amp;=\frac{2ny_v}{t-b}\cdot\frac{1}{z_v}-\frac{z_v(t+b)}{(t-b)}\cdot\frac{1}{z_v} \\
 \\
-&amp;=\frac{1}{z_v}\left(\frac{2n}{t-b}y_v-\frac{t+b}{t-b}z_v\right)\quad\quad\quad\quad\tag{13}\label{eq:ASpaces13}
+&amp;=\frac{1}{z_v}\left(\frac{2n}{t-b}y_v-\frac{t+b}{t-b}z_v\right)\quad\quad\quad\quad\tag{15}\label{eq:ASpaces15}
 \end{align*}
 \end{split}\]</div>
-<p>Similarly, we can substitute equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces2}\)</span> (in particular, the second one of the three equations) into equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces11}\)</span>.</p>
+<p>Similarly, we can substitute equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces2}\)</span> (in particular, the second one of the three equations) into equation <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces13}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
@@ -894,13 +899,13 @@ x_{ndc}&amp;=\frac{2(nx_v/z_v)}{r-l}-\frac{2(r+l)}{2(r-l)} \\
 \\
 &amp;=\frac{2nx_v}{r-l}\cdot\frac{1}{z_v}-\frac{z_v(r+l)}{(r-l)}\cdot\frac{1}{z_v} \\
 \\
-&amp;=\frac{1}{z_v}\left(\frac{2n}{r-l}x_v-\frac{r+l}{r-l}z_v\right)\quad\quad\quad\quad\tag{14}\label{eq:ASpaces14}
+&amp;=\frac{1}{z_v}\left(\frac{2n}{r-l}x_v-\frac{r+l}{r-l}z_v\right)\quad\quad\quad\quad\tag{16}\label{eq:ASpaces16}
 \end{align*}
 \end{split}\]</div>
-<p>With equations <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces13}\)</span> and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces14}\)</span>, we have found a way to calculate the first two NDC coordinates from the corresponding view coordinates. As for <span class="math notranslate nohighlight">\(z_{ndc}\)</span>, the equation remains unchanged from the one we derived in <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces7}\)</span> for the specific case because the solution still involves to map the range <span class="math notranslate nohighlight">\([n,f]\)</span> to <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
-<p>If we omit the perspective division <span class="math notranslate nohighlight">\((1/z_v)\)</span> in <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces13}\)</span> and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces14}\)</span>, we can express the clip coordinates as a linear combination of the view coordinates. This means the perspective projection matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces8}\)</span> becomes</p>
+<p>With equations <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces15}\)</span> and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces16}\)</span>, we have found a way to calculate the first two NDC coordinates from the corresponding view coordinates. As for <span class="math notranslate nohighlight">\(z_{ndc}\)</span>, the equation remains unchanged from the one we derived in <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces8}\)</span> for the specific case because the solution still involves to map the range <span class="math notranslate nohighlight">\([n,f]\)</span> to <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+<p>If we omit the perspective division <span class="math notranslate nohighlight">\((1/z_v)\)</span> in <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces15}\)</span> and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces16}\)</span>, we can express the clip coordinates as a linear combination of the view coordinates. This means the perspective projection matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces10}\)</span> becomes</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{P}=\left\lbrack\matrix{\frac{2n}{r-l}&amp;0&amp;0&amp;0\cr 0&amp;\frac{2n}{t-b}&amp;0&amp;0\cr -\frac{r+l}{r-l}&amp;-\frac{t+b}{t-b}&amp;\frac{f}{f-n}&amp;1\cr 0&amp;0&amp;-\frac{nf}{f-n}&amp;0}\right\rbrack \tag{15}\label{eq:ASpaces15}\]</div>
+\[\mathbf{P}=\left\lbrack\matrix{\frac{2n}{r-l}&amp;0&amp;0&amp;0\cr 0&amp;\frac{2n}{t-b}&amp;0&amp;0\cr -\frac{r+l}{r-l}&amp;-\frac{t+b}{t-b}&amp;\frac{f}{f-n}&amp;1\cr 0&amp;0&amp;-\frac{nf}{f-n}&amp;0}\right\rbrack \tag{17}\label{eq:ASpaces17}\]</div>
 </section>
 <section id="perspective-division-and-clipping">
 <h4>Perspective division and clipping<a class="headerlink" href="#perspective-division-and-clipping" title="Link to this heading">#</a></h4>
@@ -956,7 +961,7 @@ x_{ndc}&amp;=\frac{2(nx_v/z_v)}{r-l}-\frac{2(r+l)}{2(r-l)} \\
 </section>
 <section id="depth-buffer-precision">
 <h4>Depth buffer precision<a class="headerlink" href="#depth-buffer-precision" title="Link to this heading">#</a></h4>
-<p>Whatever perspective projection matrix you decide to use (either <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces8}\)</span> or <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces15}\)</span>), after the perspective division we have</p>
+<p>Whatever perspective projection matrix you decide to use (either <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces10}\)</span> or <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces15}\)</span>), after the perspective division we have</p>
 <div class="math notranslate nohighlight">
 \[\displaystyle z_{ndc}=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}\]</div>
 <p>If you set <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(f\)</span>, this equation  represents a strictly increasing function of <span class="math notranslate nohighlight">\(z_v\)</span>, with <span class="math notranslate nohighlight">\(z_v=1\)</span> acting as a horizontal asymptote. Mathematically, this implies that for every <span class="math notranslate nohighlight">\(z_v\)</span> value, there exists a unique corresponding <span class="math notranslate nohighlight">\(z_{ndc}\)</span>. However, when working with computers, this property cannot be relied upon due to the finite precision of floating-point representations. Moreover, the density of representable floating-point values is higher near zero and decreases as values move further away.</p>
