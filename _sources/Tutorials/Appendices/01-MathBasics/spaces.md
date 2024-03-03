@@ -638,12 +638,14 @@ To mitigate the problem, we can set $n$ and $f$ to make the near and far planes 
 
 ### Orthographic projection 
 
-In an orthographic projection, we also want to lead the z-axis to pass through the center of the projection window, just like we made in the general case of a perspective projection. However, in an orthographic projection, we can move the projection window anywhere along the z-axis as its location doesn’t really matter. This is an interesting property that we will use to derive an equation for $z_{ndc}$.
+Similar to the general case of perspective projection, in orthographic projections, we aim to align the z-axis with the center of the projection window. However, unlike perspective projections, the location of the projection window along the z-axis is irrelevant in orthographic projections. This unique property will allow us to simplify the derivation of an equation for $z_{ndc}$.
 
 ```{figure} images/04/ortho-proj.png
 ```
 
-Indeed, we can reuse equations $\eqref{eq:ASpaces11}$ through $\eqref{eq:ASpaces14}$ to make the z-axis pass through the center of the projection window and derive the first two NDC coordinates. However, this time we can’t reuse any equation formulated for the z-coordinate in the previous sections because they were derived in the context of a perspective projection (i.e., we found the variables $S$ and $T$ inside a perspective projection matrix; see $\eqref{eq:ASpaces6}$). With an orthographic projection, we can derive an equation for $z_{ndc}$ by considering that we can move the projection window along the z-axis of the view space without any consequences. So, to map $[n,f]$ to $[0,1]$, we can translate the coordinate $z_w$ (similar to how we did with $x_w$ and $y_w$) to make the x- and y-axes of the view space pass through the center of the box between the near and far planes. Then, we can scale the result by $(f-n)^{-1}$ (to normalize the range) and eventually translate it by $1/2$ to shift from $[-0.5, 0.5]$ to $[0, 1]$.
+Indeed, we can reuse equations $\eqref{eq:ASpaces11}$ through $\eqref{eq:ASpaces14}$ to align the z-axis through the center of the projection window and derive the first two NDC coordinates. However, this time, we can't reuse any equations formulated for the z-coordinate in the previous sections because they were derived in the context of a perspective projection (i.e., we found the variables $S$ and $T$ inside a perspective projection matrix; see $\eqref{eq:ASpaces6}$).
+
+With an orthographic projection, we can derive an equation for $z_{ndc}$ by considering that we can move the projection window along the z-axis of the view space without any consequences. So, to map $[n,f]$ to $[0,1]$, we can translate the coordinate $z_w$ (similar to how we did with $x_w$ and $y_w$) to make the x- and y-axes of the view space pass through the center of the box between the near and far planes. Then, we can scale the result by $(f-n)^{-1}$ (to normalize the range) and eventually translate it by $1/2$ to shift from $[-0.5, 0.5]$ to $[0, 1]$.
 
 $$
 \begin{align*}
@@ -653,7 +655,7 @@ z_{ndc}&=\frac{z_w}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2} \quad\quad\qu
 \end{align*}
 $$
 
-Observe that, with an orthographic projection, we can’t substitute $\eqref{eq:ASpaces1}$ and $\eqref{eq:ASpaces2}$ into $\eqref{eq:ASpaces14}$ and $\eqref{eq:ASpaces13}$ because, as illustrated in the image above, now we have $x_w=x_v$ and $y_w=y_v$, along with $z_w=z_v$ as we want to retain the depth value (i.e., we don't project it onto the projection window). These are the values we need to plug into $\eqref{eq:ASpaces14}$, $\eqref{eq:ASpaces13}$, and $\eqref{eq:ASpaces18}$. 
+Observe that, with an orthographic projection, we can’t substitute $\eqref{eq:ASpaces1}$ and $\eqref{eq:ASpaces2}$ into $\eqref{eq:ASpaces14}$ and $\eqref{eq:ASpaces13}$ because, as illustrated in the image above, now we have $x_w=x_v$ and $y_w=y_v$, along with $z_w=z_v$ since we aim to preserve the depth value (i.e., we don't project it onto the projection window). These are the values we need to plug into $\eqref{eq:ASpaces14}$, $\eqref{eq:ASpaces13}$, and $\eqref{eq:ASpaces18}$. 
 
 $$
 \begin{align*}
@@ -665,11 +667,11 @@ z_{ndc}&=\frac{z_v}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2}  \quad\quad\q
 \end{align*}
 $$
 
-The result is that we no longer have $z_v$ in the denominators of the NDC coordinates. This means the NDC coordinates can be expressed as a linear combination of the view coordinates, so that we can build our orthographic projection matrix directly from equations $\eqref{eq:ASpaces19}$, $\eqref{eq:ASpaces20}$ and $\eqref{eq:ASpaces21}$, defining the NDC coordinates.
+The result is that we no longer have the $z_v$ term in the denominators of the NDC coordinates. This means that the NDC coordinates can be expressed as a linear combination of the view coordinates, so that we can build our orthographic projection matrix directly from equations $\eqref{eq:ASpaces19}$, $\eqref{eq:ASpaces20}$ and $\eqref{eq:ASpaces21}$, defining the NDC coordinates.
 
 $$\mathbf{P}=\left\lbrack\matrix{\frac{2}{r-l}&0&0&0\cr 0&\frac{2}{t-b}&0&0\cr 0&0&\frac{1}{f-n}&0\cr -\frac{r+l}{r-l}&-\frac{t+b}{t-b}&-\frac{n}{f-n}&1}\right\rbrack \tag{22}\label{eq:ASpaces22} $$
 
-This means that the matrix above allows us to go straight from view space to NDC space, without passing through the homogeneous clip space. Although, the rasterizer still expects vertices in clip coordinates. Then, we need a way to make the rasterizer believe we are passing clip coordinates, while also avoiding the perspective division. As you can see in the fourth column of the orthographic projection matrix $\eqref{eq:ASpaces22}$, the unitary value has moved in the last element. This means that if you multiply a vertex by this matrix you will get 1 in the last component of the resultant vector. That way, the rasterizer will divide the remaining components by 1, which nullifies the effect of the perspective division.
+In conclusion, the matrix above allows us to go straight from view space to NDC space, without passing through the homogeneous clip space. Although, the rasterizer still expects vertices in clip coordinates. Therefore, we need a way to make the rasterizer believe we are passing clip coordinates, while also avoiding the perspective division. As you can see in the fourth column of the orthographic projection matrix $\eqref{eq:ASpaces22}$, the unitary value has moved in the last element. This means that if you multiply a vertex by this matrix you will get 1 in the last component of the resultant vector. That way, the rasterizer will divide the remaining components by 1, which nullifies the effect of the perspective division.
 
 
 ### Projection matrices in DirectX [WIP]
