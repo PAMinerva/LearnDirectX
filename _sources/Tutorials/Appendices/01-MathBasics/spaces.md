@@ -389,7 +389,11 @@ $$
 
 Remember that we still need to derive $z_{ndc}$ from the view coordinates of the vertex. Meanwhile, we can write the above equations in the following matrix form as follows:
 
-$$\mathbf{v}_c=\left\lbrack\matrix{x_v&y_v&z_v&w_v}\right\rbrack\left\lbrack\matrix{d/r&0&0&0\cr 0&d&0&0\cr 0&0&z_ {ndc}&1\cr 0&0&0&0}\right\rbrack \tag{5}\label{eq:ASpaces5} $$
+$$
+\begin{align*}
+\mathbf{v}_c=\left\lbrack\matrix{x_v&y_v&z_v&w_v}\right\rbrack\left\lbrack\matrix{d/r&0&0&0\cr 0&d&0&0\cr 0&0&z_ {ndc}&1\cr 0&0&0&0}\right\rbrack \quad\quad\quad\quad\tag{5}\label{eq:ASpaces5} \\
+\end{align*}
+$$
 
 Then, to get the NDC coordinates, we simply need to divide all the components of $\mathbf{v}_c$ by $z_v$ (operation automatically performed by the rasterizer; we will simply enjoy the result in the pixel shader).
 
@@ -413,7 +417,7 @@ $$\left\lbrack\matrix{d/r&0&0&0\cr 0&d&0&0\cr 0&0&S&1\cr 0&0&T&0}\right\rbrack \
 
 because the last two entry in the third column are the only ones that can scale and translate the third coordinate of $\mathbf{v}_v$, that is $z_v$. To find $S$ and $T$, we can multiply the matrix above by a couple of vertices in view space which we already know the results in NDC space. For example, we know that for a vertex in view space that lies in the near plane we have $z_{ndc}=0$ (since $z_v=n$, and we know that $n$ maps to $0$). So, if we multiply the vertex $\mathbf{v}_v=(0, 0, n, 1)$ (which lies in the near plane) by the matrix $\eqref{eq:ASpaces6}$, we have
 
-$\mathbf{v}_c=\left\lbrack\matrix{0&0&n&1}\right\rbrack\left\lbrack\matrix{d/r&0&0&0\cr 0&d&0&0\cr 0&0&S&1\cr 0&0&T&0}\right\rbrack=\left\lbrack\matrix{0\cr 0\cr Sn+T\cr n}\right\rbrack^T$
+$$\mathbf{v}_c=\left\lbrack\matrix{0&0&n&1}\right\rbrack\left\lbrack\matrix{d/r&0&0&0\cr 0&d&0&0\cr 0&0&S&1\cr 0&0&T&0}\right\rbrack=\left\lbrack\matrix{0\cr 0\cr Sn+T\cr n}\right\rbrack^T$$
 
 The coordinates of $\mathbf{v}_c$ are in clip space, and after the perspective division (by $w_c=n$) we have
 
@@ -425,7 +429,7 @@ $$
 \begin{align*}
 0&=S+\frac{T}{n} \\
 \\
-T&=-Sn\quad\quad\quad\quad\tag{6b}\label{eq:ASpaces6b}
+T&=-Sn\quad\quad\quad\quad\tag{7}\label{eq:ASpaces7}
 \end{align*}
 $$
 
@@ -447,7 +451,7 @@ S&=\frac{1}{1-\displaystyle\frac{n}{f}}=\frac{1}{\displaystyle\frac{f-n}{f}}=\fr
 \end{align*}
 $$
 
-Substituting this into equation $\eqref{eq:ASpaces6b}$ we have
+Substituting this into equation $\eqref{eq:ASpaces7}$ we have
 
 $$ T=-\left(\frac{f}{f-n}\right)n=-\frac{fn}{f-n} $$
 
@@ -455,24 +459,24 @@ We just found the values of $S$ and $T$, so that we can write the z-coordinate b
 
 $$
 \begin{align*}
-\displaystyle z_c&=\frac{f}{f-n}z_v-\frac{nf}{(f-n)}\quad\quad\quad\quad\tag{7}\label{eq:ASpaces7} \\
+\displaystyle z_c&=\frac{f}{f-n}z_v-\frac{nf}{(f-n)}\quad\quad\quad\quad\tag{8}\label{eq:ASpaces8} \\
 \\
-\displaystyle z_{ndc}&=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}\quad\quad\quad\quad\tag{7b}\label{eq:ASpaces7b}
+\displaystyle z_{ndc}&=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}\quad\quad\quad\quad\tag{9}\label{eq:ASpaces9}
 \end{align*}
 $$
 
 Matrix $\eqref{eq:ASpaces6}$ now only depends on the distances of the near and far planes from the camera. This means that we can build this matrix by only using the frustum information at our disposal as follows:
 
-$$\mathbf{P}=\left\lbrack\matrix{d/r\ &0&0&0\cr 0&d&0&0\cr 0&0&\frac{f}{f-n}&1\cr 0&0&-\frac{nf}{f-n}&0}\right\rbrack \tag{8}\label{eq:ASpaces8}$$
+$$\mathbf{P}=\left\lbrack\matrix{d/r\ &0&0&0\cr 0&d&0&0\cr 0&0&\frac{f}{f-n}&1\cr 0&0&-\frac{nf}{f-n}&0}\right\rbrack \tag{10}\label{eq:ASpaces10}$$
 
-Matrix $\eqref{eq:ASpaces8}$ can be used to transform vertex positions from view space to homogeneous clip space.
+Matrix $\eqref{eq:ASpaces10}$ can be used to transform vertex positions from view space to homogeneous clip space.
 
 Although, that’s not what we wanted to find at the start of this section (the matrix to go from view to NDC space). However, since we get the perspective division for free during the rasterizer stage, we can actually consider $\mathbf{P}$ as the perspective projection matrix to go from the view space to NDC space.
 
 
 #### General case
 
-We built the perspective projection matrix $\eqref{eq:ASpaces8}$ with the assumption that the z-axis goes through the center of the projection window. However, in a more general case, we have a scenario similar to the one shown in the illustration below.
+We built the perspective projection matrix $\eqref{eq:ASpaces10}$ with the assumption that the z-axis goes through the center of the projection window. However, in a more general case, we have a scenario similar to the one shown in the illustration below.
 
 ```{figure} images/04/persp-proj3.png
 ```
@@ -501,23 +505,23 @@ Therefore, we need to translate the first two coordinates of $\mathbf{v}_w$ (pro
 
 $$
 \begin{align*}
-x_w&=x_w-\frac{r+l}{2} \quad\quad\quad\quad\tag{9}\label{eq:ASpaces9} \\
+x_w&=x_w-\frac{r+l}{2} \quad\quad\quad\quad\tag{11}\label{eq:ASpaces11} \\
 \\
-y_w&=y_w-\frac{t+b}{2} \quad\quad\quad\quad\tag{10}\label{eq:ASpaces10}
+y_w&=y_w-\frac{t+b}{2} \quad\quad\quad\quad\tag{12}\label{eq:ASpaces12}
 \end{align*}
 $$
 
-Observe that we used the mid-point formula to subtract the x- and y- center coordinates of the projection window from $x_w$ and $y_w$, respectively. Now, to get the NDC coordinates, we need to scale their ranges. That is, since $x_w$ is in the range $[l, r]$ and $y_w$ is in the range $[b,t]$, we must re-map both to the range $[-1, 1]$. If we multiply $x_w$ (as expressed in equation $\eqref{eq:ASpaces9}$) by $(t-b)^{-1}$ and $y_w$ (as expressed in equation $\eqref{eq:ASpaces10}$) by $(r-l)^{-1}$, then both ranges will be in $[-0.5, 0.5]$. At that point, we only need to multiply by 2 to scale both ranges to $[-1, 1]$. These transformations are reflected in the following equations:
+Observe that we used the mid-point formula to subtract the x- and y- center coordinates of the projection window from $x_w$ and $y_w$, respectively. Now, to get the NDC coordinates, we need to scale their ranges. That is, since $x_w$ is in the range $[l, r]$ and $y_w$ is in the range $[b,t]$, we must re-map both to the range $[-1, 1]$. If we multiply $x_w$ (as expressed in equation $\eqref{eq:ASpaces11}$) by $(t-b)^{-1}$ and $y_w$ (as expressed in equation $\eqref{eq:ASpaces12}$) by $(r-l)^{-1}$, then both ranges will be in $[-0.5, 0.5]$. At that point, we only need to multiply by 2 to scale both ranges to $[-1, 1]$. These transformations are reflected in the following equations:
 
 $$
 \begin{align*}
-x_{ndc}&=\frac{2\ x_w}{r-l}-\frac{2(r+l)}{2(r-l)} \quad\quad\quad\quad\tag{11}\label{eq:ASpaces11} \\
+x_{ndc}&=\frac{2\ x_w}{r-l}-\frac{2(r+l)}{2(r-l)} \quad\quad\quad\quad\tag{13}\label{eq:ASpaces13} \\
 \\
-y_{ndc}&=\frac{2\ y_w}{t-b}-\frac{2(t+b)}{2(t-b)} \quad\quad\quad\quad\tag{12}\label{eq:ASpaces12}
+y_{ndc}&=\frac{2\ y_w}{t-b}-\frac{2(t+b)}{2(t-b)} \quad\quad\quad\quad\tag{14}\label{eq:ASpaces14}
 \end{align*}
 $$
 
-Now that we are back to the specific case, we can substitute equation $\eqref{eq:ASpaces1}$ into equation $\eqref{eq:ASpaces12}$, keeping in mind that we now have $d=n$.
+Now that we are back to the specific case, we can substitute equation $\eqref{eq:ASpaces1}$ into equation $\eqref{eq:ASpaces14}$, keeping in mind that we now have $d=n$.
 
 $$
 \begin{align*}
@@ -527,11 +531,11 @@ y_{ndc}&=\frac{2(ny_v/z_v)}{t-b}-\frac{2(t+b)}{2(t-b)} \\
 \\
 &=\frac{2ny_v}{t-b}\cdot\frac{1}{z_v}-\frac{z_v(t+b)}{(t-b)}\cdot\frac{1}{z_v} \\
 \\
-&=\frac{1}{z_v}\left(\frac{2n}{t-b}y_v-\frac{t+b}{t-b}z_v\right)\quad\quad\quad\quad\tag{13}\label{eq:ASpaces13}
+&=\frac{1}{z_v}\left(\frac{2n}{t-b}y_v-\frac{t+b}{t-b}z_v\right)\quad\quad\quad\quad\tag{15}\label{eq:ASpaces15}
 \end{align*}
 $$
 
-Similarly, we can substitute equation $\eqref{eq:ASpaces2}$ (in particular, the second one of the three equations) into equation $\eqref{eq:ASpaces11}$.
+Similarly, we can substitute equation $\eqref{eq:ASpaces2}$ (in particular, the second one of the three equations) into equation $\eqref{eq:ASpaces13}$.
 
 $$
 \begin{align*}
@@ -541,15 +545,15 @@ x_{ndc}&=\frac{2(nx_v/z_v)}{r-l}-\frac{2(r+l)}{2(r-l)} \\
 \\
 &=\frac{2nx_v}{r-l}\cdot\frac{1}{z_v}-\frac{z_v(r+l)}{(r-l)}\cdot\frac{1}{z_v} \\
 \\
-&=\frac{1}{z_v}\left(\frac{2n}{r-l}x_v-\frac{r+l}{r-l}z_v\right)\quad\quad\quad\quad\tag{14}\label{eq:ASpaces14}
+&=\frac{1}{z_v}\left(\frac{2n}{r-l}x_v-\frac{r+l}{r-l}z_v\right)\quad\quad\quad\quad\tag{16}\label{eq:ASpaces16}
 \end{align*}
 $$
 
-With equations $\eqref{eq:ASpaces13}$ and $\eqref{eq:ASpaces14}$, we have found a way to calculate the first two NDC coordinates from the corresponding view coordinates. As for $z_{ndc}$, the equation remains unchanged from the one we derived in $\eqref{eq:ASpaces7}$ for the specific case because the solution still involves to map the range $[n,f]$ to $[0,1]$.
+With equations $\eqref{eq:ASpaces15}$ and $\eqref{eq:ASpaces16}$, we have found a way to calculate the first two NDC coordinates from the corresponding view coordinates. As for $z_{ndc}$, the equation remains unchanged from the one we derived in $\eqref{eq:ASpaces8}$ for the specific case because the solution still involves to map the range $[n,f]$ to $[0,1]$.
 
-If we omit the perspective division $(1/z_v)$ in $\eqref{eq:ASpaces13}$ and $\eqref{eq:ASpaces14}$, we can express the clip coordinates as a linear combination of the view coordinates. This means the perspective projection matrix $\eqref{eq:ASpaces8}$ becomes
+If we omit the perspective division $(1/z_v)$ in $\eqref{eq:ASpaces15}$ and $\eqref{eq:ASpaces16}$, we can express the clip coordinates as a linear combination of the view coordinates. This means the perspective projection matrix $\eqref{eq:ASpaces10}$ becomes
 
-$$\mathbf{P}=\left\lbrack\matrix{\frac{2n}{r-l}&0&0&0\cr 0&\frac{2n}{t-b}&0&0\cr -\frac{r+l}{r-l}&-\frac{t+b}{t-b}&\frac{f}{f-n}&1\cr 0&0&-\frac{nf}{f-n}&0}\right\rbrack \tag{15}\label{eq:ASpaces15}$$
+$$\mathbf{P}=\left\lbrack\matrix{\frac{2n}{r-l}&0&0&0\cr 0&\frac{2n}{t-b}&0&0\cr -\frac{r+l}{r-l}&-\frac{t+b}{t-b}&\frac{f}{f-n}&1\cr 0&0&-\frac{nf}{f-n}&0}\right\rbrack \tag{17}\label{eq:ASpaces17}$$
 
 
 #### Perspective division and clipping
@@ -613,7 +617,7 @@ As you can see in the image above, a clipped primitive might no longer be a tria
 
 #### Depth buffer precision
 
-Whatever perspective projection matrix you decide to use (either $\eqref{eq:ASpaces8}$ or $\eqref{eq:ASpaces15}$), after the perspective division we have
+Whatever perspective projection matrix you decide to use (either $\eqref{eq:ASpaces10}$ or $\eqref{eq:ASpaces15}$), after the perspective division we have
 
 $$\displaystyle z_{ndc}=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}$$
 
