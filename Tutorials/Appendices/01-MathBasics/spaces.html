@@ -427,7 +427,8 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-buffer-precision">Depth buffer precision</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orthographic-projection-wip">Orthographic projection [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orthographic-projection">Orthographic projection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection-matrices-in-vulkan-wip">Projection matrices in Vulkan [WIP]</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
@@ -961,7 +962,7 @@ x_{ndc}&amp;=\frac{2(nx_v/z_v)}{r-l}-\frac{2(r+l)}{2(r-l)} \\
 </section>
 <section id="depth-buffer-precision">
 <h4>Depth buffer precision<a class="headerlink" href="#depth-buffer-precision" title="Link to this heading">#</a></h4>
-<p>Whatever perspective projection matrix you decide to use (either <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces10}\)</span> or <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces15}\)</span>), after the perspective division we have</p>
+<p>Whatever perspective projection matrix you decide to use (either <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces10}\)</span> or <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces17}\)</span>), after the perspective division we have</p>
 <div class="math notranslate nohighlight">
 \[\displaystyle z_{ndc}=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}\]</div>
 <p>If you set <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(f\)</span>, this equation  represents a strictly increasing function of <span class="math notranslate nohighlight">\(z_v\)</span>, with <span class="math notranslate nohighlight">\(z_v=1\)</span> acting as a horizontal asymptote. Mathematically, this implies that for every <span class="math notranslate nohighlight">\(z_v\)</span> value, there exists a unique corresponding <span class="math notranslate nohighlight">\(z_{ndc}\)</span>. However, when working with computers, this property cannot be relied upon due to the finite precision of floating-point representations. Moreover, the density of representable floating-point values is higher near zero and decreases as values move further away.</p>
@@ -973,8 +974,39 @@ x_{ndc}&amp;=\frac{2(nx_v/z_v)}{r-l}-\frac{2(r+l)}{2(r-l)} \\
 <p>To mitigate the problem, we can set <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(f\)</span> to make the near and far planes as close as possible. In the illustration above, you can see what happens if we set <span class="math notranslate nohighlight">\(n=10\)</span> and <span class="math notranslate nohighlight">\(f=100\)</span>. The function grows slower, so we have a more even distribution of NDC values. Another mitigation technique is to redesign the projection matrix so that the clip space depths <span class="math notranslate nohighlight">\(z_c\)</span> are still mapped to <span class="math notranslate nohighlight">\([0,1]\)</span>, but in reverse order. That is, after the perspective division we have that <span class="math notranslate nohighlight">\(z_{ndc}\)</span> is a strictly decreasing function, where the NDC values are much more evenly distributed between near and far planes. Additional details on the inverse projection matrix will be provided in a subsequent tutorial.</p>
 </section>
 </section>
-<section id="orthographic-projection-wip">
-<h3>Orthographic projection [WIP]<a class="headerlink" href="#orthographic-projection-wip" title="Link to this heading">#</a></h3>
+<section id="orthographic-projection">
+<h3>Orthographic projection<a class="headerlink" href="#orthographic-projection" title="Link to this heading">#</a></h3>
+<p>In an orthographic projection, we also want to lead the z-axis to pass through the center of the projection window, just like we made in the general case of a perspective projection. However, in an orthographic projection, we can move the projection window anywhere along the z-axis as its location doesn’t really matter. This is an interesting property that we will use to derive an equation for <span class="math notranslate nohighlight">\(z_{ndc}\)</span>.</p>
+<figure class="align-default">
+<img alt="../../../_images/ortho-proj.png" src="../../../_images/ortho-proj.png" />
+</figure>
+<p>Indeed, we can reuse equations <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces11}\)</span> through <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces14}\)</span> to make the z-axis pass through the center of the projection window and derive the first two NDC coordinates. However, this time we can’t reuse any equation formulated for the z-coordinate in the previous sections because they were derived in the context of a perspective projection (i.e., we found the variables <span class="math notranslate nohighlight">\(S\)</span> and <span class="math notranslate nohighlight">\(T\)</span> inside a perspective projection matrix; see <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces6}\)</span>). With an orthographic projection, we can derive an equation for <span class="math notranslate nohighlight">\(z_{ndc}\)</span> by considering that we can move the projection window along the z-axis of the view space without any consequences. So, to map <span class="math notranslate nohighlight">\([n,f]\)</span> to <span class="math notranslate nohighlight">\([0,1]\)</span>, we can translate the coordinate <span class="math notranslate nohighlight">\(z_w\)</span> (similar to how we did with <span class="math notranslate nohighlight">\(x_w\)</span> and <span class="math notranslate nohighlight">\(y_w\)</span>) to make the x- and y-axes of the view space pass through the center of the box between the near and far planes. Then, we can scale the result by <span class="math notranslate nohighlight">\((f-n)^{-1}\)</span> (to normalize the range) and eventually translate it by <span class="math notranslate nohighlight">\(1/2\)</span> to shift from <span class="math notranslate nohighlight">\([-0.5, 0.5]\)</span> to <span class="math notranslate nohighlight">\([0, 1]\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+z_w&amp;=z_w-\frac{f+n}{2} \\ 
+\\
+z_{ndc}&amp;=\frac{z_w}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2} \quad\quad\quad\quad\tag{18}\label{eq:ASpaces18}
+\end{align*}
+\end{split}\]</div>
+<p>Observe that, with an orthographic projection, we can’t substitute <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces1}\)</span> and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces2}\)</span> into <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces14}\)</span> and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces13}\)</span> because, as illustrated in the image above, now we have <span class="math notranslate nohighlight">\(x_w=x_v\)</span> and <span class="math notranslate nohighlight">\(y_w=y_v\)</span>, along with <span class="math notranslate nohighlight">\(z_w=z_v\)</span> as we want to retain the depth value (i.e., we don’t project it onto the projection window). These are the values we need to plug into <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces14}\)</span>, <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces13}\)</span>, and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces18}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align*}
+x_{ndc}&amp;=\frac{2\ x_v}{r-l}-\frac{2(r+l)}{2(r-l)}  \quad\quad\quad\quad\tag{19}\label{eq:ASpaces19} \\
+\\
+y_{ndc}&amp;=\frac{2\ y_v}{t-b}-\frac{2(t+b)}{2(t-b)}  \quad\quad\quad\quad\tag{20}\label{eq:ASpaces20} \\
+\\
+z_{ndc}&amp;=\frac{z_v}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2}  \quad\quad\quad\quad\tag{21}\label{eq:ASpaces21}
+\end{align*}
+\end{split}\]</div>
+<p>The result is that we no longer have <span class="math notranslate nohighlight">\(z_v\)</span> in the denominators of the NDC coordinates. This means the NDC coordinates can be expressed as a linear combination of the view coordinates, so that we can build our orthographic projection matrix directly from equations <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces19}\)</span>, <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces20}\)</span> and <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces21}\)</span>, defining the NDC coordinates.</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{P}=\left\lbrack\matrix{\frac{2}{r-l}&amp;0&amp;0&amp;0\cr 0&amp;\frac{2}{t-b}&amp;0&amp;0\cr 0&amp;0&amp;\frac{1}{f-n}&amp;0\cr -\frac{r+l}{r-l}&amp;-\frac{t+b}{t-b}&amp;-\frac{n}{f-n}&amp;1}\right\rbrack \tag{22}\label{eq:ASpaces22} \]</div>
+<p>This means that the matrix above allows us to go straight from view space to NDC space, without passing through the homogeneous clip space. Although, the rasterizer still expects vertices in clip coordinates. Then, we need a way to make the rasterizer believe we are passing clip coordinates, while also avoiding the perspective division. As you can see in the fourth column of the orthographic projection matrix <span class="math notranslate nohighlight">\(\eqref{eq:ASpaces22}\)</span>, the unitary value has moved in the last element. This means that if you multiply a vertex by this matrix you will get 1 in the last component of the resultant vector. That way, the rasterizer will divide the remaining components by 1, which nullifies the effect of the perspective division.</p>
+</section>
+<section id="projection-matrices-in-vulkan-wip">
+<h3>Projection matrices in Vulkan [WIP]<a class="headerlink" href="#projection-matrices-in-vulkan-wip" title="Link to this heading">#</a></h3>
 <br>
 <br>
 <div class="admonition-support-this-project admonition">
@@ -1066,7 +1098,8 @@ x_{ndc}&amp;=\frac{2(nx_v/z_v)}{r-l}-\frac{2(r+l)}{2(r-l)} \\
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-buffer-precision">Depth buffer precision</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orthographic-projection-wip">Orthographic projection [WIP]</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#orthographic-projection">Orthographic projection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#projection-matrices-in-vulkan-wip">Projection matrices in Vulkan [WIP]</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>

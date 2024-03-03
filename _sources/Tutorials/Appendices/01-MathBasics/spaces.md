@@ -617,7 +617,7 @@ As you can see in the image above, a clipped primitive might no longer be a tria
 
 #### Depth buffer precision
 
-Whatever perspective projection matrix you decide to use (either $\eqref{eq:ASpaces10}$ or $\eqref{eq:ASpaces15}$), after the perspective division we have
+Whatever perspective projection matrix you decide to use (either $\eqref{eq:ASpaces10}$ or $\eqref{eq:ASpaces17}$), after the perspective division we have
 
 $$\displaystyle z_{ndc}=\frac{f}{f-n}-\frac{nf}{(f-n)z_v}$$
 
@@ -633,7 +633,43 @@ This can represent a serious problem because if a far object A is in front of an
 To mitigate the problem, we can set $n$ and $f$ to make the near and far planes as close as possible. In the illustration above, you can see what happens if we set $n=10$ and $f=100$. The function grows slower, so we have a more even distribution of NDC values. Another mitigation technique is to redesign the projection matrix so that the clip space depths $z_c$ are still mapped to $[0,1]$, but in reverse order. That is, after the perspective division we have that $z_{ndc}$ is a strictly decreasing function, where the NDC values are much more evenly distributed between near and far planes. Additional details on the inverse projection matrix will be provided in a subsequent tutorial.
 
 
-### Orthographic projection [WIP]
+### Orthographic projection 
+
+In an orthographic projection, we also want to lead the z-axis to pass through the center of the projection window, just like we made in the general case of a perspective projection. However, in an orthographic projection, we can move the projection window anywhere along the z-axis as its location doesn’t really matter. This is an interesting property that we will use to derive an equation for $z_{ndc}$.
+
+```{figure} images/04/ortho-proj.png
+```
+
+Indeed, we can reuse equations $\eqref{eq:ASpaces11}$ through $\eqref{eq:ASpaces14}$ to make the z-axis pass through the center of the projection window and derive the first two NDC coordinates. However, this time we can’t reuse any equation formulated for the z-coordinate in the previous sections because they were derived in the context of a perspective projection (i.e., we found the variables $S$ and $T$ inside a perspective projection matrix; see $\eqref{eq:ASpaces6}$). With an orthographic projection, we can derive an equation for $z_{ndc}$ by considering that we can move the projection window along the z-axis of the view space without any consequences. So, to map $[n,f]$ to $[0,1]$, we can translate the coordinate $z_w$ (similar to how we did with $x_w$ and $y_w$) to make the x- and y-axes of the view space pass through the center of the box between the near and far planes. Then, we can scale the result by $(f-n)^{-1}$ (to normalize the range) and eventually translate it by $1/2$ to shift from $[-0.5, 0.5]$ to $[0, 1]$.
+
+$$
+\begin{align*}
+z_w&=z_w-\frac{f+n}{2} \\ 
+\\
+z_{ndc}&=\frac{z_w}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2} \quad\quad\quad\quad\tag{18}\label{eq:ASpaces18}
+\end{align*}
+$$
+
+Observe that, with an orthographic projection, we can’t substitute $\eqref{eq:ASpaces1}$ and $\eqref{eq:ASpaces2}$ into $\eqref{eq:ASpaces14}$ and $\eqref{eq:ASpaces13}$ because, as illustrated in the image above, now we have $x_w=x_v$ and $y_w=y_v$, along with $z_w=z_v$ as we want to retain the depth value (i.e., we don't project it onto the projection window). These are the values we need to plug into $\eqref{eq:ASpaces14}$, $\eqref{eq:ASpaces13}$, and $\eqref{eq:ASpaces18}$. 
+
+$$
+\begin{align*}
+x_{ndc}&=\frac{2\ x_v}{r-l}-\frac{2(r+l)}{2(r-l)}  \quad\quad\quad\quad\tag{19}\label{eq:ASpaces19} \\
+\\
+y_{ndc}&=\frac{2\ y_v}{t-b}-\frac{2(t+b)}{2(t-b)}  \quad\quad\quad\quad\tag{20}\label{eq:ASpaces20} \\
+\\
+z_{ndc}&=\frac{z_v}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2}  \quad\quad\quad\quad\tag{21}\label{eq:ASpaces21}
+\end{align*}
+$$
+
+The result is that we no longer have $z_v$ in the denominators of the NDC coordinates. This means the NDC coordinates can be expressed as a linear combination of the view coordinates, so that we can build our orthographic projection matrix directly from equations $\eqref{eq:ASpaces19}$, $\eqref{eq:ASpaces20}$ and $\eqref{eq:ASpaces21}$, defining the NDC coordinates.
+
+$$\mathbf{P}=\left\lbrack\matrix{\frac{2}{r-l}&0&0&0\cr 0&\frac{2}{t-b}&0&0\cr 0&0&\frac{1}{f-n}&0\cr -\frac{r+l}{r-l}&-\frac{t+b}{t-b}&-\frac{n}{f-n}&1}\right\rbrack \tag{22}\label{eq:ASpaces22} $$
+
+This means that the matrix above allows us to go straight from view space to NDC space, without passing through the homogeneous clip space. Although, the rasterizer still expects vertices in clip coordinates. Then, we need a way to make the rasterizer believe we are passing clip coordinates, while also avoiding the perspective division. As you can see in the fourth column of the orthographic projection matrix $\eqref{eq:ASpaces22}$, the unitary value has moved in the last element. This means that if you multiply a vertex by this matrix you will get 1 in the last component of the resultant vector. That way, the rasterizer will divide the remaining components by 1, which nullifies the effect of the perspective division.
+
+
+### Projection matrices in Vulkan [WIP]
 
 <br>
 
