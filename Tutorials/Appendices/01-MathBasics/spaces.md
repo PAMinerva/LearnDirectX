@@ -128,6 +128,9 @@ $$\mathbf{g}=\mathbf{h}\times\mathbf{f}$$
 Both $\mathbf{f}$ and $\mathbf{h}$ are unit vectors, so we don't need to normalize the result. Recall what we stated in [](vectors.md): the length of the vector resulting from the cross product $\mathbf{u}\times\mathbf{v}$ is $\vert\mathbf{u}\times\mathbf{v}\vert=\vert\mathbf{u}\vert\vert\mathbf{v}\vert\sin{\theta}$. In this case, we have $\vert\mathbf{h}\vert=\vert\mathbf{f}\vert=1$ and $\sin{90°}=1$.
 ```
 
+
+### View matrix in DirectX
+
 DirectXMath provides the helper function **XMMatrixLookAtLH** to build a view matrix similar to the one we discussed in this section (i.e., for transitioning from world to camera spaces defined as left-handed systems). You need to pass the camera position and target point as arguments to this function, which returns the related view matrix.
 
 ```{code-block} cpp

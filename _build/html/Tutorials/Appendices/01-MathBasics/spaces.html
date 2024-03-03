@@ -419,7 +419,10 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-matrix-in-directx">View matrix in DirectX</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix">NDC space and Projection matrix</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-projection">Perspective projection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">General case</a></li>
@@ -549,6 +552,8 @@ document.write(`
 <p class="admonition-title">Note</p>
 <p>Both <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{h}\)</span> are unit vectors, so we don’t need to normalize the result. Recall what we stated in <a class="reference internal" href="vectors.html"><span class="std std-doc">Vectors</span></a>: the length of the vector resulting from the cross product <span class="math notranslate nohighlight">\(\mathbf{u}\times\mathbf{v}\)</span> is <span class="math notranslate nohighlight">\(\vert\mathbf{u}\times\mathbf{v}\vert=\vert\mathbf{u}\vert\vert\mathbf{v}\vert\sin{\theta}\)</span>. In this case, we have <span class="math notranslate nohighlight">\(\vert\mathbf{h}\vert=\vert\mathbf{f}\vert=1\)</span> and <span class="math notranslate nohighlight">\(\sin{90°}=1\)</span>.</p>
 </div>
+<section id="view-matrix-in-directx">
+<h3>View matrix in DirectX<a class="headerlink" href="#view-matrix-in-directx" title="Link to this heading">#</a></h3>
 <p>DirectXMath provides the helper function <strong>XMMatrixLookAtLH</strong> to build a view matrix similar to the one we discussed in this section (i.e., for transitioning from world to camera spaces defined as left-handed systems). You need to pass the camera position and target point as arguments to this function, which returns the related view matrix.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// pos: position (in world coordinates) of the (origin of the) view space.</span>
 <span class="c1">// target: position (in world coordinates) where we want the camera is aimed at.</span>
@@ -620,6 +625,7 @@ document.write(`
 </div>
 <p><strong>EyePosition</strong>, <strong>FocusPosition</strong> and <strong>UpDirection</strong> are the origin, target and up direction of the camera, expressed in world coordinates.</p>
 <br>
+</section>
 </section>
 <section id="ndc-space-and-projection-matrix">
 <span id="spaces-ndc-proj-label"></span><h2>NDC space and Projection matrix<a class="headerlink" href="#ndc-space-and-projection-matrix" title="Link to this heading">#</a></h2>
@@ -1090,7 +1096,10 @@ z_{ndc}&amp;=\frac{z_v}{f-n}-\frac{f+n}{2\left(f-n\right)}+\frac{1}{2}  \quad\qu
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#object-space">Object space</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#world-space-and-world-matrix">World space and World matrix</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-space-and-view-matrix">View space and View matrix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-matrix-in-directx">View matrix in DirectX</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ndc-space-and-projection-matrix">NDC space and Projection matrix</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perspective-projection">Perspective projection</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-case">General case</a></li>
