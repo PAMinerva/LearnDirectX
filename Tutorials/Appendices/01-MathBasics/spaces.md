@@ -669,7 +669,7 @@ $$\mathbf{P}=\left\lbrack\matrix{\frac{2}{r-l}&0&0&0\cr 0&\frac{2}{t-b}&0&0\cr 0
 This means that the matrix above allows us to go straight from view space to NDC space, without passing through the homogeneous clip space. Although, the rasterizer still expects vertices in clip coordinates. Then, we need a way to make the rasterizer believe we are passing clip coordinates, while also avoiding the perspective division. As you can see in the fourth column of the orthographic projection matrix $\eqref{eq:ASpaces22}$, the unitary value has moved in the last element. This means that if you multiply a vertex by this matrix you will get 1 in the last component of the resultant vector. That way, the rasterizer will divide the remaining components by 1, which nullifies the effect of the perspective division.
 
 
-### Projection matrices in Vulkan [WIP]
+### Projection matrices in DirectX [WIP]
 
 <br>
 
