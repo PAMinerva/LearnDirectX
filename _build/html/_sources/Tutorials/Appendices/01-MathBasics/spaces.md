@@ -753,11 +753,11 @@ to the following render target ranges
 
 $$
 \begin{align*}
-0\le x\le w \\ 
+0\le &x\le w \\ 
 \\
-0\le y\le h \\
+0\le &y\le h \\
 \\
-z_{min}\le z\le z_{max}
+z_{min}\le &z\le z_{max}
 \end{align*}
 $$
 
