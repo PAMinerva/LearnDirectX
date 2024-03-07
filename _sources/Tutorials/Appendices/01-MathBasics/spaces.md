@@ -281,6 +281,7 @@ Usually, that's all we need to know in order to write applications that renders 
 As stated in the note box above, once we go from view space to NDC space, we implicitly get a 2D representation of 3D vertex positions. So, this transformation is definitely related to the concept of projection. Indeed, the associated matrix is called projection matrix, that can vary depending on the type of projection we are interested in. We will start with a couple of matrices associated with the perspective projection, and then we will show the matrix associated with the orthographic projection.
 
 
+(spaces-ndc-perspective-proj-label)=
 ### Perspective projection 
 
 While DirectX offers convenient helper functions for constructing projection matrices, in this section we will explore the process of manually creating a couple of projection matrices based on frustum information. Our first objective is to derive NDC coordinates from view coordinates. Then, we will attempt to express the resulting equations in matrix form, with the goal of finding a projection matrix to go from the view space to the NDC space. Consider the following illustration.
@@ -477,6 +478,7 @@ Matrix $\eqref{eq:ASpaces10}$ can be used to transform vertex positions from vie
 Although, that’s not what we wanted to find at the start of this section (the matrix to go from view to NDC space). However, since we get the perspective division for free during the rasterizer stage, we can actually consider $\mathbf{P}$ as the perspective projection matrix to go from the view space to NDC space.
 
 
+(spaces-ndc-perspective-proj-general-label)=
 #### General case
 
 We built the perspective projection matrix $\eqref{eq:ASpaces10}$ with the assumption that the z-axis goes through the center of the projection window. However, in a more general case, we have a scenario similar to the one shown in the illustration below.
@@ -674,12 +676,126 @@ $$\mathbf{P}=\left\lbrack\matrix{\frac{2}{r-l}&0&0&0\cr 0&\frac{2}{t-b}&0&0\cr 0
 In conclusion, the matrix above allows us to go straight from view space to NDC space, without passing through the homogeneous clip space. Although, the rasterizer still expects vertices in clip coordinates. Therefore, we need a way to make the rasterizer believe we are passing clip coordinates, while also avoiding the perspective division. As you can see in the fourth column of the orthographic projection matrix $\eqref{eq:ASpaces22}$, the unitary value has moved in the last element. This means that if you multiply a vertex by this matrix you will get 1 in the last component of the resultant vector. That way, the rasterizer will divide the remaining components by 1, which nullifies the effect of the perspective division.
 
 
-### Projection matrices in DirectX [WIP]
+### Projection matrices in DirectX 
+
+DirectXMath provides many useful functions for building different types of projection matrices, depending on the type of projection and the handedness of the frame. However, in this tutorial series we will only work with left-handed coordinate systems. Therefore, to build a perspective projection matrix we can use the helper function **XMMatrixPerspectiveFovLH**.
+
+```{code-block} cpp
+XMMATRIX XMMatrixPerspectiveFovLH(
+ float FovAngleY,
+ float AspectRatio,
+ float NearZ,
+ float FarZ
+);
+```
+
+As you can see, we only need to pass the vertical FOV, the aspect ratio, and the distances of the near and far planes. This means that with this function we can build the matrix $\eqref{eq:ASpaces10}$, related to the particular case of a perspective projection, as discussed in section [](spaces-ndc-perspective-proj-label) ─ remember that $d$ can be derived from the vertical FOV (see equation $\eqref{eq:ASpaces1b}$).
+
+As for the general case of a perspective projection, we can use the helper function **XMMatrixPerspectiveOffCenterLH**.
+
+```{code-block} cpp
+XMMATRIX XMMatrixPerspectiveOffCenterLH(
+ float ViewLeft,
+ float ViewRight,
+ float ViewBottom,
+ float ViewTop,
+ float NearZ,
+ float FarZ
+);
+```
+
+To build an orthographic projection matrix, we can use the helper function **XMMatrixOrthographicOffCenterLH**.
+
+```{code-block} cpp
+XMMATRIX XMMatrixOrthographicOffCenterLH(
+ float ViewLeft,
+ float ViewRight,
+ float ViewBottom,
+ float ViewTop,
+ float NearZ,
+ float FarZ
+);
+```
+
+Refer to the DirectXMath library’s source code to verify that these projection matrices are implemented according to the definitions presented in this tutorial.
+
+DirectXMath also provides **XMMatrixPerspectiveLH**. Please refer to the official API documentation for more details.
 
 <br>
 
+## Render target space and Viewport
 
+After the perspective division, all vertices are in NDC space, and if we only consider the first two NDC coordinates, we also have their 2D representations. Although, we are in a normalized 2D space (the $[-1,1]\times [-1,1]$ front face of the NDC box) and we need to map it onto the render target in order for the rasterizer to determine the pixels covered by the primitives at specific render target positions, typically the centers of the texels.
 
+```{figure} images/04/render-target-space.png
+```
+
+The rasterizer automatically transforms the vertices from NDC space to render target space by using the viewport information we set with **ID3D12GraphicsCommandList::RSSetViewports**. Once in render target space, it can generate pixels covered by primitives. However, if the render target coordinates of a pixel fall outside the specified render target size, the pixel will be discarded and won't be processed by any subsequent stage of the pipeline.
+
+In [](../../01-HelloWorld/hello-window.md), we briefly mentioned that a viewport can be seen as a rectangular region within the back buffer space where rendering operations take place. Now, we can be more specific in stating that a viewport is a structure that holds the necessary information for the rasterizer to construct a matrix that transforms vertices from NDC space to a specific rectangle within the render target space. In other words, it defines the mapping of the projection window onto a chosen area of the render target.
+
+```{figure} images/04/viewport.png
+```
+
+Since we might find it useful in the future, let’s see how we can manually build this matrix to go from NDC space to render target space from the viewport information. Suppose we want to draw on a selected $w\times h$ rectangle within the render target (that is, we want to map the front face of the NDC box onto a rectangular area of the back buffer). This means that we want to map the following NDC ranges
+
+$$
+\begin{align*}
+-1\le x\le 1 \\ 
+\\
+-1\le y\le 1 \\
+\\
+0\le z\le 1
+\end{align*}
+$$
+
+to the following render target ranges
+
+$$
+\begin{align*}
+0\le x\le w \\ 
+\\
+0\le y\le h \\
+\\
+$z_{min}\le z\le z_{max}
+\end{align*}
+$$
+
+Starting with the x-coordinate, we need to map $[-1, 1]$ to $[0,w]$. For this purpose, we can divide $[-1, 1]$ by $2$ to normalize the range, which becomes $[-0.5, 0.5]$. Then, we can multiply by $w$ to get $[-w/2, w/2]$. Lastly, we add $w/2$ to get $[0, w]$.
+
+As for the y-coordinate, we need to consider the change of direction between NDC and render target space. That is, $y=1$ in NDC space is $y=0$ in render target space, while $y=-1$ in NDC space is $y=h$ in render target space. Therefore, we need to map $[-1, 1]$ to $[h, 0]$. Like we did for the x-coordinate, we start dividing $[-1, 1]$ by $2$ to normalize the range, which becomes $[-0.5, 0.5]$. Then, we multiply by $h$ to get $[-h/2, h/2]$, and then by $-1$ to reverse the range, which becomes $[h/2,-h/2]$. Lastly, we add $h/2$ to get $[h, 0]$.
+
+As for the z-coordinate, we only need to scale $[0, 1]$ by $(z_{max}-z_{min})$ to get $[0,\ (z_{max}-z_{min})]$, and then add $z_{min}$ to get $[z_{min},\ z_{max}]$.
+
+At this point, we only need to translate the resulting coordinates to shift the origin of the $w\times h$ rectangle to the position $(s_x,s_y)$ in render target space. So, the range $[0, w]$ becomes $[s_x,\ w+s_x]$, while the range $[0,h]$ becomes $[s_y,\ h+s_y]$. That way, we can map the 2D (normalized) projection window to the render target, starting from the position $(s_x,s_y)$ for $w$ units along the x-axis, and $h$ units along the y-axis.
+
+Now, we can derive our render target coordinates $(x_r, y_r, z_r)$ with respect to the NDC ones as follows.
+
+$$
+\begin{align*}
+x_r&=\frac{w}{2}x_{ndc}+\frac{w}{2}+s_x \\ 
+\\
+y_r&=-\frac{h}{2}y_{ndc}+\frac{h}{2}+s_y \\
+\\
+z_r&=\left(z_{max}-z_{min}\right)z_{ndc}+z_{min}
+\end{align*}
+$$
+
+```{note}
+If the resulting render target coordinates fall outside the render target size, then the corresponding pixel generated by the rasterizer will be discarded. That is, it won't be processed by subsequent stages of the pipeline. 
+```
+
+In matrix form this becomes
+
+$$ \left\lbrack\matrix{x_{ndc}&y_{ndc}&z_{ndc}}\right\rbrack\left\lbrack\matrix{w/2&0&0&0\cr 0&-h/2&0&0\cr 0&0&z_{max}-z_{min}&0\cr w/2+s_x&h/2+s_y&z_{min}&1}\right\rbrack $$
+
+Although, most of the time, we don’t want to rescale the NDC z-coordinate, so we have $z_{min}=0$ and $z_{max}=1$, and thus $z_r=z_{ndc}$
+
+```{tip}
+To prevent stretching in the final image on the screen, it’s recommended to set $w$ and $h$ so that aspect ratio of the projection window matches the aspect ratio of the render target, and the window’s client area as well.
+```
+
+Once mesh vertices are in render target space, the rasterizer can identify the texels covered by the primitives, and emit pixels at the corresponding positions to be consumed by the pixel shader.
 
 <br>
 
