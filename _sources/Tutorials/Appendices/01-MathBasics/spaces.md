@@ -732,7 +732,7 @@ After the perspective division, all vertices are in NDC space, and if we only co
 
 The rasterizer automatically transforms the vertices from NDC space to render target space by using the viewport information we set with **ID3D12GraphicsCommandList::RSSetViewports**. Once in render target space, it can generate pixels covered by primitives. However, if the render target coordinates of a pixel fall outside the specified render target size, the pixel will be discarded and won't be processed by any subsequent stage of the pipeline.
 
-In [](../../01-HelloWorld/hello-window.md), we briefly mentioned that a viewport can be seen as a rectangular region within the back buffer space where rendering operations take place. Now, we can be more specific in stating that a viewport is a structure that holds the necessary information for the rasterizer to construct a matrix that transforms vertices from NDC space to a specific rectangle within the render target space. In other words, it defines the mapping of the projection window onto a chosen area of the render target.
+In [](../../01-HelloWorld/hello-window.md), we briefly mentioned that a viewport can be seen as a rectangular region within the back buffer space where rendering operations take place. Now, we can be more specific in stating that a viewport is a structure that holds the necessary information for the rasterizer to construct a matrix that transforms vertices from NDC space to a specific rectangle within the render target space. In other words, it defines the mapping of the projection window onto a selected area of the render target.
 
 ```{figure} images/04/viewport.png
 ```
