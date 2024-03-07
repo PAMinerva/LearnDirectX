@@ -757,7 +757,7 @@ $$
 \\
 0\le y\le h \\
 \\
-$z_{min}\le z\le z_{max}
+z_{min}\le z\le z_{max}
 \end{align*}
 $$
 
